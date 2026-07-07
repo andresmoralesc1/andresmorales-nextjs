@@ -124,6 +124,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Plausible analytics (cookieless, GDPR-friendly). Only loaded if
+            NEXT_PUBLIC_PLAUSIBLE_DOMAIN is set in the environment. To enable:
+              1. Sign up at https://plausible.io (or self-host)
+              2. Add your site (e.g. portafolio.andresmorales.com.co)
+              3. Set NEXT_PUBLIC_PLAUSIBLE_DOMAIN in .env.local
+            When set, every `track('event_name', { props })` call from
+            lib/analytics.ts will be forwarded automatically. */}
+        {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+          <script
+            defer
+            data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+            src="https://plausible.io/js/script.tagged-events.js"
+          />
+        )}
       </head>
       <body className="flex flex-col min-h-screen">
         <Header />
