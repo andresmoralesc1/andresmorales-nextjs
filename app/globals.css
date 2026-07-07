@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-secondary font-body antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .section {
+    @apply py-16 md:py-24;
+  }
+  /* Background pattern with orange dots — disabled (dynamic particles only) */
+  .bg-wp-pattern {
+    background-color: #F8F5F4;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-secondary font-bold uppercase tracking-wide text-sm transition-colors;
+  }
+  .btn-accent {
+    @apply btn bg-theme-1 text-primary hover:bg-theme-2;
+  }
+  .btn-theme {
+    @apply btn bg-theme-1 text-primary hover:bg-theme-2;
+  }
+  .btn-outline {
+    @apply btn border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary;
+  }
+  .input {
+    @apply w-full px-3.5 py-2.5 rounded-lg border border-theme-9 bg-primary text-secondary placeholder:text-text/60 focus:border-theme-1 focus:ring-2 focus:ring-theme-1/20 outline-none transition-colors;
+  }
+}
