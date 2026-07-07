@@ -71,11 +71,60 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // JSON-LD Person + WebSite schema for knowledge graph / rich results
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': 'https://portafolio.andresmorales.com.co/#person',
+        name: 'Andrés Morales',
+        givenName: 'Andrés',
+        familyName: 'Morales',
+        jobTitle: 'AI Automation Consultant',
+        description:
+          'AI consultant specialized in automation, chatbots, and digital transformation. Building automation flows that work — so you don’t have to.',
+        url: 'https://portafolio.andresmorales.com.co',
+        image: 'https://portafolio.andresmorales.com.co/uploads/2025/06/andres-morales-og.jpg',
+        sameAs: [
+          'https://andresmorales.com.co',
+          // Add real profiles when ready:
+          // 'https://linkedin.com/in/andresmoralesc1',
+          // 'https://github.com/andresmoralesc1',
+        ],
+        knowsAbout: [
+          'AI Automation',
+          'n8n',
+          'Chatbots',
+          'AI Agents',
+          'Web Development',
+          'UI/UX Design',
+          'Sales',
+        ],
+        knowsLanguage: ['es-CO', 'en-US'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://portafolio.andresmorales.com.co/#website',
+        url: 'https://portafolio.andresmorales.com.co',
+        name: 'Andrés Morales — Portfolio',
+        inLanguage: 'en-US',
+        publisher: { '@id': 'https://portafolio.andresmorales.com.co/#person' },
+      },
+    ],
+  };
+
   return (
     <html
       lang="en"
       className={`${roboto.variable} ${robotoCondensed.variable} ${playfair.variable}`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-1">{children}</main>
