@@ -27,7 +27,7 @@ export function Hero({
           <p className="text-xs uppercase tracking-widest text-theme-1 mb-3 font-secondary font-bold">
             Hello, my name is
           </p>
-          <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl mb-5 text-secondary leading-[1.05] tracking-tight">
+          <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl mb-5 text-secondary leading-[1.05] tracking-tight">
             Andrés Morales
           </h1>
           <p className="text-2xl md:text-3xl font-secondary text-secondary mb-2">

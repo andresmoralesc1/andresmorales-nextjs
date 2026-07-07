@@ -1,8 +1,12 @@
-export const metadata = {
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = pageMetadata({
   title: 'Cumple 2025',
   description:
     'Birthday-month automation package: limited slots, fixed scope, fast turnaround. Special campaign for October 2025.',
-};
+  path: '/cumple-2025',
+});
 
 // Custom campaign landing page extracted from WP (page id 1020)
 export default function CumplePage() {

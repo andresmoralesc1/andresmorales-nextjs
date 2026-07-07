@@ -1,11 +1,14 @@
 // Email unsubscribe confirmation page (page id 1501)
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Unsubscribed',
   description:
     'You are unsubscribed. No further emails will be sent to this address.',
-};
+  path: '/unsubscribe',
+});
 
 export default function UnsubscribePage() {
   return (

@@ -49,10 +49,16 @@ const JOBS = [
 ];
 
 function TimelineItem({ job, index, isLeft }: { job: typeof JOBS[0]; index: number; isLeft: boolean }) {
-  const [isVisible, setIsVisible] = useState(false);
+  // Start visible by default; hide and animate only when JS hydrates and
+  // the user scrolls the item into view. This keeps the timeline readable
+  // in SSR, screenshots, and for users with slow JS.
+  const [isVisible, setIsVisible] = useState(true);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
+    setShouldAnimate(true);
+    setIsVisible(false);
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -70,7 +76,11 @@ function TimelineItem({ job, index, isLeft }: { job: typeof JOBS[0]; index: numb
     <li
       ref={ref}
       className={`relative pl-8 md:pl-0 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        shouldAnimate
+          ? isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+          : 'opacity-100 translate-y-0'
       } ${
         isLeft
           ? 'md:pr-[calc(50%+1.5rem)] md:text-right'

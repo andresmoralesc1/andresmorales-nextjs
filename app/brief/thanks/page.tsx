@@ -1,10 +1,13 @@
 import Link from 'next/link';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Brief Received',
   description:
     'Thanks for submitting your project brief. I will reply within 24 hours with either a follow-up question or a proposed next step.',
-};
+  path: '/brief/thanks',
+});
 
 export default function BriefThanksPage() {
   return (

@@ -18,11 +18,16 @@ export function pageMetadata(opts: {
   ogImage?: string;
 }) {
   const { title, description, path = '/', ogImage = DEFAULT_OG } = opts;
+  // Avoid appending "— Andrés Morales" twice when the page title already
+  // includes the brand. The title is the headline; the suffix is the brand.
+  const ogFullTitle = title.includes(SITE_NAME)
+    ? title
+    : `${title} — ${SITE_NAME}`;
   return {
     title,
     description,
     openGraph: {
-      title: `${title} — ${SITE_NAME}`,
+      title: ogFullTitle,
       description,
       url: `https://portafolio.andresmorales.com.co${path}`,
       siteName: SITE_NAME,
@@ -32,7 +37,7 @@ export function pageMetadata(opts: {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} — ${SITE_NAME}`,
+      title: ogFullTitle,
       description,
       images: [ogImage],
     },

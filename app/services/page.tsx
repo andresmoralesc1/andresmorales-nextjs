@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { wpImage } from '@/lib/theme';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
 
 /**
@@ -16,11 +17,12 @@ import type { Metadata } from 'next';
  *   6. Footer (auto)
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'My Work',
   description:
     'Three service tracks: AI automations that save hours every week, UI/UX design that improves how people use your product, and web development that ships fast — for clients who want measurable outcomes.',
-};
+  path: '/services',
+});
 
 const TRACKS = [
   {

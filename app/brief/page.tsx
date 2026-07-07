@@ -1,10 +1,13 @@
 import BriefWizard from '@/components/brief/BriefWizard';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Project Brief',
   description:
     'Tell me about your project in five short steps so I can scope it on the first call. Five steps, about five minutes.',
-};
+  path: '/brief',
+});
 
 // "brief" page — 5-step wizard intake. Stored draft in localStorage so
 // users can come back without losing context. Submits to /api/brief

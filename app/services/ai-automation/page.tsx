@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'AI Automation',
   description:
     'AI-powered automations, chatbots and digital agents that save hours every week. Built on real workflow analysis, not hype.',
-};
+  path: '/services/ai-automation',
+});
 
 const CAPABILITIES = [
   {

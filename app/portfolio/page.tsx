@@ -1,7 +1,16 @@
+import { pageMetadata } from '@/lib/metadata';
 import { wpImage } from '@/lib/theme';
-import { Cta } from '@/components/sections/cta';
 import { YoutubeEmbed } from '@/components/YoutubeEmbed';
 import { ParticlesBackground } from '@/components/particles-background';
+import { Cta } from '@/components/sections/cta';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = pageMetadata({
+  title: 'Portfolio',
+  description:
+    'Recent client work: e-commerce, booking systems, dashboards and automations for clients who want measurable outcomes.',
+  path: '/portfolio',
+});
 
 // Featured Client Work — 10 proyectos en grid 2x5
 const FEATURED_PROJECTS = [
@@ -197,12 +206,6 @@ const SERVICE_CATEGORIES = [
     ],
   },
 ];
-
-export const metadata = {
-  title: 'Portfolio',
-  description:
-    'Recent client work: e-commerce, booking systems, dashboards and automations for clients across LATAM. Plus AI-generated creative experiments. Some include demo access so you can poke around.',
-};
 
 export default function PortfolioPage() {
   return (

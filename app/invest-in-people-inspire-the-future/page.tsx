@@ -1,11 +1,14 @@
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Invest in People, Inspire the Future',
   description:
-    'A program to bring practical AI automation training to small business owners and operators across LATAM.',
-};
+    'A program to bring practical AI automation training to small business owners and independent professionals in Latin America.',
+  path: '/invest-in-people-inspire-the-future',
+});
 
 // Custom campaign landing page (page id 1058) — refines "Invest in People, Inspire the Future"
 export default function InvestPage() {

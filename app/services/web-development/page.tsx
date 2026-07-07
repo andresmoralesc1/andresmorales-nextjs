@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Web Development',
   description:
     'Next.js + React websites built for speed, SEO and conversions. From marketing landing pages to dashboards and SaaS front-ends.',
-};
+  path: '/services/web-development',
+});
 
 const CAPABILITIES = [
   {

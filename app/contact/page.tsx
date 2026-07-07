@@ -1,12 +1,15 @@
 import { ContactForm } from '@/components/sections/contact-form';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Contact',
   description:
-    'Tell me what you want to automate. I usually reply in under 24 hours with a follow-up question or a proposed next step.',
-};
+    "Tell me what you want to automate. I usually reply in under 24 hours with a follow-up call or email.",
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (

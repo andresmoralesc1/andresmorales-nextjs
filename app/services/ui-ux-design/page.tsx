@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'UI/UX Design',
   description:
     'UX research, interface design and conversion-focused UI — built on a decade in sales and product thinking. Research, design, test, ship.',
-};
+  path: '/services/ui-ux-design',
+});
 
 const CAPABILITIES = [
   {
