@@ -9,7 +9,7 @@
  */
 
 const SITE_NAME = 'Andrés Morales';
-const DEFAULT_OG = 'https://andresmorales.com.co/wp-content/uploads/2025/06/andres-morales-og.jpg';
+const DEFAULT_OG = '/uploads/2025/06/andres-morales-og.jpg';
 
 export function pageMetadata(opts: {
   title: string;

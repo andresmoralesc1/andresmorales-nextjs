@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cta } from '@/components/sections/cta';
+import { wpImage } from '@/lib/theme';
 
 export const metadata: Metadata = {
   title: 'AI Automation',
@@ -69,7 +70,7 @@ export default function AiAutomationPage() {
           </div>
           <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-theme-9">
             <img
-              src="https://andresmorales.com.co/wp-content/uploads/2025/06/IMG-20160129-WA0001.jpg"
+              src={wpImage('/wp-content/uploads/2025/06/IMG-20160129-WA0001.jpg')}
               alt="Andrés at work"
               className="w-full h-full object-cover"
             />

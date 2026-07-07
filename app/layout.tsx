@@ -4,7 +4,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import './globals.css';
 
-// Fonts EXACTAS del WordPress original (Astra + Elementor):
+// Exact fonts from the original WordPress site (Astra + Elementor):
 // Roboto (body), Roboto Condensed (nav + accent), Playfair Display (headings serif)
 const roboto = Roboto({
   subsets: ['latin'],
@@ -52,12 +52,21 @@ export const metadata: Metadata = {
     title: 'Andrés Morales — AI Automation Consultant',
     description:
       'AI consultant specialized in automation, chatbots, and digital transformation. Building automation flows that work — so you don’t have to.',
+    images: [
+      {
+        url: '/uploads/2025/06/andres-morales-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Andrés Morales — AI Automation Consultant',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Andrés Morales — AI Automation Consultant',
     description:
       'AI consultant specialized in automation, chatbots, and digital transformation.',
+    images: ['/uploads/2025/06/andres-morales-og.jpg'],
   },
 };
 
