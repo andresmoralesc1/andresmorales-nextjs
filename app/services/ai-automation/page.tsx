@@ -3,6 +3,7 @@ import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
 import { pageMetadata } from '@/lib/metadata';
+import { JsonLd, serviceSchema } from '@/lib/json-ld';
 
 export const metadata: Metadata = pageMetadata({
   title: 'AI Automation',
@@ -60,6 +61,16 @@ const STACK = [
 export default function AiAutomationPage() {
   return (
     <>
+      <JsonLd
+        data={serviceSchema({
+          name: 'AI Automation Consulting',
+          description: 'AI-powered automations, chatbots and digital agents that save hours every week. Built on real workflow analysis, not hype.',
+          path: '/services/ai-automation',
+          serviceType: 'AI Automation Consulting',
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          priceRange: '$$',
+        })}
+      />
       {/* Hero */}
       <section className="section bg-primary relative overflow-hidden">
         <ParticlesBackground id="hero-particles-ai" variant="soft" />

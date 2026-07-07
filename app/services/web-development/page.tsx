@@ -3,6 +3,7 @@ import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
 import { pageMetadata } from '@/lib/metadata';
+import { JsonLd, serviceSchema } from '@/lib/json-ld';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Web Development',
@@ -60,6 +61,16 @@ const STACK = [
 export default function WebDevelopmentPage() {
   return (
     <>
+      <JsonLd
+        data={serviceSchema({
+          name: 'Web Development',
+          description: 'Next.js + React websites built for speed, SEO and conversions. From marketing landing pages to dashboards and SaaS front-ends.',
+          path: '/services/web-development',
+          serviceType: 'Web Development',
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          priceRange: '$$$',
+        })}
+      />
       {/* Hero */}
       <section className="section bg-primary relative overflow-hidden">
         <ParticlesBackground id="hero-particles-webdev" variant="soft" />

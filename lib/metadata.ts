@@ -16,8 +16,15 @@ export function pageMetadata(opts: {
   description: string;
   path?: string;
   ogImage?: string;
+  /**
+   * Set to true for post-action / utility pages that should not appear in
+   * search results (e.g. /brief/thanks, /unsubscribe). Even though
+   * robots.txt disallows them, we add a noindex meta as a defense in
+   * depth — some crawlers and link-preview bots ignore robots.txt.
+   */
+  noindex?: boolean;
 }) {
-  const { title, description, path = '/', ogImage = DEFAULT_OG } = opts;
+  const { title, description, path = '/', ogImage = DEFAULT_OG, noindex = false } = opts;
   // Avoid appending "— Andrés Morales" twice when the page title already
   // includes the brand. The title is the headline; the suffix is the brand.
   const ogFullTitle = title.includes(SITE_NAME)
@@ -26,6 +33,7 @@ export function pageMetadata(opts: {
   return {
     title,
     description,
+    ...(noindex && { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }),
     openGraph: {
       title: ogFullTitle,
       description,

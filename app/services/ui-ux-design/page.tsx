@@ -3,6 +3,7 @@ import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
 import { pageMetadata } from '@/lib/metadata';
+import { JsonLd, serviceSchema } from '@/lib/json-ld';
 
 export const metadata: Metadata = pageMetadata({
   title: 'UI/UX Design',
@@ -58,6 +59,16 @@ const TOOLS = [
 export default function UiUxDesignPage() {
   return (
     <>
+      <JsonLd
+        data={serviceSchema({
+          name: 'UI/UX Design',
+          description: 'UX research, interface design and conversion-focused UI — built on a decade in sales and product thinking. Research, design, test, ship.',
+          path: '/services/ui-ux-design',
+          serviceType: 'User Interface & User Experience Design',
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          priceRange: '$$',
+        })}
+      />
       {/* Hero */}
       <section className="section bg-primary relative overflow-hidden">
         <ParticlesBackground id="hero-particles-uiux" variant="soft" />

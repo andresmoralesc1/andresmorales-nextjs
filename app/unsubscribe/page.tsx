@@ -8,6 +8,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     'You are unsubscribed. No further emails will be sent to this address.',
   path: '/unsubscribe',
+  noindex: true,
 });
 
 export default function UnsubscribePage() {

@@ -7,6 +7,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     'Thanks for submitting your project brief. I will reply within 24 hours with either a follow-up question or a proposed next step.',
   path: '/brief/thanks',
+  noindex: true,
 });
 
 export default function BriefThanksPage() {
