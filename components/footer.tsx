@@ -12,7 +12,7 @@ import Link from 'next/link';
  */
 export function Footer() {
   return (
-    <footer className="bg-theme-3 text-primary relative overflow-hidden mt-16">
+    <footer className="bg-theme-3 text-primary relative overflow-hidden">
       {/* Decorative circles — same vibe as WordPress version */}
       <div
         aria-hidden
