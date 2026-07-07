@@ -7,6 +7,15 @@ const TO_EMAIL = process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
 const FROM_EMAIL = process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
 const FROM_NAME = process.env.BRIEF_FROM_NAME || 'Andres Morales · Portfolio Brief';
 
+// ── ClickUp integration ─────────────────────────────────────────────────
+// When a brief is received, also create a task in a ClickUp list so you
+// can track, prioritize, and convert it to a project from one dashboard.
+// Free-tier ClickUp doesn't expose Custom Fields via API in some plans, so
+// we encode every brief field into the task description as Markdown instead.
+// Get the API token at: Settings > Apps > API in ClickUp.
+const CLICKUP_API_TOKEN = process.env.CLICKUP_API_TOKEN || '';
+const CLICKUP_LIST_ID = process.env.CLICKUP_BRIEF_LIST_ID || '';
+
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
 // 3 briefs / hour / IP. In-memory is fine for a single-instance Next server
 // (it restarts on deploy, which effectively wipes the slate). For a
@@ -335,6 +344,14 @@ export async function POST(req: NextRequest) {
       console.warn('[brief] auto-reply failed (non-fatal):', err);
     });
 
+    // Fire-and-forget: create a task in ClickUp so the brief lands in
+    // your board as soon as it arrives. Same non-blocking pattern as the
+    // auto-reply: a ClickUp outage must never affect the user-facing
+    // success of the submission.
+    sendToClickUp(data).catch((err) => {
+      console.warn('[brief] ClickUp sync failed (non-fatal):', err);
+    });
+
     return NextResponse.json({ ok: true, emailSent: true });
   } catch (err) {
     console.error('[brief] Unexpected error:', err);
@@ -401,4 +418,76 @@ You received this because you submitted the project brief at portafolio.andresmo
 // GET returns a simple health check (does NOT expose whether the key is set)
 export async function GET() {
   return NextResponse.json({ ok: true, route: 'brief' });
+}
+
+// Send the brief to ClickUp as a task in the configured list. We encode
+// every form field into the task description as Markdown rather than
+// relying on Custom Fields (those are gated behind a paid plan on
+// some ClickUp workspaces). Free-tier friendly + instantly readable.
+async function sendToClickUp(p: BriefPayload): Promise<void> {
+  if (!CLICKUP_API_TOKEN || !CLICKUP_LIST_ID) {
+    // Not configured: skip silently. The brief still went to email.
+    return;
+  }
+
+  // Priority mapping: 1=urgent, 2=high, 3=normal, 4=low. We use the
+  // raw budget code (e.g. "50k+") rather than the display label so
+  // this stays correct as the form's BUDGET_LABELS map evolves.
+  let priority = 3;
+  if (p.budget === '50k+' || p.budget === '15-50k') priority = 1;  // urgent
+  else if (p.budget === '5-15k') priority = 2;                    // high
+  else if (p.budget === '<2k' || p.budget === '2-5k') priority = 3; // normal
+
+  // Use the human-readable labels for the task title so the board is
+  // readable at a glance. Truncate name for the title (ClickUp titles
+  // are 250 chars max, but we keep it short to scan well in a list).
+  const titleName = p.name.length > 60 ? p.name.slice(0, 57) + '...' : p.name;
+  const title = `Brief: ${titleName} — ${PROJECT_TYPE_LABELS[p.projectType]} · ${BUDGET_LABELS[p.budget]}`;
+
+  const description = [
+    `**Name:** ${p.name}`,
+    `**Email:** ${p.email}`,
+    p.company ? `**Company:** ${p.company}` : '',
+    p.role ? `**Role:** ${p.role}` : '',
+    ``,
+    `**Project type:** ${PROJECT_TYPE_LABELS[p.projectType]}`,
+    p.projectTypeOther ? `**Project type (other):** ${p.projectTypeOther}` : '',
+    `**Budget:** ${BUDGET_LABELS[p.budget]}`,
+    `**Timeline:** ${TIMELINE_LABELS[p.timeline]}`,
+    `**Frequency:** ${p.frequency ? FREQUENCY_LABELS[p.frequency] : '—'}`,
+    ``,
+    `**Problem to solve**`,
+    p.problem,
+    ``,
+    p.tools && p.tools.length ? `**Tools it touches today**\n- ${p.tools.join('\n- ')}` : '',
+    p.toolsOther ? `**Other tool:** ${p.toolsOther}` : '',
+    ``,
+    `**Goal / outcome**`,
+    p.goal,
+    p.successMetric ? `**Success metric:** ${p.successMetric}` : '',
+    ``,
+    p.additionalNotes ? `**Additional notes**\n${p.additionalNotes}\n` : '',
+    `---`,
+    `_Submitted via portafolio.andresmorales.com.co brief wizard._`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const res = await fetch(`https://api.clickup.com/api/v2/list/${CLICKUP_LIST_ID}/task`, {
+    method: 'POST',
+    headers: {
+      Authorization: CLICKUP_API_TOKEN,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: title,
+      description,
+      priority,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`ClickUp task create failed: ${res.status} ${body}`);
+  }
 }
