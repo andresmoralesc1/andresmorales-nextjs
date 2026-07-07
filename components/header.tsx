@@ -29,28 +29,37 @@ export function Header() {
           />
         </Link>
 
-        {/* Desktop menu */}
-        <nav className="hidden md:flex items-center gap-10">
-          {MENU.map((m) => {
-            const isActive =
-              m.href === '/'
-                ? pathname === '/'
-                : pathname === m.href || pathname?.startsWith(m.href + '/');
-            return (
-              <Link
-                key={m.href}
-                href={m.href}
-                className={`text-sm font-secondary font-bold uppercase tracking-widest transition-colors ${
-                  isActive
-                    ? 'text-theme-1'
-                    : 'text-secondary hover:text-theme-1'
-                }`}
-              >
-                {m.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Desktop nav + CTA */}
+        <div className="hidden md:flex items-center gap-8">
+          <nav className="flex items-center gap-10">
+            {MENU.map((m) => {
+              const isActive =
+                m.href === '/'
+                  ? pathname === '/'
+                  : pathname === m.href || pathname?.startsWith(m.href + '/');
+              return (
+                <Link
+                  key={m.href}
+                  href={m.href}
+                  className={`text-sm font-secondary font-bold uppercase tracking-widest transition-colors ${
+                    isActive
+                      ? 'text-theme-1'
+                      : 'text-secondary hover:text-theme-1'
+                  }`}
+                >
+                  {m.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <Link
+            href="/brief"
+            className="inline-flex items-center gap-1.5 text-sm font-secondary font-bold uppercase tracking-widest bg-theme-1 text-white px-5 py-2.5 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(255,102,0,0.4)] transition-all duration-300"
+          >
+            Start a Project
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
 
         {/* Hamburger mobile */}
         <button
@@ -88,6 +97,14 @@ export function Header() {
                 </Link>
               );
             })}
+            <Link
+              href="/brief"
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-secondary font-bold uppercase tracking-widest bg-theme-1 text-white px-5 py-3 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)]"
+            >
+              Start a Project
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </nav>
       )}
