@@ -7,6 +7,45 @@ const TO_EMAIL = process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
 const FROM_EMAIL = process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
 const FROM_NAME = process.env.BRIEF_FROM_NAME || 'Andres Morales · Portfolio Brief';
 
+// ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
+// 3 briefs / hour / IP. In-memory is fine for a single-instance Next server
+// (it restarts on deploy, which effectively wipes the slate). For a
+// multi-instance deploy, swap for Redis or Upstash.
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): { allowed: boolean; retryInSec?: number } {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry) return { allowed: true };
+  if (now > entry.resetAt) {
+    rateLimitMap.delete(ip);
+    return { allowed: true };
+  }
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return { allowed: false, retryInSec: Math.ceil((entry.resetAt - now) / 1000) };
+  }
+  return { allowed: true };
+}
+
+function bumpRateLimit(ip: string): void {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function clientIp(req: NextRequest): string {
+  // Honor common proxy headers; fall back to a tag if nothing is present.
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return req.headers.get('x-real-ip') || 'unknown';
+}
+
 type BriefPayload = {
   // step 1 — About you
   name: string;
@@ -210,6 +249,36 @@ async function sendViaBrevo(data: BriefPayload): Promise<{ ok: boolean; error?: 
 }
 
 export async function POST(req: NextRequest) {
+  // Anti-spam #1: honey-pot field. Bots fill every input they see;
+  // humans never see this one because it's hidden via CSS in the form.
+  // If a value arrives here, we silently reject as a generic 400 so the
+  // bot doesn't learn anything about the schema.
+  // Check is duplicated on client (input has 'display:none') and server.
+  try {
+    const formPeek = await req.clone().formData().catch(() => null);
+    if (formPeek) {
+      const honeypot = formPeek.get('website');
+      if (honeypot && String(honeypot).trim() !== '') {
+        console.warn('[brief] honey-pot triggered (bot)');
+        return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
+      }
+    }
+  } catch {
+    // body isn't form-encoded — skip, fall through to JSON parse
+  }
+
+  // Anti-spam #2: rate limit per IP. 3 briefs / hour. Returns 429 with
+  // a retry-after hint so legitimate users know to wait.
+  const ip = clientIp(req);
+  const rl = checkRateLimit(ip);
+  if (!rl.allowed) {
+    console.warn(`[brief] rate-limited ip=${ip} retry_in=${rl.retryInSec}s`);
+    return NextResponse.json(
+      { error: 'Too many requests. Try again later.', retryInSec: rl.retryInSec },
+      { status: 429, headers: { 'Retry-After': String(rl.retryInSec) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -217,11 +286,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
+  // Honey-pot check on JSON path too: a handcrafted bot might POST
+  // application/json with { website: 'http://spam' }.
+  if (body && typeof body === 'object' && 'website' in body) {
+    const w = (body as Record<string, unknown>).website;
+    if (w && String(w).trim() !== '') {
+      console.warn('[brief] honey-pot triggered (bot/json)');
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
+    }
+  }
+
   const result = validatePayload(body);
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
   const data = result.data;
+
+  // Bump AFTER validation passes — failed validation doesn't count
+  // against the limit (so a human user fixing typos isn't punished).
+  bumpRateLimit(ip);
 
   // If Brevo key is not configured, we don't fail the UX — we just log the brief.
   // This lets the route work in dev/demo without leaking the API setup.
@@ -244,10 +327,74 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Fire-and-forget auto-reply to the user. Failure here does NOT
+    // affect the brief send — already logged + replied in the inbox.
+    // await is intentionally skipped so we don't inflate the response
+    // time if Brevo is slow on the second send.
+    sendAutoReply(data).catch((err) => {
+      console.warn('[brief] auto-reply failed (non-fatal):', err);
+    });
+
     return NextResponse.json({ ok: true, emailSent: true });
   } catch (err) {
     console.error('[brief] Unexpected error:', err);
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
+  }
+}
+
+// Send a confirmation email to whoever filled the brief. Uses the same
+// verified sender so nothing leaves the andres@andresmorales.com.co
+// envelope. Same Brevo endpoint, parallel route.
+async function sendAutoReply(p: BriefPayload): Promise<void> {
+  const html = `
+    <div style="font-family:Roboto,Arial,sans-serif;max-width:600px;margin:0 auto;">
+      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
+        <h1 style="margin:0;font-size:22px;">Thanks for the brief, ${escapeHtml(p.name.split(' ')[0] || p.name)}.</h1>
+      </div>
+      <div style="padding:24px 32px;color:#575250;line-height:1.6;">
+        <p>I got your brief and will read it personally within the next 24 hours.</p>
+        <p>If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.</p>
+        <p style="margin-top:32px;">— Andrés</p>
+        <p style="font-size:13px;color:#999;margin-top:24px;">
+          You received this because you submitted the project brief at
+          <a href="https://portafolio.andresmorales.com.co/brief" style="color:#f96e03;">portafolio.andresmorales.com.co/brief</a>.
+        </p>
+      </div>
+    </div>
+  `;
+  const text = `Thanks for the brief, ${p.name.split(' ')[0] || p.name}.
+
+I got it and will read it personally within the next 24 hours.
+
+If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.
+
+— Andrés
+
+---
+You received this because you submitted the project brief at portafolio.andresmorales.com.co/brief.`;
+
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': BREVO_API_KEY,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: FROM_NAME, email: FROM_EMAIL },
+      // User is the recipient. Using email-to-name "Andrés" would confuse;
+      // use the user's own name (or fall back to their email) as the "to" name.
+      to: [{ email: p.email, name: p.name }],
+      replyTo: { email: FROM_EMAIL, name: 'Andrés Morales' },
+      subject: `Got your brief — ${p.name.split(' ')[0] || p.name}`,
+      htmlContent: html,
+      textContent: text,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Brevo auto-reply failed: ${res.status} ${body}`);
   }
 }
 

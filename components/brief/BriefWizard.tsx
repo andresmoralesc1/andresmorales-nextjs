@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { track } from '@/lib/analytics';
 
 type BriefData = {
   // Step 1 — About you
@@ -175,6 +176,9 @@ export default function BriefWizard() {
         const msg = (json && typeof json === 'object' && 'error' in json && typeof (json as { error: unknown }).error === 'string')
           ? (json as { error: string }).error
           : `Server returned ${res.status}`;
+        // Track server-rejected submits (don't track validation 400s from
+        // the wizard itself — those are user errors, not funnel data).
+        track('brief_submit_error', { status: res.status, message: msg });
         setServerError(msg);
         setSubmitting(false);
         return;
@@ -185,9 +189,15 @@ export default function BriefWizard() {
       } catch {
         // ignore
       }
+      track('brief_submitted', {
+        project_type: data.projectType,
+        budget: data.budget,
+        timeline: data.timeline,
+      });
       setSubmitted(true);
       window.location.href = '/brief/thanks';
     } catch (err) {
+      track('brief_submit_error', { message: err instanceof Error ? err.message : 'Network error' });
       setServerError(err instanceof Error ? err.message : 'Network error');
       setSubmitting(false);
     }
@@ -195,14 +205,29 @@ export default function BriefWizard() {
 
   function handleNext() {
     if (!stepValid) return;
+    const fromStep = step;
     if (isLastStep) {
       handleSubmit();
     } else {
+      // First successful advancement = brief_started funnel event.
+      // De-duped: if user navigates back and forth, only counts first move.
+      track('brief_step_advanced', {
+        from_step: fromStep + 1,
+        from_label: STEP_LABELS[fromStep],
+      });
+      if (fromStep === 0) {
+        track('brief_started', { project_type_selected: false });
+      }
       setStep((s) => Math.min(s + 1, STEP_LABELS.length - 1));
     }
   }
 
   function handleBack() {
+    if (step === 0) return;
+    track('brief_step_back', {
+      from_step: step + 1,
+      from_label: STEP_LABELS[step],
+    });
     setStep((s) => Math.max(s - 1, 0));
   }
 
@@ -212,6 +237,7 @@ export default function BriefWizard() {
     } catch {
       // ignore
     }
+    track('brief_draft_cleared');
     setData(INITIAL);
     setStep(0);
   }
@@ -359,6 +385,18 @@ function Step1({ data, update }: { data: BriefData; update: <K extends keyof Bri
   return (
     <div className="space-y-5">
       <h2 className="font-heading text-2xl">Tell me about you</h2>
+
+      {/* Honey-pot: real users never see this; bots fill every input. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+        onChange={() => {}}
+      />
+
       <Field label="Your name" required>
         <input
           type="text"
