@@ -1,5 +1,6 @@
 import { wpImage } from '@/lib/theme';
 import { Cta } from '@/components/sections/cta';
+import { YoutubeEmbed } from '@/components/YoutubeEmbed';
 
 // Featured Client Work — 10 proyectos en grid 2x5
 const FEATURED_PROJECTS = [
@@ -125,6 +126,47 @@ const AUTOMATION_CASES = [
   },
 ];
 
+// AI Creative in Action — videos migrated from the legacy WP portfolio.
+// Shorts are 9:16 (portrait); landscape videos are 16:9.
+const CREATIVE_VIDEOS = [
+  {
+    id: 'fRkb3zK9k-o',
+    title: 'AI or Real Explosions Await',
+    orientation: 'landscape' as const,
+    caption: 'Full cinematic ad built with AI video tools',
+  },
+  {
+    id: 'mL5cogF4oAw',
+    title: 'Video Ready Surreal Ad',
+    orientation: 'landscape' as const,
+    caption: 'Surreal commercial generated end-to-end with generative AI',
+  },
+  {
+    id: '3_fOS-UILJ8',
+    title: 'Quick Product Demo',
+    orientation: 'portrait' as const,
+    caption: 'Vertical ad creative for social media automation flows',
+  },
+  {
+    id: '6fcPRr3VVTc',
+    title: 'WhatsApp Creative Walkthrough',
+    orientation: 'portrait' as const,
+    caption: 'Behind-the-scenes of turning a WhatsApp clip into ad-ready',
+  },
+  {
+    id: 'ml5SfgmmDbw',
+    title: 'Short-form AI Visual',
+    orientation: 'portrait' as const,
+    caption: 'Vertical short created entirely in AI',
+  },
+  {
+    id: 'ZfxnA1rrcd4',
+    title: 'AI Video Experiment',
+    orientation: 'portrait' as const,
+    caption: 'Concept-to-frame generation pipeline',
+  },
+];
+
 const SERVICE_CATEGORIES = [
   {
     title: 'Personalized Dashboards',
@@ -158,7 +200,7 @@ const SERVICE_CATEGORIES = [
 export const metadata = {
   title: 'Portfolio',
   description:
-    'Recent client work: e-commerce, booking systems, dashboards and automations for clients across LATAM. Some include demo access so you can poke around.',
+    'Recent client work: e-commerce, booking systems, dashboards and automations for clients across LATAM. Plus AI-generated creative experiments. Some include demo access so you can poke around.',
 };
 
 export default function PortfolioPage() {
@@ -341,8 +383,71 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Service Categories — 3 categories with descriptions */}
+      {/* AI Creative in Action — videos migrated from the legacy WP portfolio */}
       <section className="section bg-theme-5">
+        <div className="container-page">
+          <div className="text-center mb-12 max-w-3xl mx-auto">
+            <p className="text-xs uppercase tracking-widest text-theme-1 mb-2 font-secondary font-bold">
+              AI Creative in Action
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl mb-3">
+              Video ads generated with the same AI pipelines I ship for clients
+            </h2>
+            <p className="text-text">
+              Real ad samples built with generative video tools. The same
+              workflow goes behind every client project — from concept to
+              render to publish-ready cut.
+            </p>
+          </div>
+
+          {/* Landscape videos — full-width 16:9 */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {CREATIVE_VIDEOS.filter((v) => v.orientation === 'landscape').map(
+              (v) => (
+                <div key={v.id}>
+                  <YoutubeEmbed
+                    id={v.id}
+                    title={v.title}
+                    orientation="landscape"
+                  />
+                  <div className="mt-3">
+                    <h3 className="font-heading text-lg md:text-xl mb-1">
+                      {v.title}
+                    </h3>
+                    <p className="text-sm text-text">{v.caption}</p>
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+
+          {/* Portrait / Shorts — 9:16 grid centered */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {CREATIVE_VIDEOS.filter((v) => v.orientation === 'portrait').map(
+              (v) => (
+                <div key={v.id}>
+                  <YoutubeEmbed
+                    id={v.id}
+                    title={v.title}
+                    orientation="portrait"
+                  />
+                  <div className="mt-2">
+                    <h3 className="font-heading text-sm md:text-base leading-tight mb-1">
+                      {v.title}
+                    </h3>
+                    <p className="text-xs text-text leading-snug">
+                      {v.caption}
+                    </p>
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Categories — 3 categories with descriptions */}
+      <section className="section bg-primary">
         <div className="container-page">
           <div className="text-center mb-12">
             <p className="text-xs uppercase tracking-widest text-theme-1 mb-2 font-secondary font-bold">
