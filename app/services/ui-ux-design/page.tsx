@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
+import { ParticlesBackground } from '@/components/particles-background';
 
 export const metadata: Metadata = {
   title: 'UI/UX Design',
@@ -56,8 +57,9 @@ export default function UiUxDesignPage() {
   return (
     <>
       {/* Hero */}
-      <section className="section bg-primary">
-        <div className="container-page grid md:grid-cols-2 gap-12 items-center">
+      <section className="section bg-primary relative overflow-hidden">
+        <ParticlesBackground id="hero-particles-uiux" variant="soft" />
+        <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
             <h1 className="font-heading text-4xl md:text-5xl mb-4">UI/UX Design</h1>
             <p className="text-text text-lg">

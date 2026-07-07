@@ -3,21 +3,22 @@
 import { useEffect } from "react";
 
 /**
- * ParticlesBackground — replicates the WordPress hero with particles.js
+ * ParticlesBackground — orange particles decoration
  *
  * Source: andresmorales.com.co (the Elementor particles config)
- * - 160 orange (#f96e03) circles
- * - hover: bubble (grows on hover)
- * - click: repulse
- * - random movement, slow speed
+ * - orange (#f96e03) circles with random movement
  *
- * Two variants:
- * - default (dark):  opacity 0.6-0.9, size 2-5, particles more visible
- * - cream:           opacity 0.35-0.6, size 1.5-3, subtler (for light bg)
+ * Three variants:
+ * - dark:  160 particles, opacity 0.6-0.9, size 2-5, hover bubble, click repulse
+ *         (for dark/contrast backgrounds — bottom of CTAs, footer)
+ * - cream: 90 particles, opacity 0.35-0.7, size 3-6, hover bubble
+ *         (legacy subtle variant for light backgrounds)
+ * - soft:  60 particles, opacity 0.15-0.35, size 2-4, NO hover/click
+ *         (subtle ambient decoration for hero sections with text content)
  *
  * Usage:
- *   <section className="relative bg-wp-pattern overflow-hidden">
- *     <ParticlesBackground id="hero-particles-canvas" variant="cream" />
+ *   <section className="relative bg-primary overflow-hidden">
+ *     <ParticlesBackground id="hero-porticles-canvas" variant="soft" />
  *     <div className="relative z-10">...content...</div>
  *   </section>
  */
@@ -26,7 +27,7 @@ export function ParticlesBackground({
   variant = "dark",
 }: {
   id?: string;
-  variant?: "dark" | "cream";
+  variant?: "dark" | "cream" | "soft";
 }) {
   useEffect(() => {
     let mounted = true;
@@ -46,12 +47,42 @@ export function ParticlesBackground({
       });
     };
 
-    // Cream variant: bigger, more visible particles (subtle but noticeable)
-    const opacityMin = variant === "cream" ? 0.3 : 0.3;
-    const opacityMax = variant === "cream" ? 0.7 : 0.75;
-    const sizeMin = variant === "cream" ? 3 : 2;
-    const sizeMax = variant === "cream" ? 6 : 5;
-    const particleCount = variant === "cream" ? 90 : 160;
+    // Per-variant tuning
+    let opacityMin: number;
+    let opacityMax: number;
+    let sizeMin: number;
+    let sizeMax: number;
+    let particleCount: number;
+    let enableHover: boolean;
+
+    switch (variant) {
+      case "soft":
+        // Subtle ambient: barely visible decoration for heroes with text
+        opacityMin = 0.15;
+        opacityMax = 0.35;
+        sizeMin = 2;
+        sizeMax = 4;
+        particleCount = 60;
+        enableHover = false;
+        break;
+      case "cream":
+        opacityMin = 0.3;
+        opacityMax = 0.7;
+        sizeMin = 3;
+        sizeMax = 6;
+        particleCount = 90;
+        enableHover = true;
+        break;
+      case "dark":
+      default:
+        opacityMin = 0.3;
+        opacityMax = 0.75;
+        sizeMin = 2;
+        sizeMax = 5;
+        particleCount = 160;
+        enableHover = true;
+        break;
+    }
 
     ensureParticlesLib().then(() => {
       if (!mounted) return;
@@ -106,29 +137,31 @@ export function ParticlesBackground({
         interactivity: {
           detect_on: "canvas",
           events: {
-            onhover: { enable: true, mode: "bubble" },
-            onclick: { enable: true, mode: "repulse" },
+            onhover: { enable: enableHover, mode: "bubble" },
+            onclick: { enable: enableHover, mode: "repulse" },
             resize: true,
           },
-          modes: {
-            bubble: {
-              distance: 250,
-              size: 8,
-              duration: 2,
-              opacity: 1,
-              speed: 3,
-            },
-            repulse: { distance: 400, duration: 0.4 },
-            push: { particles_nb: 4 },
-            remove: { particles_nb: 2 },
-          },
+          modes: enableHover
+            ? {
+                bubble: {
+                  distance: 250,
+                  size: 8,
+                  duration: 2,
+                  opacity: 1,
+                  speed: 3,
+                },
+                repulse: { distance: 400, duration: 0.4 },
+                push: { particles_nb: 4 },
+                remove: { particles_nb: 2 },
+              }
+            : {},
         },
         retina_detect: true,
       });
     });
 
     return () => {
-      mounted = true;
+      mounted = false;
     };
   }, [id, variant]);
 

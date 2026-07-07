@@ -1,5 +1,7 @@
 import { wpImage } from '@/lib/theme';
 import { Cta } from '@/components/sections/cta';
+import { ParticlesBackground } from '@/components/particles-background';
+import type { Metadata } from 'next';
 
 const ICON_BOXES = [
   {
@@ -28,17 +30,18 @@ const INTRO = [
   'As an entrepreneur, I bring a wealth of skills and experience to any business. My capacity to work independently, take initiative, and adapt to changing environments is a hallmark of my professional profile.',
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'My Work',
   description:
-    'What I do between the lines: AI process automation, chatbots that actually respond, and digital transformation focused on business results.',
+    'Three service tracks: AI automations that save hours every week, UI/UX design that improves how people use your product, and web development that ships fast — for clients who want measurable outcomes.',
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <section className="section bg-primary">
-        <div className="container-page grid md:grid-cols-2 gap-12 items-center">
+      <section className="section bg-primary relative overflow-hidden">
+        <ParticlesBackground id="hero-particles-services" variant="soft" />
+        <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
             <h1 className="font-heading text-4xl md:text-5xl mb-4">My Work</h1>
             <p className="text-text text-lg">

@@ -1,6 +1,7 @@
 import { wpImage } from '@/lib/theme';
 import { Cta } from '@/components/sections/cta';
 import { YoutubeEmbed } from '@/components/YoutubeEmbed';
+import { ParticlesBackground } from '@/components/particles-background';
 
 // Featured Client Work — 10 proyectos en grid 2x5
 const FEATURED_PROJECTS = [
@@ -208,10 +209,7 @@ export default function PortfolioPage() {
     <>
       {/* Hero — pitch + dual CTA */}
       <section className="section bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-theme-1 blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-theme-4 blur-3xl" />
-        </div>
+        <ParticlesBackground id="hero-particles-portfolio" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
           <p className="text-xs uppercase tracking-widest text-theme-1 mb-3 font-secondary font-bold">
             Portfolio

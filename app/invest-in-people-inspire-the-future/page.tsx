@@ -1,4 +1,5 @@
 import { Cta } from '@/components/sections/cta';
+import { ParticlesBackground } from '@/components/particles-background';
 
 export const metadata = {
   title: 'Invest in People, Inspire the Future',
@@ -10,8 +11,9 @@ export const metadata = {
 export default function InvestPage() {
   return (
     <>
-      <section className="section bg-background text-primary">
-        <div className="container-page text-center max-w-3xl">
+      <section className="section bg-background text-primary relative overflow-hidden">
+        <ParticlesBackground id="hero-particles-invest" variant="soft" />
+        <div className="container-page text-center max-w-3xl relative z-10">
           <p className="text-sm uppercase tracking-widest text-theme-1 mb-3">
             Initiative
           </p>
