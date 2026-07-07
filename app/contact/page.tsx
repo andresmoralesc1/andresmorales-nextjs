@@ -32,10 +32,10 @@ export default function ContactPage() {
             <div>
               <h2 className="font-heading text-lg mb-2">Email</h2>
               <a
-                href="mailto:andresmortal1@gmail.com"
+                href="mailto:info@andresmorales.com.co"
                 className="text-theme-1 hover:underline"
               >
-                andresmortal1@gmail.com
+                info@andresmorales.com.co
               </a>
             </div>
             <div>
