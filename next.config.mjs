@@ -13,6 +13,20 @@ const nextConfig = {
       { protocol: 'https', hostname: 'i2.wp.com' },
     ],
   },
+  // Back-compat: links from the legacy WordPress site (Google, bookmarks,
+  // other sites) may still point at /wp-content/uploads/.... Send them
+  // to the local /uploads/... path with a 308 (permanent) redirect so
+  // search engines update their indexes. Permanent vs temporary matters
+  // here: we want crawlers to drop the old URL, not keep checking it.
+  async redirects() {
+    return [
+      {
+        source: '/wp-content/uploads/:path*',
+        destination: '/uploads/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
