@@ -80,6 +80,7 @@ export function Hero({
               src={portrait}
               alt="Andrés Morales portrait"
               className="w-full h-full object-cover"
+              loading="eager"
             />
           </div>
         </div>

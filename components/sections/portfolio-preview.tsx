@@ -42,6 +42,7 @@ export function PortfolioPreview() {
                 src={p.image}
                 alt={p.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/85 to-transparent flex items-end p-5">
                 <span className="text-primary font-heading font-bold text-lg">
