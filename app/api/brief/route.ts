@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 
 // Brevo transactional email API
 // Docs: https://developers.brevo.com/reference/sendtransacemail
@@ -17,43 +18,10 @@ const CLICKUP_API_TOKEN = process.env.CLICKUP_API_TOKEN || '';
 const CLICKUP_LIST_ID = process.env.CLICKUP_BRIEF_LIST_ID || '';
 
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
-// 3 briefs / hour / IP. In-memory is fine for a single-instance Next server
-// (it restarts on deploy, which effectively wipes the slate). For a
-// multi-instance deploy, swap for Redis or Upstash.
+// 3 briefs / hour / IP. State lives in lib/rate-limit.ts so it can be
+// shared with /api/contact (which uses its own bucket + max).
 const RATE_LIMIT_MAX = 3;
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): { allowed: boolean; retryInSec?: number } {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry) return { allowed: true };
-  if (now > entry.resetAt) {
-    rateLimitMap.delete(ip);
-    return { allowed: true };
-  }
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return { allowed: false, retryInSec: Math.ceil((entry.resetAt - now) / 1000) };
-  }
-  return { allowed: true };
-}
-
-function bumpRateLimit(ip: string): void {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-  } else {
-    entry.count += 1;
-  }
-}
-
-function clientIp(req: NextRequest): string {
-  // Honor common proxy headers; fall back to a tag if nothing is present.
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
-  return req.headers.get('x-real-ip') || 'unknown';
-}
+const RATE_LIMIT_ROUTE = 'brief';
 
 type BriefPayload = {
   // step 1 — About you
@@ -204,6 +172,24 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
     return { ok: false, error: 'Invalid email' };
   }
 
+  // Whitelist enum values (NOT just `as` cast). Without this, a malicious
+  // POST with budget='hacked' would crash BUDGET_LABELS lookup → `undefined`
+  // injected into the email body, or a stray field like frequency='<script>'
+  // would land in ClickUp as markdown. Fail closed.
+  const PROJECT_TYPES = ['web', 'automation', 'ai-integration', 'consulting', 'other'] as const;
+  const FREQUENCIES = ['daily', 'weekly', 'monthly', 'one-off', 'ad-hoc'] as const;
+  const BUDGETS = ['<2k', '2-5k', '5-15k', '15-50k', '50k+'] as const;
+  const TIMELINES = ['asap', '1-month', '1-3-months', '3+ months', 'flexible'] as const;
+
+  const projectType = String(b.projectType) as (typeof PROJECT_TYPES)[number];
+  if (!PROJECT_TYPES.includes(projectType)) return { ok: false, error: 'Invalid projectType' };
+  const frequency = String(b.frequency) as (typeof FREQUENCIES)[number];
+  if (!FREQUENCIES.includes(frequency)) return { ok: false, error: 'Invalid frequency' };
+  const budget = String(b.budget) as (typeof BUDGETS)[number];
+  if (!BUDGETS.includes(budget)) return { ok: false, error: 'Invalid budget' };
+  const timeline = String(b.timeline) as (typeof TIMELINES)[number];
+  if (!TIMELINES.includes(timeline)) return { ok: false, error: 'Invalid timeline' };
+
   return {
     ok: true,
     data: {
@@ -211,16 +197,16 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
       email: String(b.email).slice(0, 200),
       company: b.company ? String(b.company).slice(0, 200) : '',
       role: b.role ? String(b.role).slice(0, 200) : '',
-      projectType: b.projectType as BriefPayload['projectType'],
+      projectType,
       projectTypeOther: b.projectTypeOther ? String(b.projectTypeOther).slice(0, 400) : '',
       problem: String(b.problem).slice(0, 4000),
       tools: Array.isArray(b.tools) ? (b.tools as string[]).slice(0, 20).map((t) => String(t).slice(0, 80)) : [],
       toolsOther: b.toolsOther ? String(b.toolsOther).slice(0, 200) : '',
-      frequency: b.frequency as BriefPayload['frequency'],
+      frequency,
       goal: String(b.goal).slice(0, 4000),
       successMetric: b.successMetric ? String(b.successMetric).slice(0, 400) : '',
-      budget: b.budget as BriefPayload['budget'],
-      timeline: b.timeline as BriefPayload['timeline'],
+      budget,
+      timeline,
       additionalNotes: b.additionalNotes ? String(b.additionalNotes).slice(0, 2000) : '',
     },
   };
@@ -279,7 +265,7 @@ export async function POST(req: NextRequest) {
   // Anti-spam #2: rate limit per IP. 3 briefs / hour. Returns 429 with
   // a retry-after hint so legitimate users know to wait.
   const ip = clientIp(req);
-  const rl = checkRateLimit(ip);
+  const rl = checkRateLimit(RATE_LIMIT_ROUTE, ip, RATE_LIMIT_MAX);
   if (!rl.allowed) {
     console.warn(`[brief] rate-limited ip=${ip} retry_in=${rl.retryInSec}s`);
     return NextResponse.json(
@@ -306,14 +292,18 @@ export async function POST(req: NextRequest) {
   }
 
   const result = validatePayload(body);
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
+  // `validatePayload` returns a discriminated union `{ ok: true, data }
+  // | { ok: false, error }`. The `result.ok = false` branch must be
+  // narrowed to access `error` — using `in` operator for explicit
+  // narrowing that survives any compiler regression.
+  if (!result.ok || !('data' in result)) {
+    return NextResponse.json({ error: 'error' in result ? result.error : 'Invalid payload' }, { status: 400 });
   }
   const data = result.data;
 
   // Bump AFTER validation passes — failed validation doesn't count
   // against the limit (so a human user fixing typos isn't punished).
-  bumpRateLimit(ip);
+  bumpRateLimit(RATE_LIMIT_ROUTE, ip);
 
   // If Brevo key is not configured, we don't fail the UX — we just log the brief.
   // This lets the route work in dev/demo without leaking the API setup.
@@ -331,7 +321,7 @@ export async function POST(req: NextRequest) {
     if (!sendResult.ok) {
       console.error('[brief] Brevo error:', sendResult.status, sendResult.error);
       return NextResponse.json(
-        { error: 'Failed to send', details: sendResult.error },
+        { error: 'Failed to send' },
         { status: 502 }
       );
     }
@@ -444,29 +434,36 @@ async function sendToClickUp(p: BriefPayload): Promise<void> {
   const titleName = p.name.length > 60 ? p.name.slice(0, 57) + '...' : p.name;
   const title = `Brief: ${titleName} — ${PROJECT_TYPE_LABELS[p.projectType]} · ${BUDGET_LABELS[p.budget]}`;
 
+  // Wrap free-form user input in backticks to neutralize Markdown
+  // (asterisks, brackets, code fences) inside ClickUp's renderer.
+  // ClickUp's markdown viewer sanitizes javascript: URLs, but XSS-via-
+  // markdown remains a real surface (e.g. `[text](url)` exfiltration,
+  // img-tag tracking pixels). Backtick-quoting turns the whole field
+  // into a single inline-code block — escapes all special chars.
+  const user = (s: string) => `\`${s.replace(/`/g, '‵')}\``;
   const description = [
-    `**Name:** ${p.name}`,
-    `**Email:** ${p.email}`,
-    p.company ? `**Company:** ${p.company}` : '',
-    p.role ? `**Role:** ${p.role}` : '',
+    `**Name:** ${user(p.name)}`,
+    `**Email:** ${user(p.email)}`,
+    p.company ? `**Company:** ${user(p.company)}` : '',
+    p.role ? `**Role:** ${user(p.role)}` : '',
     ``,
     `**Project type:** ${PROJECT_TYPE_LABELS[p.projectType]}`,
-    p.projectTypeOther ? `**Project type (other):** ${p.projectTypeOther}` : '',
+    p.projectTypeOther ? `**Project type (other):** ${user(p.projectTypeOther)}` : '',
     `**Budget:** ${BUDGET_LABELS[p.budget]}`,
     `**Timeline:** ${TIMELINE_LABELS[p.timeline]}`,
     `**Frequency:** ${p.frequency ? FREQUENCY_LABELS[p.frequency] : '—'}`,
     ``,
     `**Problem to solve**`,
-    p.problem,
+    user(p.problem),
     ``,
-    p.tools && p.tools.length ? `**Tools it touches today**\n- ${p.tools.join('\n- ')}` : '',
-    p.toolsOther ? `**Other tool:** ${p.toolsOther}` : '',
+    p.tools && p.tools.length ? `**Tools it touches today**\n- ${p.tools.map(user).join('\n- ')}` : '',
+    p.toolsOther ? `**Other tool:** ${user(p.toolsOther)}` : '',
     ``,
     `**Goal / outcome**`,
-    p.goal,
-    p.successMetric ? `**Success metric:** ${p.successMetric}` : '',
+    user(p.goal),
+    p.successMetric ? `**Success metric:** ${user(p.successMetric)}` : '',
     ``,
-    p.additionalNotes ? `**Additional notes**\n${p.additionalNotes}\n` : '',
+    p.additionalNotes ? `**Additional notes**\n${user(p.additionalNotes)}\n` : '',
     `---`,
     `_Submitted via portafolio.andresmorales.com.co brief wizard._`,
   ]

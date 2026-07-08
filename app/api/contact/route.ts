@@ -1,4 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
+
+// ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
+// 5 contact messages / hour / IP. Generous than /api/brief because the
+// contact form is also used by visitors with quick questions, not just
+// qualified leads. State lives in lib/rate-limit.ts (shared with /api/brief).
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_ROUTE = 'contact';
 
 // Lightweight contact form endpoint — sends to inbox via Brevo.
 // Mirrors the pattern in app/api/brief/route.ts (same sender + validation).
@@ -121,11 +129,44 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
+  // Anti-spam #1: rate limit per IP. 5 messages / hour. Returns 429 with
+  // a retry-after hint so legitimate users know to wait.
+  const ip = clientIp(req);
+  const rl = checkRateLimit(RATE_LIMIT_ROUTE, ip, RATE_LIMIT_MAX);
+  if (!rl.allowed) {
+    console.warn(`[contact] rate-limited ip=${ip} retry_in=${rl.retryInSec}s`);
+    return NextResponse.json(
+      { error: 'Too many requests. Try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryInSec) } }
+    );
+  }
+
+  // Anti-spam #2: honeypot. The `website` field is hidden from real users.
+  // Any non-empty value → silently 400 (don't signal detection to the bot).
+  const b = body as Record<string, unknown>;
+  if (typeof b?.website === 'string' && b.website.trim() !== '') {
+    console.warn(`[contact] honeypot tripped ip=${ip} website="${String(b.website).slice(0, 60)}"`);
+    return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
+  }
+
+  // Anti-spam #3: timing. Bots submit in <1s. Real users take longer to
+  // read the form. Server tracks mounted-at via `_t` field in ms. Threshold
+  // of 1500ms is conservative — drops fast bots without false positives.
+  if (typeof b?._t === 'number' && b._t > 0 && b._t < 1500) {
+    console.warn(`[contact] too-fast submission ip=${ip} _t=${b._t}ms`);
+    return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
+  }
+
   const result = validatePayload(body);
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
+  if (!result.ok || !('data' in result)) {
+    return NextResponse.json({ error: 'error' in result ? result.error : 'Invalid payload' }, { status: 400 });
   }
   const data = result.data;
+
+  // Bump AFTER honeypot + timing + validation all pass — failed spam
+  // checks don't count against the limit (a torrent of honeypot triggers
+  // would otherwise lock out a legitimate user sharing an IP).
+  bumpRateLimit(RATE_LIMIT_ROUTE, ip);
 
   if (!BREVO_API_KEY) {
     console.warn('[contact] BREVO_API_KEY not set — message received but not emailed:', {
@@ -140,7 +181,7 @@ export async function POST(req: NextRequest) {
     if (!sendResult.ok) {
       console.error('[contact] Brevo error:', sendResult.status, sendResult.error);
       return NextResponse.json(
-        { error: 'Failed to send', details: sendResult.error },
+        { error: 'Failed to send' },
         { status: 502 }
       );
     }

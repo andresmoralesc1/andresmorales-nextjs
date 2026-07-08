@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { useState } from 'react';
 
 // Contact form — POSTs JSON to /api/contact which sends via Brevo.
@@ -7,9 +8,18 @@ import { useState } from 'react';
 type FormState = 'idle' | 'loading' | 'success' | 'error';
 
 export function ContactForm() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', message: '', website: '' });
   const [state, setState] = useState<FormState>('idle');
   const [errorMsg, setErrorMsg] = useState<string>('');
+
+  // Honeypot: real users never fill `website` (it's display:none). Bots do.
+  // Any non-empty value here → drop the submission silently with an
+  // apparent-success response to avoid signaling detection.
+  // Mount time in ms — bots often submit in <2s; real humans take longer.
+  const [mountedAt, setMountedAt] = useState(0);
+  React.useEffect(() => {
+    setMountedAt(Date.now());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,7 +30,7 @@ export function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, _t: Date.now() - mountedAt }),
       });
 
       if (!res.ok) {
@@ -34,7 +44,7 @@ export function ContactForm() {
       }
 
       setState('success');
-      setForm({ name: '', email: '', message: '' });
+      setForm({ name: '', email: '', message: '', website: '' });
     } catch (err) {
       setState('error');
       setErrorMsg(err instanceof Error ? err.message : 'Unknown error');
@@ -62,7 +72,25 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl" noValidate>
+      {/* Honeypot — hidden from real users, irresistible to bots. The
+          server checks `body.website === ''` and silently 400s anything
+          filled. tabIndex=-1 + autoComplete="off" + aria-hidden keeps
+          it out of the keyboard tab order and screen reader announcements.
+          The position inside the form is just for legacy bots that scan
+          DOM linearly. */}
+      <div style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }} aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(e) => setForm({ ...form, website: e.target.value })}
+        />
+      </div>
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-1">
           Name

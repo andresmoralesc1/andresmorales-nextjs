@@ -140,8 +140,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body className="flex flex-col min-h-screen">
+        {/* a11y: keyboard users can skip past the nav. Hidden until focused.
+            Pair with id="main" on the content wrapper below. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-theme-1 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-1"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" aria-label="Main content" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
