@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
+import { enforceBodySize } from '@/lib/api-guard';
 
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
 // 5 contact messages / hour / IP. Generous than /api/brief because the
@@ -7,6 +8,9 @@ import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 // qualified leads. State lives in lib/rate-limit.ts (shared with /api/brief).
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_ROUTE = 'contact';
+// 2 KB is plenty for a contact form (name + email + short message = ~300 B
+// typical). Anything larger is almost certainly abuse.
+const MAX_BODY_BYTES = 2 * 1024;
 
 // Lightweight contact form endpoint — sends to inbox via Brevo.
 // Mirrors the pattern in app/api/brief/route.ts (same sender + validation).
@@ -122,6 +126,11 @@ async function sendViaBrevo(data: ContactPayload): Promise<{ ok: boolean; error?
 }
 
 export async function POST(req: NextRequest) {
+  // Drop oversized payloads before parsing. 2 KB is the contact form's
+  // realistic ceiling — anything larger is abuse.
+  const tooBig = enforceBodySize(req, MAX_BODY_BYTES);
+  if (tooBig) return tooBig;
+
   let body: unknown;
   try {
     body = await req.json();

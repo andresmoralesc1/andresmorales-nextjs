@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
+import { enforceBodySize } from '@/lib/api-guard';
+
+// Brief has a max of 5 submissions / hour / IP (see checkRateLimit below).
+// Body size guard: 10 KB is plenty for a full brief (name + email + role
+// + company + problem + goal + tools + success metric + notes) which
+// measures ~1.5-3 KB in practice.
+const MAX_BODY_BYTES = 10 * 1024;
 
 // Brevo transactional email API
 // Docs: https://developers.brevo.com/reference/sendtransacemail
@@ -244,6 +251,11 @@ async function sendViaBrevo(data: BriefPayload): Promise<{ ok: boolean; error?: 
 }
 
 export async function POST(req: NextRequest) {
+  // Drop oversized payloads before parsing. 10 KB is the brief form's
+  // realistic ceiling — anything larger is abuse.
+  const tooBig = enforceBodySize(req, MAX_BODY_BYTES);
+  if (tooBig) return tooBig;
+
   // Anti-spam #1: honey-pot field. Bots fill every input they see;
   // humans never see this one because it's hidden via CSS in the form.
   // If a value arrives here, we silently reject as a generic 400 so the
