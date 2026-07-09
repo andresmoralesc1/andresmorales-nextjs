@@ -75,14 +75,6 @@ const FEATURED_PROJECTS = [
     href: 'https://carmen-job-search.vercel.app/',
   },
   {
-    title: 'Sama Sculpt',
-    subtitle: 'Facial sculpting brand + booking',
-    metric: 'Live · booking flow',
-    desc: 'Brand identity, site, and appointment booking for a sculpting studio.',
-    image: '/sites/sama-sculpt_vercel_app.png',
-    href: 'https://sama-sculpt.vercel.app/',
-  },
-  {
     title: 'Talobot',
     subtitle: 'Telegram bot service',
     metric: 'Live · ES/EN',
