@@ -115,24 +115,25 @@ const DIFFERENTIATORS = [
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero — pitch + photo */}
-      <section className="section bg-primary relative overflow-hidden">
+      {/* Hero — pitch + photo. Cream background, white text (inverted from
+          the white/cream-foreground pattern used by the home hero). */}
+      <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-services" variant="soft" />
         <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
             <p className="text-xs uppercase tracking-widest text-theme-1 mb-3 font-secondary font-bold">
               My Work
             </p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-primary">
               What I ship — and how I think about it.
             </h1>
-            <p className="text-text text-lg md:text-xl max-w-xl">
+            <p className="text-primary/80 text-lg md:text-xl max-w-xl">
               Three service tracks that compound on each other: AI automation to
               reclaim time, UI/UX to make flows obvious, web development to ship
               it fast.
             </p>
           </div>
-          <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-theme-9">
+          <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-theme-9 ring-1 ring-theme-9/30 shadow-2xl">
             <img
               src={wpImage('/wp-content/uploads/2025/06/IMG-20160129-WA0001.jpg')}
               alt="Andrés at work"

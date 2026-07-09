@@ -202,17 +202,18 @@ const SERVICE_CATEGORIES = [
 export default function PortfolioPage() {
   return (
     <>
-      {/* Hero — pitch + dual CTA */}
-      <section className="section bg-primary relative overflow-hidden">
+      {/* Hero — pitch + dual CTA. Cream background, white text (inverted
+          from the white/cream-foreground pattern used by the home hero). */}
+      <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-portfolio" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
           <p className="text-xs uppercase tracking-widest text-theme-1 mb-3 font-secondary font-bold">
             Portfolio
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4">
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-primary">
             Real sites, real systems, real outcomes.
           </h1>
-          <p className="text-text text-lg md:text-xl mb-8">
+          <p className="text-primary/80 text-lg md:text-xl mb-8">
             E-commerce, marketplaces, and AI-powered automations shipped for
             clients who want to ship faster and sell more.
           </p>
@@ -228,7 +229,7 @@ export default function PortfolioPage() {
             </a>
             <a
               href="/services"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary border border-theme-9 hover:border-theme-1 text-secondary font-secondary font-bold rounded-lg transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-secondary font-secondary font-bold rounded-lg transition-all"
             >
               See services
             </a>

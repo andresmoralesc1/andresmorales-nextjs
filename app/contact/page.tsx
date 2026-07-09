@@ -14,11 +14,12 @@ export const metadata: Metadata = pageMetadata({
 export default function ContactPage() {
   return (
     <>
-      <section className="section bg-primary relative overflow-hidden">
+      {/* Hero. Cream background, white text (inverted from white hero). */}
+      <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-contact" variant="soft" />
         <div className="container-page relative z-10">
-          <h1 className="font-heading text-4xl md:text-5xl mb-4">Contact</h1>
-          <p className="text-text text-lg max-w-2xl mb-2">
+          <h1 className="font-heading text-4xl md:text-5xl mb-4 text-primary">Contact</h1>
+          <p className="text-primary/80 text-lg max-w-2xl mb-2">
             Tell me what you’re trying to automate. I usually reply within 24h.
           </p>
         </div>
