@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
 
@@ -74,13 +75,19 @@ export function Hero({
           </Link>
         </div>
         <div className="relative flex justify-center">
-          {/* Foto circular con borde naranja grueso — replica exacta del WP */}
+          {/* Foto circular con borde naranja grueso — replica exacta del WP.
+              Image dimensions: viewport 320/448 px, intrinsic src 1000x1000.
+              priority for LCP, quality 85 (default 75 looked slightly soft). */}
           <div className="relative w-80 h-80 md:w-[28rem] md:h-[28rem] rounded-full overflow-hidden border-[6px] border-theme-1 shadow-xl bg-theme-9">
-            <img
+            <Image
               src={portrait}
               alt="Andrés Morales portrait"
+              width={1000}
+              height={1000}
+              sizes="(max-width: 768px) 320px, 448px"
+              quality={85}
+              priority
               className="w-full h-full object-cover"
-              loading="eager"
             />
           </div>
         </div>
