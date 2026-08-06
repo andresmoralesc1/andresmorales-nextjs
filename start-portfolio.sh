@@ -1,10 +1,11 @@
 #!/bin/bash
-# start-portfolio.sh — Starts Next.js for portafolio.andresmorales.com.co
+# start-portfolio.sh — Starts Next.js for andresmorales.com.co
 #
 # This wrapper is launched via `nohup ./start-portfolio.sh &` from
-# /home/telchar/andresmorales-nextjs/. Used instead of PM2 because PM2
-# loses the Next.js process tree (Next does child_process.fork()
-# internally and PM2 reports pid=0 even though the site responds 200 OK).
+# /home/telchar/andresmorales-nextjs, or via PM2 (`pm2 start
+# ecosystem.config.js`). The site is also served at the legacy
+# portafolio.andresmorales.com.co, which Caddy 301-redirects to
+# andresmorales.com.co so SEO + bookmarks survive the migration.
 #
 # The process runs as a child of the user. Administration:
 #   - View logs:  tail -f /home/telchar/logs/portfolio.out

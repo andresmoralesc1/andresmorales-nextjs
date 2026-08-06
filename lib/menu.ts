@@ -1,7 +1,9 @@
-// Menu extracted from WP REST API (menu id=5, locations: primary + mobile_menu)
+// Menu items. `href` is the locale-agnostic path; the middleware + LocaleSwitcher
+// add the `/es/...` or `/pt/...` prefix automatically. The labels come from
+// the i18n dictionary (see dictionaries/*.json → `nav.*`), NOT from this file.
 export const MENU = [
-  { label: 'Home', href: '/' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
+  { href: '/', labelKey: 'home' as const },
+  { href: '/services', labelKey: 'services' as const },
+  { href: '/portfolio', labelKey: 'portfolio' as const },
+  { href: '/contact', labelKey: 'contact' as const },
 ] as const;

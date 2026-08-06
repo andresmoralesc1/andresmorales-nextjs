@@ -1,24 +1,28 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
+import { LocaleSwitcherWrapper } from '@/components/LocaleSwitcherWrapper';
+import { MobileMenu } from '@/components/MobileMenu';
+import { NavItem } from '@/components/NavItem';
 import { MENU } from '@/lib/menu';
+import { TrackCta } from '@/components/track';
+import { getLocalizedPath } from '@/lib/i18n';
 
-// Header — exact replica from WP original:
-// - white background, NO shadow, NO border-bottom
-// - logo PNG (same from WP) on left
-// - uppercase menu on right, active item in orange
-export function Header() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+// Header — server component. Reads dictionary + locale via the
+// `x-locale` header set by middleware. Renders logo (left), desktop nav
+// + locale switcher + start-project CTA (right), mobile menu button
+// (right on small screens). Layout matches the WordPress original:
+// cream background, uppercase menu, active item in orange.
+export async function Header() {
+  const [dict, locale] = await Promise.all([
+    getCurrentDictionary(),
+    getCurrentLocale(),
+  ]);
 
   return (
     <header className="sticky top-0 z-50 bg-background">
       <div className="container-page flex items-center justify-between h-20">
-        {/* Logo real del WP — 196x94 PNG */}
-        <Link href="/" className="block" aria-label="Andrés Morales — Home">
+        <Link href={getLocalizedPath('/', locale)} className="block transition-opacity hover:opacity-80" aria-label="Andrés Morales — Home">
           <Image
             src="/logo-wp.png"
             alt="Andrés Morales"
@@ -29,85 +33,37 @@ export function Header() {
           />
         </Link>
 
-        {/* Desktop nav + CTA */}
+        {/* Desktop nav + CTA + locale switcher */}
         <div className="hidden md:flex items-center gap-8">
           <nav className="flex items-center gap-10">
-            {MENU.map((m) => {
-              const isActive =
-                m.href === '/'
-                  ? pathname === '/'
-                  : pathname === m.href || pathname?.startsWith(m.href + '/');
-              return (
-                <Link
-                  key={m.href}
-                  href={m.href}
-                  className={`text-sm font-secondary font-bold uppercase tracking-widest transition-colors ${
-                    isActive
-                      ? 'text-theme-1'
-                      : 'text-secondary hover:text-theme-1'
-                  }`}
-                >
-                  {m.label}
-                </Link>
-              );
-            })}
+            {MENU.map((m) => (
+              <NavItem
+                key={m.href}
+                href={getLocalizedPath(m.href, locale)}
+                label={dict.nav[m.labelKey]}
+              />
+            ))}
           </nav>
-          <Link
-            href="/brief"
-            className="inline-flex items-center gap-1.5 text-sm font-secondary font-bold uppercase tracking-widest bg-theme-1 text-white px-5 py-2.5 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(255,102,0,0.4)] transition-all duration-300"
+
+          <LocaleSwitcherWrapper
+            dict={{ locale: dict.locale }}
+            locale={locale}
+            className="ml-2"
+          />
+
+          <TrackCta
+            href={getLocalizedPath('/brief', locale)}
+            label="header-cta"
+            className="inline-flex items-center gap-1.5 text-sm font-secondary font-bold uppercase tracking-widest bg-theme-1 text-secondary px-5 py-2.5 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(255,102,0,0.4)] transition-all duration-300"
           >
-            Start a Project
+            {dict.nav.brief}
             <span aria-hidden="true">→</span>
-          </Link>
+          </TrackCta>
         </div>
 
-        {/* Hamburger mobile */}
-        <button
-          aria-label="Toggle menu"
-          className="md:hidden p-2"
-          onClick={() => setOpen(!open)}
-        >
-          <span className="block w-6 h-0.5 bg-secondary mb-1" />
-          <span className="block w-6 h-0.5 bg-secondary mb-1" />
-          <span className="block w-6 h-0.5 bg-secondary" />
-        </button>
+        {/* Mobile menu drawer */}
+        <MobileMenu dict={dict} locale={locale} />
       </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <nav className="md:hidden border-t border-theme-9 bg-background">
-          <div className="container-page py-4 flex flex-col gap-4">
-            {MENU.map((m) => {
-              const isActive =
-                m.href === '/'
-                  ? pathname === '/'
-                  : pathname === m.href || pathname?.startsWith(m.href + '/');
-              return (
-                <Link
-                  key={m.href}
-                  href={m.href}
-                  onClick={() => setOpen(false)}
-                  className={`text-sm font-secondary font-bold uppercase tracking-widest ${
-                    isActive
-                      ? 'text-theme-1'
-                      : 'text-secondary hover:text-theme-1'
-                  }`}
-                >
-                  {m.label}
-                </Link>
-              );
-            })}
-            <Link
-              href="/brief"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-secondary font-bold uppercase tracking-widest bg-theme-1 text-white px-5 py-3 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)]"
-            >
-              Start a Project
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </nav>
-      )}
     </header>
   );
 }

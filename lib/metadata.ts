@@ -1,19 +1,55 @@
+import type { Locale } from '@/lib/i18n';
+import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n';
+
 /**
  * Page metadata helper.
  *
  * Centralizes the title template + OG image sharing so every page
  * inherits the brand by default.
  *
- * Strings: English-only for now. When i18n lands, switch to
- * `t()` from lib/i18n.
+ * OG images are now generated dynamically at `/api/og?lang=<locale>&path=<path>`
+ * so each page has its own preview in the user's language — falling back
+ * to the English variant when a path-specific copy isn't defined. The
+ * static OG (`/uploads/2025/06/andres-morales-og.jpg`) is still used as
+ * the absolute fallback when no `locale` is provided.
  */
 
 const SITE_NAME = 'Andrés Morales';
-const DEFAULT_OG = '/uploads/2025/06/andres-morales-og.jpg';
+const STATIC_FALLBACK_OG = '/uploads/2025/06/andres-morales-og.jpg';
+
+// Map our app locales to a language code understood by `image-generation`/OG
+// consumers. EN is omitted from the URL by convention; ES + PT use their
+// short codes.
+const OG_LOCALE_TAG: Record<Locale, string> = {
+  en: 'en',
+  es: 'es',
+  pt: 'pt',
+};
+
+// BCP 47 hreflang tag per app locale. Used to populate
+// `alternates.languages` so search engines understand the relationship
+// between `/services` ↔ `/es/services` ↔ `/pt/services`. Keep in sync
+// with `og:locale` below.
+const HREFLANG_TAG: Record<Locale, string> = {
+  en: 'en-US',
+  es: 'es-CO',
+  pt: 'pt-BR',
+};
+
+export function ogImageUrl(locale: Locale, path: string): string {
+  // Use the dynamic endpoint so each page has a tailored card.
+  const safePath = path.startsWith('/') ? path : `/${path}`;
+  return `/api/og?lang=${OG_LOCALE_TAG[locale]}&path=${encodeURIComponent(safePath)}`;
+}
+
+export function staticOgUrl(): string {
+  return STATIC_FALLBACK_OG;
+}
 
 export function pageMetadata(opts: {
   title: string;
   description: string;
+  locale?: Locale;
   path?: string;
   ogImage?: string;
   /**
@@ -23,37 +59,79 @@ export function pageMetadata(opts: {
    * depth — some crawlers and link-preview bots ignore robots.txt.
    */
   noindex?: boolean;
+  /** Override OG image (else dynamic by locale+path). */
+  type?: 'website' | 'article';
 }) {
-  const { title, description, path = '/', ogImage = DEFAULT_OG, noindex = false } = opts;
-  // Avoid appending "— Andrés Morales" twice when the page title already
-  // includes the brand. The title is the headline; the suffix is the brand.
+  const {
+    title,
+    description,
+    locale = 'en',
+    path = '/',
+    ogImage,
+    noindex = false,
+    type = 'website',
+  } = opts;
   const ogFullTitle = title.includes(SITE_NAME)
     ? title
     : `${title} — ${SITE_NAME}`;
+  const imageUrl = ogImage ?? ogImageUrl(locale, path);
+
+  // Locale tag for OG (Spanish: es_CO, Portuguese: pt_BR, English: en_US).
+  const ogLocale =
+    locale === 'es' ? 'es_CO' : locale === 'pt' ? 'pt_BR' : 'en_US';
+
   return {
     title,
     description,
-    ...(noindex && { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }),
+    ...(noindex && {
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: { index: false, follow: false },
+      },
+    }),
     openGraph: {
       title: ogFullTitle,
       description,
-      url: `https://portafolio.andresmorales.com.co${path}`,
+      url: `https://andresmorales.com.co${path}`,
       siteName: SITE_NAME,
-      locale: 'en_US',
-      type: 'website',
-      images: [{ url: ogImage }],
+      locale: ogLocale,
+      type,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: ogFullTitle,
       description,
-      images: [ogImage],
+      images: [imageUrl],
     },
     alternates: {
-      canonical: `https://portafolio.andresmorales.com.co${path}`,
+      canonical: `https://andresmorales.com.co${path}`,
+      // Hreflang per-locale: each locale gets its own canonical URL using
+      // the same `path`. EN has no prefix (`/services`), ES/PT add the
+      // locale (`/es/services`, `/pt/services`). `x-default` points at the
+      // English version for users whose locale doesn't match any of these
+      // — this is the SEO best practice for multi-region multi-language
+      // sites. Computed dynamically per call so the same helper works for
+      // `/`, `/services`, `/blog/<slug>`, and every other route without
+      // hardcoding.
       languages: {
-        'en-US': '/',
-        'es-CO': '/',
+        ...Object.fromEntries(
+          LOCALES.map((loc) => [
+            HREFLANG_TAG[loc],
+            loc === DEFAULT_LOCALE
+              ? path
+              : `/${loc}${path === '/' ? '' : path}`,
+          ])
+        ),
+        'x-default': path,
       },
     },
   };

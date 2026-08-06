@@ -28,16 +28,400 @@
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-secondary font-bold uppercase tracking-wide text-sm transition-colors;
   }
-  .btn-accent {
-    @apply btn bg-theme-1 text-primary hover:bg-theme-2;
-  }
+  /* Primary brand CTA. Renders the personal-brand orange (#f96e03 —
+     the orange from the WordPress site that survives across the whole
+     project). For legibility we paint the text in dark secondary
+     (#1E1810, near-black) instead of white:
+       - white on #f96e03 lands at 2.89:1 — fails WCAG AA on every
+         threshold.
+       - #1E1810 on #f96e03 lands at 7.26:1 — passes WCAG AA for normal
+         and large text and triples the previous ratio.
+     The dark text reads as "ink on bright surface" rather than as a
+     stylistic reversal, so the brand identity stays intact (the orange
+     is still the dominant colour of the button).
+     Hover swaps to the deeper orange #ff5100 (theme-2) and keeps the
+     near-black text — contrast there is even better (theme-2 is the
+     official hovers-shade defined in tailwind.config.ts). */
   .btn-theme {
-    @apply btn bg-theme-1 text-primary hover:bg-theme-2;
+    @apply btn bg-theme-1 text-secondary hover:bg-theme-2;
+  }
+  .btn-accent {
+    @apply btn bg-theme-1 text-secondary hover:bg-theme-2;
   }
   .btn-outline {
     @apply btn border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary;
   }
   .input {
     @apply w-full px-3.5 py-2.5 rounded-lg border border-theme-9 bg-primary text-secondary placeholder:text-text/60 focus:border-theme-1 focus:ring-2 focus:ring-theme-1/20 outline-none transition-colors;
+  }
+}
+
+@layer utilities {
+  /* Reveal-on-scroll system — paired with <Reveal> in components/reveal.tsx.
+     Conservador: 600ms cubic-bezier, 12px translateY, sin scale/rotate.
+     Se desactiva automáticamente para usuarios con prefers-reduced-motion. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Staggered children: cascada al revelar contenedor padre.
+     Soporta hasta 6 children con delays 0/80/160/240/320/400ms. */
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+  .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+  .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+  .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+  .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+
+  /* Animated underline for inline links (nav, footer, body). Sin JS. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Respeta motion reducido — clave para a11y (vestibular disorders). */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-stagger > * {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .link-underline {
+      transition: none !important;
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------
+   RetroTvError — 404 page art (used by app/[lang]/not-found.tsx).
+   Ponytail: minimum CSS that makes the TV render. Inspired by the
+   classic Codrops / Vishnu Prasad pen; tuned to brand colours
+   (theme-1 orange, theme-3 dark, theme-9 light grey).
+   ---------------------------------------------------------------------- */
+.main_wrapper {
+  min-height: 480px;
+  user-select: none;
+}
+.main {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+}
+.antenna {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 60px;
+}
+.antenna_shadow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(30, 24, 16, 0.18);
+  filter: blur(3px);
+}
+.a1, .a2 {
+  position: absolute;
+  top: 6px;
+  width: 2px;
+  height: 50px;
+  background: #1E1810;
+  transform-origin: bottom center;
+}
+.a1 { left: 32px; transform: rotate(-15deg); }
+.a2 { left: 86px; transform: rotate(15deg); }
+.a1d, .a2d {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1E1810;
+}
+.a1d { left: 28px; }
+.a2d { left: 82px; }
+.a_base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 6px;
+  background: #1E1810;
+  border-radius: 2px;
+}
+.tv {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 200px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #2a2218 0%, #1E1810 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 18px 40px rgba(30, 24, 16, 0.25);
+  overflow: hidden;
+}
+.cruve {
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 90px;
+  height: 90px;
+  border: 4px solid #1E1810;
+  border-radius: 50%;
+  opacity: 0.25;
+}
+.curve_svg {
+  display: none; /* the absolute circle above replaces the SVG decoration */
+}
+.display_div {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 130px;
+  border-radius: 12px;
+  background: #1E1810;
+  box-shadow: inset 0 0 0 4px #f96e03;
+}
+.screen_out {
+  position: absolute;
+  inset: 6px;
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    radial-gradient(ellipse at center, rgba(249, 110, 3, 0.15) 0%, transparent 70%),
+    linear-gradient(180deg, #2a2218 0%, #15110b 100%);
+  overflow: hidden;
+}
+.screen_out1 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.screen, .screenM {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: #f96e03;
+  text-shadow:
+    0 0 6px rgba(249, 110, 3, 0.65),
+    0 0 14px rgba(249, 110, 3, 0.35);
+}
+.screenM {
+  color: transparent;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(249, 110, 3, 0.25) 49%,
+    rgba(249, 110, 3, 0.25) 51%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  clip-path: inset(48% 0 48% 0);
+  animation: scanlines 4s linear infinite;
+}
+@keyframes scanlines {
+  0%   { clip-path: inset(0% 0 100% 0); }
+  50%  { clip-path: inset(100% 0 0% 0); }
+  100% { clip-path: inset(0% 0 100% 0); }
+}
+@keyframes b {
+  100% {
+    background-position:
+      50% 0,
+      60% 50%;
+  }
+}
+.notfound_text {
+  display: block;
+  text-transform: uppercase;
+}
+.lines {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  height: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lines > div {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.line1 { width: 30%; }
+.line2 { width: 60%; margin-left: 10%; }
+.line3 { width: 45%; }
+.buttons_div {
+  position: absolute;
+  right: 14px;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.b1 {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1E1810;
+  border: 2px solid #575250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.b1 > div {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f96e03;
+  box-shadow: 0 0 6px rgba(249, 110, 3, 0.6);
+}
+.b2 {
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #575250 0%, #2a2218 100%);
+}
+.speakers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+.g {
+  width: 36px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1px;
+}
+.g1 {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.g11, .g12, .g13 {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #575250;
+}
+.bottom {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.base1, .base2, .base3 {
+  background: #1E1810;
+}
+.base1 {
+  width: 28px;
+  height: 22px;
+  border-radius: 4px 4px 0 0;
+}
+.base2 {
+  width: 36px;
+  height: 8px;
+  border-radius: 2px;
+  align-self: flex-end;
+}
+.base3 {
+  width: 28px;
+  height: 22px;
+  border-radius: 4px 4px 0 0;
+}
+.text_404 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 8px;
+  font-family: Georgia, serif;
+  font-weight: 800;
+  font-size: 96px;
+  line-height: 1;
+  color: #f96e03;
+  pointer-events: none;
+  text-shadow: 0 6px 0 rgba(30, 24, 16, 0.25);
+  opacity: 0.95;
+}
+.text_4041, .text_4042, .text_4043 {
+  display: inline-block;
+  animation: bounce 2.4s ease-in-out infinite;
+}
+.text_4042 { animation-delay: 0.2s; }
+.text_4043 { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screenM,
+  .text_4041,
+  .text_4042,
+  .text_4043 {
+    animation: none;
   }
 }

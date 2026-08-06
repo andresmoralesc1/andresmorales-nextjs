@@ -27,13 +27,25 @@
 // At that point, no changes needed here — track() will detect the provider.
 
 type AnalyticsEvent =
+  // Brief wizard funnel
   | 'brief_started'
   | 'brief_step_completed'
   | 'brief_step_advanced' // clicked "Next"
   | 'brief_step_back'     // clicked "Back"
   | 'brief_submitted'
   | 'brief_submit_error'
-  | 'brief_draft_cleared';
+  | 'brief_draft_cleared'
+  // Marketing site conversions
+  | 'cta_clicked'           // any "Book a call" / "Start Project" / "Hire me"
+  | 'contact_form_viewed'   // user opened the contact form
+  | 'contact_form_submitted'
+  | 'contact_submit_error'
+  | 'service_card_clicked'  // clicked a service card → /services/<slug>
+  | 'portfolio_project_clicked'
+  | 'blog_post_clicked'     // clicked from the blog index
+  | 'blog_external_link_clicked' // clicked outbound link inside a post
+  | 'locale_switched'       // user changed language
+  | 'nav_link_clicked';     // any nav/footer link with the path as prop
 
 type Detail = Record<string, string | number | boolean | undefined>;
 

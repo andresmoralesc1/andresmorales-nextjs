@@ -13,7 +13,7 @@ const MAX_BODY_BYTES = 10 * 1024;
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const TO_EMAIL = process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
 const FROM_EMAIL = process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
-const FROM_NAME = process.env.BRIEF_FROM_NAME || 'Andres Morales · Portfolio Brief';
+const FROM_NAME = process.env.BRIEF_FROM_NAME || 'Andrés Morales · Portfolio Brief';
 
 // ── ClickUp integration ─────────────────────────────────────────────────
 // When a brief is received, also create a task in a ClickUp list so you
@@ -376,7 +376,7 @@ async function sendAutoReply(p: BriefPayload): Promise<void> {
         <p style="margin-top:32px;">— Andrés</p>
         <p style="font-size:13px;color:#999;margin-top:24px;">
           You received this because you submitted the project brief at
-          <a href="https://portafolio.andresmorales.com.co/brief" style="color:#f96e03;">portafolio.andresmorales.com.co/brief</a>.
+          <a href="https://andresmorales.com.co/brief" style="color:#f96e03;">andresmorales.com.co/brief</a>.
         </p>
       </div>
     </div>
@@ -390,7 +390,7 @@ If anything is unclear or you want to add context in the meantime, just reply to
 — Andrés
 
 ---
-You received this because you submitted the project brief at portafolio.andresmorales.com.co/brief.`;
+You received this because you submitted the project brief at andresmorales.com.co/brief.`;
 
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
@@ -477,10 +477,31 @@ async function sendToClickUp(p: BriefPayload): Promise<void> {
     ``,
     p.additionalNotes ? `**Additional notes**\n${user(p.additionalNotes)}\n` : '',
     `---`,
-    `_Submitted via portafolio.andresmorales.com.co brief wizard._`,
+    `_Submitted via andresmorales.com.co brief wizard._`,
   ]
     .filter(Boolean)
     .join('\n');
+
+  // ClickUp custom status IDs (from the list setup). Hard-coded so we
+  // don't hit the API on every submission just to resolve names — the
+  // list config rarely changes. Update these if the workflow is
+  // reshuffled in the ClickUp UI.
+  //
+  //   to do      → newly received, unread
+  //   reviewing  → opened, doing the 24h read
+  //   quoted     → sent a proposal back
+  //   complete   → won (or lost and archived)
+  //
+  // ClickUp only allows one custom closed status per list, so we
+  // collapse "won" and "lost" into the same `complete` lane. To tell
+  // them apart at a glance, mark the task with a custom field or just
+  // rename the task title once the deal closes.
+  const STATUS_NEW = 'to do';
+
+  // Slack-style deadline flag in the title — high-budget leads feel
+  // more urgent in the inbox. The 🔥 only appears on $15k+ briefs.
+  const urgencyEmoji =
+    priority === 1 ? '🔥 ' : priority === 2 ? '⚡️ ' : '';
 
   const res = await fetch(`https://api.clickup.com/api/v2/list/${CLICKUP_LIST_ID}/task`, {
     method: 'POST',
@@ -489,9 +510,21 @@ async function sendToClickUp(p: BriefPayload): Promise<void> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      name: title,
+      name: `${urgencyEmoji}${title}`,
       description,
       priority,
+      status: STATUS_NEW,
+      // Start date = the moment the brief landed, so the time-in-list
+      // metric ("how long has this been sitting in 'to do'") is real,
+      // not zero. ClickUp's API is fussy about date formats: it expects
+      // a UNIX timestamp in **milliseconds**, not ISO-8601 — the latter
+      // returns INPUT_006 ("Date invalid"). Tested live 2026-07-10.
+      start_date: Date.now(),
+      // Due date is a soft SLA: 24h to move out of "to do". Low-budget
+      // briefs (<$2k) get 72h because they're often aspirational and
+      // chasing them within a day burns goodwill.
+      due_date: Date.now() +
+        (priority === 1 ? 24 : priority === 2 ? 24 : 72) * 60 * 60 * 1000,
     }),
   });
 

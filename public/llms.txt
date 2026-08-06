@@ -1,0 +1,134 @@
+# Andrés Morales — AI Consultant for Business Automation
+
+> AI consultant helping companies automate their operations with AI. Designs and ships n8n workflows, AI agents, and internal tools that replace manual work — so teams can focus on growth, not busywork.
+>
+> Site: [andresmorales.com.co](https://andresmorales.com.co)
+> Email: [info@andresmorales.com.co](mailto:info@andresmorales.com.co)
+
+## About Andrés
+
+Andrés Morales is an AI automation consultant and full-stack builder with more than a decade of experience in sales, UX design, and engineering. He works hands-on: every engagement ships production-ready automation, not deliverables or mockups.
+
+- **Based in:** Bogotá, Colombia (GMT-5)
+- **Languages:** Spanish (native, es-CO), English (fluent, en-US), Portuguese (fluent, pt-BR)
+- **LinkedIn:** [linkedin.com/in/andresmoralesc1](https://www.linkedin.com/in/andresmoralesc1/)
+- **GitHub:** [github.com/andresmoralesc1](https://github.com/andresmoralesc1/)
+- **Email:** [info@andresmorales.com.co](mailto:info@andresmorales.com.co)
+- **Site:** [andresmorales.com.co](https://andresmorales.com.co)
+
+## What he does
+
+### AI Automation
+
+End-to-end workflow automation using n8n, Make, and custom code. Replaces the manual, repetitive work that eats team capacity.
+
+- Lead nurturing and CRM updates (HubSpot, Pipedrive)
+- Cold outreach and follow-up sequences
+- Internal reporting and data syncing (Airtable, Sheets, Postgres)
+- Webhook-driven integrations between SaaS tools
+- Vendor-independent architecture (no lock-in)
+
+### AI Agents
+
+Intelligent experiences that guide users and complete real work, not toy chatbots.
+
+- Customer support triage and routing
+- Lead qualification and intake
+- Document Q&A and internal search
+- Sales assistants trained on the company's own data
+- Workflows with versioned prompts and human-in-the-loop
+
+### UI/UX Design
+
+Product design for SaaS dashboards, e-commerce storefronts, and internal tools. Brand systems, wireframes, and high-fidelity prototypes in Figma.
+
+- Wireframes → prototypes → handoff
+- Design systems and component libraries
+- Conversion-focused landing pages
+- UX audits with prioritized recommendations
+
+### Web Development
+
+Full-stack web applications built on Next.js, React, and TypeScript. PostgreSQL backends, containerized deployment, and Cloudflare in front.
+
+- Marketing sites with i18n (Spanish, English, Portuguese)
+- Internal tools and dashboards
+- Custom integrations with Stripe, HubSpot, and other APIs
+- VPS deployment with Docker + Caddy
+
+## Selected projects
+
+- [Superllantas](https://superllantas.co/) — e-commerce redesign and automation for a Colombian tire retailer
+- [Kambelleh](https://kambelleh.com/) — full PMS (Property Management System) for a boutique hotel in Salento
+- [BarrioTech — GPS Street Sellers](https://gps.andresmorales.com.co/) — civic tech app for mapping street vendors in Bogotá
+- [HubIAgency](https://hubiagency.com/) — lead generation and client onboarding automation for a marketing agency
+- [Tory Skateshop](https://toryskateshop.com/) — e-commerce and operations system for a specialty retailer
+- [SoapArtesana](https://soapartesana.com/) — direct-to-consumer storefront and order-fulfillment pipeline
+- [Carmen Job Search](https://carmenjobsearch.com/) — internal ATS for a recruiting firm
+- [Talobot](https://talobot.co/) — Telegram bot for sales-team task automation
+- [Juan Becerra](https://juanbecerram.com/) — branding and website for a B2B sales consultant
+
+## Career history
+
+- **HubIAgency** — Co-founder / AI Lead
+- **AcoA Design** — Marketing Graphic Designer
+- **Andean Traders Internacional S.A.S** — Sales Manager
+- **Tortorici & Partners** — UX Designer
+- **ACM na maker, inc. (San Francisco, CA)** — UX Designer
+- **Telus International** — Customer Service / Quality Analyst
+- **Home Squad** — Sales / Account Manager
+
+## Tools & stack
+
+- **Automation:** n8n, Make, Zapier, custom Node.js
+- **AI:** OpenAI, Anthropic, vector databases, RAG
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Backend:** Node.js, PostgreSQL, Redis, Docker
+- **Integrations:** HubSpot, Pipedrive, Airtable, Stripe, WhatsApp Business API
+- **Design:** Figma
+- **Infrastructure:** VPS, Cloudflare, Caddy, systemd, PM2
+- **Languages:** Spanish (native), English (fluent), Portuguese (fluent)
+
+## How to engage
+
+Three ways to work together:
+
+1. **Start a project** — fill the brief wizard at [andresmorales.com.co/brief](https://andresmorales.com.co/brief)
+2. **Strategy call** — book a free 30-minute call via the [contact page](https://andresmorales.com.co/contact)
+3. **Quick question** — send a short note via [andresmorales.com.co/contact](https://andresmorales.com.co/contact)
+
+Response time: brief inquiries are read personally within 24 hours. Reasonable rates disclosed after a discovery call, never before.
+
+## Site structure
+
+- **Home:** [andresmorales.com.co/](https://andresmorales.com.co/)
+- **Portfolio:** [andresmorales.com.co/portfolio](https://andresmorales.com.co/portfolio)
+- **Services:** [andresmorales.com.co/services](https://andresmorales.com.co/services)
+  - AI Automation: [andresmorales.com.co/services/ai-automation](https://andresmorales.com.co/services/ai-automation)
+  - UI/UX Design: [andresmorales.com.co/services/ui-ux-design](https://andresmorales.com.co/services/ui-ux-design)
+  - Web Development: [andresmorales.com.co/services/web-development](https://andresmorales.com.co/services/web-development)
+- **Blog:**
+  - English: [andresmorales.com.co/en/blog/n8n-ai-automation](https://andresmorales.com.co/en/blog/n8n-ai-automation)
+  - Español: [andresmorales.com.co/es/blog/automatizar-con-ia-colombia](https://andresmorales.com.co/es/blog/automatizar-con-ia-colombia)
+  - Português: [andresmorales.com.co/pt/blog/automacao-ia-pme-brasil](https://andresmorales.com.co/pt/blog/automacao-ia-pme-brasil)
+- **Contact:** [andresmorales.com.co/contact](https://andresmorales.com.co/contact)
+- **Brief wizard:** [andresmorales.com.co/brief](https://andresmorales.com.co/brief)
+
+## Feeds
+
+- Sitemap: [andresmorales.com.co/sitemap.xml](https://andresmorales.com.co/sitemap.xml)
+- RSS (English): [andresmorales.com.co/feed.xml?lang=en](https://andresmorales.com.co/feed.xml?lang=en)
+- RSS (Español): [andresmorales.com.co/feed.xml?lang=es](https://andresmorales.com.co/feed.xml?lang=es)
+- RSS (Português): [andresmorales.com.co/feed.xml?lang=pt](https://andresmorales.com.co/feed.xml?lang=pt)
+
+## Localized versions
+
+- Spanish: [andresmorales.com.co/es/](https://andresmorales.com.co/es/)
+- Portuguese: [andresmorales.com.co/pt/](https://andresmorales.com.co/pt/)
+- English: [andresmorales.com.co/](https://andresmorales.com.co/) (canonical)
+
+## Optional
+
+- Full resume and references available on request
+- Case studies with metrics: see the [Portfolio](https://andresmorales.com.co/portfolio) page
+- Public code samples: [github.com/andresmoralesc1](https://github.com/andresmoralesc1/)

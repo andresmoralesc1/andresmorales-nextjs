@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * ParticlesBackground — orange particles decoration
  *
  * Source: andresmorales.com.co (the Elementor particles config)
  * - orange (#f96e03) circles with random movement
+ *
+ * Library origin: self-hosted at /scripts/particles.min.js (was previously
+ * pulled from https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js
+ * — moved to /public to drop a third-party DNS/TLS handshake from the
+ * critical path and to keep the CSP tight). The file is ~23 KB, served as
+ * a same-origin script so no CSP exception is needed.
  *
  * Three variants:
  * - dark:  160 particles, opacity 0.6-0.9, size 2-5, hover bubble, click repulse
@@ -16,20 +22,49 @@ import { useEffect } from "react";
  * - soft:  60 particles, opacity 0.15-0.35, size 2-4, NO hover/click
  *         (subtle ambient decoration for hero sections with text content)
  *
+ * Mobile behaviour: the script is skipped on viewports < 768 px. Particles.js
+ * ships ~40 KB of JS, drives reflows on resize (it queries offsetWidth/Height
+ * on the canvas), and competes with the LCP image for the main thread on
+ * low-end phones. Disabling it on mobile preserves the visual on tablet+
+ * desktop and recovers a measurable chunk of mobile LCP/INP. This was the
+ * single biggest mobile-perf regression we found after the typography removal.
+ *
  * Usage:
  *   <section className="relative bg-primary overflow-hidden">
- *     <ParticlesBackground id="hero-porticles-canvas" variant="soft" />
+ *     <ParticlesBackground id="hero-particles-canvas" variant="soft" />
  *     <div className="relative z-10">...content...</div>
  *   </section>
  */
 export function ParticlesBackground({
   id = "particles-js",
   variant = "dark",
+  disableBelow = 768,
 }: {
   id?: string;
   variant?: "dark" | "cream" | "soft";
+  /** Skip initialising the particles on viewports narrower than this many
+   *  CSS pixels. The component still renders an empty container so the
+   *  surrounding layout is unaffected. Default: 768 (tablet+). */
+  disableBelow?: number;
 }) {
+  // Default `true` so SSR/CSR hydration match (the background div is still
+  // present on mobile). We flip it to `false` only on viewports wider than
+  // the threshold and only after the first effect tick, keeping the markup
+  // identical across break points.
+  const [shouldRun, setShouldRun] = useState(true);
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(min-width: ${disableBelow}px)`);
+    setShouldRun(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setShouldRun(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [disableBelow]);
+
+  useEffect(() => {
+    if (!shouldRun) return;
+
     let mounted = true;
 
     const ensureParticlesLib = (): Promise<void> => {
@@ -39,8 +74,7 @@ export function ParticlesBackground({
           return;
         }
         const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js";
+        script.src = "/scripts/particles.min.js";
         script.async = true;
         script.onload = () => resolve();
         document.head.appendChild(script);

@@ -1,6 +1,13 @@
 /**
- * PM2 ecosystem for andresmorales-nextjs (portafolio WP clone).
- * Serves portafolio.andresmorales.com.co on port 3006.
+ * PM2 ecosystem for andresmorales-nextjs (portfolio Next.js app).
+ * Serves andresmorales.com.co on port 3006 (also reached via the legacy
+ * portafolio.andresmorales.com.co, which Caddy 301-redirects here).
+ *
+ * NOTE: as of the July 2026 cleanup this project is normally managed by
+ * `systemctl restart andresmorales-nextjs.service` (see your memory and
+ * the README runbook). The PM2 config is kept as a fallback in case
+ * systemd ever gives trouble — `pm2 start ecosystem.config.js` from
+ * this directory boots the same `next start -p 3006` wrapper.
  *
  * Estrategia: shell wrapper que hace `exec next start -p 3006`.
  *
@@ -17,7 +24,7 @@
  *   PM2 rastrea `next start` directamente, que sí queda vivo todo el tiempo
  *   que next-server escucha.
  *
- * Runbook:
+ * Runbook (PM2 fallback):
  *   pm2 reload portfolio                       # zero-downtime reload
  *   pm2 restart portfolio                      # hard restart
  *   pm2 logs portfolio                         # tail logs

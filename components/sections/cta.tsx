@@ -1,39 +1,43 @@
-import Link from 'next/link';
+import Image from 'next/image';
+import { getCurrentDictionary } from '@/lib/dictionary';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
+import { Reveal } from '@/components/reveal';
 
-// Section 4 of home: "Unleash Potential Together" —
-// CTA con imagen de fondo (replica el banner del WP)
-export function Cta() {
+// "Unleash Potential Together" — middle CTA banner.
+// Server component, reads from dictionary.
+export async function Cta() {
+  const dict = await getCurrentDictionary();
   return (
     <section className="relative section overflow-hidden">
-      {/* Imagen de fondo */}
+      {/* Background image */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src="/cta-bg.jpg"
           alt=""
-          className="w-full h-full object-cover"
+          fill
+          sizes="100vw"
           aria-hidden="true"
+          className="object-cover"
         />
-        {/* Dark overlay for legibility — lowered so the handshake stays visible */}
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/55 to-theme-3/65" />
       </div>
 
-      <div className="container-page relative z-10 text-center text-primary">
+      <Reveal className="container-page relative z-10 text-center text-primary">
         <h2 className="font-heading text-3xl md:text-5xl mb-6 text-primary">
-          Unleash Potential Together
+          {dict.homeCta.title}
         </h2>
         <p className="text-primary/85 max-w-2xl mx-auto mb-8 text-lg">
-          Ready to stop doing manually what could be automated in seconds?
-          Let’s map the first workflow.
+          {dict.homeCta.subtitle}
         </p>
-        <Link
-          href="https://calendar.app.google/NHF1ScCWjh4WJaey6"
+        <a
+          href={CALENDAR_BOOKING_URL}
           target="_blank"
           rel="noreferrer"
           className="btn-theme text-base px-8 py-4 shadow-lg"
         >
-          Book a free strategy call
-        </Link>
-      </div>
+          {dict.homeCta.cta}
+        </a>
+      </Reveal>
     </section>
   );
 }
