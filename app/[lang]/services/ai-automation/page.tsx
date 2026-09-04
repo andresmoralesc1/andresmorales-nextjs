@@ -6,12 +6,11 @@ import { wpImage } from '@/lib/theme';
 import { ParticlesBackground } from '@/components/particles-background';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
-import { JsonLd, serviceSchema, breadcrumbSchema } from '@/lib/json-ld';
+import { JsonLd, serviceSchema, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/json-ld';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
-
-
-
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { headers } from 'next/headers';
 
 export async function generateMetadata({
   params,
@@ -33,9 +32,13 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-
-
 export default async function AiautomationPage() {
+  const h = await headers();
+  // Resolve the locale from the request header that the middleware sets
+  // (`x-locale`). Fall back to 'en' for the bare-host landing. Used here
+  // for the visible breadcrumb and the inLanguage on the FAQPage schema.
+  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
+
   const dict = await getCurrentDictionary();
   const s = dict.servicesAi;
   const c = dict.common;
@@ -65,12 +68,63 @@ export default async function AiautomationPage() {
     s.stack8,
   ];
 
+  // FAQ items shown both as visible <details> blocks on the page AND in
+  // the FAQPage JSON-LD schema below. Google's rich-results guideline
+  // requires the Q&A to be present in the page's HTML — not just in the
+  // schema — so the visible <details> is the source of truth and the
+  // schema mirrors it. Don't ship the schema without the visible
+  // questions or Google will reject the rich result.
+  //
+  // The strings are hardcoded in English because (a) the questions are
+  // commonly searched in English globally regardless of locale and
+  // (b) the dictionary system doesn't yet carry FAQ strings per locale.
+  // The visible <details> is what users read; the schema matches it.
+  const FAQS = [
+    {
+      question: 'How long does an AI automation project take?',
+      answer:
+        'A typical engagement runs 2 to 6 weeks from kickoff to first flow in production. Workflow audits ship in 1 week. The first automation in production usually lands by week 3.',
+    },
+    {
+      question: 'What does an AI automation engagement cost?',
+      answer:
+        'Projects start at $2,000 USD for a single workflow and scale to $50,000+ for multi-agent systems with custom integrations. Pricing is fixed per workflow after the audit so there are no surprise bills.',
+    },
+    {
+      question: 'Do I need to replace my existing tools?',
+      answer:
+        'No. Automations layer on top of the tools you already use — HubSpot, Pipedrive, Airtable, Notion, Google Sheets, WooCommerce, Shopify, Telegram, WhatsApp, Slack. n8n and Make connect them via APIs and webhooks without requiring a migration.',
+    },
+    {
+      question: 'Where does my data live?',
+      answer:
+        'Your data stays where it already is. I use self-hosted models (Ollama, vLLM) when privacy or cost demands it, and third-party APIs (OpenAI, Anthropic) when speed to ship matters more. The choice is yours per workflow.',
+    },
+    {
+      question: 'What happens after the automation ships?',
+      answer:
+        'Every flow has a dashboard, every error has an alert, every retry has a story. I monitor what real traffic teaches and iterate. Most clients keep a small monthly retainer for ongoing improvements.',
+    },
+    {
+      question: 'Do you build AI agents and chatbots?',
+      answer:
+        'Yes. Custom AI agents for support, lead qualification, and internal knowledge. Versioned prompts, human-in-the-loop handoffs, and source-grounded answers so the agent does not hallucinate about your business.',
+    },
+  ];
+
+  // ISO 639-1 / BCP-47 tag for the FAQPage inLanguage. The visible
+  // strings are English so we declare 'en' here regardless of which
+  // locale rendered the page; users in /es/ and /pt/ still see the
+  // Spanish/Portuguese UI around the FAQ section.
+  const FAQ_LANG = 'en';
+
   return (
     <>
       <JsonLd
         data={serviceSchema({
           name: 'AI Automation Consulting',
-          description: 'AI-powered automations, chatbots and digital agents that save hours every week. Built on real workflow analysis, not hype.',
+          description:
+            'AI-powered automations, chatbots and digital agents that save hours every week. Built on real workflow analysis, not hype.',
           path: '/services/ai-automation',
           serviceType: 'AI Automation Consulting',
           areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
@@ -84,6 +138,16 @@ export default async function AiautomationPage() {
           { name: 'AI Automation', path: '/services/ai-automation' },
         ])}
       />
+      <JsonLd
+        data={howToSchema({
+          name: 'How I ship an AI automation engagement',
+          description:
+            'A five-step rhythm I follow on every AI automation project, from the first discovery call to a flow running in production.',
+          totalTime: 'P21D',
+          steps: APPROACH.map((a) => ({ name: a.title, text: a.desc })),
+        })}
+      />
+      <JsonLd data={faqSchema(FAQS, FAQ_LANG)} />
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-ai" variant="soft" />
@@ -113,22 +177,18 @@ export default async function AiautomationPage() {
         </div>
       </section>
 
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="container-page py-4 text-xs">
-        <ol className="flex items-center gap-2 text-secondary/70">
-          <li>
-            <Link href="/" className="hover:text-accent">{c.breadcrumbHome}</Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li>
-            <Link href="/services" className="hover:text-accent">{c.breadcrumbServices}</Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li aria-current="page" className="text-secondary font-secondary font-bold">
-            {s.breadcrumbCurrent}
-          </li>
-        </ol>
-      </nav>
+      {/* Breadcrumb — visible trail under the hero. Pairs with the
+          breadcrumbSchema() JSON-LD above; the trail MUST agree or
+          Google will reject the rich-result breadcrumbs. */}
+      <div className="container-page pt-4">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { name: c.breadcrumbServices, path: '/services' },
+            { name: s.breadcrumbCurrent, current: true },
+          ]}
+        />
+      </div>
 
       {/* Stats + featured case */}
       <section className="bg-primary">
@@ -219,9 +279,9 @@ export default async function AiautomationPage() {
               {s.approachSubtitle}
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+          <ol className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
             {APPROACH.map((p) => (
-              <div key={p.n} className="relative">
+              <li key={p.n} className="relative">
                 <div className="text-accent font-heading text-4xl md:text-5xl mb-3 leading-none">
                   {p.n}
                 </div>
@@ -231,9 +291,9 @@ export default async function AiautomationPage() {
                 <p className="text-text leading-relaxed text-sm md:text-base">
                   {p.desc}
                 </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <div className="pt-12 flex flex-wrap items-center gap-3">
             <a
               href="https://calendar.app.google/NHF1ScCWjh4WJaey6"
@@ -253,8 +313,44 @@ export default async function AiautomationPage() {
         </Reveal>
       </section>
 
-      {/* Stack */}
+      {/* FAQ — visible Q&A mirrors the FAQPage schema above. Required
+          for Google rich-results eligibility: the JSON-LD must agree
+          with on-page content. Using <details> rather than a custom
+          accordion keeps the Q&A in the HTML even when JS is off
+          (Google's renderer is conservative about JS-only content). */}
       <section className="section bg-theme-5">
+        <Reveal className="container-page max-w-3xl">
+          <h2 className="font-heading text-3xl md:text-4xl mb-3">
+            Frequently asked questions
+          </h2>
+          <p className="text-text leading-relaxed mb-8">
+            Common questions about timelines, pricing, data, and what
+            happens after the automation ships.
+          </p>
+          <div className="space-y-3">
+            {FAQS.map((faq, idx) => (
+              <details
+                key={idx}
+                className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
+              >
+                <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
+                  <span>{faq.question}</span>
+                  <span
+                    aria-hidden="true"
+                    className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-text leading-relaxed">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Stack */}
+      <section className="section bg-background">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-6">
             {s.stackTitle}
@@ -273,7 +369,7 @@ export default async function AiautomationPage() {
       </section>
 
       {/* Next service */}
-      <section className="section bg-background">
+      <section className="section bg-background pt-0">
         <div className="container-page">
           <Link
             href="/services/ui-ux-design"

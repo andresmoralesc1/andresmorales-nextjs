@@ -82,3 +82,65 @@ export function breadcrumbSchema(
     })),
   };
 }
+
+/**
+ * Build a FAQPage schema from a list of Q&A pairs. Google uses this to
+ * surface expandable Q&A cards directly in the SERP (position 0 / rich
+ * result). For eligibility:
+ *   - The visible page must contain the Q&A in plain HTML (don't hide
+ *     the text behind tabs or accordions that require JS to expand —
+ *     Google's renderer is conservative).
+ *   - Each `question` and `answer` should be a single sentence where
+ *     possible. Long answers are fine but the answer text is what
+ *     Google shows in the snippet, so front-load the value.
+ *   - Don't stuff keywords — Google has clamped FAQ rich results for
+ *     pages that look spammy.
+ *
+ * Pass an `inLanguage` (BCP-47) so the SERP snippet is delivered in the
+ * user's locale.
+ */
+export function faqSchema(
+  items: { question: string; answer: string }[],
+  inLanguage?: string
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    ...(inLanguage && { inLanguage }),
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+/**
+ * Build a HowTo schema for a process / methodology page. The site uses
+ * this on /services/* to mark the 5-step engagement model as a
+ * structured HowTo. Like FAQPage, the steps must be visible in the
+ * page's HTML (we render them as <ol>).
+ */
+export function howToSchema(opts: {
+  name: string;
+  description: string;
+  steps: { name: string; text: string }[];
+  totalTime?: string; // ISO 8601 duration, e.g. 'P14D'
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: opts.name,
+    description: opts.description,
+    ...(opts.totalTime && { totalTime: opts.totalTime }),
+    step: opts.steps.map((s, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}

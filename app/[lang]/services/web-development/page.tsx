@@ -9,6 +9,8 @@ import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, serviceSchema, breadcrumbSchema } from '@/lib/json-ld';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { headers } from 'next/headers';
 
 
 
@@ -100,6 +102,8 @@ const STACK = [
 ];
 
 export default async function WebDevelopmentPage() {
+  const h = await headers();
+  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
   const dict = await getCurrentDictionary();
   const locale = await getCurrentLocale();
   const c = dict.common;
@@ -152,26 +156,18 @@ export default async function WebDevelopmentPage() {
         </div>
       </section>
 
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="container-page py-4 text-xs">
-        <ol className="flex items-center gap-2 text-secondary/70">
-          <li>
-            <Link href={getLocalizedPath('/', locale)} className="hover:text-accent">
-              {c.breadcrumbHome}
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li>
-            <Link href={getLocalizedPath('/services', locale)} className="hover:text-accent">
-              {c.breadcrumbServices}
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li aria-current="page" className="text-secondary font-secondary font-bold">
-            {dict.metadata.webdevBreadcrumb}
-          </li>
-        </ol>
-      </nav>
+      {/* Breadcrumb — visible trail under the hero. Pairs with the
+          breadcrumbSchema() JSON-LD above; the trail MUST agree or
+          Google will reject the rich-result breadcrumbs. */}
+      <div className="container-page pt-4">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { name: c.breadcrumbServices, path: '/services' },
+            { name: dict.metadata.webdevBreadcrumb, current: true },
+          ]}
+        />
+      </div>
 
       {/* Stats + featured case */}
       <section className="bg-primary">

@@ -93,7 +93,7 @@ export function pageMetadata(opts: {
     openGraph: {
       title: ogFullTitle,
       description,
-      url: `https://andresmorales.com.co${path}`,
+      url: `https://andresmorales.com.co${normalizePath(path)}`,
       siteName: SITE_NAME,
       locale: ogLocale,
       type,
@@ -113,7 +113,7 @@ export function pageMetadata(opts: {
       images: [imageUrl],
     },
     alternates: {
-      canonical: `https://andresmorales.com.co${path}`,
+      canonical: `https://andresmorales.com.co${normalizePath(path)}`,
       // Hreflang per-locale: each locale gets its own canonical URL using
       // the same `path`. EN has no prefix (`/services`), ES/PT add the
       // locale (`/es/services`, `/pt/services`). `x-default` points at the
@@ -127,12 +127,30 @@ export function pageMetadata(opts: {
           LOCALES.map((loc) => [
             HREFLANG_TAG[loc],
             loc === DEFAULT_LOCALE
-              ? path
-              : `/${loc}${path === '/' ? '' : path}`,
+              ? normalizePathWithRoot(path)
+              : `/${loc}${normalizePathWithRoot(path) === '/' ? '' : normalizePathWithRoot(path)}`,
           ])
         ),
-        'x-default': path,
+        'x-default': normalizePathWithRoot(path),
       },
     },
   };
+}
+
+// Strip the trailing slash for canonical / OG url so we don't ship
+// `andresmorales.com.co/` while the rest of the site is the bare host.
+// The root path collapses to the bare host (no slash); other paths
+// keep the leading slash. Hreflang values keep a trailing `/` when
+// they represent the site root, because Google's hreflang parser is
+// picky about empty paths.
+function normalizePath(p: string): string {
+  if (p === '/' || p === '') return '';
+  return p.replace(/\/+$/, '');
+}
+
+// Like normalizePath but keeps `/` for the site root. Used in hreflang
+// where an empty path would be invalid.
+function normalizePathWithRoot(p: string): string {
+  if (p === '/' || p === '') return '/';
+  return p.replace(/\/+$/, '');
 }

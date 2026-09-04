@@ -8,6 +8,8 @@ import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, serviceSchema, breadcrumbSchema } from '@/lib/json-ld';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { headers } from 'next/headers';
 
 
 
@@ -35,6 +37,8 @@ export function generateStaticParams() {
 
 
 export default async function UiUxDesignPage() {
+  const h = await headers();
+  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
   const dict = await getCurrentDictionary();
   const s = dict.servicesUiUx;
   const c = dict.common;
@@ -110,22 +114,18 @@ export default async function UiUxDesignPage() {
         </div>
       </section>
 
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="container-page py-4 text-xs">
-        <ol className="flex items-center gap-2 text-secondary/70">
-          <li>
-            <Link href="/" className="hover:text-accent">{c.breadcrumbHome}</Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li>
-            <Link href="/services" className="hover:text-accent">{c.breadcrumbServices}</Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li aria-current="page" className="text-secondary font-secondary font-bold">
-            {s.breadcrumbCurrent}
-          </li>
-        </ol>
-      </nav>
+      {/* Breadcrumb — visible trail under the hero. Pairs with the
+          breadcrumbSchema() JSON-LD above; the trail MUST agree or
+          Google will reject the rich-result breadcrumbs. */}
+      <div className="container-page pt-4">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { name: c.breadcrumbServices, path: '/services' },
+            { name: s.breadcrumbCurrent, current: true },
+          ]}
+        />
+      </div>
 
       {/* Stats + featured case */}
       <section className="bg-primary">

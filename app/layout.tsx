@@ -54,10 +54,23 @@ export const metadata: Metadata = {
   // in .env.local. Leave empty until you verify.
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
+    // Facebook Business Manager domain verification. Token is hardcoded
+    // (not env-driven) — Meta issues one tag per domain and it doesn't
+    // rotate. Remove the line if the domain is ever transferred out of
+    // this Business Manager.
+    other: {
+      'facebook-domain-verification': 'a13hez2xszu69soo8ubtc7ta9fcd1x',
+    },
   },
   metadataBase: new URL('https://andresmorales.com.co'),
+  // Per-page `alternates.canonical` overrides this default. The site root
+  // canonical must be the absolute URL with NO trailing slash. Next 16
+  // emits a double slash (`/.com.co/`) when you give it a bare path
+  // (`'/'`) here on certain locales, which Google treats as a soft
+  // duplicate against the middleware-rewritten bare-host version. Use
+  // the absolute URL string instead.
   alternates: {
-    canonical: '/',
+    canonical: 'https://andresmorales.com.co',
     languages: {
       'en-US': '/',
       'es-CO': '/es',
@@ -102,12 +115,22 @@ export const metadata: Metadata = {
       },
     ],
   },
+  // OG profile links + Twitter handles. Next 16's `openGraph.profile`
+  // requires `type: 'profile'` which would override `type: 'website'`,
+  // and the `other` field only emits `name=` (not `property=`). Emitted
+  // directly in `<head>` below as raw `<meta>` tags. LinkedIn / Facebook
+  // scrapers parse `property="og:profile"` and X parses `name="twitter:*`
+  // exactly the same regardless of how Next emits them.
+  // Keep in sync with SOCIAL_URLS in components/social.tsx.
+  other: {},
   twitter: {
     card: 'summary_large_image',
     title: 'Andrés Morales — AI Consultant for Business Automation',
     description:
       'I help companies automate their operations with AI. n8n workflows, AI agents, and internal tools — shipped, not slides.',
     images: ['/api/og?lang=en&path=%2F'],
+    // `creator` + `site` are emitted as raw <meta> in <head> below because
+    // Next's typed metadata can't represent them in the current layout.
   },
 };
 
@@ -278,6 +301,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={``}
     >
       <head>
+        {/* Raw OG/Twitter meta. Next's typed metadata API can't emit
+            `property="og:profile"` without changing `type` to 'profile',
+            and its `other` field only emits `name=` attributes. Emit the
+            tags directly. LinkedIn, Facebook, and X all parse these. */}
+        <meta property="og:profile" content="https://www.linkedin.com/in/andresmoralesc1/,https://www.instagram.com/andres_morales_automation/,https://www.facebook.com/andresmoralesautomation/" />
+        <meta name="twitter:creator" content="@andresmoralesc1" />
+        <meta name="twitter:site" content="@andresmoralesc1" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -301,6 +331,45 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
             strategy="lazyOnload"
           />
+        )}
+
+        {/* Google Analytics 4 — opt-in. Set NEXT_PUBLIC_GA_MEASUREMENT_ID
+            in .env.local (e.g. G-XXXXXXXXXX) to load gtag.js. We use
+            Google's official `consent` mode v2 default so the tag fires
+            only after the user grants consent via the cookie banner.
+            Until consent is granted, GA4 receives cookieless pings
+            (no client_id, no storage) which still gives you aggregated
+            traffic numbers without violating GDPR / Colombia's
+            Ley 1581/2012. If the env var is unset, the tag is omitted
+            entirely — useful when you're only running Umami. */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              id="ga4-loader"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+              strategy="lazyOnload"
+            />
+            <Script
+              id="ga4-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('consent', 'default', {
+                    ad_storage: 'denied',
+                    analytics_storage: 'denied',
+                    wait_for_update: 500
+                  });
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                    anonymize_ip: true,
+                    send_page_view: true
+                  });
+                `,
+              }}
+            />
+          </>
         )}
       </head>
       <body className="flex flex-col min-h-screen">
