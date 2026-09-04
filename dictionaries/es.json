@@ -196,7 +196,71 @@
       "timeline": "Plazo",
       "notes": "Notas"
     },
-    "step5SummaryProjectOther": "Otro — {value}"
+    "step5SummaryProjectOther": "Otro — {value}",
+    "tools": [
+      "CRM (HubSpot, Salesforce)",
+      "Hojas de cálculo (Google Sheets, Excel)",
+      "Correo (Gmail, Outlook)",
+      "Chat / WhatsApp",
+      "Slack / Teams",
+      "Notion / Airtable",
+      "Zapier / Make",
+      "API personalizada"
+    ],
+    "email": {
+      "title": "Nuevo Brief de Proyecto",
+      "subtitle": "De {name} — {email}",
+      "fieldCompany": "Empresa",
+      "fieldRole": "Rol",
+      "fieldProjectType": "Tipo de proyecto",
+      "fieldProblem": "Problema a resolver",
+      "fieldTools": "Herramientas que usa hoy",
+      "fieldFrequency": "Frecuencia",
+      "fieldGoal": "Objetivo / resultado",
+      "fieldSuccess": "Métrica de éxito",
+      "fieldBudget": "Presupuesto",
+      "fieldTimeline": "Plazo",
+      "fieldNotes": "Notas adicionales",
+      "fieldOther": " (otro)",
+      "replyTo": "Responde directamente a {email}"
+    },
+    "emailAutoReply": {
+      "subject": "Recibí tu brief — {firstName}",
+      "greeting": "Gracias por el brief, {firstName}.",
+      "body1": "Lo recibí y lo voy a leer personalmente en las próximas 24 horas.",
+      "body2": "Si algo no quedó claro o quieres agregar contexto mientras tanto, solo responde a este correo — me llega directo.",
+      "signature": "— Andrés",
+      "footer": "Recibiste esto porque enviaste el brief de proyecto en",
+      "linkText": "andresmorales.com.co/brief"
+    },
+    "faqTitle": "Preguntas frecuentes",
+    "faqSubtitle": "Seis cosas que los prospectos preguntan antes de enviar el brief. Si la tuya no está, me la dices en la llamada.",
+    "faqItems": [
+      {
+        "q": "¿Qué pasa después de enviar el brief?",
+        "a": "Recibes un correo de confirmación en menos de un minuto. Leo cada brief personalmente en menos de 24 horas y respondo con 3 preguntas cortas de seguimiento o con un horario propuesto para una llamada de 30 minutos."
+      },
+      {
+        "q": "¿El brief es realmente gratis?",
+        "a": "Sí. El brief, la respuesta y la primera llamada de 30 minutos son gratis. Sin pago, sin compromiso. Solo envío una propuesta si después de la llamada ambos queremos seguir."
+      },
+      {
+        "q": "¿Cuánto se demora en llenar?",
+        "a": "Como 5 minutos para el wizard. Lo diseñé para que puedas volver después — tu progreso se guarda automáticamente en tu navegador por 30 días."
+      },
+      {
+        "q": "¿Qué pasa si no sé todas las respuestas?",
+        "a": "Es normal. El wizard pide respuestas aproximadas. Los huecos los llenamos juntos en la llamada. El punto del brief es darme suficiente contexto para que la llamada valga el tiempo de los dos."
+      },
+      {
+        "q": "¿Puedo hablarte en vez de llenar esto?",
+        "a": "Por supuesto. Hay un escape en cada paso del wizard — el link 'Agenda una llamada de 30 min'. El brief solo es la ruta más rápida si tienes tiempo ahora."
+      },
+      {
+        "q": "¿Compartes mi proyecto con alguien?",
+        "a": "No. Tu brief llega solo a mí (Andrés). Nunca publico detalles de proyectos, nombres o datos sin permiso por escrito. Mira la política de privacidad para el panorama completo."
+      }
+    ]
   },
   "common": {
     "breadcrumbHome": "Inicio",
@@ -212,7 +276,12 @@
     "labelEmail": "✉",
     "labelPhone": "☎",
     "labelLinkedin": "in",
+    "labelWhatsapp": "w",
+    "labelInstagram": "ig",
+    "labelFacebook": "fb",
     "linkedinLabel": "LinkedIn ›",
+    "instagramLabel": "@andres_morales_automation",
+    "facebookLabel": "Andrés Morales Automation",
     "cta": "Hablemos 30 minutos, sin costo",
     "portraitAlt": "Retrato de Andrés Morales"
   },

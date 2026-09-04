@@ -196,7 +196,71 @@
       "timeline": "Prazo",
       "notes": "Notas"
     },
-    "step5SummaryProjectOther": "Outro — {value}"
+    "step5SummaryProjectOther": "Outro — {value}",
+    "tools": [
+      "CRM (HubSpot, Salesforce)",
+      "Planilhas (Google Sheets, Excel)",
+      "E-mail (Gmail, Outlook)",
+      "Chat / WhatsApp",
+      "Slack / Teams",
+      "Notion / Airtable",
+      "Zapier / Make",
+      "API personalizada"
+    ],
+    "email": {
+      "title": "Novo Briefing de Projeto",
+      "subtitle": "De {name} — {email}",
+      "fieldCompany": "Empresa",
+      "fieldRole": "Função",
+      "fieldProjectType": "Tipo de projeto",
+      "fieldProblem": "Problema a resolver",
+      "fieldTools": "Ferramentas usadas hoje",
+      "fieldFrequency": "Frequência",
+      "fieldGoal": "Objetivo / resultado",
+      "fieldSuccess": "Métrica de sucesso",
+      "fieldBudget": "Orçamento",
+      "fieldTimeline": "Prazo",
+      "fieldNotes": "Notas adicionais",
+      "fieldOther": " (outro)",
+      "replyTo": "Responda diretamente para {email}"
+    },
+    "emailAutoReply": {
+      "subject": "Recebi seu briefing — {firstName}",
+      "greeting": "Obrigado pelo briefing, {firstName}.",
+      "body1": "Recebi e vou ler pessoalmente nas próximas 24 horas.",
+      "body2": "Se algo não ficou claro ou quiser adicionar contexto enquanto isso, basta responder a este e-mail — chega direto para mim.",
+      "signature": "— Andrés",
+      "footer": "Você recebeu isso porque enviou o briefing de projeto em",
+      "linkText": "andresmorales.com.co/brief"
+    },
+    "faqTitle": "Perguntas frequentes",
+    "faqSubtitle": "Seis coisas que os prospects perguntam antes de enviar o briefing. Se a sua não está aqui, me conta na chamada.",
+    "faqItems": [
+      {
+        "q": "O que acontece depois que eu envio o briefing?",
+        "a": "Você recebe um e-mail de confirmação em menos de um minuto. Eu leio cada briefing pessoalmente em até 24 horas e respondo com 3 perguntas curtas de follow-up ou com um horário proposto para uma chamada de 30 minutos."
+      },
+      {
+        "q": "O briefing é realmente de graça?",
+        "a": "Sim. O briefing, a resposta e a primeira chamada de 30 minutos são todos gratuitos. Sem pagamento, sem compromisso. Só mando proposta se depois da chamada os dois quisermos seguir."
+      },
+      {
+        "q": "Quanto tempo leva pra preencher?",
+        "a": "Cerca de 5 minutos para o wizard. Eu desenhei pra você poder voltar depois — seu progresso fica salvo automaticamente no navegador por 30 dias."
+      },
+      {
+        "q": "E se eu não souber todas as respostas?",
+        "a": "É normal. O wizard pede respostas aproximadas. As lacunas a gente preenche junto na chamada. O ponto do briefing é me dar contexto suficiente pra que a chamada valha o tempo dos dois."
+      },
+      {
+        "q": "Posso falar com você em vez de preencher isso?",
+        "a": "Claro. Há um link de escape em cada passo do wizard — 'Agende uma chamada de 30 min'. O briefing é só o caminho mais rápido se você tem tempo agora."
+      },
+      {
+        "q": "Você compartilha meu projeto com alguém?",
+        "a": "Não. Seu briefing chega só pra mim (Andrés). Nunca publico detalhes de projetos, nomes ou dados sem permissão por escrito. Veja a política de privacidade para o panorama completo."
+      }
+    ]
   },
   "common": {
     "breadcrumbHome": "Início",
@@ -212,7 +276,12 @@
     "labelEmail": "✉",
     "labelPhone": "☎",
     "labelLinkedin": "in",
+    "labelWhatsapp": "w",
+    "labelInstagram": "ig",
+    "labelFacebook": "fb",
     "linkedinLabel": "LinkedIn ›",
+    "instagramLabel": "@andres_morales_automation",
+    "facebookLabel": "Andrés Morales Automation",
     "cta": "Agende uma chamada estratégica de graça",
     "portraitAlt": "Retrato de Andrés Morales"
   },

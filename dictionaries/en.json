@@ -196,7 +196,71 @@
       "timeline": "Timeline",
       "notes": "Notes"
     },
-    "step5SummaryProjectOther": "Other — {value}"
+    "step5SummaryProjectOther": "Other — {value}",
+    "tools": [
+      "CRM (HubSpot, Salesforce)",
+      "Spreadsheets (Google Sheets, Excel)",
+      "Email (Gmail, Outlook)",
+      "Chat / WhatsApp",
+      "Slack / Teams",
+      "Notion / Airtable",
+      "Zapier / Make",
+      "Custom API"
+    ],
+    "email": {
+      "title": "New Project Brief",
+      "subtitle": "From {name} — {email}",
+      "fieldCompany": "Company",
+      "fieldRole": "Role",
+      "fieldProjectType": "Project type",
+      "fieldProblem": "Problem to solve",
+      "fieldTools": "Tools it touches today",
+      "fieldFrequency": "Frequency",
+      "fieldGoal": "Goal / outcome",
+      "fieldSuccess": "Success metric",
+      "fieldBudget": "Budget",
+      "fieldTimeline": "Timeline",
+      "fieldNotes": "Additional notes",
+      "fieldOther": " (other)",
+      "replyTo": "Reply directly to {email}"
+    },
+    "emailAutoReply": {
+      "subject": "Got your brief — {firstName}",
+      "greeting": "Thanks for the brief, {firstName}.",
+      "body1": "I got it and will read it personally within the next 24 hours.",
+      "body2": "If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.",
+      "signature": "— Andrés",
+      "footer": "You received this because you submitted the project brief at",
+      "linkText": "andresmorales.com.co/brief"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faqSubtitle": "Six things prospects ask before sending the brief. If yours is not here, just hit me up on the call.",
+    "faqItems": [
+      {
+        "q": "What happens after I submit the brief?",
+        "a": "You get an email confirmation in under a minute. I read every brief personally within 24 hours and reply with either 3 short follow-up questions or a proposed time for a 30-minute call."
+      },
+      {
+        "q": "Is the brief really free?",
+        "a": "Yes. The brief, the reply, and the first 30-minute strategy call are all free. No payment, no obligation. I only send a proposal if we're both aligned after the call."
+      },
+      {
+        "q": "How long does it take to fill out?",
+        "a": "About 5 minutes for the wizard itself. I designed it so you can come back later — your progress is auto-saved in your browser for 30 days."
+      },
+      {
+        "q": "What if I don't know all the answers?",
+        "a": "That's expected. The wizard asks for rough answers. We'll fill the gaps together on the call. The point of the brief is to give me enough context to make the call worth both our times."
+      },
+      {
+        "q": "Can I talk to you instead of filling this out?",
+        "a": "Absolutely. There's an escape hatch on every step of the wizard — the 'Book a 30-min call instead' link. The brief is just the fastest path if you have time now."
+      },
+      {
+        "q": "Will you share my project with anyone?",
+        "a": "No. Your brief goes only to me (Andrés). I never publish project details, names, or data without written permission. See the privacy policy for the full picture."
+      }
+    ]
   },
   "common": {
     "breadcrumbHome": "Home",
@@ -212,7 +276,12 @@
     "labelEmail": "✉",
     "labelPhone": "☎",
     "labelLinkedin": "in",
+    "labelWhatsapp": "w",
+    "labelInstagram": "ig",
+    "labelFacebook": "fb",
     "linkedinLabel": "LinkedIn ›",
+    "instagramLabel": "@andres_morales_automation",
+    "facebookLabel": "Andrés Morales Automation",
     "cta": "Let's map your first flow — 30 min, no charge",
     "portraitAlt": "Andrés Morales portrait"
   },
