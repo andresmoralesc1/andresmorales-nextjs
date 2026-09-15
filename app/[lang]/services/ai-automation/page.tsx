@@ -24,7 +24,7 @@ export async function generateMetadata({
     title: dict.metadata.aiTitle,
     description: dict.metadata.aiDescription,
     locale: safeLang,
-    path: '/services/ai-automation',
+    path: safeLang === 'en' ? '/services/ai-automation' : `/${safeLang}/services/ai-automation`,
   });
 }
 

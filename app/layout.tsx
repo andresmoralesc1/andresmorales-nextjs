@@ -175,7 +175,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         description:
           'AI consultant helping companies automate their operations. Designs and ships n8n workflows, AI agents, and internal tools that replace manual work — so teams can focus on growth, not busywork.',
         url: 'https://andresmorales.com.co',
-        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.jpg',
+        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.png',
         sameAs: [
           'https://andresmorales.com.co',
           'https://www.linkedin.com/in/andresmoralesc1/',
@@ -200,7 +200,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         '@type': 'ProfessionalService',
         '@id': 'https://andresmorales.com.co/#business',
         name: 'Andrés Morales — AI Consulting',
-        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.jpg',
+        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.png',
         url: 'https://andresmorales.com.co',
         description:
           'AI consulting practice specializing in business automation, AI agents, and operational tooling. Engagements typically run $2,000 – $50,000+ USD.',
@@ -230,17 +230,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 '@type': 'Service',
                 name: 'AI Automation',
                 description:
-                  'End-to-end workflow automation with n8n, Make, and custom code. Lead nurturing, internal reporting, CRM sync, and SaaS integrations.',
-                url: 'https://andresmorales.com.co/services/ai-automation',
-              },
-            },
-            {
-              '@type': 'Offer',
-              itemOffered: {
-                '@type': 'Service',
-                name: 'AI Agents',
-                description:
-                  'Custom AI agents for support, lead qualification, and internal knowledge. Versioned prompts, human-in-the-loop, and source-grounded answers.',
+                  'End-to-end workflow automation with n8n, Make, and custom code. Lead nurturing, internal reporting, CRM sync, and SaaS integrations. Custom AI agents for support, lead qualification, and internal knowledge — versioned prompts, human-in-the-loop, and source-grounded answers.',
                 url: 'https://andresmorales.com.co/services/ai-automation',
               },
             },
@@ -274,23 +264,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         name: 'Andrés Morales — Portfolio',
         inLanguage: htmlLang,
         publisher: { '@id': 'https://andresmorales.com.co/#person' },
-        // Sitelinks searchbox — when Google has enough trust in your site
-        // it shows a search box directly in the SERP. Also accepts direct
-        // URLs to specific search endpoints. We don't have a custom search
-        // endpoint, so the standard `WebSite.url` works for the "brand"
-        // query ("Andrés Morales"). The potentialAction here is the
-        // signal Google needs to enable the sitelinks search box.
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: 'https://andresmorales.com.co/portfolio?q={search_term_string}',
-          },
-          // Schema.org requires a `query-input` action spec; this is the
-          // literal string the user types. Google uses it to wire the
-          // searchbox to the target.
-          'query-input': 'required name=search_term_string',
-        },
+        // Sitelinks searchbox — would be enabled via WebSite.potentialAction
+        // when a real search endpoint exists. The previous version pointed
+        // at `/portfolio?q=...` which 404s on real queries. Removed until
+        // a search endpoint ships.
       },
     ],
   };

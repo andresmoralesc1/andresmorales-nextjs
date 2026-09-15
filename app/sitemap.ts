@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { listSlugsByLocale } from '@/lib/blog';
+import { listSlugsByLocale, postMtime } from '@/lib/blog';
 
 // Routes as of Next.js portfolio rebuild — keep in sync with app/*/page.tsx
 const SITE_URL = 'https://andresmorales.com.co';
@@ -8,22 +8,26 @@ interface RouteEntry {
   path: string;
   changeFrequency: 'weekly' | 'monthly';
   priority: number;
+  // ISO date of the route's last meaningful content edit (page file).
+  // Set per route so the sitemap doesn't advertise "modified now" on
+  // every Next.js rebuild — Google downweights those signals.
+  lastModified: string;
 }
 
 const ROUTES: RouteEntry[] = [
-  { path: '/', changeFrequency: 'weekly', priority: 1.0 },
-  { path: '/services', changeFrequency: 'weekly', priority: 0.9 },
-  { path: '/services/ai-automation', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/services/ui-ux-design', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/services/web-development', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/portfolio', changeFrequency: 'weekly', priority: 0.9 },
-  { path: '/blog', changeFrequency: 'weekly', priority: 0.8 },
-  { path: '/contact', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/brief', changeFrequency: 'monthly', priority: 0.6 },
-  { path: '/cumple-2025', changeFrequency: 'monthly', priority: 0.5 },
-  { path: '/invest-in-people-inspire-the-future', changeFrequency: 'monthly', priority: 0.5 },
-  { path: '/privacy', changeFrequency: 'monthly', priority: 0.3 },
-  { path: '/terms', changeFrequency: 'monthly', priority: 0.3 },
+  { path: '/',                                          changeFrequency: 'weekly',  priority: 1.0, lastModified: '2026-09-08' },
+  { path: '/services',                                  changeFrequency: 'weekly',  priority: 0.9, lastModified: '2026-08-26' },
+  { path: '/services/ai-automation',                    changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
+  { path: '/services/ui-ux-design',                     changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
+  { path: '/services/web-development',                  changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
+  { path: '/portfolio',                                 changeFrequency: 'weekly',  priority: 0.9, lastModified: '2026-09-14' },
+  { path: '/blog',                                      changeFrequency: 'weekly',  priority: 0.8, lastModified: '2026-09-08' },
+  { path: '/contact',                                   changeFrequency: 'monthly', priority: 0.7, lastModified: '2026-08-21' },
+  { path: '/brief',                                     changeFrequency: 'monthly', priority: 0.6, lastModified: '2026-08-26' },
+  { path: '/cumple-2025',                               changeFrequency: 'monthly', priority: 0.5, lastModified: '2026-08-26' },
+  { path: '/invest-in-people-inspire-the-future',       changeFrequency: 'monthly', priority: 0.5, lastModified: '2026-08-26' },
+  { path: '/privacy',                                   changeFrequency: 'monthly', priority: 0.3, lastModified: '2026-08-21' },
+  { path: '/terms',                                     changeFrequency: 'monthly', priority: 0.3, lastModified: '2026-08-21' },
 ];
 
 // Locale → URL prefix. EN is the canonical (no prefix); ES and PT get /es and /pt.
@@ -40,17 +44,23 @@ function urlFor(locale: Locale, path: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
   const staticEntries: MetadataRoute.Sitemap = ROUTES.map((route) => ({
     url: urlFor('en', route.path),
-    lastModified,
+    lastModified: new Date(route.lastModified),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
+    // `x-default` points at the EN canonical no-prefix URL. Including it
+    // tells Google which variant to show users whose locale doesn't match
+    // any of the alternatives (e.g. someone browsing from Argentina or
+    // Portugal). Mirrors the layout's `alternates.languages.x-default`
+    // so sitemap and HTML agree.
     alternates: {
-      languages: Object.fromEntries(
-        LOCALES.map((locale) => [locale, urlFor(locale, route.path)])
-      ),
+      languages: {
+        ...Object.fromEntries(
+          LOCALES.map((locale) => [locale, urlFor(locale, route.path)]),
+        ),
+        'x-default': urlFor('en', route.path),
+      },
     },
   }));
 
@@ -62,26 +72,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const slugsByLocale = listSlugsByLocale();
   const blogEntries: MetadataRoute.Sitemap = LOCALES.flatMap((locale) =>
     [...slugsByLocale[locale]].map((slug) => {
+      const blogPath = `/blog/${slug}`;
       const existingLocales = LOCALES.filter((alt) =>
         slugsByLocale[alt].has(slug),
       );
+      // `postMtime` reads the .md file's mtime so blog entries advertise
+      // a real last-modified signal — falls back to now() when the helper
+      // can't find a body file (e.g. mismatched slug list).
+      const postDate = postMtime(slug, locale) ?? new Date();
+      // `x-default` only emitted when EN has a translation — pointing it
+      // at a 404 would mislead Google and waste crawl budget. When EN is
+      // missing, leave it out entirely; Google's selector falls back to
+      // the URL the user landed on.
+      const languages: Record<string, string> = Object.fromEntries(
+        existingLocales.map((alt) => [alt, urlFor(alt, blogPath)]),
+      );
+      if (existingLocales.includes('en')) {
+        languages['x-default'] = urlFor('en', blogPath);
+      }
       return {
-        url: urlFor(locale, `/blog/${slug}`),
-        lastModified,
+        url: urlFor(locale, blogPath),
+        lastModified: postDate,
         changeFrequency: 'monthly' as const,
         priority: 0.7,
-        // Only emit alternates for languages with a body. `x-default`
-        // points to the canonical no-prefix URL when EN exists, otherwise
-        // the first existing locale — keeps Google's selector behaviour
-        // sane for un-targeted queries.
-        alternates: {
-          languages: Object.fromEntries(
-            existingLocales.map((alt) => [
-              alt,
-              urlFor(alt, `/blog/${slug}`),
-            ]),
-          ),
-        },
+        alternates: { languages },
       };
     }),
   );

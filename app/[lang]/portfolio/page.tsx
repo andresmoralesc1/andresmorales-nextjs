@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { Reveal } from '@/components/reveal';
+import { JsonLd, breadcrumbSchema } from '@/lib/json-ld';
 import type { Metadata } from 'next';
 
 
@@ -24,7 +25,7 @@ export async function generateMetadata({
     title: dict.metadata.portfolioTitle,
     description: dict.metadata.portfolioDescription,
     locale: safeLang,
-    path: '/portfolio',
+    path: safeLang === 'en' ? '/portfolio' : `/${safeLang}/portfolio`,
   });
 }
 
@@ -85,6 +86,30 @@ const FEATURED_PROJECTS = [
   },
 ];
 
+// More work — additional live projects (Cleida, Temptum, Gato, MECCA)
+const MORE_PROJECTS = [
+  {
+    key: 'proj10',
+    image: '/sites/gato_home.png',
+    href: 'https://gato.andresmorales.com.co/',
+  },
+  {
+    key: 'proj11',
+    image: '/sites/mecca_home.png',
+    href: 'https://shop.andresmorales.com.co/',
+  },
+  {
+    key: 'proj12',
+    image: '/sites/cleida_home.png',
+    href: 'https://cleida.com.co/',
+  },
+  {
+    key: 'proj13',
+    image: '/sites/temptum_home.png',
+    href: 'https://temptum-ai.vercel.app/',
+  },
+];
+
 // Smart Automation — 4 cases with correct images (do NOT use Superllantas image)
 const AUTOMATION_CASES = ['case1', 'case2', 'case3', 'case4'] as const;
 
@@ -129,11 +154,92 @@ const AUTOMATION_IMAGES: Record<(typeof AUTOMATION_CASES)[number], string> = {
 type PortfolioDict = Record<string, string>;
 
 export default async function PortfolioPage() {
-  const dict = await getCurrentDictionary();
+  const [dict, lang] = await Promise.all([getCurrentDictionary(), getCurrentLocale()]);
   const p = dict.portfolio as unknown as PortfolioDict;
+
+  // CollectionPage (portfolio) + ItemList of the 9 featured projects +
+  // BreadcrumbList. Each project becomes a `ListItem` with a CreativeWork
+  // body (provider = the Person entity in the root layout) so Google can
+  // surface portfolio work as a structured list in branded searches.
+  const portfolioUrl = `https://andresmorales.com.co${lang === 'en' ? '' : `/${lang}`}/portfolio`;
+
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: dict.metadata.portfolioTitle,
+    description: dict.metadata.portfolioDescription,
+    url: portfolioUrl,
+    inLanguage: lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+    publisher: { '@id': 'https://andresmorales.com.co/#person' },
+    isPartOf: { '@id': 'https://andresmorales.com.co/#website' },
+  };
+
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: p.featuredTitle,
+    description: p.featuredSubtitle,
+    numberOfItems: FEATURED_PROJECTS.length,
+    itemListElement: FEATURED_PROJECTS.map((proj, idx) => {
+      const title = p[`${proj.key}Title`] || proj.key;
+      const desc = p[`${proj.key}Desc`] || '';
+      return {
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: title,
+        description: desc,
+        url: proj.href,
+        item: {
+          '@type': 'CreativeWork',
+          name: title,
+          description: desc,
+          url: proj.href,
+          creator: { '@id': 'https://andresmorales.com.co/#person' },
+          provider: { '@id': 'https://andresmorales.com.co/#person' },
+        },
+      };
+    }),
+  };
+
+  // Second ItemList — More work (additional live projects not in featured)
+  const moreItemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: p.moreTitle,
+    description: p.moreSubtitle,
+    numberOfItems: MORE_PROJECTS.length,
+    itemListElement: MORE_PROJECTS.map((proj, idx) => {
+      const title = p[`${proj.key}Title`] || proj.key;
+      const desc = p[`${proj.key}Desc`] || '';
+      return {
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: title,
+        description: desc,
+        url: proj.href,
+        item: {
+          '@type': 'CreativeWork',
+          name: title,
+          description: desc,
+          url: proj.href,
+          creator: { '@id': 'https://andresmorales.com.co/#person' },
+          provider: { '@id': 'https://andresmorales.com.co/#person' },
+        },
+      };
+    }),
+  };
+
+  const breadcrumbs = breadcrumbSchema([
+    {
+      name: lang === 'es' ? 'Inicio' : lang === 'pt' ? 'Início' : 'Home',
+      path: lang === 'en' ? '/' : `/${lang}`,
+    },
+    { name: dict.metadata.portfolioTitle, path: lang === 'en' ? '/portfolio' : `/${lang}/portfolio` },
+  ]);
 
   return (
     <>
+      <JsonLd data={[collectionSchema, itemList, moreItemList, breadcrumbs]} />
       {/* Hero — pitch + dual CTA. Cream background, white text (inverted
           from the white/cream-foreground pattern used by the home hero). */}
       <section className="section bg-background relative overflow-hidden">
@@ -243,6 +349,74 @@ export default async function PortfolioPage() {
                         </div>
                       </div>
                     )}
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-xs font-secondary font-bold text-secondary uppercase tracking-wider">
+                        {metric}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs font-secondary font-bold text-secondary group-hover:text-accent opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                        {p.cardVisitLive}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* More work — additional live projects (Cleida, Temptum, Gato, MECCA) */}
+      <section className="section bg-primary">
+        <Reveal stagger className="container-page">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+              {p.moreEyebrow}
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl mb-3">
+              {p.moreTitle}
+            </h2>
+            <p className="text-text">
+              {p.moreSubtitle}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-5xl mx-auto">
+            {MORE_PROJECTS.map((proj) => {
+              const title = p[`${proj.key}Title`];
+              const subtitle = p[`${proj.key}Subtitle`];
+              const metric = p[`${proj.key}Metric`];
+              const desc = p[`${proj.key}Desc`];
+              return (
+                <a
+                  key={proj.key}
+                  href={proj.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group block bg-primary rounded-2xl overflow-hidden border border-theme-9 hover:border-theme-1 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-theme-9">
+                    <Image
+                      src={proj.image}
+                      alt={title}
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold px-2.5 py-1 rounded-full bg-theme-1 shadow-md">
+                      {p.cardBadgeLive}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <span className="inline-block text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold mb-2">
+                      {subtitle}
+                    </span>
+                    <h3 className="font-heading text-xl md:text-2xl mb-2 text-secondary">
+                      {title}
+                    </h3>
+                    <p className="text-sm text-text leading-relaxed mb-3">
+                      {desc}
+                    </p>
                     <div className="flex items-center justify-between mt-3">
                       <span className="text-xs font-secondary font-bold text-secondary uppercase tracking-wider">
                         {metric}

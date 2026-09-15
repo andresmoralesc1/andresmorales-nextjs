@@ -22,7 +22,7 @@ export async function generateMetadata({
     title: dict.metadata.homeTitle,
     description: dict.metadata.homeDescription,
     locale: safeLang,
-    path: '/',
+    path: safeLang === 'en' ? '/' : `/${safeLang}/`,
   });
 }
 

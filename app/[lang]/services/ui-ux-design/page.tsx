@@ -26,7 +26,7 @@ export async function generateMetadata({
     title: dict.metadata.uiuxTitle,
     description: dict.metadata.uiuxDescription,
     locale: safeLang,
-    path: '/services/ui-ux-design',
+    path: safeLang === 'en' ? '/services/ui-ux-design' : `/${safeLang}/services/ui-ux-design`,
   });
 }
 

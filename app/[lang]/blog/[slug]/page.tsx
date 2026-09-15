@@ -54,9 +54,9 @@ export async function generateMetadata({
     title: post.title,
     description: post.description,
     alternates: {
-      canonical: `/${lang}/blog/${slug}`,
+      canonical: `${lang === 'en' ? '' : `/${lang}`}/blog/${slug}`,
       languages: Object.fromEntries(
-        existingLocales.map((l) => [l, `/${l}/blog/${slug}`]),
+        existingLocales.map((l) => [l, `${l === 'en' ? '' : `/${l}`}/blog/${slug}`]),
       ),
     },
     openGraph: {

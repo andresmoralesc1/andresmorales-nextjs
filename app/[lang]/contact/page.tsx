@@ -1,10 +1,11 @@
 import { ContactForm } from '@/components/sections/contact-form';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
-import { getCurrentDictionary } from '@/lib/dictionary';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { Reveal } from '@/components/reveal';
+import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
 import type { Metadata } from 'next';
 
 
@@ -22,7 +23,7 @@ export async function generateMetadata({
     title: dict.metadata.contactTitle,
     description: dict.metadata.contactDescription,
     locale: safeLang,
-    path: '/contact',
+    path: safeLang === 'en' ? '/contact' : `/${safeLang}/contact`,
   });
 }
 
@@ -33,14 +34,47 @@ export function generateStaticParams() {
 
 
 export default async function ContactPage() {
-  const dict = await getCurrentDictionary();
+  const [dict, lang] = await Promise.all([getCurrentDictionary(), getCurrentLocale()]);
   const trustStats = [
     { n: dict.contact.statsReply, label: dict.contact.statsReplyLabel },
     { n: dict.contact.statsCall, label: dict.contact.statsCallLabel },
     { n: dict.contact.statsTz, label: dict.contact.statsTzLabel },
   ];
+
+  // ContactPage + FAQPage + BreadcrumbList structured data. The
+  // ContactPage @type lets Google tie the email/booking CTAs to the
+  // Person entity declared in the root layout (`@id: /#person`), which
+  // strengthens the knowledge graph for branded searches.
+  const contactSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: dict.metadata.contactTitle,
+    description: dict.metadata.contactDescription,
+    url: `https://andresmorales.com.co${lang === 'en' ? '' : `/${lang}`}/contact`,
+    inLanguage: lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+    publisher: { '@id': 'https://andresmorales.com.co/#person' },
+    about: { '@id': 'https://andresmorales.com.co/#person' },
+  };
+
+  const faq = faqSchema(
+    dict.contact.faqItems.map((item: { q: string; a: string }) => ({
+      question: item.q,
+      answer: item.a,
+    })),
+    lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+  );
+
+  const breadcrumbs = breadcrumbSchema([
+    {
+      name: lang === 'es' ? 'Inicio' : lang === 'pt' ? 'Início' : 'Home',
+      path: lang === 'en' ? '/' : `/${lang}`,
+    },
+    { name: dict.metadata.contactTitle, path: lang === 'en' ? '/contact' : `/${lang}/contact` },
+  ]);
+
   return (
     <>
+      <JsonLd data={[contactSchema, faq, breadcrumbs]} />
       {/* Hero — cream, eyebrow + bigger H1 + trust stats. */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-contact" variant="soft" />
@@ -132,6 +166,41 @@ export default async function ContactPage() {
             </div>
           </aside>
         </Reveal>
+      </section>
+
+      {/* FAQ — visible Q&A so the FAQPage schema in <head> has matching
+          HTML. <details> accordion works without JS; crawlers see the
+          text without expanding. */}
+      <section className="section bg-background pt-0">
+        <div className="container-page max-w-3xl">
+          <Reveal as="div" stagger>
+            <h2 className="font-heading text-2xl md:text-3xl mb-2">
+              {dict.contact.faqTitle}
+            </h2>
+            <p className="text-secondary/80 mb-6">{dict.contact.faqSubtitle}</p>
+            <div className="space-y-3">
+              {dict.contact.faqItems.map((item: { q: string; a: string }, i: number) => (
+                <details
+                  key={i}
+                  className="group rounded-xl border border-theme-9 bg-primary px-5 py-4 open:shadow-sm transition-shadow"
+                >
+                  <summary className="cursor-pointer list-none flex items-start justify-between gap-3 text-secondary font-medium">
+                    <span>{item.q}</span>
+                    <span
+                      aria-hidden
+                      className="text-accent text-xl leading-none select-none group-open:rotate-45 transition-transform"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       <Cta />

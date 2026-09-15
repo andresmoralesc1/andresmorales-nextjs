@@ -21,7 +21,7 @@ export async function generateMetadata({
     title: dict.metadata.servicesTitle,
     description: dict.metadata.servicesDescription,
     locale: safeLang,
-    path: '/services',
+    path: safeLang === 'en' ? '/services' : `/${safeLang}/services`,
   });
 }
 

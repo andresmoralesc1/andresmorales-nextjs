@@ -27,7 +27,7 @@ export async function generateMetadata({
     title: dict.metadata.webdevTitle,
     description: dict.metadata.webdevDescription,
     locale: safeLang,
-    path: '/services/web-development',
+    path: safeLang === 'en' ? '/services/web-development' : `/${safeLang}/services/web-development`,
   });
 }
 
