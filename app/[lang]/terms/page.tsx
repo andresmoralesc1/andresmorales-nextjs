@@ -18,7 +18,7 @@ export async function generateMetadata({
   return pageMetadata({
     title: t.metaTitle,
     description: t.metaDescription,
-    path: '/terms',
+    path: lang === 'en' ? '/terms' : `/${lang}/terms`,
     locale: lang as 'en' | 'es' | 'pt',
   });
 }

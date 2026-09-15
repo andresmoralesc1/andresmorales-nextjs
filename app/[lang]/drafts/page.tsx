@@ -18,6 +18,22 @@ export function generateStaticParams() {
 
 export const dynamic = 'force-dynamic';
 
+// Drafts queue — admin-only, redirect-to-login for anonymous. Defense in
+// depth: also noindex/nofollow + self-canonical so even if a crawler
+// follows a stale shared URL it can't surface in search results and
+// Google doesn't inherit the homepage canonical from the login redirect
+// destination.
+export const metadata = {
+  alternates: {
+    canonical: '/drafts',
+  },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+};
+
 export default async function DraftsPage({
   params,
 }: {

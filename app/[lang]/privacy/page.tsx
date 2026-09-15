@@ -18,7 +18,10 @@ export async function generateMetadata({
   return pageMetadata({
     title: t.metaTitle,
     description: t.metaDescription,
-    path: '/privacy',
+    // EN canonical is unprefixed; ES/PT add the locale to match the URL
+    // the user sees in the address bar (avoids /privacy vs /es/privacy
+    // being treated as duplicate content by Google).
+    path: lang === 'en' ? '/privacy' : `/${lang}/privacy`,
     locale: lang as 'en' | 'es' | 'pt',
   });
 }

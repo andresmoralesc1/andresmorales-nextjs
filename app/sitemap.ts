@@ -55,11 +55,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Portugal). Mirrors the layout's `alternates.languages.x-default`
     // so sitemap and HTML agree.
     alternates: {
+      // x-default only emits when EN exists for this route. For static
+      // routes every locale exists, so the condition is always true —
+      // the guard mirrors the blog entries below and prevents future
+      // EN-only routes from emitting x-default into a 404.
       languages: {
         ...Object.fromEntries(
           LOCALES.map((locale) => [locale, urlFor(locale, route.path)]),
         ),
-        'x-default': urlFor('en', route.path),
+        ...(LOCALES.includes('en') && {
+          'x-default': urlFor('en', route.path),
+        }),
       },
     },
   }));

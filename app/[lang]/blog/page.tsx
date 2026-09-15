@@ -20,9 +20,12 @@ export async function generateMetadata({
     title: m.blogTitle,
     description: m.blogDescription,
     alternates: {
-      canonical: `/${lang}/blog`,
+      // EN has no locale prefix (served at /blog), ES/PT add it.
+      // Matches the URL the user sees in the address bar so Google
+      // doesn't dedupe /blog against /en/blog as duplicate content.
+      canonical: lang === 'en' ? '/blog' : `/${lang}/blog`,
       languages: {
-        en: '/en/blog',
+        en: '/blog',
         es: '/es/blog',
         pt: '/pt/blog',
       },
