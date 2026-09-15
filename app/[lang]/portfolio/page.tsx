@@ -1,7 +1,7 @@
 import { pageMetadata } from '@/lib/metadata';
 import { wpImage } from '@/lib/theme';
 import { YoutubeEmbed } from '@/components/YoutubeEmbed';
-import { ParticlesBackground } from '@/components/particles-background';
+import { LazyParticles } from '@/components/lazy-particles';
 import { Cta } from '@/components/sections/cta';
 import Image from 'next/image';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
@@ -243,7 +243,7 @@ export default async function PortfolioPage() {
       {/* Hero — pitch + dual CTA. Cream background, white text (inverted
           from the white/cream-foreground pattern used by the home hero). */}
       <section className="section bg-background relative overflow-hidden">
-        <ParticlesBackground id="hero-particles-portfolio" variant="soft" />
+        <LazyParticles id="hero-particles-portfolio" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
           <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
             {p.heroEyebrow}

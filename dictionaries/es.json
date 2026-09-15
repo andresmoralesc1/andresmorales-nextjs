@@ -91,7 +91,31 @@
     "formErrorPrefix": "No se pudo enviar:",
     "formErrorFallback": "Como alternativa, escríbeme a",
     "formErrorEmail": "info@andresmorales.com.co",
-    "formErrorSuffix": "directamente."
+    "formErrorSuffix": "directamente.",
+    "faqTitle": "Preguntas frecuentes",
+    "faqSubtitle": "Cinco cosas que las personas preguntan antes de escribir — si la tuya no está, manda un mensaje o agenda una llamada.",
+    "faqItems": [
+      {
+        "q": "¿Qué tan rápido respondes los mensajes?",
+        "a": "Leo personalmente cada correo y envío de formulario en menos de 24 horas en días hábiles. Las consultas urgentes de proyecto normalmente se responden el mismo día hábil."
+      },
+      {
+        "q": "¿Trabajas con clientes fuera de Colombia?",
+        "a": "Sí — la mayoría de mis clientes activos están en EE.UU., México, Brasil y el resto de LATAM. Trabajo 100% remoto y me solapo con zonas horarias de US Eastern, Central y la mayoría de LATAM."
+      },
+      {
+        "q": "¿Cuál es la diferencia entre el formulario de contacto y el brief de proyecto?",
+        "a": "El formulario de contacto es para preguntas rápidas, segundas opiniones y conversaciones exploratorias. El brief de proyecto es para personas que ya saben qué quieren y quieren una propuesta con alcance — son 5 pasos y toma unos 5 minutos."
+      },
+      {
+        "q": "¿Puedo agendar una llamada sin enviarte un mensaje antes?",
+        "a": "Sí. El botón de la derecha abre mi calendario directamente — 30 minutos, gratis, sin compromiso. Úsalo si prefieres hablar en vez de escribir."
+      },
+      {
+        "q": "¿Firmas NDAs antes de la primera llamada?",
+        "a": "Sí, los NDAs mutuos son comunes para proyectos que tocan datos propietarios o lógica de negocio. Podemos firmar uno antes de la llamada para que la conversación no esté limitada por confidencialidad."
+      }
+    ]
   },
   "brief": {
     "eyebrow": "Línea 04 · Brief de proyecto",
@@ -616,12 +640,15 @@
   "portfolio": {
     "heroEyebrow": "Portafolio",
     "heroTitle": "Sitios reales, sistemas reales, resultados reales.",
-    "heroSubtitle": "E-commerce, marketplaces y automatizaciones con IA entregadas a clientes que quieren lanzar más rápido y vender más.",
+    "heroSubtitle": "E-commerce, marketplaces y automatizaciones con IA entregadas a clientes en Colombia, México, Argentina y toda LATAM — los que quieren lanzar más rápido y vender más.",
     "heroCta1": "Iniciar un proyecto",
     "heroCta2": "Ver servicios",
     "featuredEyebrow": "Trabajo destacado de clientes",
     "featuredTitle": "Sitios y plataformas en producción",
-    "featuredSubtitle": "Nueve proyectos en vivo. Haz clic en cualquier tarjeta para abrir el sitio y verlo en acción.",
+    "featuredSubtitle": "Nueve proyectos destacados en vivo para clientes en Colombia, México, Argentina y LATAM. Haz clic en cualquier tarjeta para abrir el sitio y verlo en acción.",
+    "moreEyebrow": "Más trabajo en producción",
+    "moreTitle": "Otras plataformas que diseñé y lancé",
+    "moreSubtitle": "Sitios adicionales, tiendas y sistemas en producción para clientes en LATAM — algunos multi-tenant, otros proyectos de cliente.",
     "cardBadgeLive": "En vivo",
     "cardDemoCreds": "Credenciales de demo",
     "cardEmail": "Correo",
@@ -663,6 +690,22 @@
     "proj9Subtitle": "Tienda de skate y streetwear",
     "proj9Metric": "En vivo · 64 productos",
     "proj9Desc": "Tienda de streetwear y skate con catálogo de marca, filtros (Adidas, Bape, DC) y chatbot integrado para soporte.",
+    "proj10Title": "Gato Colectivo",
+    "proj10Subtitle": "Membresías y comunidad para emprendedores",
+    "proj10Metric": "En vivo · Wompi + WhatsApp",
+    "proj10Desc": "Plataforma de membresías con pagos recurrentes vía Wompi y comunicación automatizada por WhatsApp (Evolution API) para una red de emprendedores.",
+    "proj11Title": "Velvet & Pearl (MECCA)",
+    "proj11Subtitle": "E-commerce de skincare, haircare y perfume",
+    "proj11Metric": "En vivo · 568 productos",
+    "proj11Desc": "Tienda online sincronizada con Mastershop para una marca de belleza — filtros por categoría, checkout completo y panel administrativo.",
+    "proj12Title": "Cleida",
+    "proj12Subtitle": "Dominio + correo empresarial (Mailcow)",
+    "proj12Metric": "En vivo · 32 buzones",
+    "proj12Desc": "Primer dominio cliente migrado a Mailcow: NS/MX/SPF/DKIM/DMARC configurados en Namecheap, 32 buzones sincronizados desde InterServer.",
+    "proj13Title": "Temptum",
+    "proj13Subtitle": "Consultoría de IA aplicada a empresas",
+    "proj13Metric": "Sitio corporativo · IA",
+    "proj13Desc": "Sitio corporativo para consultora de IA — servicios, casos, equipo con foto real y formulario de briefing integrado con Brevo.",
     "autoEyebrow": "Automatización inteligente en acción",
     "autoTitle": "Lo que se automatiza, se entrega más rápido",
     "autoSubtitle": "Flujos reales que entregué a clientes que necesitaban hacer más en menos tiempo — medidos por resultados, no por funciones.",
