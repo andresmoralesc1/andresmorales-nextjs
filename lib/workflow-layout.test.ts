@@ -4,7 +4,7 @@ import { layoutWorkflow } from './workflow-layout.ts';
 
 describe('layoutWorkflow', () => {
   it('classifies scheduleTrigger as start', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
         { name: 'T', type: 'n8n-nodes-base.scheduleTrigger', position: [0, 0] },
       ],
@@ -17,13 +17,13 @@ describe('layoutWorkflow', () => {
   it('classifies if/switch/splitInBatches as branch', () => {
     const cases = ['n8n-nodes-base.if', 'n8n-nodes-base.switch', 'n8n-nodes-base.splitInBatches'];
     for (const type of cases) {
-      const wf = { nodes: [{ name: 'B', type, position: [0, 0] }], connections: {} };
+      const wf: any = { nodes: [{ name: 'B', type, position: [0, 0] }], connections: {} };
       assert.equal(layoutWorkflow(wf).nodes[0].kind, 'branch', `expected branch for ${type}`);
     }
   });
 
   it('flattens nested connections array to {from, to} edges', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
         { name: 'A', type: 'n8n-nodes-base.start', position: [0, 0] },
         { name: 'B', type: 'n8n-nodes-base.if', position: [200, 0] },
@@ -42,13 +42,13 @@ describe('layoutWorkflow', () => {
     };
     const out = layoutWorkflow(wf);
     assert.equal(out.edges.length, 3);
-    assert.ok(out.edges.some((e) => e.from === 'A' && e.to === 'B'));
-    assert.ok(out.edges.some((e) => e.from === 'B' && e.to === 'C'));
-    assert.ok(out.edges.some((e) => e.from === 'B' && e.to === 'D'));
+    assert.ok(out.edges.some((e: { from: string; to: string }) => e.from === 'A' && e.to === 'B'));
+    assert.ok(out.edges.some((e: { from: string; to: string }) => e.from === 'B' && e.to === 'C'));
+    assert.ok(out.edges.some((e: { from: string; to: string }) => e.from === 'B' && e.to === 'D'));
   });
 
   it('drops edges pointing to nodes outside the rendered set (overflow cap)', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
         { name: 'A', type: 'n8n-nodes-base.start', position: [0, 0] },
         { name: 'B', type: 'n8n-nodes-base.noOp', position: [200, 0] },
@@ -62,10 +62,10 @@ describe('layoutWorkflow', () => {
   });
 
   it('caps rendered nodes at 12 + reports overflow', () => {
-    const nodes = Array.from({ length: 15 }, (_, i) => ({
+    const nodes: any = Array.from({ length: 15 }, (_, i) => ({
       name: `N${i}`,
       type: 'n8n-nodes-base.noOp',
-      position: [i * 200, 0] as [number, number],
+      position: [i * 200, 0],
     }));
     const out = layoutWorkflow({ nodes, connections: {} });
     assert.equal(out.nodes.length, 12);
@@ -73,7 +73,7 @@ describe('layoutWorkflow', () => {
   });
 
   it('uses n8n positions when present (scales by X_SCALE/Y_SCALE)', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
         { name: 'A', type: 'n8n-nodes-base.start', position: [0, 0] },
         { name: 'B', type: 'n8n-nodes-base.noOp', position: [400, 200] },
@@ -88,7 +88,7 @@ describe('layoutWorkflow', () => {
   });
 
   it('normalizes so min x and min y are both 0', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
         { name: 'A', type: 'n8n-nodes-base.start', position: [200, 100] },
         { name: 'B', type: 'n8n-nodes-base.noOp', position: [400, 100] },
@@ -101,10 +101,10 @@ describe('layoutWorkflow', () => {
   });
 
   it('falls back to BFS layout if any node lacks position', () => {
-    const wf = {
+    const wf: any = {
       nodes: [
-        { name: 'A', type: 'n8n-nodes-base.start' /* no position */ },
-        { name: 'B', type: 'n8n-nodes-base.httpRequest' /* no position */ },
+        { name: 'A', type: 'n8n-nodes-base.start' },
+        { name: 'B', type: 'n8n-nodes-base.httpRequest' },
       ],
       connections: {
         A: { main: [[{ node: 'B', type: 'main', index: 0 }]] },
@@ -117,3 +117,4 @@ describe('layoutWorkflow', () => {
     assert.ok(b.x > a.x, 'B should be deeper than A');
   });
 });
+
