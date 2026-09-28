@@ -43,23 +43,18 @@ export function HeaderClient({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Build the mega-menu data once. Two sections — "Decide" (the
-  // pre-purchase evaluation: work, process, about) and "Learn"
-  // (content marketing: guides, blog, compare). Each link gets the
-  // locale prefix automatically via getLocalizedPath.
+  // Build the mega-menu data once. Five top-level items consume
+  // Home, Services, Portfolio, About us directly. The "More" mega-menu
+  // holds the rest under a single "Learn" section — 4 links, 1 grid
+  // column. Single section is intentional: with 4 items the second
+  // column would look empty, and a 1-column menu reads as a clean
+  // "extra content" list instead of a fragmented decision tree.
   const m = dict.nav.moreSections;
   const megaSections = [
     {
-      title: m.decide,
-      links: [
-        { href: getLocalizedPath('/portfolio', locale), label: m.work },
-        { href: getLocalizedPath('/process', locale), label: m.process },
-        { href: getLocalizedPath('/about', locale), label: m.about },
-      ],
-    },
-    {
       title: m.learn,
       links: [
+        { href: getLocalizedPath('/process', locale), label: m.process },
         { href: getLocalizedPath('/guide/ai-automation-latam-2026', locale), label: m.guides },
         { href: getLocalizedPath('/blog', locale), label: m.blog },
         { href: getLocalizedPath('/vs/make-vs-n8n', locale), label: m.compare },
@@ -114,6 +109,18 @@ export function HeaderClient({
               className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
             >
               {dict.nav.services}
+            </Link>
+            <Link
+              href={getLocalizedPath('/portfolio', locale)}
+              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+            >
+              {dict.nav.portfolio}
+            </Link>
+            <Link
+              href={getLocalizedPath('/about', locale)}
+              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+            >
+              {dict.nav.about}
             </Link>
             <MegaMenu
               trigger={dict.nav.more}
