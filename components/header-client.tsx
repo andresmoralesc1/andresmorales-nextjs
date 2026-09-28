@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { getLocalizedPath, type Dictionary, type Locale } from '@/lib/i18n';
 import { LocaleSwitcherWrapper } from '@/components/LocaleSwitcherWrapper';
 import { MobileMenu } from '@/components/MobileMenu';
-import { MegaMenu } from '@/components/mega-menu';
+import { MoreMenu as MegaMenu } from '@/components/sections/more-menu';
 import { TrackCta } from '@/components/track';
 
 /**
@@ -62,21 +62,16 @@ export function HeaderClient({
 
   // Build the mega-menu data once. Five top-level items consume
   // Home, Services, Portfolio, About us directly. The "More" mega-menu
-  // holds the rest under a single "Learn" section — 4 links, 1 grid
-  // column. Single section is intentional: with 4 items the second
-  // column would look empty, and a 1-column menu reads as a clean
-  // "extra content" list instead of a fragmented decision tree.
+  // "More" mega-menu data — single "Learn" section. Per-item desc
+  // comes from dict.nav.moreMenu (added in this commit) so the panel
+  // shows a one-line preview under each link.
   const m = dict.nav.moreSections;
-  const megaSections = [
-    {
-      title: m.learn,
-      links: [
-        { href: getLocalizedPath('/process', locale), label: m.process },
-        { href: getLocalizedPath('/guide/ai-automation-latam-2026', locale), label: m.guides },
-        { href: getLocalizedPath('/blog', locale), label: m.blog },
-        { href: getLocalizedPath('/vs/make-vs-n8n', locale), label: m.compare },
-      ],
-    },
+  const mm = dict.nav.moreMenu;
+  const moreItems = [
+    { href: getLocalizedPath('/process', locale), title: m.process, description: mm.processDesc },
+    { href: getLocalizedPath('/guide/ai-automation-latam-2026', locale), title: m.guides, description: mm.guidesDesc },
+    { href: getLocalizedPath('/blog', locale), title: m.blog, description: mm.blogDesc },
+    { href: getLocalizedPath('/vs/make-vs-n8n', locale), title: m.compare, description: mm.compareDesc },
   ];
 
   return (
@@ -156,11 +151,11 @@ export function HeaderClient({
           </Link>
           <MegaMenu
             trigger={dict.nav.more}
-            sections={megaSections}
-            cta={{
-              href: getLocalizedPath('/brief', locale),
-              label: m.startCta,
-            }}
+            learnLabel={mm.learnLabel}
+            learnDescription={mm.learnDescription}
+            ctaLabel={m.startCta}
+            ctaHref={getLocalizedPath('/brief', locale)}
+            items={moreItems}
           />
         </nav>
 

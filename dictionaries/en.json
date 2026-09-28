@@ -24,6 +24,14 @@
       "blog": "Blog",
       "compare": "Compare",
       "startCta": "Start a project"
+    },
+    "moreMenu": {
+      "learnLabel": "Learn",
+      "learnDescription": "Long-form content and side-by-side comparisons.",
+      "processDesc": "The 5-step rhythm I follow on every engagement",
+      "guidesDesc": "Field guides on AI, automation, and tools",
+      "blogDesc": "Short notes on what I am building",
+      "compareDesc": "Honest X-vs-Y with real data"
     }
   },
   "hero": {

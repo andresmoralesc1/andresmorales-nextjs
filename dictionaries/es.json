@@ -24,6 +24,14 @@
       "blog": "Notas",
       "compare": "Comparar",
       "startCta": "Empezar proyecto"
+    },
+    "moreMenu": {
+      "learnLabel": "Aprende",
+      "learnDescription": "Contenido largo y comparaciones honestas.",
+      "processDesc": "El ritmo de 5 pasos que sigo en cada engagement",
+      "guidesDesc": "Guías de campo sobre IA, automatización y herramientas",
+      "blogDesc": "Notas cortas sobre lo que estoy construyendo",
+      "compareDesc": "X-vs-Y honesto con datos reales"
     }
   },
   "hero": {
