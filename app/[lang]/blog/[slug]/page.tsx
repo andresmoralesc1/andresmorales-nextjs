@@ -1,14 +1,33 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { join } from 'node:path';
 import { existsSync, readdirSync } from 'node:fs';
 import { getCurrentDictionary } from '@/lib/dictionary';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import { getDictionary, DEFAULT_LOCALE, LOCALES, type Locale } from '@/lib/i18n';
 import { getPost, type BlogLocale, listAllPostSlugs, listSlugsByLocale } from '@/lib/blog';
 import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
 import styles from './blog-prose.module.css';
 
 const CONTENT_DIR = join(process.cwd(), 'content', 'blog');
+
+/**
+ * Find the locale that actually has a body for `slug`. Returns undefined
+ * when the slug doesn't exist in any locale.
+ *
+ * Used as a fallback when a user lands on `/blog/<slug>` (no locale
+ * prefix, treated as EN) but the post only exists in ES/PT. Without
+ * this, generateStaticParams never pre-renders the route, so the
+ * server returns 404 even though the content is live in another locale.
+ * The fix: detect the available locale and redirect — better UX than
+ * a dead 404 page, and preserves link equity for shared social URLs.
+ */
+function findAvailableLocale(slug: string, requested: Locale): Locale | undefined {
+  for (const loc of LOCALES) {
+    if (loc === requested) continue;
+    if (getPost(slug, loc)) return loc;
+  }
+  return undefined;
+}
 
 export async function generateStaticParams() {
   // Only pre-render (slug, lang) pairs where a localized body actually
@@ -39,7 +58,19 @@ export async function generateMetadata({
 }) {
   const { lang, slug } = await params;
   const post = getPost(slug, lang);
-  if (!post) return {};
+  if (!post) {
+    // Post missing in the requested locale. Try other locales; if found,
+    // redirect so social shares + shared links reach the right page.
+    // `redirect()` throws NEXT_REDIRECT — Next.js handles it before any
+    // body is rendered. If no locale has the post, return {} and the
+    // page handler will 404.
+    const fallback = findAvailableLocale(slug, lang);
+    if (fallback) {
+      const prefix = fallback === DEFAULT_LOCALE ? '' : `/${fallback}`;
+      redirect(`${prefix}/blog/${slug}`);
+    }
+    return {};
+  }
 
   const dict = await getDictionary(lang);
   const blogMeta = (dict.seoMeta?.blog as Record<string, Record<string, string>> | undefined)?.[slug]?.[lang];
@@ -98,7 +129,17 @@ export default async function BlogPostPage({
 }) {
   const { lang, slug } = await params;
   const post = getPost(slug, lang);
-  if (!post) notFound();
+  if (!post) {
+    // Same fallback as generateMetadata: redirect to whatever locale
+    // does have the post, so /blog/<es-only-slug> → /es/blog/<slug>
+    // instead of 404.
+    const fallback = findAvailableLocale(slug, lang);
+    if (fallback) {
+      const prefix = fallback === DEFAULT_LOCALE ? '' : `/${fallback}`;
+      redirect(`${prefix}/blog/${slug}`);
+    }
+    notFound();
+  }
 
   const dict = await getCurrentDictionary();
 
