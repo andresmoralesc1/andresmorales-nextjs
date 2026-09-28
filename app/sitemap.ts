@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { listSlugsByLocale, postMtime } from '@/lib/blog';
+import { listSlugsByLocale, listGuideSlugsByLocale, postMtime } from '@/lib/blog';
 import { CASE_STUDIES } from '@/data/case-studies';
 
 // Routes as of Next.js portfolio rebuild — keep in sync with app/*/page.tsx
@@ -135,5 +135,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...staticEntries, ...blogEntries, ...caseStudyEntries];
+  // Guide entries — one per (slug × locale) where a body exists in
+  // content/guide/. Same hreflang discipline as blog: only emit
+  // alternates for locales that actually have the guide body.
+  const guideSlugsByLocale = listGuideSlugsByLocale();
+  const guideEntries: MetadataRoute.Sitemap = LOCALES.flatMap((locale) =>
+    [...guideSlugsByLocale[locale]].map((slug) => {
+      const guidePath = `/guide/${slug}`;
+      const existingLocales = LOCALES.filter((alt) =>
+        guideSlugsByLocale[alt].has(slug),
+      );
+      const languages: Record<string, string> = Object.fromEntries(
+        existingLocales.map((alt) => [alt, urlFor(alt, guidePath)]),
+      );
+      if (existingLocales.includes('en')) {
+        languages['x-default'] = urlFor('en', guidePath);
+      }
+      return {
+        url: urlFor(locale, guidePath),
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+        alternates: { languages },
+      };
+    }),
+  );
+
+  return [...staticEntries, ...blogEntries, ...caseStudyEntries, ...guideEntries];
 }

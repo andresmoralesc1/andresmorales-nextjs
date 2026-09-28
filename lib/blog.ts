@@ -59,6 +59,24 @@ export interface BlogPostSummary extends BlogPostMeta {
 }
 
 const CONTENT_DIR = join(process.cwd(), 'content', 'blog');
+const GUIDE_DIR = join(process.cwd(), 'content', 'guide');
+
+// Reuse the same locale-iteration shape as listSlugsByLocale so the
+// sitemap generator doesn't need a separate code path for guides.
+export function listGuideSlugsByLocale(): Record<BlogLocale, Set<string>> {
+  if (!existsSync(GUIDE_DIR)) return { en: new Set(), es: new Set(), pt: new Set() };
+  const files = readdirSync(GUIDE_DIR);
+  const out: Record<BlogLocale, Set<string>> = {
+    en: new Set(),
+    es: new Set(),
+    pt: new Set(),
+  };
+  for (const f of files) {
+    const m = /^(.+?)\.(en|es|pt)\.md$/.exec(f);
+    if (m) out[m[2] as BlogLocale].add(m[1]);
+  }
+  return out;
+}
 
 // Configure marked once: GitHub-flavored breaks on, smart lists on,
 // HTML pass-through disabled (escapes user content safely).
