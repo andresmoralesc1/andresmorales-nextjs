@@ -151,6 +151,33 @@ export default async function ProcessPage() {
         </div>
       </section>
 
+      {/* Cross-link: methodology decisions are made against specific
+          tools/services. Surface the /vs/* deep dives so the reader can
+          see WHY the rhythm produces the result it does. */}
+      <section className="section bg-theme-5">
+        <div className="container-page max-w-4xl text-center">
+          <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-4">
+            {p.compareEyebrow}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+            {[
+              { label: p.compareMakeVsN8n, href: '/vs/make-vs-n8n' },
+              { label: p.compareVercelVsAmplify, href: '/vs/vercel-vs-aws-amplify' },
+              { label: p.compareAiVsAgency, href: '/vs/ai-consultant-vs-agency' },
+            ].map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-theme-9 hover:border-theme-1 rounded-full text-sm font-secondary font-bold text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+              >
+                {l.label}
+                <span aria-hidden>→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Cta />
     </>
   );

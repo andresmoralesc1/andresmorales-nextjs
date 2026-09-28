@@ -1188,7 +1188,11 @@
     "stat3Value": "30 min",
     "stat3Label": "scoping call, no charge",
     "stat4Value": "1–6 wk",
-    "stat4Label": "build phase, weekly slices"
+    "stat4Label": "build phase, weekly slices",
+    "compareEyebrow": "How the rhythm compares",
+    "compareMakeVsN8n": "Make vs n8n",
+    "compareVercelVsAmplify": "Vercel vs AWS Amplify",
+    "compareAiVsAgency": "AI consultant vs agency"
   },
   "pricing": {
     "eyebrow": "Investment",
