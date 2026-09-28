@@ -72,6 +72,31 @@ export default async function ProcessPage() {
         </Reveal>
       </section>
 
+      <section className="section bg-background">
+        <Reveal className="container-page max-w-5xl">
+          <div className="text-center mb-8">
+            <p className="text-xs uppercase tracking-widest text-text mb-2 font-secondary font-bold">
+              {p.statsEyebrow}
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl text-secondary">
+              {p.statsTitle}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="text-center">
+                <div className="font-heading text-3xl md:text-4xl text-accent mb-2">
+                  {p[`stat${n}Value` as keyof typeof p]}
+                </div>
+                <p className="text-xs uppercase tracking-widest text-text">
+                  {p[`stat${n}Label` as keyof typeof p]}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
       <section className="section bg-theme-5">
         <Reveal stagger className="container-page max-w-5xl">
           <div className="text-center mb-12">

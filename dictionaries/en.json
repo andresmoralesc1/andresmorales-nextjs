@@ -64,7 +64,17 @@
     "breadcrumbAbout": "About",
     "servicesLinkDesc": "AI, UI/UX and production web",
     "portfolioLinkDesc": "Selected work",
-    "contactLinkDesc": "Start a project"
+    "contactLinkDesc": "Start a project",
+    "statsEyebrow": "By the numbers",
+    "statsTitle": "What the last 5 years look like.",
+    "stat1Value": "5+",
+    "stat1Label": "years shipping production",
+    "stat2Value": "87",
+    "stat2Label": "workflows on n8n",
+    "stat3Value": "24",
+    "stat3Label": "running daily",
+    "stat4Value": "3",
+    "stat4Label": "deliverables per engagement"
   },
   "services": {
     "eyebrow": "What I do",
@@ -1168,7 +1178,17 @@
     "step5Title": "Iterate",
     "step5Body": "Optional retainer: monitoring, eval, prompt iteration, model updates, new workflow rollouts. 3-month minimum commitment, cancel anytime after. Most clients keep a small retainer to compound wins.",
     "ctaCall": "Book a scoping call",
-    "ctaProcess": "Read the full methodology"
+    "ctaProcess": "Read the full methodology",
+    "statsEyebrow": "By the numbers",
+    "statsTitle": "What the rhythm produces.",
+    "stat1Value": "87",
+    "stat1Label": "workflows shipped on n8n",
+    "stat2Value": "24",
+    "stat2Label": "running in production daily",
+    "stat3Value": "30 min",
+    "stat3Label": "scoping call, no charge",
+    "stat4Value": "1–6 wk",
+    "stat4Label": "build phase, weekly slices"
   },
   "pricing": {
     "eyebrow": "Investment",

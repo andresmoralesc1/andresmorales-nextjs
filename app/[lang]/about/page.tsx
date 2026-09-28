@@ -125,6 +125,32 @@ export default async function AboutPage({
         </Reveal>
       </section>
 
+      {/* Stats band — by the numbers, real data only */}
+      <section className="section bg-background">
+        <Reveal className="container-page max-w-5xl">
+          <div className="text-center mb-8">
+            <p className="text-xs uppercase tracking-widest text-text mb-2 font-secondary font-bold">
+              {a.statsEyebrow}
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl text-secondary">
+              {a.statsTitle}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="text-center">
+                <div className="font-heading text-3xl md:text-4xl text-accent mb-2">
+                  {a[`stat${n}Value` as keyof typeof a]}
+                </div>
+                <p className="text-xs uppercase tracking-widest text-text">
+                  {a[`stat${n}Label` as keyof typeof a]}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
       {/* Skills — three columns (AI / UX / Web) */}
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-5xl">

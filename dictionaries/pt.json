@@ -64,7 +64,17 @@
     "breadcrumbAbout": "About",
     "servicesLinkDesc": "IA, UI/UX e web de produção",
     "portfolioLinkDesc": "Trabalhos selecionados",
-    "contactLinkDesc": "Começar um projeto"
+    "contactLinkDesc": "Começar um projeto",
+    "statsEyebrow": "Em números",
+    "statsTitle": "Como se parecem os últimos 5 anos.",
+    "stat1Value": "5+",
+    "stat1Label": "anos entregando em produção",
+    "stat2Value": "87",
+    "stat2Label": "workflows no n8n",
+    "stat3Value": "24",
+    "stat3Label": "rodando por dia",
+    "stat4Value": "3",
+    "stat4Label": "entregáveis por engagement"
   },
   "services": {
     "eyebrow": "O que eu faço",
@@ -916,7 +926,17 @@
     "step5Title": "Iterar",
     "step5Body": "Retainer opcional: monitoring, eval, iteração de prompts, updates de modelos, rollout de novos workflows. Compromisso mínimo de 3 meses, cancela quando quiser depois. A maioria dos clientes mantém um retainer pequeno para acumular wins.",
     "ctaCall": "Agendar chamada de scoping",
-    "ctaProcess": "Ler a metodologia completa"
+    "ctaProcess": "Ler a metodologia completa",
+    "statsEyebrow": "Em números",
+    "statsTitle": "O que esse ritmo produz.",
+    "stat1Value": "87",
+    "stat1Label": "workflows entregues no n8n",
+    "stat2Value": "24",
+    "stat2Label": "rodando em produção por dia",
+    "stat3Value": "30 min",
+    "stat3Label": "chamada de scoping, sem custo",
+    "stat4Value": "1–6 sem",
+    "stat4Label": "fase de build, weekly slices"
   },
   "seoMeta": {
     "work": {
