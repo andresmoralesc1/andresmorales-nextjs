@@ -152,7 +152,7 @@ export function ContactFormClient({
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           disabled={state === 'loading'}
-          className="w-full px-4 py-2 rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60"
+          className="w-full px-4 py-2 min-h-[44px] text-base rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60"
         />
       </div>
       <div>
@@ -171,7 +171,7 @@ export function ContactFormClient({
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           disabled={state === 'loading'}
-          className="w-full px-4 py-2 rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60"
+          className="w-full px-4 py-2 min-h-[44px] text-base rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60"
         />
       </div>
       <div>
@@ -188,7 +188,7 @@ export function ContactFormClient({
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           disabled={state === 'loading'}
-          className="w-full px-4 py-2 rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60 resize-y"
+          className="w-full px-4 py-2 min-h-[120px] text-base rounded-md border border-theme-9 focus:border-theme-1 focus:outline-none focus:ring-1 focus:ring-theme-1 disabled:opacity-60 resize-y"
         />
         <p className="mt-2 text-xs text-secondary/70">{messageHelp}</p>
       </div>
