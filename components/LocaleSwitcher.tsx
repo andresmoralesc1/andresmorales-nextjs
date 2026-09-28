@@ -87,7 +87,7 @@ export function LocaleSwitcher({ currentLocale, t, className }: LocaleSwitcherPr
             }}
             className={
               'inline-flex items-center justify-center rounded-md px-1.5 py-1 ' +
-              'transition-opacity hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-current ' +
+              'transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 ' +
               (isActive ? 'opacity-100' : 'opacity-50 hover:opacity-80')
             }
           >

@@ -8,7 +8,11 @@
     "contact": "Contact",
     "skipToContent": "Skip to main content",
     "toggleMenu": "Toggle menu",
-    "startProject": "Let's talk"
+    "startProject": "Let's talk",
+    "process": "Process",
+    "about": "About",
+    "guide": "Guide",
+    "compare": "Compare"
   },
   "hero": {
     "eyebrow": "AI Automation Consultant",
@@ -22,7 +26,45 @@
     "title": "I build AI automations that actually ship.",
     "p1": "Most \"AI consultants\" deliver slides. I ship n8n flows and chatbots that are running by Friday.",
     "p2": "5+ years shipping production systems. ACM at maker, inc. in San Francisco before going independent.",
-    "cta": "See how I work"
+    "cta": "See how I work",
+    "photoAlt": "Andrés Morales, AI consultant based in Bogotá",
+    "teamAlt": "Andrés with a LATAM client team around the planning table",
+    "teamCaption": "In the field with a LATAM client team — the weekly demo cadence makes the work happen in the room, not in status decks.",
+    "p3": "I came to code and AI through a non-linear path — that is why I optimize for what reaches production, not for theory. AI automations + UI/UX design + production web, one project at a time. Most engagements touch all three.",
+    "skillsEyebrow": "What I work on",
+    "skillsTitle": "Day-to-day tooling and stacks.",
+    "skillsBody": "Not an exhaustive list — I keep up with what each engagement needs.",
+    "skillsAI": "AI / automation",
+    "skillsAIList": "n8n, Make, OpenAI, Anthropic, Wompi, HubSpot, Pipedrive, Airtable, Notion, Slack, WhatsApp Business API, Evolution API, LangChain, pgvector",
+    "skillsUX": "UI / UX design",
+    "skillsUXList": "Figma, FigJam, Maze, Useberry, Hotjar, PostHog, Notion, Loom",
+    "skillsWeb": "Web / infra",
+    "skillsWebList": "Next.js, React, TypeScript, Tailwind, Prisma, PostgreSQL, Medusa, Stripe, Vercel, Hetzner, Caddy, Docker, Mailcow",
+    "valuesEyebrow": "How I work",
+    "valuesTitle": "Three things you can count on.",
+    "valuesBody": "These are non-negotiable. They shape every engagement and how I price the work.",
+    "value1Title": "Fixed price, never hourly",
+    "value1Body": "I quote line items after the scoping call and the contract freezes them. If scope changes mid-build, I flag it before doing extra work, not after. No surprise invoices.",
+    "value2Title": "Everything is yours",
+    "value2Body": "Code in your GitHub, design files in your Figma, workflows as portable JSON, credentials in your password manager. Nothing lives in my accounts. Handover is a non-event.",
+    "value3Title": "Weekly demos, not status updates",
+    "value3Body": "Every Friday you get a working demo, not a Slack message. Work ships in slices — you see it in production, you react, we adjust. No \"we are on track\" without a link.",
+    "hours": "Hours",
+    "hoursBody": "Mon–Fri · 8 a.m.–6 p.m. GMT-5. I respond in under 24 h on business days. I do not bill by the hour — every engagement is a fixed-price contract.",
+    "ctaBookCall": "Book a scoping call",
+    "metaDescription": "AI and web consultant. I ship AI automations, UI/UX and production web for LATAM SMBs and US startups. Based in Bogotá.",
+    "heroBadge": "Available for new engagements — Q4 2026",
+    "faqQ1": "Do you work hourly or at a fixed price?",
+    "faqA1": "Fixed price only. I quote line items after the scoping call and the contract freezes them. Scope changes get flagged before extra work happens, not after.",
+    "faqQ2": "Who owns the code and design files at the end of the engagement?",
+    "faqA2": "You do. Code lives in your GitHub, design files in your Figma, workflows as portable JSON, credentials in your password manager. Nothing stays in my accounts — handover is a non-event.",
+    "faqQ3": "How do you keep projects on track?",
+    "faqA3": "Every Friday you get a working demo in production, not a Slack message. Work ships in slices — you see it, react, we adjust. No \"we are on track\" without a link.",
+    "breadcrumbHome": "Home",
+    "breadcrumbAbout": "About",
+    "servicesLinkDesc": "AI, UI/UX and production web",
+    "portfolioLinkDesc": "Selected work",
+    "contactLinkDesc": "Start a project"
   },
   "services": {
     "eyebrow": "What I do",
@@ -31,7 +73,8 @@
     "track1": "AI Automation",
     "track2": "UI/UX Design",
     "track3": "Web Development",
-    "ctaSeeAll": "See all services"
+    "ctaSeeAll": "See all services",
+    "metaDescription": "Three tracks: AI automation, UI/UX design, and production web. Fixed-price engagements after a 30-min scoping call."
   },
   "homeContact": {
     "eyebrow": "From Colombia, working with teams worldwide.",
@@ -57,130 +100,196 @@
     "builtWith": "Built with {heart} using Next.js",
     "githubLabel": "GitHub profile",
     "linkedinLabel": "LinkedIn profile",
-    "ariaNavLabel": "Footer navigation"
+    "ariaNavLabel": "Footer navigation",
+    "compareTitle": "Compare",
+    "compareDesc": "Tool and service comparisons",
+    "compareLink1Label": "Make vs n8n",
+    "compareLink2Label": "AI consultant vs agency",
+    "compareLink3Label": "Vercel vs AWS Amplify"
   },
   "contact": {
-    "eyebrow": "Track 04 · Get in touch",
-    "title": "Contact",
-    "subtitle": "Tell me what you're trying to automate. I usually reply within 24h.",
-    "subtitle2": "If you write after hours, you'll hear back the next morning at 9am GMT-5.",
+    "eyebrow": "Contact",
+    "title": "Let's talk about your project",
+    "subtitle": "The fastest way to scope work together is a 30-min call. The form below reaches the same inbox.",
+    "subtitle2": "Prefer async?",
     "statsReply": "< 24h",
-    "statsReplyLabel": "Reply time",
+    "statsReplyLabel": "Reply time on business days",
     "statsCall": "30 min",
-    "statsCallLabel": "Free strategy call",
+    "statsCallLabel": "Scoping call",
     "statsTz": "GMT-5",
-    "statsTzLabel": "Timezone",
-    "asideBookingTitle": "Book a free 30-min call",
-    "asideBookingKicker": "Let's talk first — no forms",
-    "asideBookingP": "Faster than writing it all down. Pick a slot, and we'll map your first workflow on the call.",
-    "asideBookingCta": "Book free strategy call",
-    "asideEmailKicker": "Prefer email?",
-    "asideHoursKicker": "Working hours",
-    "asideHoursP": "Mon–Fri, 9:00–18:00 (GMT-5)",
-    "asideHoursHint": "Writing after 6pm? You'll hear back by 9am the next business day.",
+    "statsTzLabel": "Bogotá time",
+    "asideEmailKicker": "Email",
+    "asideHoursKicker": "Hours",
+    "asideHoursP": "Mon–Fri, 8 a.m.–6 p.m. GMT-5",
+    "asideHoursHint": "Async-friendly. I reply within one business day.",
+    "asideBookingKicker": "Booking",
+    "asideBookingTitle": "Book a scoping call",
+    "asideBookingP": "30-minute video call. We map your scope to a fixed-price engagement.",
+    "asideBookingCta": "Pick a slot",
     "formNameLabel": "Name",
     "formEmailLabel": "Email",
     "formMessageLabel": "Message",
-    "formMessagePlaceholder": "Be specific. e.g. 'automate booking confirmation emails from WhatsApp to guests'",
-    "formMessageHelp": "I usually reply within 24h. If you'd rather talk, scroll right to book a 30-min call →",
+    "formMessagePlaceholder": "Tell me about the project",
+    "formMessageHelp": "A few sentences are enough. I will reply within one business day.",
     "formSubmit": "Send message",
     "formSubmitting": "Sending…",
-    "formSuccessTitle": "✓ Message sent",
-    "formSuccessBody": "Thanks for reaching out. I usually reply within 24 hours.",
-    "formSuccessRetry": "Send another message →",
-    "formErrorPrefix": "Couldn't send:",
-    "formErrorFallback": "Email me at",
-    "formErrorEmail": "info@andresmorales.com.co",
-    "formErrorSuffix": "instead."
+    "formSuccessTitle": "Message sent",
+    "formSuccessBody": "I will reply within one business day. If urgent, email info@andresmorales.com.co.",
+    "formSuccessRetry": "Send another",
+    "formErrorPrefix": "Could not send:",
+    "formErrorSuffix": "Try again or email me directly.",
+    "formErrorFallback": "Unknown error",
+    "formErrorEmail": "Enter a valid email",
+    "faqTitle": "Common questions",
+    "faqSubtitle": "Quick answers before you reach out.",
+    "faqItems": [
+      {
+        "q": "Do you work hourly?",
+        "a": "No. Every engagement is a fixed-price contract. I quote line items after the scoping call and freeze them in the contract."
+      },
+      {
+        "q": "What is the minimum engagement?",
+        "a": "An AI Kickstart at $4,500 is the smallest project. Most engagements land in the $10K-$25K range."
+      },
+      {
+        "q": "Do you work with teams in LATAM and the US?",
+        "a": "Yes — that is the core of the practice. Working hours are GMT-5 and I overlap with both regions."
+      },
+      {
+        "q": "Can I see examples of past work?",
+        "a": "Yes — see the portfolio page. I also share detailed case studies on the scoping call."
+      }
+    ]
   },
   "brief": {
-    "eyebrow": "Track 04 · Project brief",
-    "title": "Project Brief",
-    "subtitle1": "A few quick questions so I can scope your project in the first call. The more context, the better.",
-    "subtitle2": "Your progress saves automatically — feel free to come back.",
-    "stats1": "5 steps",
-    "stats1Label": "~5 minutes total",
-    "stats2": "< 24h",
-    "stats2Label": "Reply time",
-    "stats3": "30 min",
-    "stats3Label": "Free strategy call if you'd rather talk",
-    "wizardStep": "Step {current} of {total}",
-    "wizardBack": "← Back",
-    "wizardStartOver": "Start over",
-    "wizardStartOverConfirm": "Reset all answers? Your saved progress will be cleared.",
-    "wizardDraftSaved": "💾 Draft saved · {count} answer",
-    "wizardDraftSavedPlural": "💾 Draft saved · {count} answers",
-    "wizardDraftTitle": "Your progress is auto-saved in this browser for 30 days",
-    "wizardDisabledTitle": "Complete the required fields above to continue",
-    "wizardNext": "Next →",
-    "wizardSubmit": "Submit brief →",
+    "eyebrow": "Project brief",
+    "title": "Tell me what you are building. I will reply within one business day with a fixed-price quote.",
+    "subtitle1": "Five short steps. No account required. Drafts auto-save locally so you can come back.",
+    "subtitle2": "Need it on a call instead?",
+    "stats1": "24h",
+    "stats1Label": "Average reply time",
+    "stats2": "5 steps",
+    "stats2Label": "To a fixed-price scope",
+    "stats3": "1 call",
+    "stats3Label": "Before the contract",
+    "wizardStep": "Step",
+    "wizardNext": "Next",
+    "wizardBack": "Back",
+    "wizardSubmit": "Send brief",
     "wizardSending": "Sending…",
-    "wizardRedirecting": "Brief sent! Redirecting…",
-    "wizardEscapeHatch": "Rather talk it through?",
-    "wizardEscapeHatchCta": "Book a free 30-min call instead →",
-    "step1Title": "Tell me about you",
-    "step1NameLabel": "Your name",
-    "step1NamePlaceholder": "Maria Garcia",
+    "wizardStartOver": "Start over",
+    "wizardStartOverConfirm": "Clear all fields?",
+    "wizardDraftSaved": "Draft saved locally",
+    "wizardDraftSavedPlural": "Drafts saved locally",
+    "wizardDraftTitle": "Saved drafts",
+    "wizardRedirecting": "Redirecting…",
+    "wizardDisabledTitle": "Briefs are paused",
+    "wizardEscapeHatch": "Having trouble with the form?",
+    "wizardEscapeHatchCta": "Email me directly",
+    "step1Title": "About you",
+    "step1NameLabel": "Name",
+    "step1NamePlaceholder": "Your full name",
     "step1EmailLabel": "Email",
-    "step1EmailPlaceholder": "maria@company.com",
-    "step1EmailError": "Enter a valid email",
+    "step1EmailPlaceholder": "you@company.com",
+    "step1EmailError": "Enter a valid email so I can reply",
+    "step1RoleLabel": "Role",
+    "step1RolePlaceholder": "Founder, Head of Ops, Marketing Lead…",
     "step1CompanyLabel": "Company",
-    "step1CompanyPlaceholder": "Acme Inc.",
-    "step1RoleLabel": "Your role",
-    "step1RolePlaceholder": "Founder, Head of Ops, etc.",
-    "step2Title": "What kind of project?",
-    "step2Legend": "Project type",
+    "step1CompanyPlaceholder": "Company name (optional)",
+    "step2Title": "What are you building?",
+    "step2Legend": "Pick the closest match — we will refine on the call",
+    "step2OtherLabel": "Something else?",
+    "step2OtherPlaceholder": "Tell me in one line",
+    "step3Title": "Tools and pain",
+    "step3ProblemLabel": "The pain you want solved",
+    "step3ProblemPlaceholder": "What is the manual work that costs you the most?",
+    "step3ProblemError": "Add at least one line — even a rough one",
+    "step3ToolsLegend": "Tools in your stack",
+    "step3ToolsHint": "Pick all that apply",
+    "step3OtherToolsLabel": "Other tools",
+    "step3OtherToolsPlaceholder": "Anything not listed?",
+    "step3FrequencyLegend": "How often does this pain fire?",
+    "step4Title": "Goal and metric",
+    "step4GoalLabel": "What does success look like?",
+    "step4GoalPlaceholder": "A measurable outcome — e.g. 5 hours saved per week",
+    "step4GoalError": "Add at least one line — even a rough one",
+    "step4MetricLabel": "How will you measure it?",
+    "step4MetricPlaceholder": "Hours saved / leads per week / error rate",
+    "step5Title": "Budget and timeline",
+    "step5BudgetLegend": "Honest range helps me quote the right tier",
+    "step5TimelineLegend": "Pick the closest window",
+    "step5NotesLabel": "Anything else?",
+    "step5NotesPlaceholder": "Constraints, integrations, sensitivities",
+    "step5SummaryProjectOther": "Other",
+    "step5SummaryToggle": "Show summary",
+    "metaTitle": "Project brief — fixed-price quote in 24h",
+    "metaDescription": "Send a 5-step project brief. I reply within one business day with a fixed-price quote and a 30-min scoping call invite.",
+    "faqTitle": "Before you send",
+    "faqSubtitle": "Common questions about the brief process.",
+    "tools": [
+      "n8n",
+      "Make",
+      "HubSpot",
+      "Pipedrive",
+      "Airtable",
+      "Notion",
+      "Slack",
+      "Other"
+    ],
+    "email": {
+      "title": "New project brief",
+      "subtitle": "A brief was submitted from the site",
+      "fieldCompany": "Company",
+      "fieldRole": "Role",
+      "fieldProjectType": "Project type",
+      "fieldProblem": "Problem",
+      "fieldTools": "Tools",
+      "fieldFrequency": "Frequency",
+      "fieldGoal": "Goal",
+      "fieldNotes": "Notes",
+      "fieldOther": "Other",
+      "fieldBudget": "Budget",
+      "fieldTimeline": "Timeline",
+      "fieldSuccess": "Brief submitted",
+      "replyTo": "info@andresmorales.com.co"
+    },
+    "emailAutoReply": {
+      "subject": "Got it — I will reply within 24h",
+      "greeting": "Hi",
+      "body1": "I read every brief within one business day. You will get a fixed-price quote or a 30-min scoping call invite from me.",
+      "body2": "In the meantime, take a look at the portfolio to see how I work.",
+      "signature": "— Andrés",
+      "footer": "You are getting this because you submitted a project brief.",
+      "linkText": "See selected work"
+    },
     "step2Type": {
-      "web": "Web app / site",
-      "automation": "Automation / workflow",
+      "automation": "Automation",
       "ai-integration": "AI integration",
-      "consulting": "Consulting / advisory",
+      "consulting": "Consulting",
+      "web": "Web development",
       "other": "Other"
     },
-    "step2OtherLabel": "Tell me more",
-    "step2OtherPlaceholder": "What's the project?",
-    "step3Title": "The problem you're trying to solve",
-    "step3ProblemLabel": "Describe the manual process or pain point",
-    "step3ProblemPlaceholder": "e.g. Every Monday we copy data from 3 spreadsheets into HubSpot by hand. It takes about 3 hours and we always miss a row.",
-    "step3ProblemError": "At least a sentence or two — the more detail, the better",
-    "step3ToolsLegend": "What tools does it touch today?",
-    "step3ToolsHint": "(select all that apply)",
-    "step3OtherToolsLabel": "Other tools",
-    "step3OtherToolsPlaceholder": "Anything else?",
-    "step3FrequencyLegend": "How often does this happen?",
     "step3Frequency": {
       "daily": "Daily",
       "weekly": "Weekly",
       "monthly": "Monthly",
       "one-off": "One-off",
-      "ad-hoc": "Ad-hoc (on demand)"
+      "ad-hoc": "Ad-hoc"
     },
-    "step4Title": "What does success look like?",
-    "step4GoalLabel": "The goal / outcome you want",
-    "step4GoalPlaceholder": "e.g. The weekly data sync runs automatically and takes less than 10 minutes for a human to review. We've freed up 3 hours / week.",
-    "step4GoalError": "A bit more — at least a sentence",
-    "step4MetricLabel": "How will you measure success?",
-    "step4MetricPlaceholder": "e.g. 90% reduction in time, 0 errors / month, etc.",
-    "step5Title": "Logistics",
-    "step5BudgetLegend": "Budget range",
     "step5Budget": {
-      "under2k": "Under $2,000",
-      "2to5k": "$2,000 – $5,000",
-      "5to15k": "$5,000 – $15,000",
-      "15to50k": "$15,000 – $50,000",
-      "over50k": "Over $50,000"
+      "under2k": "Under $2K",
+      "2to5k": "$2K — $5K",
+      "5to15k": "$5K — $15K",
+      "15to50k": "$15K — $50K",
+      "over50k": "$50K+"
     },
-    "step5TimelineLegend": "Timeline",
     "step5Timeline": {
       "asap": "ASAP",
-      "1month": "Within 1 month",
-      "1to3months": "1 – 3 months",
+      "1month": "Within a month",
+      "1to3months": "1–3 months",
       "over3months": "3+ months",
       "flexible": "Flexible"
     },
-    "step5NotesLabel": "Anything else I should know?",
-    "step5NotesPlaceholder": "Constraints, deadlines, links to relevant docs…",
-    "step5SummaryToggle": "Review your answers before submitting ↓",
     "step5SummaryRows": {
       "name": "Name",
       "email": "Email",
@@ -191,74 +300,27 @@
       "tools": "Tools",
       "frequency": "Frequency",
       "goal": "Goal",
-      "metric": "Success metric",
+      "metric": "Metric",
       "budget": "Budget",
       "timeline": "Timeline",
       "notes": "Notes"
     },
-    "step5SummaryProjectOther": "Other — {value}",
-    "tools": [
-      "CRM (HubSpot, Salesforce)",
-      "Spreadsheets (Google Sheets, Excel)",
-      "Email (Gmail, Outlook)",
-      "Chat / WhatsApp",
-      "Slack / Teams",
-      "Notion / Airtable",
-      "Zapier / Make",
-      "Custom API"
-    ],
-    "email": {
-      "title": "New Project Brief",
-      "subtitle": "From {name} — {email}",
-      "fieldCompany": "Company",
-      "fieldRole": "Role",
-      "fieldProjectType": "Project type",
-      "fieldProblem": "Problem to solve",
-      "fieldTools": "Tools it touches today",
-      "fieldFrequency": "Frequency",
-      "fieldGoal": "Goal / outcome",
-      "fieldSuccess": "Success metric",
-      "fieldBudget": "Budget",
-      "fieldTimeline": "Timeline",
-      "fieldNotes": "Additional notes",
-      "fieldOther": " (other)",
-      "replyTo": "Reply directly to {email}"
-    },
-    "emailAutoReply": {
-      "subject": "Got your brief — {firstName}",
-      "greeting": "Thanks for the brief, {firstName}.",
-      "body1": "I got it and will read it personally within the next 24 hours.",
-      "body2": "If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.",
-      "signature": "— Andrés",
-      "footer": "You received this because you submitted the project brief at",
-      "linkText": "andresmorales.com.co/brief"
-    },
-    "faqTitle": "Frequently asked questions",
-    "faqSubtitle": "Six things prospects ask before sending the brief. If yours is not here, just hit me up on the call.",
     "faqItems": [
       {
-        "q": "What happens after I submit the brief?",
-        "a": "You get an email confirmation in under a minute. I read every brief personally within 24 hours and reply with either 3 short follow-up questions or a proposed time for a 30-minute call."
+        "q": "Will I get a fixed price, not an hourly estimate?",
+        "a": "Yes. Every engagement is a fixed-price quote after a 30-min scoping call. The brief helps me prepare that call; I will not bill you for filling it out."
       },
       {
-        "q": "Is the brief really free?",
-        "a": "Yes. The brief, the reply, and the first 30-minute strategy call are all free. No payment, no obligation. I only send a proposal if we're both aligned after the call."
+        "q": "How long does it take to fill in?",
+        "a": "Most people finish in 5-10 minutes. Drafts auto-save locally so you can come back."
       },
       {
-        "q": "How long does it take to fill out?",
-        "a": "About 5 minutes for the wizard itself. I designed it so you can come back later — your progress is auto-saved in your browser for 30 days."
+        "q": "What happens after I send the brief?",
+        "a": "I read it within one business day and reply with either a fixed-price quote or a 30-min call invite to scope it further."
       },
       {
-        "q": "What if I don't know all the answers?",
-        "a": "That's expected. The wizard asks for rough answers. We'll fill the gaps together on the call. The point of the brief is to give me enough context to make the call worth both our times."
-      },
-      {
-        "q": "Can I talk to you instead of filling this out?",
-        "a": "Absolutely. There's an escape hatch on every step of the wizard — the 'Book a 30-min call instead' link. The brief is just the fastest path if you have time now."
-      },
-      {
-        "q": "Will you share my project with anyone?",
-        "a": "No. Your brief goes only to me (Andrés). I never publish project details, names, or data without written permission. See the privacy policy for the full picture."
+        "q": "Can I email instead?",
+        "a": "Yes. Email info@andresmorales.com.co with the same context and I will reply the same way."
       }
     ]
   },
@@ -588,24 +650,26 @@
     "draftsDescription": "Posts generated by the news pipeline. Approve them to publish, or discard them."
   },
   "cumple": {
+    "metaTitle": "Birthday 2025 — Automation package",
+    "metaDescription": "Automation package for your birthday month: limited slots, fixed scope, fast delivery. Reserve your slot.",
     "eyebrow": "Special campaign",
     "title": "Birthday 2025",
-    "body": "Automation package for your birthday month: limited slots, fixed scope, fast turnaround.",
+    "body": "Automation package for your birthday month: limited slots, fixed scope, fast delivery.",
     "cta": "Reserve your slot"
   },
   "invest": {
     "eyebrow": "Initiative",
-    "title": "Invest in People,",
-    "title2": "Inspire the Future",
-    "body": "A program to bring practical AI automation training to small business owners and operators across LATAM.",
+    "title": "Invest in people,",
+    "title2": "inspire the future",
+    "body": "A program to bring practical AI automation training to small business owners and independent professionals in LATAM.",
     "step1Title": "Diagnose",
-    "step1Desc": "Map the manual work that eats the most time per week.",
+    "step1Desc": "We map the manual work that takes the most time each week.",
     "step2Title": "Train",
-    "step2Desc": "Hands-on sessions to build the first automation with the team.",
+    "step2Desc": "Practical sessions to build the first automation with the team.",
     "step3Title": "Scale",
-    "step3Desc": "Templates and playbooks so the team can keep building.",
+    "step3Desc": "Templates and playbooks so the team keeps building.",
     "closingTitle": "Want to bring this to your team or community?",
-    "closingBody": "Reply to the email that brought you here, or write to info@andresmorales.com.co. I read every message and pick a small set of conversations to start each month.",
+    "closingBody": "Reply to the email that brought you here, or write to info@andresmorales.com.co. I read every message and open a small number of new conversations each month.",
     "closingCta": "Write to me"
   },
   "unsubscribe": {
@@ -756,6 +820,420 @@
     "footerLinks": {
       "privacy": "Privacy",
       "terms": "Terms"
+    }
+  },
+  "compare": {
+    "breadcrumbCompare": "Compare",
+    "lastReviewed": "Last reviewed Sep 26, 2026",
+    "makeVsN8n": {
+      "metaTitle": "Make vs n8n in 2026 — honest comparison",
+      "metaDescription": "Honest Make vs n8n comparison for 2026: pricing, hosting, learning curve and integrations. Pick by team profile, not feature list.",
+      "eyebrow": "Comparison",
+      "heroBadge": "Updated Sep 2026",
+      "h1": "Make vs n8n in 2026: which automation platform fits your team?",
+      "subtitle": "Both run production workflows at scale. The right pick depends on whether your team writes code or wants a polished visual builder.",
+      "tldr": "n8n if your team writes code or wants self-hosting; Make if your team is non-technical and you want polish over flexibility. Both run production workflows at scale — pick by team, not by feature list.",
+      "tableIntro": "Four criteria that actually decide it.",
+      "xCol": "Make",
+      "yCol": "n8n",
+      "rows": [
+        {
+          "criterion": "Pricing model",
+          "x": "Per-operation; metered",
+          "y": "Self-hosted free; cloud from ~$24/mo",
+          "winner": "n8n for teams that can self-host"
+        },
+        {
+          "criterion": "Hosting",
+          "x": "Cloud-only (Make-hosted)",
+          "y": "Self-host or cloud",
+          "winner": "Tie — depends on ops capacity"
+        },
+        {
+          "criterion": "Learning curve",
+          "x": "Visual, easier for non-coders",
+          "y": "Code-friendly, steeper for non-devs",
+          "winner": "Make for non-technical teams"
+        },
+        {
+          "criterion": "Integrations",
+          "x": "1,500+ apps in the catalog",
+          "y": "400+ nodes, all open source",
+          "winner": "Make (volume); n8n (custom APIs)"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Pricing — what you actually pay",
+          "body": "Make bills per operation, so a workflow that fans out to five systems costs five credits per run. Heavy automations scale the bill faster than people expect. n8n is free when self-hosted; the cloud tier starts around $24/month with predictable per-execution pricing. If your team already runs its own infra, n8n is dramatically cheaper at scale."
+        },
+        {
+          "title": "Hosting and data residency",
+          "body": "Make runs entirely on Make infrastructure. n8n can run on your laptop, a $5 VPS, or n8n Cloud. For LATAM teams with data residency requirements or sensitive customer data, self-hosting n8n removes a class of compliance questions before they start."
+        },
+        {
+          "title": "Learning curve — who can build workflows",
+          "body": "Make is genuinely easier for non-developers; the visual editor is one of the best in the category. n8n rewards teams comfortable with code — JS expressions, HTTP nodes, and a real data flow concept — and is steeper for pure no-code users. Hiring signals matter: if your team is half developers, n8n compounds; if not, Make ships faster."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Pick Make when…",
+        "yTitle": "Pick n8n when…",
+        "x": [
+          "Your team is mostly non-technical and you need to ship automations this week.",
+          "You want a polished UI and the widest catalog of pre-built app integrations.",
+          "You can model the cost as a predictable operations line item."
+        ],
+        "y": [
+          "Your team writes code and you want full control over logic and data.",
+          "You need self-hosting for data residency, cost, or compliance reasons.",
+          "You plan to integrate with custom APIs or build reusable components."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "Is n8n really free?",
+          "answer": "Yes, if you self-host it. The fair-code license lets you run, modify, and keep your workflows without paying n8n. n8n Cloud plans start around $24/month and remove the ops work of hosting it yourself."
+        },
+        {
+          "question": "Does Make scale for production workloads?",
+          "answer": "Yes. Make runs in production at companies processing millions of operations per month. The ceiling is operational cost and governance, not capability — plan your credit budget the same way you would any cloud bill."
+        },
+        {
+          "question": "Can I migrate from Make to n8n (or vice versa)?",
+          "answer": "Yes, but workflows do not port directly. Both tools import and export JSON; plan one to two weeks of rebuild time per major workflow, plus testing. Keep credentials out of the migration scope — export them once and reuse."
+        }
+      ],
+      "ctaLabel": "Book a scoping call →",
+      "ctaTitle": "Need help deciding?",
+      "ctaBody": "A 30-minute call is enough to know which platform fits your team, your stack, and your budget. No pitch — just a clear recommendation."
+    },
+    "aiVsAgency": {
+      "metaTitle": "AI consultant vs agency — honest 2026 comparison",
+      "metaDescription": "AI consultant vs agency: when to hire solo technical help and when you need a full agency team. Cost, speed, hands-on work and strategy — compared.",
+      "eyebrow": "Comparison",
+      "heroBadge": "Updated Sep 2026",
+      "h1": "AI consultant vs agency: which one for your AI automation project?",
+      "subtitle": "Both ship AI work. The trade-off is hands-on technical depth versus broader strategy capacity and team scale.",
+      "tldr": "Hire a solo AI consultant when you need hands-on n8n/Make work, custom integrations, and direct technical accountability. Hire an agency when you need a broader marketing/strategy layer or a larger team for ongoing campaigns.",
+      "tableIntro": "Four dimensions that determine fit.",
+      "xCol": "AI consultant",
+      "yCol": "Agency",
+      "rows": [
+        {
+          "criterion": "Cost",
+          "x": "$2K–$50K fixed scope",
+          "y": "$10K–$200K+ retainer",
+          "winner": "Consultant per dollar of output"
+        },
+        {
+          "criterion": "Speed to first output",
+          "x": "1–2 weeks to a working demo",
+          "y": "4–8 weeks kickoff",
+          "winner": "Consultant"
+        },
+        {
+          "criterion": "Hands-on technical work",
+          "x": "Yes — the person you talk to builds it",
+          "y": "Often delegated to juniors",
+          "winner": "Consultant"
+        },
+        {
+          "criterion": "Ongoing strategy layer",
+          "x": "Limited bandwidth",
+          "y": "Yes — brand, content, paid media",
+          "winner": "Agency"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Cost structure and what you actually pay for",
+          "body": "A solo consultant quotes a fixed scope against deliverables — code, workflows, integrations, a working demo. Agencies price against retainers that bundle strategy, account management, and a delivery team. For pure technical AI work, the consultant dollar travels further. The math flips when you need creative, content, or paid media running in parallel."
+        },
+        {
+          "title": "Speed to first output",
+          "body": "Consultants typically ship a working demo in one to two weeks; the first call is the scoping call, the first Friday is a live demo. Agencies usually spend four to eight weeks in kickoff: strategy docs, account plans, and team onboarding before production work starts. If you need to prove value quickly, consultants win on velocity."
+        },
+        {
+          "title": "Hands-on technical accountability",
+          "body": "With a consultant, the person you hired is the person writing the workflow, deploying the integration, and fixing the bug at 11pm. With an agency, the senior who sold the work is rarely the one building it. If the deliverable is technical and breaks are expensive, the direct-accountability model is safer."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Hire a consultant when…",
+        "yTitle": "Hire an agency when…",
+        "x": [
+          "The deliverable is technical — automations, integrations, AI features — not marketing campaigns.",
+          "You want the person who scoped the work to also build it.",
+          "You need a working demo in the next two weeks, not a proposal deck."
+        ],
+        "y": [
+          "You need creative, content, paid media, and engineering running in parallel.",
+          "Your roadmap spans brand strategy, campaign execution, and technical build-outs.",
+          "You need a full team for sustained output over many months."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "When does a solo consultant hit a ceiling?",
+          "answer": "When scope crosses into marketing, brand strategy, or sustained campaign execution at scale. For pure technical AI work — automations, integrations, internal tools — a senior consultant scales further per dollar than an agency team. The ceiling shows up when you need creative, content, and paid media running in parallel with engineering."
+        },
+        {
+          "question": "How do I verify an AI consultant actually ships?",
+          "answer": "Ask for working demos in production, not pitch decks or Looms. A weekly demo cadence is the test: if they are shipping, you see it live on Friday. Anything else — mocked screenshots, recorded walkthroughs, \"we are finishing it next week\" — is a yellow flag."
+        },
+        {
+          "question": "What happens if I outgrow a consultant?",
+          "answer": "You own everything: code, design files, workflows, credentials, documentation. Handover is a non-event because there is nothing locked behind their account. You can hire a different consultant or build an in-house team without paying a transfer fee or losing access."
+        }
+      ],
+      "ctaLabel": "Book a scoping call →",
+      "ctaTitle": "Not sure which route fits?",
+      "ctaBody": "A 30-minute call maps your scope to the right engagement model. You leave with a clear recommendation, not a quote for work you do not need."
+    },
+    "vercelVsAmplify": {
+      "metaTitle": "Vercel vs AWS Amplify for Next.js — 2026",
+      "metaDescription": "Vercel vs AWS Amplify for Next.js in 2026: DX, pricing at scale, lock-in and edge performance compared. Pick by stage, not by hype.",
+      "eyebrow": "Comparison",
+      "heroBadge": "Updated Sep 2026",
+      "h1": "Vercel vs AWS Amplify for Next.js: when each one wins",
+      "subtitle": "Both deploy Next.js to production. The choice is developer experience versus AWS-native cost control at scale.",
+      "tldr": "Vercel for Next.js apps where DX and time-to-deploy matter. AWS Amplify when you are already deep in AWS or need fine-grained cost control at scale. Both run Next.js in production.",
+      "tableIntro": "Four criteria that move the needle.",
+      "xCol": "Vercel",
+      "yCol": "AWS Amplify",
+      "rows": [
+        {
+          "criterion": "Next.js DX",
+          "x": "Native — built by the Next.js team",
+          "y": "Good, but more setup and config",
+          "winner": "Vercel"
+        },
+        {
+          "criterion": "Pricing at scale",
+          "x": "Premium, especially on bandwidth",
+          "y": "Cheaper, especially with Savings Plans",
+          "winner": "Amplify (at scale)"
+        },
+        {
+          "criterion": "Vendor lock-in",
+          "x": "Medium — Vercel-specific features",
+          "y": "Lower — AWS-native, portable",
+          "winner": "Amplify"
+        },
+        {
+          "criterion": "Edge / global performance",
+          "x": "Built-in edge network, zero config",
+          "y": "Needs extra CloudFront config",
+          "winner": "Vercel"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Next.js developer experience",
+          "body": "Vercel is built by the team behind Next.js, so framework features — Server Components, App Router, ISR, Edge Runtime — work the day they ship. Amplify caught up in 2024 and supports App Router and SSR well, but you will write more configuration: build commands, runtime selection, and edge function setup are not as automated. For prototype-to-Series-A, the Vercel DX saves hours."
+        },
+        {
+          "title": "Pricing at scale",
+          "body": "Vercel Pro starts at $20/seat/month and bandwidth costs add up fast on high-traffic sites. Amplify bills against AWS infrastructure — you pay for what you provision, and Savings Plans or reserved capacity can drop costs by 30 to 60 percent at scale. For pre-PMF products, Vercel economics are fine. For products at scale, run the numbers."
+        },
+        {
+          "title": "Lock-in and portability",
+          "body": "Vercel-specific features — Edge Config, KV, the proprietary image loader — tie you to the platform. Amplify deploys standard Next.js output to standard AWS infrastructure, so leaving AWS is a normal cloud migration rather than a rewrite. If multi-cloud or portability matters, Amplify is the safer long-term home."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Pick Vercel when…",
+        "yTitle": "Pick AWS Amplify when…",
+        "x": [
+          "You ship fast and value framework-native DX over infrastructure knobs.",
+          "Your team is small and does not want to manage AWS infra.",
+          "You need edge runtime and ISR working out of the box."
+        ],
+        "y": [
+          "You are already deep in AWS and want one bill, one IAM model, one VPC.",
+          "Cost at scale is a first-order constraint — high traffic, tight margins.",
+          "Portability and standard infrastructure matter for your exit options."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "Can I migrate from Vercel to Amplify later?",
+          "answer": "Yes, with effort. Next.js itself is framework-agnostic, so the application code moves cleanly. The lock-in is at the platform layer: env vars, edge config, image optimization, build pipeline. Plan one to two weeks for a non-trivial migration, plus testing against production traffic."
+        },
+        {
+          "question": "Is Vercel's premium pricing worth it?",
+          "answer": "For prototypes and pre-PMF products, almost always yes — the DX saves engineering hours that cost more than the bill. For products at scale, run the numbers: Amplify plus CloudFront plus reserved capacity can be 30 to 60 percent cheaper at sustained high traffic."
+        },
+        {
+          "question": "Does Amplify support the Next.js App Router fully?",
+          "answer": "Yes, since 2024. Server Components, SSR, ISR, and the Edge Runtime all work. The setup is more manual than Vercel — you configure the runtime and build commands yourself — but the runtime support is mature and battle-tested."
+        }
+      ],
+      "ctaLabel": "Book a scoping call →",
+      "ctaTitle": "Picking the right host for your stage?",
+      "ctaBody": "A 30-minute call is enough to know which platform fits your traffic shape, your team size, and your cost ceiling. No sales pitch — a clear recommendation."
+    }
+  },
+  "process": {
+    "heroEyebrow": "How I work",
+    "heroTitle": "Five steps from kickoff to iteration.",
+    "heroSubtitle": "The same rhythm for every engagement, from a 1-week AI Kickstart to a 3-month AI Platform. No surprises, no scope creep — the contract freezes the line items on day 1 and the work ships on day N.",
+    "tracksEyebrow": "By service",
+    "tracksTitle": "Same five steps, three different shapes.",
+    "tracksSubtitle": "AI / UX / Web each have their own cadence. The skeleton is identical; the bones change.",
+    "aiLabel": "AI automation",
+    "uxLabel": "UI / UX design",
+    "webLabel": "Web development",
+    "step1Title": "Audit",
+    "step1Body": "1 week of deep-dive. We map your current stack, the manual work that costs you the most, and the systems that already hold the data. Output: a 5-10 page audit doc with ranked opportunities and a fixed price per workflow.",
+    "step2Title": "Scoping call",
+    "step2Body": "30-min video call. I walk you through the audit and you pick 1-3 of the opportunities. Output: a one-page scope with line items, fixed price, and timeline. The contract freezes the work.",
+    "step3Title": "Build",
+    "step3Body": "1-6 weeks depending on tier. I work in weekly slices — every Friday you get a working demo, not a status update. If scope changes mid-build, I flag it before doing extra work, never after.",
+    "step4Title": "Ship",
+    "step4Body": "Deploy to production with eval and monitoring in place. You own every line of code, every API key, every workflow JSON. Nothing lives in my accounts.",
+    "step5Title": "Iterate",
+    "step5Body": "Optional retainer: monitoring, eval, prompt iteration, model updates, new workflow rollouts. 3-month minimum commitment, cancel anytime after. Most clients keep a small retainer to compound wins.",
+    "ctaCall": "Book a scoping call",
+    "ctaProcess": "Read the full methodology"
+  },
+  "pricing": {
+    "eyebrow": "Investment",
+    "title": "Honest ranges, no hidden quotes",
+    "subtitle": "Three tiers per service. The exact price depends on scope — but the range is what most projects at each tier end up costing. Every engagement is a fixed-price quote after a 30-min scoping call, never an hourly invoice.",
+    "methodology": "Methodology",
+    "methodologyBody": "Ranges are calibrated against 2025-2026 market data for senior independent AI / design / web consultants in the US and EU. They run 40-60% below what boutique firms in San Francisco, London or Berlin charge for the same scope — without sacrificing quality. Final price depends on scope, integrations and timeline. The scoping call is free and freezes the line items before any work starts.",
+    "aiTitle": "AI automation",
+    "aiT1": "AI Kickstart",
+    "aiT1Range": "$4,500 — $7,500",
+    "aiT1Body": "One workflow, one integration. Typically a single-channel automation (Slack + Sheets + OpenAI) or a custom chatbot. Ships in 1-2 weeks.",
+    "aiT2": "Automation Build",
+    "aiT2Range": "$12,000 — $25,000",
+    "aiT2Body": "Multi-workflow build (3-6 flows) with custom integrations (HubSpot, Pipedrive, Airtable, n8n, Wompi). Eval and production monitoring included. Ships in 3-6 weeks.",
+    "aiT3": "AI Platform",
+    "aiT3Range": "$40,000 — $80,000",
+    "aiT3Body": "Multi-agent system with custom integrations, SSO, eval harness, observability. Ships in 8-12 weeks. Includes a 90-day iteration window.",
+    "uxTitle": "UI / UX design",
+    "uxT1": "Design Sprint",
+    "uxT1Range": "$3,500 — $6,000",
+    "uxT1Body": "Two-week design sprint: research, IA, key flows, clickable prototype, usability test. Output is a Figma file your team can ship from.",
+    "uxT2": "Product Design",
+    "uxT2Range": "$10,000 — $22,000",
+    "uxT2Body": "End-to-end product design for a new feature or app: research, IA, design system, prototyping, dev handoff. Ships in 4-6 weeks.",
+    "uxT3": "Design Partner",
+    "uxT3Range": "$6,000 — $12,000 / month",
+    "uxT3Body": "Ongoing design partnership: weekly cadence, design system stewardship, prototyping, and design QA on every release. 3-month minimum.",
+    "webTitle": "Web development",
+    "webT1": "Landing Page",
+    "webT1Range": "$3,000 — $5,500",
+    "webT1Body": "One-page Next.js site with copy, design system, deployment, analytics, and a contact form. Ships in 1-2 weeks.",
+    "webT2": "Marketing Site",
+    "webT2Range": "$8,500 — $18,000",
+    "webT2Body": "Multi-page Next.js site: home, services, portfolio, contact, CMS-driven blog, i18n. Ships in 3-5 weeks.",
+    "webT3": "Web Platform",
+    "webT3Range": "$25,000 — $60,000",
+    "webT3Body": "Custom platform with auth, database, payments, admin panel. Includes architecture, implementation, deployment, and monitoring. Ships in 6-10 weeks.",
+    "retainer": "Retainer",
+    "retainerBody": "After the build, an optional monthly retainer covers monitoring, prompt iteration, model updates, eval, and new workflow rollouts. 3-month minimum, cancel anytime after.",
+    "retainerRange": "$1,500 — $6,000 / month",
+    "rangesCaveat": "These ranges are calibrated against market data for senior independent consultants in the US and EU. Final price depends on scope, integrations, and timeline — every engagement is a fixed-price quote after the scoping call, never an hourly invoice.",
+    "ctaQuote": "Book a scoping call"
+  },
+  "seoMeta": {
+    "work": {
+      "barriotech": {
+        "en": "Multi-tenant marketplace for Colombian street vendors: digital storefronts, Wompi payments, and WhatsApp buyer notifications from one phone.",
+        "es": "Marketplace multi-tenant para vendedores informales colombianos: vitrina digital, pagos Wompi y notificaciones WhatsApp, todo desde un celular.",
+        "pt": "Marketplace multi-tenant para vendedores informais colombianos: vitrine digital, pagamentos Wompi e notificações WhatsApp, tudo do celular."
+      },
+      "juan-becerra": {
+        "en": "Editorial menswear storefront for a premium Colombian label — mood-driven hero, classic typography, quiet checkout that respects the brand.",
+        "es": "Vitrina editorial de moda masculina premium para una marca colombiana — hero con mood, tipografía clásica y checkout silencioso.",
+        "pt": "Vitrine editorial de moda masculina premium para uma marca colombiana — hero com mood, tipografia clássica e checkout silencioso."
+      },
+      "kambelleh": {
+        "en": "Multi-property PMS for a hostel chain: reservations, calendar, channels, housekeeping, and analytics from one dashboard, no per-booking fee.",
+        "es": "PMS multi-propiedad para cadenas de hostales: reservas, calendario, canales, housekeeping y analytics en un panel, sin fee por reserva.",
+        "pt": "PMS multi-propriedade para redes de hostels: reservas, calendário, canais, housekeeping e analytics em um painel, sem taxa por reserva."
+      },
+      "temptum": {
+        "en": "Single-page Next.js site for an AI consulting firm: team, case studies, and a Brevo-backed briefing form that captures qualified leads in 5 fields.",
+        "es": "Sitio single-page en Next.js para consultora de IA: equipo, casos de estudio y formulario Brevo que captura leads calificados en 5 campos.",
+        "pt": "Site single-page em Next.js para consultoria de IA: equipe, cases e formulário Brevo que captura leads qualificados em 5 campos."
+      },
+      "superllantas": {
+        "en": "Tire e-commerce for a Colombian retailer: vehicle-fitment search and WhatsApp checkout instead of a credit-card funnel — built for LATAM buyers.",
+        "es": "E-commerce de llantas para minorista colombiano: búsqueda por vehículo y checkout por WhatsApp, sin funnel de tarjeta, hecho para compradores LATAM.",
+        "pt": "E-commerce de pneus para varejista colombiano: busca por veículo e checkout por WhatsApp, sem funil de cartão, feito para compradores LATAM."
+      },
+      "soapartesana": {
+        "en": "Editorial storefront for a handmade soap brand in LATAM: no carousel, no popups, no urgency timers — reads like the brand's lookbook, converts like a shop.",
+        "es": "Vitrina editorial para una marca de jabones artesanales en LATAM: sin carrusel, sin popups, sin timers de urgencia — se lee como el lookbook de la marca.",
+        "pt": "Vitrine editorial para uma marca de sabonetes artesanais na LATAM: sem carrossel, sem popups, sem timers de urgência — lê-se como o lookbook da marca."
+      },
+      "carmen-job-search": {
+        "en": "AI-assisted job matching demo: paste a job description and a resume, get a 0–100% match score, missing skills, and rationale in under 30 seconds.",
+        "es": "Demo de matching de empleo con IA: pega una descripción de puesto y un CV, recibe score 0–100%, skills faltantes y rationale en menos de 30 segundos.",
+        "pt": "Demo de matching de emprego com IA: cole uma vaga e um currículo, receba score 0–100%, skills faltantes e rationale em menos de 30 segundos."
+      },
+      "talobot": {
+        "en": "Turnkey WhatsApp and Telegram bot for LATAM small shops: answers 80% of customer questions (orders, hours, pricing) automatically, no engineering needed.",
+        "es": "Bot llave en mano de WhatsApp y Telegram para tiendas LATAM: responde automáticamente 80% de preguntas de clientes (pedidos, horarios, precios).",
+        "pt": "Bot pronto pra usar de WhatsApp e Telegram para lojas LATAM: responde automaticamente 80% das perguntas (pedidos, horários, preços), sem engenharia."
+      },
+      "cleida": {
+        "en": "Mailcow email migration for cleida.com.co: 27 of 32 mailboxes synced, MX/SPF/DKIM/DMARC configured in Namecheap. Annual saving $450/yr.",
+        "es": "Migración de correo a Mailcow para cleida.com.co: 27 de 32 buzones sincronizados, MX/SPF/DKIM/DMARC en Namecheap. Ahorro anual $450/año.",
+        "pt": "Migração de e-mail para Mailcow em cleida.com.co: 27 de 32 caixas sincronizadas, MX/SPF/DKIM/DMARC na Namecheap. Economia anual de US$450."
+      },
+      "gato-colectivo": {
+        "en": "Second tenant on the Barriotech multi-tenant marketplace, themed for El Gato Colectivo on gato.andresmorales.com.co. Same architecture, different config.",
+        "es": "Segundo tenant en el marketplace multi-tenant Barriotech, con tema para El Gato Colectivo en gato.andresmorales.com.co. Misma arquitectura, distinta config.",
+        "pt": "Segundo tenant no marketplace multi-tenant Barriotech, com tema para o Gato Coletivo em gato.andresmorales.com.co. Mesma arquitetura, config distinta."
+      },
+      "mecca": {
+        "en": "Editorial e-commerce for Velvet & Pearl (MECCA): 568 SKUs synced from Mastershop to Next.js + PostgreSQL. Archived after client's 2026 renewal cycle.",
+        "es": "E-commerce editorial para Velvet & Pearl (MECCA): 568 SKUs sincronizados desde Mastershop a Next.js + PostgreSQL. Archivado tras renovación 2026.",
+        "pt": "E-commerce editorial para Velvet & Pearl (MECCA): 568 SKUs sincronizados do Mastershop para Next.js + PostgreSQL. Arquivado após renovação 2026."
+      },
+      "hubiagency": {
+        "en": "Marketing site template for digital agencies — services, portfolio, contact — built to demo agency design without paying for a custom mockup.",
+        "es": "Plantilla de sitio de marketing para agencias digitales — servicios, portafolio, contacto — para mostrar diseño sin pagar un mockup custom.",
+        "pt": "Template de site de marketing para agências digitais — serviços, portfólio, contato — para mostrar design sem pagar um mockup custom."
+      }
+    },
+    "blog": {
+      "agente-ia-whatsapp-colombia": {
+        "es": "Cómo implementar un agente IA para WhatsApp Business en Colombia: casos de uso, costos en COP y framework de decisión para tu tienda."
+      },
+      "automacao-ia-pme-brasil": {
+        "pt": "Como uma PME brasileira pode recuperar 15–25 horas semanais com n8n, agentes de IA e webhooks — sem montar time de engenharia."
+      },
+      "automatizar-con-ia-colombia": {
+        "es": "Cómo una Pyme colombiana recupera 15–25 horas semanales automatizando con n8n, agentes de IA y webhooks — sin contratar programador."
+      },
+      "automatizar-tienda-online-colombia": {
+        "es": "Automatiza una tienda online en Colombia con n8n, WhatsApp Business y WooCommerce. Procesos, costos en COP y ROI esperado en 2026."
+      },
+      "consultor-automatizacion-ia-colombia": {
+        "es": "Qué hace un consultor de IA en Colombia, cuánto cobra en 2026 y cómo diferenciar uno serio de un revendedor de cursos."
+      },
+      "gpt-56-ya-esta-aqui-lo-que-tu-pyme-en-bogota-lima-o-cdmx-deb": {
+        "en": "GPT-5.6 is here. Should your LATAM SMB in Bogotá, Lima, or CDMX actually switch? Practical guide on cost, latency, and SMB use cases."
+      },
+      "hire-ai-automation-consultant": {
+        "en": "What an AI automation consultant does, what they should charge in 2026, and 7 red flags to spot course resellers. Real USD price ranges."
+      },
+      "n8n-ai-automation": {
+        "en": "How a small business can replace 20 hours of weekly manual work with n8n workflows, AI agents, and webhooks — without hiring engineers."
+      },
+      "n8n-vs-make-brasil": {
+        "pt": "Comparativo honesto de n8n, Make e Zapier para automatizar um negócio no Brasil em 2026: custos em reais e integrações locais."
+      },
+      "n8n-vs-make-colombia": {
+        "es": "Comparativa honesta de n8n, Make y Zapier para automatizar un negocio en Colombia: costos, latencia e integraciones locales."
+      }
     }
   }
 }

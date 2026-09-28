@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { headers } from 'next/headers';
 import { LOCALE_HTML_LANG, type Locale } from '@/lib/i18n';
+import { WebMcpRegistrar } from '@/components/WebMcpRegistrar';
 import './globals.css';
 
 // Exact fonts from the original WordPress site (Astra + Elementor):
@@ -171,24 +172,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         name: 'Andrés Morales',
         givenName: 'Andrés',
         familyName: 'Morales',
-        jobTitle: 'AI Consultant for Business Automation',
+        jobTitle: 'AI Automation Consultant',
         description:
-          'AI consultant helping companies automate their operations. Designs and ships n8n workflows, AI agents, and internal tools that replace manual work — so teams can focus on growth, not busywork.',
+          'AI & web consultant. Designs and ships AI automations, UI/UX, and production-grade web for LATAM SMBs and US startups. Founder of Andrés Morales Automation since June 2022.',
         url: 'https://andresmorales.com.co',
-        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.png',
+        image: 'https://andresmorales.com.co/uploads/IMG_20220702_142658.jpg',
         sameAs: [
           'https://andresmorales.com.co',
           'https://www.linkedin.com/in/andresmoralesc1/',
           'https://github.com/andresmoralesc1/',
+          'https://www.instagram.com/andres_morales_automation/',
+          'https://www.facebook.com/andresmoralesautomation/',
         ],
         knowsAbout: [
           'AI Automation',
           'n8n',
-          'Chatbots',
           'AI Agents',
           'Web Development',
           'UI/UX Design',
-          'Sales',
         ],
         knowsLanguage: ['es-CO', 'en-US', 'pt-BR'],
       },
@@ -200,7 +201,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         '@type': 'ProfessionalService',
         '@id': 'https://andresmorales.com.co/#business',
         name: 'Andrés Morales — AI Consulting',
-        image: 'https://andresmorales.com.co/uploads/2025/06/andres-morales-og.png',
+        image: 'https://andresmorales.com.co/uploads/IMG_20220702_142658.jpg',
         url: 'https://andresmorales.com.co',
         description:
           'AI consulting practice specializing in business automation, AI agents, and operational tooling. Engagements typically run $2,000 – $50,000+ USD.',
@@ -262,6 +263,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         '@id': 'https://andresmorales.com.co/#website',
         url: 'https://andresmorales.com.co',
         name: 'Andrés Morales — Portfolio',
+        dateModified: '2026-09-26',
         inLanguage: htmlLang,
         publisher: { '@id': 'https://andresmorales.com.co/#person' },
         // Sitelinks searchbox — would be enabled via WebSite.potentialAction
@@ -359,6 +361,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to main content
         </a>
         {children}
+        {/* WebMCP tool registrar — exposes submit_contact / submit_brief /
+            schedule_call to AI agents via document.modelContext. No UI. */}
+        <WebMcpRegistrar />
       </body>
     </html>
   );

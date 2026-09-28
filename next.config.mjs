@@ -111,26 +111,14 @@ const nextConfig = {
       },
     ];
   },
-  // Drop the `next-devtools` panel from the production bundle. Next.js 15.5
-  // ships a full Dev Tools UI (~820 KB on disk / 212 KB gzipped) as an
-  // `async` <script> on every page even when `devIndicators: false` — the
-  // floating dot is hidden but the chunk is still there because Next keeps
-  // it around for "production debugging". Lighthouse flags it as 247 KiB
-  // of unused JS. IgnorePlugin on the module name strips the chunk
-  // entirely at build time. Safe in dev too: we don't use the dev panel.
-  webpack: (config, { webpack }) => {
-    config.plugins.push(
-      new webpack.IgnorePlugin({
-        // Match the compiled Next.js dev tools module. The package is
-        // bundled into Next at `next/dist/compiled/next-devtools/` and
-        // reaches the client chunk via the app bootstrap. The chunk hash
-        // stays stable across builds (5c89...) because it's the same
-        // Next-shipped payload, not user code.
-        resourceRegExp: /compiled\/next-devtools|next-devtools\//,
-      }),
-    );
-    return config;
-  },
+  // Next 16 defaults Turbopack; webpack hook removed. The previous
+  // webpack hook did two things — strip Next's `polyfill-module`
+  // (Baseline ES2019+ shims for trimStart/flat/Object.fromEntries etc.)
+  // and the `next-devtools` panel. Turbopack's browser targets match
+  // our browserslist, so polyfill-module isn't shipped in the first
+  // place, and Next 16 drops next-devtools from production bundles
+  // automatically. Empty `turbopack: {}` opts in explicitly.
+  turbopack: {},
 };
 
 export default nextConfig;

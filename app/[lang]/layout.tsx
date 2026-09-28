@@ -1,5 +1,6 @@
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { StickyMobileCTA } from '@/components/sticky-mobile-cta';
 import { headers } from 'next/headers';
 
 // Personal campaigns where the warm-tone footer applies (hides the B2B
@@ -34,6 +35,7 @@ export default async function LangLayout({
         {children}
       </main>
       <Footer variant={footerVariant} />
+      <StickyMobileCTA />
     </>
   );
 }

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { join } from 'node:path';
 import { existsSync, readdirSync } from 'node:fs';
 import { getCurrentDictionary } from '@/lib/dictionary';
-import type { Locale } from '@/lib/i18n';
+import { getDictionary, type Locale } from '@/lib/i18n';
 import { getPost, type BlogLocale, listAllPostSlugs, listSlugsByLocale } from '@/lib/blog';
 import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
@@ -41,6 +41,10 @@ export async function generateMetadata({
   const post = getPost(slug, lang);
   if (!post) return {};
 
+  const dict = await getDictionary(lang);
+  const blogMeta = (dict.seoMeta?.blog as Record<string, Record<string, string>> | undefined)?.[slug]?.[lang];
+  const description = blogMeta ?? post.description;
+
   // Only emit hreflang for languages that actually have a translation of
   // this slug. Emitting all three when the post only exists in one
   // language sends Google to 404s (or, worse, to the wrong-locale URL
@@ -52,7 +56,7 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: post.description,
+    description,
     alternates: {
       canonical: `${lang === 'en' ? '' : `/${lang}`}/blog/${slug}`,
       languages: Object.fromEntries(
@@ -61,7 +65,7 @@ export async function generateMetadata({
     },
     openGraph: {
       title: post.title,
-      description: post.description,
+      description,
       type: 'article',
       url: `https://andresmorales.com.co/${lang}/blog/${slug}`,
       siteName: 'Andrés Morales',
@@ -81,7 +85,7 @@ images: [
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.description,
+      description,
       images: [`/api/og?lang=${lang}&path=${encodeURIComponent(`/blog/${slug}`)}&title=${encodeURIComponent(post.title)}`],
     },
   };
@@ -175,7 +179,7 @@ export default async function BlogPostPage({
           href={`/${lang}/contact`}
           event="cta_clicked"
           label="blog-detail-cta"
-          className="inline-block text-sm font-bold uppercase tracking-widest bg-theme-1 text-secondary px-5 py-2.5 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(255,102,0,0.4)] transition-all duration-300"
+          className="inline-block text-sm font-bold uppercase tracking-widest bg-theme-1 text-secondary px-5 py-2.5 rounded-md shadow-[0_0_8px_rgba(255,102,0,0.3)] hover:shadow-[0_6px_16px_rgba(255,102,0,0.4)]"
         >
           {lang === 'es'
             ? '¿Quieres hablar? Agenda 30 min gratis'

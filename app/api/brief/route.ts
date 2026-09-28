@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
+import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 
 // Brief has a max of 5 submissions / hour / IP (see checkRateLimit below).
 // Body size guard: 10 KB is plenty for a full brief (name + email + role
@@ -48,42 +49,35 @@ type BriefPayload = {
   goal: string;
   successMetric?: string;
   // step 5 — Logistics
-  budget: '<2k' | '2-5k' | '5-15k' | '15-50k' | '50k+';
-  timeline: 'asap' | '1-month' | '1-3-months' | '3+ months' | 'flexible';
+  budget: 'under2k' | '2to5k' | '5to15k' | '15to50k' | 'over50k';
+  timeline: 'asap' | '1month' | '1to3months' | 'over3months' | 'flexible';
   additionalNotes?: string;
+  // Locale submitted with the brief. Optional — used to pick the right
+  // dictionary for the email templates (notification + auto-reply).
+  lang?: string;
 };
 
-const PROJECT_TYPE_LABELS: Record<BriefPayload['projectType'], string> = {
-  web: 'Web app / site',
-  automation: 'Automation / workflow',
-  'ai-integration': 'AI integration',
-  consulting: 'Consulting / advisory',
-  other: 'Other',
-};
+// ── Localized labels (from dict, not hardcoded maps) ───────────────────
+// Each helper returns the localized label for the enum value, sourced from
+// the active dictionary. Previously these were hardcoded English maps
+// (`PROJECT_TYPE_LABELS`, etc.); they now live in `dictionaries/*.json` so
+// notifications + auto-replies match the brief's submission locale.
 
-const FREQUENCY_LABELS: Record<BriefPayload['frequency'], string> = {
-  daily: 'Daily',
-  weekly: 'Weekly',
-  monthly: 'Monthly',
-  'one-off': 'One-off',
-  'ad-hoc': 'Ad-hoc (on demand)',
-};
+function projectTypeLabel(p: BriefPayload, dict: Dictionary): string {
+  return dict.brief.step2Type[p.projectType];
+}
 
-const BUDGET_LABELS: Record<BriefPayload['budget'], string> = {
-  '<2k': 'Under $2k',
-  '2-5k': '$2k – $5k',
-  '5-15k': '$5k – $15k',
-  '15-50k': '$15k – $50k',
-  '50k+': '$50k+',
-};
+function frequencyLabel(p: BriefPayload, dict: Dictionary): string {
+  return dict.brief.step3Frequency[p.frequency];
+}
 
-const TIMELINE_LABELS: Record<BriefPayload['timeline'], string> = {
-  asap: 'ASAP',
-  '1-month': 'Within 1 month',
-  '1-3-months': '1 – 3 months',
-  '3+ months': '3+ months',
-  flexible: 'Flexible',
-};
+function budgetLabel(p: BriefPayload, dict: Dictionary): string {
+  return dict.brief.step5Budget[p.budget];
+}
+
+function timelineLabel(p: BriefPayload, dict: Dictionary): string {
+  return dict.brief.step5Timeline[p.timeline];
+}
 
 function escapeHtml(s: string): string {
   return s
@@ -94,70 +88,76 @@ function escapeHtml(s: string): string {
     .replace(/'/g, '&#39;');
 }
 
-function renderEmailHtml(p: BriefPayload): string {
+function renderEmailHtml(p: BriefPayload, dict: Dictionary): string {
   const row = (label: string, value: string | string[] | undefined) => {
     const v = Array.isArray(value) ? value.join(', ') : value || '—';
     return `<tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(v)}</td></tr>`;
   };
+  const projectTypeOther = p.projectTypeOther ? `${dict.brief.email.fieldOther}${p.projectTypeOther}` : '';
+  const subtitle = dict.brief.email.subtitle
+    .replace('{name}', p.name)
+    .replace('{email}', p.email);
+  const replyTo = dict.brief.email.replyTo.replace('{email}', p.email);
 
   return `
-    <div style="font-family:Roboto,Arial,sans-serif;max-width:680px;margin:0 auto;">
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
       <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">New Project Brief</h1>
-        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">From ${escapeHtml(p.name)} — ${escapeHtml(p.email)}</p>
+        <h1 style="margin:0;font-size:22px;">${escapeHtml(dict.brief.email.title)}</h1>
+        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">${escapeHtml(subtitle)}</p>
       </div>
       <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        ${row('Company', p.company)}
-        ${row('Role', p.role)}
-        ${row('Project type', PROJECT_TYPE_LABELS[p.projectType] + (p.projectTypeOther ? ` — ${p.projectTypeOther}` : ''))}
-        ${row('Problem to solve', p.problem)}
-        ${row('Tools it touches today', [...(p.tools || []), p.toolsOther].filter(Boolean) as string[])}
-        ${row('Frequency', FREQUENCY_LABELS[p.frequency])}
-        ${row('Goal / outcome', p.goal)}
-        ${row('Success metric', p.successMetric)}
-        ${row('Budget', BUDGET_LABELS[p.budget])}
-        ${row('Timeline', TIMELINE_LABELS[p.timeline])}
-        ${row('Additional notes', p.additionalNotes)}
+        ${row(dict.brief.email.fieldCompany, p.company)}
+        ${row(dict.brief.email.fieldRole, p.role)}
+        ${row(dict.brief.email.fieldProjectType, projectTypeLabel(p, dict) + projectTypeOther)}
+        ${row(dict.brief.email.fieldProblem, p.problem)}
+        ${row(dict.brief.email.fieldTools, [...(p.tools || []), p.toolsOther].filter(Boolean) as string[])}
+        ${row(dict.brief.email.fieldFrequency, frequencyLabel(p, dict))}
+        ${row(dict.brief.email.fieldGoal, p.goal)}
+        ${row(dict.brief.email.fieldSuccess, p.successMetric)}
+        ${row(dict.brief.email.fieldBudget, budgetLabel(p, dict))}
+        ${row(dict.brief.email.fieldTimeline, timelineLabel(p, dict))}
+        ${row(dict.brief.email.fieldNotes, p.additionalNotes)}
       </table>
       <p style="margin-top:24px;font-size:13px;color:#575250;">
-        Reply directly to <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
+        ${escapeHtml(replyTo)} <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
       </p>
     </div>
   `;
 }
 
-function renderEmailText(p: BriefPayload): string {
+function renderEmailText(p: BriefPayload, dict: Dictionary): string {
+  // Section labels use the same field labels as the HTML table (uppercased
+  // for the plain-text section headers — they read like newspaper headlines).
+  const upper = (s: string) => s.toUpperCase();
+  const sep = (label: string) => `${upper(label)}\n${'-'.repeat(label.length)}`;
+  const projectTypeFull = p.projectTypeOther
+    ? `${projectTypeLabel(p, dict)}${dict.brief.email.fieldOther}${p.projectTypeOther}`
+    : projectTypeLabel(p, dict);
   const lines = [
-    `NEW PROJECT BRIEF`,
-    `================`,
+    sep(dict.brief.email.title),
+    '='.repeat(dict.brief.email.title.length),
     ``,
-    `From:  ${p.name} <${p.email}>`,
-    `Role:  ${p.role || '—'}`,
-    `Company: ${p.company || '—'}`,
+    `${dict.brief.email.fieldCompany}: ${p.company || '—'}`,
+    `${dict.brief.email.fieldRole}: ${p.role || '—'}`,
+    `From: ${p.name} <${p.email}>`,
     ``,
-    `PROJECT TYPE`,
-    `------------`,
-    `${PROJECT_TYPE_LABELS[p.projectType]}${p.projectTypeOther ? ` — ${p.projectTypeOther}` : ''}`,
+    sep(dict.brief.email.fieldProjectType),
+    projectTypeFull,
     ``,
-    `THE PROBLEM`,
-    `-----------`,
+    sep(dict.brief.email.fieldProblem),
     p.problem,
     ``,
-    `Tools it touches:  ${[...(p.tools || []), p.toolsOther].filter(Boolean).join(', ') || '—'}`,
-    `Frequency:        ${FREQUENCY_LABELS[p.frequency]}`,
+    `${dict.brief.email.fieldTools}: ${[...(p.tools || []), p.toolsOther].filter(Boolean).join(', ') || '—'}`,
+    `${dict.brief.email.fieldFrequency}: ${frequencyLabel(p, dict)}`,
     ``,
-    `GOAL / OUTCOME`,
-    `--------------`,
+    sep(dict.brief.email.fieldGoal),
     p.goal,
-    `Success metric:  ${p.successMetric || '—'}`,
+    `${dict.brief.email.fieldSuccess}: ${p.successMetric || '—'}`,
     ``,
-    `LOGISTICS`,
-    `---------`,
-    `Budget:    ${BUDGET_LABELS[p.budget]}`,
-    `Timeline:  ${TIMELINE_LABELS[p.timeline]}`,
+    sep(dict.brief.email.fieldBudget),
+    `${budgetLabel(p, dict)} · ${timelineLabel(p, dict)}`,
     ``,
-    `ADDITIONAL NOTES`,
-    `----------------`,
+    sep(dict.brief.email.fieldNotes),
     p.additionalNotes || '—',
   ];
   return lines.join('\n');
@@ -185,8 +185,8 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
   // would land in ClickUp as markdown. Fail closed.
   const PROJECT_TYPES = ['web', 'automation', 'ai-integration', 'consulting', 'other'] as const;
   const FREQUENCIES = ['daily', 'weekly', 'monthly', 'one-off', 'ad-hoc'] as const;
-  const BUDGETS = ['<2k', '2-5k', '5-15k', '15-50k', '50k+'] as const;
-  const TIMELINES = ['asap', '1-month', '1-3-months', '3+ months', 'flexible'] as const;
+  const BUDGETS = ['under2k', '2to5k', '5to15k', '15to50k', 'over50k'] as const;
+  const TIMELINES = ['asap', '1month', '1to3months', 'over3months', 'flexible'] as const;
 
   const projectType = String(b.projectType) as (typeof PROJECT_TYPES)[number];
   if (!PROJECT_TYPES.includes(projectType)) return { ok: false, error: 'Invalid projectType' };
@@ -196,6 +196,12 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
   if (!BUDGETS.includes(budget)) return { ok: false, error: 'Invalid budget' };
   const timeline = String(b.timeline) as (typeof TIMELINES)[number];
   if (!TIMELINES.includes(timeline)) return { ok: false, error: 'Invalid timeline' };
+
+  // `lang` is optional. If absent or invalid, the POST handler will fall
+  // back to DEFAULT_LOCALE (`en`). Whitelisting here just normalizes the
+  // value to a known Locale — no error if missing.
+  const langRaw = b.lang;
+  const lang = typeof langRaw === 'string' && isLocale(langRaw) ? langRaw : undefined;
 
   return {
     ok: true,
@@ -215,17 +221,18 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
       budget,
       timeline,
       additionalNotes: b.additionalNotes ? String(b.additionalNotes).slice(0, 2000) : '',
+      lang,
     },
   };
 }
-async function sendViaBrevo(data: BriefPayload): Promise<{ ok: boolean; error?: string; status?: number }> {
+async function sendViaBrevo(data: BriefPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string; status?: number }> {
   const payload = {
     sender: { name: FROM_NAME, email: FROM_EMAIL },
     to: [{ email: TO_EMAIL, name: 'Andres' }],
     replyTo: { email: data.email, name: data.name },
-    subject: `Brief: ${data.name} — ${PROJECT_TYPE_LABELS[data.projectType]}`,
-    htmlContent: renderEmailHtml(data),
-    textContent: renderEmailText(data),
+    subject: `${dict.brief.email.title}: ${data.name} — ${projectTypeLabel(data, dict)}`,
+    htmlContent: renderEmailHtml(data, dict),
+    textContent: renderEmailText(data, dict),
   };
 
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -329,7 +336,12 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const sendResult = await sendViaBrevo(data);
+    // Resolve the locale for email templates. If the brief was submitted
+    // without a `lang` field (e.g. a hand-crafted curl), fall back to en.
+    const lang = data.lang ?? DEFAULT_LOCALE;
+    const dict = await getDictionary(lang);
+
+    const sendResult = await sendViaBrevo(data, dict);
     if (!sendResult.ok) {
       console.error('[brief] Brevo error:', sendResult.status, sendResult.error);
       return NextResponse.json(
@@ -342,7 +354,7 @@ export async function POST(req: NextRequest) {
     // affect the brief send — already logged + replied in the inbox.
     // await is intentionally skipped so we don't inflate the response
     // time if Brevo is slow on the second send.
-    sendAutoReply(data).catch((err) => {
+    sendAutoReply(data, dict, lang).catch((err) => {
       console.warn('[brief] auto-reply failed (non-fatal):', err);
     });
 
@@ -350,7 +362,7 @@ export async function POST(req: NextRequest) {
     // your board as soon as it arrives. Same non-blocking pattern as the
     // auto-reply: a ClickUp outage must never affect the user-facing
     // success of the submission.
-    sendToClickUp(data).catch((err) => {
+    sendToClickUp(data, dict).catch((err) => {
       console.warn('[brief] ClickUp sync failed (non-fatal):', err);
     });
 
@@ -364,33 +376,42 @@ export async function POST(req: NextRequest) {
 // Send a confirmation email to whoever filled the brief. Uses the same
 // verified sender so nothing leaves the andres@andresmorales.com.co
 // envelope. Same Brevo endpoint, parallel route.
-async function sendAutoReply(p: BriefPayload): Promise<void> {
+async function sendAutoReply(p: BriefPayload, dict: Dictionary, lang: string): Promise<void> {
+  const firstName = p.name.split(' ')[0] || p.name;
+  const greeting = dict.brief.emailAutoReply.greeting.replace('{firstName}', escapeHtml(firstName));
+  const subject = dict.brief.emailAutoReply.subject.replace('{firstName}', firstName);
+  // Locale-aware brief link. `en` uses the root URL; `es`/`pt` prefix the
+  // path segment. Matches the `[lang]` route segment in `app/[lang]/brief/page.tsx`.
+  const briefUrl = lang === 'en'
+    ? 'https://andresmorales.com.co/brief'
+    : `https://andresmorales.com.co/${lang}/brief`;
+
   const html = `
-    <div style="font-family:Roboto,Arial,sans-serif;max-width:600px;margin:0 auto;">
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
       <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">Thanks for the brief, ${escapeHtml(p.name.split(' ')[0] || p.name)}.</h1>
+        <h1 style="margin:0;font-size:22px;">${greeting}</h1>
       </div>
       <div style="padding:24px 32px;color:#575250;line-height:1.6;">
-        <p>I got your brief and will read it personally within the next 24 hours.</p>
-        <p>If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.</p>
-        <p style="margin-top:32px;">— Andrés</p>
+        <p>${escapeHtml(dict.brief.emailAutoReply.body1)}</p>
+        <p>${escapeHtml(dict.brief.emailAutoReply.body2)}</p>
+        <p style="margin-top:32px;">${escapeHtml(dict.brief.emailAutoReply.signature)}</p>
         <p style="font-size:13px;color:#999;margin-top:24px;">
-          You received this because you submitted the project brief at
-          <a href="https://andresmorales.com.co/brief" style="color:#f96e03;">andresmorales.com.co/brief</a>.
+          ${escapeHtml(dict.brief.emailAutoReply.footer)}
+          <a href="${briefUrl}" style="color:#f96e03;">${escapeHtml(briefUrl)}</a>.
         </p>
       </div>
     </div>
   `;
-  const text = `Thanks for the brief, ${p.name.split(' ')[0] || p.name}.
+  const text = `${dict.brief.emailAutoReply.greeting.replace('{firstName}', firstName)}
 
-I got it and will read it personally within the next 24 hours.
+${dict.brief.emailAutoReply.body1}
 
-If anything is unclear or you want to add context in the meantime, just reply to this email — it goes straight to me.
+${dict.brief.emailAutoReply.body2}
 
-— Andrés
+${dict.brief.emailAutoReply.signature}
 
 ---
-You received this because you submitted the project brief at andresmorales.com.co/brief.`;
+${dict.brief.emailAutoReply.footer} ${briefUrl}.`;
 
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
@@ -405,7 +426,7 @@ You received this because you submitted the project brief at andresmorales.com.c
       // use the user's own name (or fall back to their email) as the "to" name.
       to: [{ email: p.email, name: p.name }],
       replyTo: { email: FROM_EMAIL, name: 'Andrés Morales' },
-      subject: `Got your brief — ${p.name.split(' ')[0] || p.name}`,
+      subject,
       htmlContent: html,
       textContent: text,
     }),
@@ -426,25 +447,25 @@ export async function GET() {
 // every form field into the task description as Markdown rather than
 // relying on Custom Fields (those are gated behind a paid plan on
 // some ClickUp workspaces). Free-tier friendly + instantly readable.
-async function sendToClickUp(p: BriefPayload): Promise<void> {
+async function sendToClickUp(p: BriefPayload, dict: Dictionary): Promise<void> {
   if (!CLICKUP_API_TOKEN || !CLICKUP_LIST_ID) {
     // Not configured: skip silently. The brief still went to email.
     return;
   }
 
   // Priority mapping: 1=urgent, 2=high, 3=normal, 4=low. We use the
-  // raw budget code (e.g. "50k+") rather than the display label so
-  // this stays correct as the form's BUDGET_LABELS map evolves.
+  // raw budget code (e.g. "over50k") rather than the display label so
+  // this stays correct as the form's dict.brief.step5Budget values evolve.
   let priority = 3;
-  if (p.budget === '50k+' || p.budget === '15-50k') priority = 1;  // urgent
-  else if (p.budget === '5-15k') priority = 2;                    // high
-  else if (p.budget === '<2k' || p.budget === '2-5k') priority = 3; // normal
+  if (p.budget === 'over50k' || p.budget === '15to50k') priority = 1;  // urgent
+  else if (p.budget === '5to15k') priority = 2;                       // high
+  else if (p.budget === 'under2k' || p.budget === '2to5k') priority = 3; // normal
 
   // Use the human-readable labels for the task title so the board is
   // readable at a glance. Truncate name for the title (ClickUp titles
   // are 250 chars max, but we keep it short to scan well in a list).
   const titleName = p.name.length > 60 ? p.name.slice(0, 57) + '...' : p.name;
-  const title = `Brief: ${titleName} — ${PROJECT_TYPE_LABELS[p.projectType]} · ${BUDGET_LABELS[p.budget]}`;
+  const title = `${dict.brief.email.title}: ${titleName} — ${projectTypeLabel(p, dict)} · ${budgetLabel(p, dict)}`;
 
   // Wrap free-form user input in backticks to neutralize Markdown
   // (asterisks, brackets, code fences) inside ClickUp's renderer.
@@ -456,26 +477,26 @@ async function sendToClickUp(p: BriefPayload): Promise<void> {
   const description = [
     `**Name:** ${user(p.name)}`,
     `**Email:** ${user(p.email)}`,
-    p.company ? `**Company:** ${user(p.company)}` : '',
-    p.role ? `**Role:** ${user(p.role)}` : '',
+    p.company ? `**${dict.brief.email.fieldCompany}:** ${user(p.company)}` : '',
+    p.role ? `**${dict.brief.email.fieldRole}:** ${user(p.role)}` : '',
     ``,
-    `**Project type:** ${PROJECT_TYPE_LABELS[p.projectType]}`,
-    p.projectTypeOther ? `**Project type (other):** ${user(p.projectTypeOther)}` : '',
-    `**Budget:** ${BUDGET_LABELS[p.budget]}`,
-    `**Timeline:** ${TIMELINE_LABELS[p.timeline]}`,
-    `**Frequency:** ${p.frequency ? FREQUENCY_LABELS[p.frequency] : '—'}`,
+    `**${dict.brief.email.fieldProjectType}:** ${projectTypeLabel(p, dict)}`,
+    p.projectTypeOther ? `**${dict.brief.email.fieldProjectType} (other):** ${user(p.projectTypeOther)}` : '',
+    `**${dict.brief.email.fieldBudget}:** ${budgetLabel(p, dict)}`,
+    `**${dict.brief.email.fieldTimeline}:** ${timelineLabel(p, dict)}`,
+    `**${dict.brief.email.fieldFrequency}:** ${frequencyLabel(p, dict)}`,
     ``,
-    `**Problem to solve**`,
+    `**${dict.brief.email.fieldProblem}**`,
     user(p.problem),
     ``,
-    p.tools && p.tools.length ? `**Tools it touches today**\n- ${p.tools.map(user).join('\n- ')}` : '',
-    p.toolsOther ? `**Other tool:** ${user(p.toolsOther)}` : '',
+    p.tools && p.tools.length ? `**${dict.brief.email.fieldTools}**\n- ${p.tools.map(user).join('\n- ')}` : '',
+    p.toolsOther ? `**${dict.brief.email.fieldTools} (other):** ${user(p.toolsOther)}` : '',
     ``,
-    `**Goal / outcome**`,
+    `**${dict.brief.email.fieldGoal}**`,
     user(p.goal),
-    p.successMetric ? `**Success metric:** ${user(p.successMetric)}` : '',
+    p.successMetric ? `**${dict.brief.email.fieldSuccess}:** ${user(p.successMetric)}` : '',
     ``,
-    p.additionalNotes ? `**Additional notes**\n${user(p.additionalNotes)}\n` : '',
+    p.additionalNotes ? `**${dict.brief.email.fieldNotes}**\n${user(p.additionalNotes)}\n` : '',
     `---`,
     `_Submitted via andresmorales.com.co brief wizard._`,
   ]

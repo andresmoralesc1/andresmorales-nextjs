@@ -26,9 +26,9 @@ export function NavItem({ href, label }: { href: string; label: string }) {
       event="nav_link_clicked"
       label={`nav-${href === '/' ? 'home' : href.replace(/^\//, '')}`}
       aria-current={isActive ? 'page' : undefined}
-      className={`text-sm font-secondary font-bold uppercase tracking-widest link-underline transition-colors ${
+      className={`text-sm font-secondary font-bold uppercase tracking-widest link-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm ${
         isActive
-          ? 'text-black border-b-2 border-theme-1 pb-0.5'
+          ? 'text-secondary border-b-2 border-theme-1 pb-0.5'
           : 'text-secondary hover:text-accent'
       }`}
     >

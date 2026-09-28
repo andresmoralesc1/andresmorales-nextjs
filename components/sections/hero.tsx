@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { wpImage } from '@/lib/theme';
 import { LazyParticles } from '@/components/lazy-particles';
 import { getCurrentDictionary } from '@/lib/dictionary';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 
 type Props = {
   portrait?: string;
@@ -16,7 +17,7 @@ type Props = {
 // middleware.
 export async function Hero({
   portrait = wpImage('/wp-content/uploads/2023/04/19.png'),
-  ctaHref = 'https://calendar.app.google/NHF1ScCWjh4WJaey6',
+  ctaHref = CALENDAR_BOOKING_URL,
 }: Props) {
   const dict = await getCurrentDictionary();
   return (
@@ -37,33 +38,35 @@ export async function Hero({
 
       <div className="container-page relative z-10 grid md:grid-cols-2 gap-12 items-center py-24">
         <div>
-          <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+          <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
             {dict.homeHero.greeting}
           </p>
-          <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl mb-5 text-black leading-[1.05] tracking-tight">
+          <p className="font-heading text-5xl md:text-6xl lg:text-7xl mb-5 text-secondary leading-[1.05] tracking-tight">
             {dict.homeHero.name}
-          </h1>
-          <p className="text-2xl md:text-4xl font-secondary font-medium text-black mb-2 leading-snug">
-            {dict.homeHero.role1}
           </p>
-          <p className="text-2xl md:text-4xl font-secondary text-black/70 mb-8 italic leading-snug">
+          <h1 className="text-2xl md:text-4xl font-secondary font-medium text-secondary mb-2 leading-snug">
+            {dict.homeHero.role1}
+          </h1>
+          <p className="text-2xl md:text-4xl font-secondary text-secondary/70 mb-8 italic leading-snug">
             {dict.homeHero.role2}
           </p>
           <ul className="space-y-3 mb-10">
             <li>
               <a
                 href="mailto:info@andresmorales.com.co"
-                className="text-black hover:text-black flex items-center gap-3 text-base"
+                className="text-secondary hover:text-secondary flex items-center gap-3 text-base"
               >
-                <span className="text-black text-lg">{dict.homeHero.labelEmail}</span> info@andresmorales.com.co
+                <span className="text-secondary text-lg">{dict.homeHero.labelEmail}</span> info@andresmorales.com.co
               </a>
             </li>
             <li>
               <a
-                href="tel:+573245425387"
-                className="text-black hover:text-black flex items-center gap-3 text-base"
+                href="https://wa.me/573161482507"
+                target="_blank"
+                rel="noreferrer"
+                className="text-secondary hover:text-secondary flex items-center gap-3 text-base"
               >
-                <span className="text-black text-lg">{dict.homeHero.labelPhone}</span> +57 324 5425387
+                <span className="text-secondary text-lg">{dict.homeHero.labelWhatsapp}</span> +57 316 148 2507
               </a>
             </li>
             <li>
@@ -71,9 +74,29 @@ export async function Hero({
                 href="https://www.linkedin.com/in/andresmoralesc1/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-black hover:text-black flex items-center gap-3 text-base"
+                className="text-secondary hover:text-secondary flex items-center gap-3 text-base"
               >
-                <span className="text-black text-lg">{dict.homeHero.labelLinkedin}</span> {dict.homeHero.linkedinLabel}
+                <span className="text-secondary text-lg">{dict.homeHero.labelLinkedin}</span> {dict.homeHero.linkedinLabel}
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com/andres_morales_automation/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-secondary hover:text-secondary flex items-center gap-3 text-base"
+              >
+                <span className="text-secondary text-lg">{dict.homeHero.labelInstagram}</span> {dict.homeHero.instagramLabel}
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/andresmoralesautomation/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-secondary hover:text-secondary flex items-center gap-3 text-base"
+              >
+                <span className="text-secondary text-lg">{dict.homeHero.labelFacebook}</span> {dict.homeHero.facebookLabel}
               </a>
             </li>
           </ul>
@@ -81,7 +104,7 @@ export async function Hero({
             href={ctaHref}
             target="_blank"
             rel="noreferrer"
-            className="btn-theme shadow-md hover:shadow-lg text-base px-8 py-4"
+            className="btn-theme text-base px-8 py-4"
           >
             {dict.homeHero.cta}
           </Link>

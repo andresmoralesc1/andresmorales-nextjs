@@ -3,14 +3,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { ParticlesBackground } from '@/components/particles-background';
 import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
-import { JsonLd, serviceSchema, breadcrumbSchema } from '@/lib/json-ld';
+import { JsonLd, serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/json-ld';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { headers } from 'next/headers';
+import { SERVICE_FAQS } from '@/data/service-faqs';
 
 
 
@@ -126,15 +128,16 @@ export default async function WebDevelopmentPage() {
           { name: 'Web Development', path: '/services/web-development' },
         ])}
       />
+      <JsonLd data={faqSchema(SERVICE_FAQS['web-development'], 'en')} />
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-webdev" variant="soft" />
         <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
-            <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
               Track 03 · Web Development
             </p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-black leading-[1.05] tracking-tight">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary leading-[1.05] tracking-tight">
               {dict.metadata.webdevH1}
             </h1>
             <p className="text-secondary text-lg md:text-xl max-w-xl">
@@ -205,10 +208,10 @@ export default async function WebDevelopmentPage() {
               />
             </div>
             <div className="p-8 md:p-10">
-              <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+              <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
                 Featured case
               </p>
-              <h3 className="font-heading text-2xl md:text-3xl mb-3 text-black">
+              <h3 className="font-heading text-2xl md:text-3xl mb-3 text-secondary">
                 BarrioTech · live in production
               </h3>
               <p className="text-secondary leading-relaxed mb-5">
@@ -278,10 +281,10 @@ export default async function WebDevelopmentPage() {
           </div>
           <div className="pt-12 flex flex-wrap items-center gap-3">
             <a
-              href="https://calendar.app.google/NHF1ScCWjh4WJaey6"
+              href={CALENDAR_BOOKING_URL}
               target="_blank"
               rel="noreferrer"
-              className="btn-theme text-base px-8 py-4 shadow-lg"
+              className="btn-theme text-base px-8 py-4"
             >
               Book a free scoping call →
             </a>
@@ -328,12 +331,45 @@ export default async function WebDevelopmentPage() {
               <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-1">
                 Previous service
               </p>
-              <h3 className="font-heading text-lg md:text-xl text-black group-hover:text-accent transition-colors">
+              <h3 className="font-heading text-lg md:text-xl text-secondary group-hover:text-accent transition-colors">
                 UI/UX Design
               </h3>
             </div>
           </Link>
         </div>
+      </section>
+
+      {/* FAQ — mirrors FAQPage schema above. */}
+      <section className="section bg-theme-5">
+        <Reveal className="container-page max-w-3xl">
+          <h2 className="font-heading text-3xl md:text-4xl mb-3">
+            Frequently asked questions
+          </h2>
+          <p className="text-text leading-relaxed mb-8">
+            Common questions about timelines, stacks, SEO, performance, and e-commerce pricing.
+          </p>
+          <div className="space-y-3">
+            {SERVICE_FAQS['web-development'].map((faq, idx) => (
+              <details
+                key={idx}
+                className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
+              >
+                <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
+                  <span>{faq.question}</span>
+                  <span
+                    aria-hidden="true"
+                    className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       <Cta />

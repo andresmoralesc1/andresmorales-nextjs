@@ -33,7 +33,7 @@ export async function Cta() {
           href={CALENDAR_BOOKING_URL}
           target="_blank"
           rel="noreferrer"
-          className="btn-theme text-base px-8 py-4 shadow-lg"
+          className="btn-theme text-base px-8 py-4"
         >
           {dict.homeCta.cta}
         </a>

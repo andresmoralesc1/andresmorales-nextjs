@@ -24,7 +24,7 @@ export default async function InvestPage() {
       <section className="section bg-background text-primary relative overflow-hidden">
         <ParticlesBackground id="hero-particles-invest" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
-          <p className="text-sm uppercase tracking-widest text-black mb-3">
+          <p className="text-sm uppercase tracking-widest text-secondary mb-3">
             {dict.invest.eyebrow}
           </p>
           <h1 className="font-heading text-4xl md:text-6xl mb-6">

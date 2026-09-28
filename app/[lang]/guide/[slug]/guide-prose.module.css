@@ -1,0 +1,192 @@
+/* Article (guide + long-form satellite) prose styles.
+   Reuses the typography / spacing tokens of the rest of the site so
+   the long-form reading view feels consistent with /process, /blog
+   and the case studies.
+
+   Loaded only on /guide/[slug] routes (per-app CSS module). */
+
+.prose {
+  color: var(--tw-prose-body, #1E1810);
+  max-width: none;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose > p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose > h2,
+.prose > h3,
+.prose > h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 7rem; /* anchor offset for sticky header + TOC */
+}
+
+.prose > h2 {
+  font-size: 1.875rem;
+  font-family: Georgia, serif;
+  margin-top: 3em;
+  margin-bottom: 0.6em;
+  padding-bottom: 0.4em;
+  border-bottom: 2px solid #f96e03;
+}
+
+.prose > h3 {
+  font-size: 1.5rem;
+  font-family: Georgia, serif;
+  margin-top: 2.4em;
+  margin-bottom: 0.5em;
+}
+
+.prose > h4 {
+  font-size: 1.25rem;
+  font-family: Arial Narrow, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2em;
+  margin-bottom: 0.4em;
+  color: #1E1810;
+}
+
+.prose > ul,
+.prose > ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5em;
+}
+
+.prose > ul {
+  list-style: disc;
+}
+
+.prose > ol {
+  list-style: decimal;
+}
+
+.prose > li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose > li::marker {
+  color: #f96e03;
+  font-weight: 700;
+}
+
+.prose > blockquote {
+  margin: 2em 0;
+  padding: 1em 1.5em;
+  border-left: 4px solid #f96e03;
+  background: #F8F5F4;
+  border-radius: 0 1rem 1rem 0;
+  font-style: italic;
+  color: #1E1810;
+}
+
+.prose > pre {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  background: #1E1810;
+  color: #F8F5F4;
+  border-radius: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.prose > pre > code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.prose > code {
+  background: #F8F5F4;
+  color: #f96e03;
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.92em;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.prose > table {
+  margin: 2em 0;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.prose > table th,
+.prose > table td {
+  border: 1px solid #eeeeee;
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+
+.prose > table th {
+  background: #F8F5F4;
+  font-family: Arial Narrow, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
+.prose > a {
+  color: #f96e03;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.prose > a:hover {
+  color: #1E1810;
+}
+
+.prose > hr {
+  margin: 3em auto;
+  border: none;
+  border-top: 1px solid #eeeeee;
+  width: 30%;
+}
+
+/* Stats callout — like a sidebar summary inside the article */
+.prose .stats-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin: 2.5em 0;
+  padding: 1.5em;
+  background: #F8F5F4;
+  border-radius: 1rem;
+  border: 1px solid #eeeeee;
+}
+
+.prose .stats-card > div {
+  text-align: center;
+  padding: 0.5em 0;
+}
+
+.prose .stats-card .stat-num {
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f96e03;
+  line-height: 1;
+}
+
+.prose .stats-card .stat-label {
+  font-family: Arial Narrow, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #575250;
+  margin-top: 0.4em;
+}

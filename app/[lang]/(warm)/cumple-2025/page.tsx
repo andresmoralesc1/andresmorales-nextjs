@@ -1,16 +1,25 @@
 import { getCurrentDictionary } from '@/lib/dictionary';
-import { LOCALES } from '@/lib/i18n';
+import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { pageMetadata } from '@/lib/metadata';
 import { Reveal } from '@/components/reveal';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = pageMetadata({
-  title: 'Cumple 2025',
-  description:
-    'Birthday-month automation package: limited slots, fixed scope, fast turnaround. Special campaign for October 2025.',
-  path: '/cumple-2025',
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const safeLang = isLocale(lang) ? lang : 'en';
+  const dict = await getDictionary(safeLang);
+  return pageMetadata({
+    title: dict.cumple.metaTitle,
+    description: dict.cumple.metaDescription,
+    locale: safeLang,
+    path: safeLang === 'en' ? '/cumple-2025' : `/${safeLang}/cumple-2025`,
+  });
+}
 
 export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));

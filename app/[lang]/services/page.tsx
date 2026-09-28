@@ -8,6 +8,9 @@ import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { Reveal } from '@/components/reveal';
 import type { Metadata } from 'next';
+import { JsonLd, faqSchema } from '@/lib/json-ld';
+import { SERVICE_FAQS } from '@/data/service-faqs';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 
 export async function generateMetadata({
   params,
@@ -19,7 +22,7 @@ export async function generateMetadata({
   const dict = await getDictionary(safeLang);
   return pageMetadata({
     title: dict.metadata.servicesTitle,
-    description: dict.metadata.servicesDescription,
+    description: dict.services.metaDescription,
     locale: safeLang,
     path: safeLang === 'en' ? '/services' : `/${safeLang}/services`,
   });
@@ -32,21 +35,23 @@ export function generateStaticParams() {
 export default async function ServicesPage() {
   const dict = await getCurrentDictionary();
   const s = dict.servicesHub;
+  const p = dict.pricing;
 
   return (
     <>
+      <JsonLd data={faqSchema(SERVICE_FAQS.services, 'en')} />
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-services" variant="soft" />
         <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
-            <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
               {s.heroEyebrow}
             </p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-black">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary">
               {s.heroTitle}
             </h1>
-            <p className="text-black text-lg md:text-xl max-w-xl">{s.heroSubtitle}</p>
+            <p className="text-secondary text-lg md:text-xl max-w-xl">{s.heroSubtitle}</p>
           </div>
           <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-theme-9 ring-1 ring-theme-9/30 shadow-2xl relative">
             <Image
@@ -65,7 +70,7 @@ export default async function ServicesPage() {
       <section className="section bg-background">
         <Reveal stagger className="container-page">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {s.tracksEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">{s.tracksTitle}</h2>
@@ -119,7 +124,7 @@ export default async function ServicesPage() {
       <section className="section bg-primary">
         <Reveal className="container-page">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {s.processEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">{s.processTitle}</h2>
@@ -149,11 +154,101 @@ export default async function ServicesPage() {
         </Reveal>
       </section>
 
+      {/* Pricing transparency — three tiers per service + retainer note.
+          Sits between Process and Why me so the visitor sees cost
+          before differentiation. Ranges, not exact prices (per the
+          site-wide rule: no public price quotes — every project is a
+          fixed quote after a 30-min scoping call). */}
+      <section className="section bg-primary">
+        <Reveal className="container-page max-w-5xl">
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
+              {p.eyebrow}
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl mb-3">
+              {p.title}
+            </h2>
+            <p className="text-secondary/80 max-w-2xl mx-auto">{p.subtitle}</p>
+          </div>
+
+          {/* Methodology note — single paragraph in a muted box, so it
+              doesn't compete with the tier cards. */}
+          <p className="text-xs text-text max-w-2xl mx-auto text-center mb-10 leading-relaxed">
+            <strong className="text-secondary/80">{p.methodology}:</strong> {p.methodologyBody}
+          </p>
+
+          {/* Three service blocks (AI, UX, Web), each with 3 tier cards */}
+          <div className="space-y-12">
+            {[
+              { title: p.aiTitle, accent: true,
+                tiers: [
+                  { name: p.aiT1, range: p.aiT1Range, body: p.aiT1Body },
+                  { name: p.aiT2, range: p.aiT2Range, body: p.aiT2Body },
+                  { name: p.aiT3, range: p.aiT3Range, body: p.aiT3Body },
+                ] },
+              { title: p.uxTitle, accent: false,
+                tiers: [
+                  { name: p.uxT1, range: p.uxT1Range, body: p.uxT1Body },
+                  { name: p.uxT2, range: p.uxT2Range, body: p.uxT2Body },
+                  { name: p.uxT3, range: p.uxT3Range, body: p.uxT3Body },
+                ] },
+              { title: p.webTitle, accent: false,
+                tiers: [
+                  { name: p.webT1, range: p.webT1Range, body: p.webT1Body },
+                  { name: p.webT2, range: p.webT2Range, body: p.webT2Body },
+                  { name: p.webT3, range: p.webT3Range, body: p.webT3Body },
+                ] },
+            ].map((svc) => (
+              <div key={svc.title}>
+                <h3 className={`font-heading text-2xl md:text-3xl mb-5 ${svc.accent ? 'text-accent' : 'text-secondary'}`}>
+                  {svc.title}
+                </h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {svc.tiers.map((t) => (
+                    <div key={t.name} className="rounded-2xl border border-theme-9 bg-primary p-5 md:p-6 flex flex-col">
+                      <div className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-2">
+                        {t.name}
+                      </div>
+                      <div className="font-heading text-xl md:text-2xl text-secondary mb-3">
+                        {t.range}
+                      </div>
+                      <p className="text-sm text-text leading-relaxed flex-1">{t.body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Retainer note + final CTA */}
+          <div className="mt-14 rounded-2xl border border-theme-1/30 bg-theme-1/5 p-6 md:p-8 text-center">
+            <div className="text-xs uppercase tracking-widest text-accent font-secondary font-bold mb-2">
+              {p.retainer}
+            </div>
+            <div className="font-heading text-2xl md:text-3xl text-secondary mb-3">
+              {p.retainerRange}
+            </div>
+            <p className="text-secondary/80 max-w-2xl mx-auto mb-6">{p.retainerBody}</p>
+            <p className="text-xs text-text max-w-2xl mx-auto mb-6 italic">
+              {p.rangesCaveat}
+            </p>
+            <a
+              href={CALENDAR_BOOKING_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-theme-1 hover:bg-theme-2 text-secondary font-secondary font-bold rounded-md"
+            >
+              {p.ctaQuote}
+            </a>
+          </div>
+        </Reveal>
+      </section>
+
       {/* Why me — differentiators */}
       <section className="section bg-theme-5">
         <Reveal className="container-page">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {s.diffEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">{s.diffTitle}</h2>
@@ -171,6 +266,39 @@ export default async function ServicesPage() {
                 <h3 className="font-heading text-base md:text-lg mb-2 text-secondary">{d.title}</h3>
                 <p className="text-text text-sm leading-relaxed">{d.desc}</p>
               </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* FAQ — mirrors FAQPage schema above. */}
+      <section className="section bg-theme-5">
+        <Reveal className="container-page max-w-3xl">
+          <h2 className="font-heading text-3xl md:text-4xl mb-3">
+            Frequently asked questions
+          </h2>
+          <p className="text-text leading-relaxed mb-8">
+            Common questions about which service fits, pricing, geography, source code, and what happens after the engagement.
+          </p>
+          <div className="space-y-3">
+            {SERVICE_FAQS.services.map((faq, idx) => (
+              <details
+                key={idx}
+                className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
+              >
+                <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
+                  <span>{faq.question}</span>
+                  <span
+                    aria-hidden="true"
+                    className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
+                  {faq.answer}
+                </p>
+              </details>
             ))}
           </div>
         </Reveal>

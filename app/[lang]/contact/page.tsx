@@ -3,9 +3,10 @@ import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { pageMetadata } from '@/lib/metadata';
 import { Reveal } from '@/components/reveal';
-import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
+import { JsonLd, faqSchema, breadcrumbSchema, localBusinessSchema } from '@/lib/json-ld';
 import type { Metadata } from 'next';
 
 
@@ -72,20 +73,39 @@ export default async function ContactPage() {
     { name: dict.metadata.contactTitle, path: lang === 'en' ? '/contact' : `/${lang}/contact` },
   ]);
 
+  // LocalBusiness NAP for SEO. Aligns with the Google Business Profile
+  // the user already manages — keep them in sync. Address/geo omitted
+  // here because the practice is fully remote; fill in when you add a
+  // physical office location.
+  const lbUrl = lang === 'en'
+    ? 'https://andresmorales.com.co/contact'
+    : 'https://andresmorales.com.co/' + lang + '/contact';
+  const lb = localBusinessSchema({
+    name: 'Andrés Morales',
+    url: lbUrl,
+    description: dict.metadata.homeDescription,
+    email: 'info@andresmorales.com.co',
+    addressLocality: 'Bogotá',
+    addressRegion: 'Bogotá D.C.',
+    addressCountry: 'CO',
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 09:00-18:00'],
+  });
+
   return (
     <>
-      <JsonLd data={[contactSchema, faq, breadcrumbs]} />
+      <JsonLd data={[contactSchema, faq, breadcrumbs, lb]} />
       {/* Hero — cream, eyebrow + bigger H1 + trust stats. */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-contact" variant="soft" />
         <div className="container-page relative z-10">
-          <p className="text-xs uppercase tracking-widest text-black font-secondary font-bold mb-4">
+          <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-4">
             {dict.contact.eyebrow}
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-black max-w-3xl">
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary max-w-3xl">
             {dict.metadata.contactH1}
           </h1>
-          <p className="text-black text-lg max-w-2xl mb-2">
+          <p className="text-secondary text-lg max-w-2xl mb-2">
             {dict.contact.subtitle}
           </p>
           <p className="text-secondary/70 text-sm max-w-2xl">
@@ -96,7 +116,7 @@ export default async function ContactPage() {
           <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mt-8">
             {trustStats.map(({ n, label }) => (
               <div key={label}>
-                <div className="font-heading text-2xl md:text-3xl text-black font-bold">
+                <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">
                   {n}
                 </div>
                 <p className="text-secondary/70 text-xs md:text-sm mt-1">{label}</p>
@@ -120,14 +140,14 @@ export default async function ContactPage() {
                 <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-2">
                   {dict.contact.asideBookingKicker}
                 </p>
-                <h2 className="font-heading text-xl md:text-2xl text-black mb-3">
+                <h2 className="font-heading text-xl md:text-2xl text-secondary mb-3">
                   {dict.contact.asideBookingTitle}
                 </h2>
                 <p className="text-sm text-secondary/80 mb-5">
                   {dict.contact.asideBookingP}
                 </p>
                 <a
-                  href="https://calendar.app.google/NHF1ScCWjh4WJaey6"
+                  href={CALENDAR_BOOKING_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="btn-theme w-full md:w-auto justify-center text-base px-6 py-3 inline-flex"

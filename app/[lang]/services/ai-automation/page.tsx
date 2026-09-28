@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Cta } from '@/components/sections/cta';
 import { wpImage } from '@/lib/theme';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { ParticlesBackground } from '@/components/particles-background';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
@@ -153,10 +154,10 @@ export default async function AiautomationPage() {
         <ParticlesBackground id="hero-particles-ai" variant="soft" />
         <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
-            <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
               {s.heroEyebrow}
             </p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-black leading-[1.05] tracking-tight">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary leading-[1.05] tracking-tight">
               {s.heroTitle}
             </h1>
             <p className="text-secondary text-lg md:text-xl max-w-xl">
@@ -226,10 +227,10 @@ export default async function AiautomationPage() {
               />
             </div>
             <div className="p-8 md:p-10">
-              <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+              <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
                 {c.featuredCaseBadge}
               </p>
-              <h3 className="font-heading text-2xl md:text-3xl mb-3 text-black">
+              <h3 className="font-heading text-2xl md:text-3xl mb-3 text-secondary">
                 {s.caseTitle}
               </h3>
               <p className="text-secondary leading-relaxed mb-5">
@@ -296,10 +297,10 @@ export default async function AiautomationPage() {
           </ol>
           <div className="pt-12 flex flex-wrap items-center gap-3">
             <a
-              href="https://calendar.app.google/NHF1ScCWjh4WJaey6"
+              href={CALENDAR_BOOKING_URL}
               target="_blank"
               rel="noreferrer"
-              className="btn-theme text-base px-8 py-4 shadow-lg"
+              className="btn-theme text-base px-8 py-4"
             >
               {s.ctaCall}
             </a>
@@ -379,7 +380,7 @@ export default async function AiautomationPage() {
               <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-1">
                 {s.nextEyebrow}
               </p>
-              <h3 className="font-heading text-xl md:text-2xl text-black group-hover:text-accent transition-colors">
+              <h3 className="font-heading text-xl md:text-2xl text-secondary group-hover:text-accent transition-colors">
                 {s.nextTitle}
               </h3>
             </div>

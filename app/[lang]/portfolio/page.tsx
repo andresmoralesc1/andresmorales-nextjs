@@ -8,6 +8,7 @@ import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
 import { Reveal } from '@/components/reveal';
 import { JsonLd, breadcrumbSchema } from '@/lib/json-ld';
+import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import type { Metadata } from 'next';
 
 
@@ -33,22 +34,30 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-// Featured Client Work — 9 proyectos en grid (3 cols)
+// Featured Client Work — 9 proyectos en grid (3 cols).
+// `caseStudySlug` is set when the project has a deep-dive page under
+// /[lang]/work/[slug]. When present, the card links to the case study
+// instead of the live URL — Google indexes the case study, the user
+// reads context, and the "Visit live" CTA on the case study takes them
+// to the live site.
 const FEATURED_PROJECTS = [
   {
     key: 'proj1',
     image: '/sites/gps_andresmorales_com_co.png',
-    href: 'https://gps.andresmorales.com.co/',
+    href: 'https://barriotech.com.co/',
+    caseStudySlug: 'barriotech',
   },
   {
     key: 'proj2',
     image: '/sites/juanbecerra_co.png',
     href: 'https://www.juanbecerra.co/',
+    caseStudySlug: 'juan-becerra',
   },
   {
     key: 'proj3',
     image: '/sites/dash_andresmorales_com_co_login.png',
     href: 'https://dash.andresmorales.com.co/login',
+    caseStudySlug: 'kambelleh',
     access: {
       email: 'admin@kambelleh.com',
       password: 'Kambelleh2026!',
@@ -56,57 +65,63 @@ const FEATURED_PROJECTS = [
   },
   {
     key: 'proj4',
-    image: '/sites/hubiagency_vercel_app.png',
-    href: 'https://hubiagency.vercel.app/',
+    image: '/sites/temptum_home.png',
+    href: 'https://temptum-ai.vercel.app/',
+    caseStudySlug: 'temptum',
   },
   {
     key: 'proj5',
     image: '/sites/superllantas_co.png',
     href: 'https://superllantas.co/',
+    caseStudySlug: 'superllantas',
   },
   {
     key: 'proj6',
     image: '/sites/soapartesana_vercel_app.png',
     href: 'https://soapartesana.vercel.app/',
+    caseStudySlug: 'soapartesana',
   },
   {
     key: 'proj7',
     image: '/sites/carmen-job-search_vercel_app.png',
     href: 'https://carmen-job-search.vercel.app/',
+    caseStudySlug: 'carmen-job-search',
   },
   {
     key: 'proj8',
     image: '/sites/talobot_vercel_app_es.png',
     href: 'https://talobot.vercel.app/es',
+    caseStudySlug: 'talobot',
   },
   {
     key: 'proj9',
-    image: '/sites/toryskateshop_com.png',
-    href: 'https://toryskateshop.com/',
+    image: '/sites/cleida_home.png',
+    href: 'https://cleida.com.co/',
+    caseStudySlug: 'cleida',
   },
 ];
 
-// More work — additional live projects (Cleida, Temptum, Gato, MECCA)
+// More work — additional live projects (Gato, MECCA, Hubiagency).
+// Cleida moved to FEATURED.proj9 on 2026-09-24.
+// MECCA shop was decommissioned 2026-09-23; proj11 stays for archival.
 const MORE_PROJECTS = [
   {
     key: 'proj10',
     image: '/sites/gato_home.png',
     href: 'https://gato.andresmorales.com.co/',
+    caseStudySlug: 'gato-colectivo',
   },
   {
     key: 'proj11',
     image: '/sites/mecca_home.png',
     href: 'https://shop.andresmorales.com.co/',
-  },
-  {
-    key: 'proj12',
-    image: '/sites/cleida_home.png',
-    href: 'https://cleida.com.co/',
+    caseStudySlug: 'mecca',
   },
   {
     key: 'proj13',
-    image: '/sites/temptum_home.png',
-    href: 'https://temptum-ai.vercel.app/',
+    image: '/sites/hubiagency_vercel_app.png',
+    href: 'https://hubiagency.vercel.app/',
+    caseStudySlug: 'hubiagency',
   },
 ];
 
@@ -245,21 +260,21 @@ export default async function PortfolioPage() {
       <section className="section bg-background relative overflow-hidden">
         <LazyParticles id="hero-particles-portfolio" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
-          <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+          <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
             {p.heroEyebrow}
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-black">
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary">
             {dict.metadata.portfolioH1}
           </h1>
-          <p className="text-black text-lg md:text-xl mb-8">
+          <p className="text-secondary text-lg md:text-xl mb-8">
             {p.heroSubtitle}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
-              href="https://calendar.app.google/W8BViMH3wNwoP7ZD9"
+              href={CALENDAR_BOOKING_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-theme-1 hover:bg-theme-2 text-secondary font-secondary font-bold rounded-lg shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-theme-1 hover:bg-theme-2 text-secondary font-secondary font-bold rounded-lg"
             >
               {p.heroCta1}
               <span aria-hidden>→</span>
@@ -278,7 +293,7 @@ export default async function PortfolioPage() {
       <section className="section bg-theme-5">
         <Reveal stagger className="container-page">
           <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {p.featuredEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">
@@ -295,12 +310,17 @@ export default async function PortfolioPage() {
               const subtitle = p[`${proj.key}Subtitle`];
               const metric = p[`${proj.key}Metric`];
               const desc = p[`${proj.key}Desc`];
+              // Cards with a caseStudySlug link internally to /[lang]/work/[slug]
+              // (SEO + context); cards without it link straight to the live URL.
+              const cardHref = proj.caseStudySlug
+                ? (lang === 'en' ? `/work/${proj.caseStudySlug}` : `/${lang}/work/${proj.caseStudySlug}`)
+                : proj.href;
+              const isExternal = !proj.caseStudySlug;
               return (
                 <a
                   key={proj.key}
-                  href={proj.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={cardHref}
+                  {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
                   className="group block bg-primary rounded-2xl overflow-hidden border border-theme-9 hover:border-theme-1 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-theme-9">
@@ -332,7 +352,7 @@ export default async function PortfolioPage() {
                           {p.cardDemoCreds}
                         </div>
                         <div className="flex items-center gap-2 text-xs">
-                          <span className="font-secondary font-bold text-text/80 uppercase tracking-wider w-14">
+                          <span className="font-secondary font-bold text-text uppercase tracking-wider w-14">
                             {p.cardEmail}
                           </span>
                           <code className="font-mono text-secondary bg-theme-8/40 px-2 py-1 rounded flex-1 break-all">
@@ -340,7 +360,7 @@ export default async function PortfolioPage() {
                           </code>
                         </div>
                         <div className="flex items-center gap-2 text-xs">
-                          <span className="font-secondary font-bold text-text/80 uppercase tracking-wider w-14">
+                          <span className="font-secondary font-bold text-text uppercase tracking-wider w-14">
                             {p.cardPass}
                           </span>
                           <code className="font-mono text-secondary bg-theme-8/40 px-2 py-1 rounded flex-1 break-all">
@@ -365,79 +385,11 @@ export default async function PortfolioPage() {
         </Reveal>
       </section>
 
-      {/* More work — additional live projects (Cleida, Temptum, Gato, MECCA) */}
-      <section className="section bg-primary">
-        <Reveal stagger className="container-page">
-          <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
-              {p.moreEyebrow}
-            </p>
-            <h2 className="font-heading text-3xl md:text-4xl mb-3">
-              {p.moreTitle}
-            </h2>
-            <p className="text-text">
-              {p.moreSubtitle}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-5xl mx-auto">
-            {MORE_PROJECTS.map((proj) => {
-              const title = p[`${proj.key}Title`];
-              const subtitle = p[`${proj.key}Subtitle`];
-              const metric = p[`${proj.key}Metric`];
-              const desc = p[`${proj.key}Desc`];
-              return (
-                <a
-                  key={proj.key}
-                  href={proj.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group block bg-primary rounded-2xl overflow-hidden border border-theme-9 hover:border-theme-1 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-theme-9">
-                    <Image
-                      src={proj.image}
-                      alt={title}
-                      fill
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold px-2.5 py-1 rounded-full bg-theme-1 shadow-md">
-                      {p.cardBadgeLive}
-                    </span>
-                  </div>
-                  <div className="p-5">
-                    <span className="inline-block text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold mb-2">
-                      {subtitle}
-                    </span>
-                    <h3 className="font-heading text-xl md:text-2xl mb-2 text-secondary">
-                      {title}
-                    </h3>
-                    <p className="text-sm text-text leading-relaxed mb-3">
-                      {desc}
-                    </p>
-                    <div className="flex items-center justify-between mt-3">
-                      <span className="text-xs font-secondary font-bold text-secondary uppercase tracking-wider">
-                        {metric}
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-xs font-secondary font-bold text-secondary group-hover:text-accent opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                        {p.cardVisitLive}
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </Reveal>
-      </section>
-
       {/* Smart Automation in Action — 2x2 grid */}
       <section className="section bg-primary">
         <Reveal stagger className="container-page">
           <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {p.autoEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">
@@ -497,11 +449,111 @@ export default async function PortfolioPage() {
         </Reveal>
       </section>
 
+      {/* More work — additional live projects (Cleida, Temptum, Gato, MECCA) */}
+      <section className="section bg-primary">
+        <Reveal stagger className="container-page">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
+              {p.moreEyebrow}
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl mb-3">
+              {p.moreTitle}
+            </h2>
+            <p className="text-text">
+              {p.moreSubtitle}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-5xl mx-auto">
+            {MORE_PROJECTS.map((proj) => {
+              const title = p[`${proj.key}Title`];
+              const subtitle = p[`${proj.key}Subtitle`];
+              const metric = p[`${proj.key}Metric`];
+              const desc = p[`${proj.key}Desc`];
+              // Same case-study wiring as FEATURED_PROJECTS — when the
+              // project has a caseStudySlug, the card opens the internal
+              // case study (same tab) instead of the live URL (new tab).
+              const cardHref = proj.caseStudySlug
+                ? (lang === 'en' ? `/work/${proj.caseStudySlug}` : `/${lang}/work/${proj.caseStudySlug}`)
+                : proj.href;
+              const isExternal = !proj.caseStudySlug;
+              return (
+                <a
+                  key={proj.key}
+                  href={cardHref}
+                  {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="group block bg-primary rounded-2xl overflow-hidden border border-theme-9 hover:border-theme-1 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-theme-9">
+                    <Image
+                      src={proj.image}
+                      alt={title}
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold px-2.5 py-1 rounded-full bg-theme-1 shadow-md">
+                      {p.cardBadgeLive}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <span className="inline-block text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold mb-2">
+                      {subtitle}
+                    </span>
+                    <h3 className="font-heading text-xl md:text-2xl mb-2 text-secondary">
+                      {title}
+                    </h3>
+                    <p className="text-sm text-text leading-relaxed mb-3">
+                      {desc}
+                    </p>
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-xs font-secondary font-bold text-secondary uppercase tracking-wider">
+                        {metric}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs font-secondary font-bold text-secondary group-hover:text-accent opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                        {p.cardVisitLive}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Performance — PageSpeed Insights scoreboard (desktop, Lighthouse 13.5) */}
+      <section className="section bg-background">
+        <Reveal className="container-page text-center">
+          <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
+            {p.perfEyebrow}
+          </p>
+          <h2 className="font-heading text-3xl md:text-4xl mb-3">
+            {p.perfTitle}
+          </h2>
+          <p className="text-text max-w-2xl mx-auto mb-8">
+            {p.perfSubtitle}
+          </p>
+          <div className="relative max-w-5xl mx-auto rounded-2xl overflow-hidden border border-theme-9 shadow-sm hover:shadow-2xl transition-shadow duration-300">
+            <Image
+              src="/sites/pagespeed_desktop.png"
+              alt={p.perfAlt}
+              width={1800}
+              height={1125}
+              loading="lazy"
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              className="w-full h-auto"
+            />
+          </div>
+        </Reveal>
+      </section>
+
       {/* AI Creative in Action — videos migrated from the legacy WP portfolio */}
       <section className="section bg-theme-5">
         <Reveal stagger className="container-page">
           <div className="text-center mb-12 max-w-3xl mx-auto">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {p.creativeEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">
@@ -570,7 +622,7 @@ export default async function PortfolioPage() {
       <section className="section bg-primary">
         <Reveal stagger className="container-page">
           <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+            <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
               {p.catEyebrow}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl mb-3">

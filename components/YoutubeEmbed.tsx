@@ -46,7 +46,7 @@ export function YoutubeEmbed({
     <button
       type="button"
       onClick={() => setActive(true)}
-      className={`group relative w-full ${aspect} rounded-xl overflow-hidden bg-black shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer focus:outline-none focus:ring-4 focus:ring-theme-1/40`}
+      className={`group relative w-full ${aspect} rounded-xl overflow-hidden bg-black hover:shadow-2xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-theme-1/40`}
       aria-label={`Play video: ${title}`}
     >
       <img

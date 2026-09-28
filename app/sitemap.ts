@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { listSlugsByLocale, postMtime } from '@/lib/blog';
+import { CASE_STUDIES } from '@/data/case-studies';
 
 // Routes as of Next.js portfolio rebuild — keep in sync with app/*/page.tsx
 const SITE_URL = 'https://andresmorales.com.co';
@@ -17,9 +18,12 @@ interface RouteEntry {
 const ROUTES: RouteEntry[] = [
   { path: '/',                                          changeFrequency: 'weekly',  priority: 1.0, lastModified: '2026-09-08' },
   { path: '/services',                                  changeFrequency: 'weekly',  priority: 0.9, lastModified: '2026-08-26' },
+  { path: '/process',                                    changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-09-24' },
+  { path: '/about',                                      changeFrequency: 'monthly', priority: 0.7, lastModified: '2026-09-24' },
   { path: '/services/ai-automation',                    changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
   { path: '/services/ui-ux-design',                     changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
   { path: '/services/web-development',                  changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-08-26' },
+  { path: '/guide/ai-automation-latam-2026',              changeFrequency: 'monthly', priority: 0.9, lastModified: '2026-09-25' },
   { path: '/portfolio',                                 changeFrequency: 'weekly',  priority: 0.9, lastModified: '2026-09-14' },
   { path: '/blog',                                      changeFrequency: 'weekly',  priority: 0.8, lastModified: '2026-09-08' },
   { path: '/contact',                                   changeFrequency: 'monthly', priority: 0.7, lastModified: '2026-08-21' },
@@ -28,6 +32,9 @@ const ROUTES: RouteEntry[] = [
   { path: '/invest-in-people-inspire-the-future',       changeFrequency: 'monthly', priority: 0.5, lastModified: '2026-08-26' },
   { path: '/privacy',                                   changeFrequency: 'monthly', priority: 0.3, lastModified: '2026-08-21' },
   { path: '/terms',                                     changeFrequency: 'monthly', priority: 0.3, lastModified: '2026-08-21' },
+  { path: '/vs/make-vs-n8n',                            changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-09-26' },
+  { path: '/vs/ai-consultant-vs-agency',                changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-09-26' },
+  { path: '/vs/vercel-vs-aws-amplify',                  changeFrequency: 'monthly', priority: 0.8, lastModified: '2026-09-26' },
 ];
 
 // Locale → URL prefix. EN is the canonical (no prefix); ES and PT get /es and /pt.
@@ -106,5 +113,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...staticEntries, ...blogEntries];
+  // Case study entries — one per (slug × locale). Same alternates
+  // pattern as blog: x-default only when EN exists for the slug.
+  const caseStudySlugs = CASE_STUDIES.map((c) => c.slug);
+  const caseStudyEntries: MetadataRoute.Sitemap = LOCALES.flatMap((locale) =>
+    caseStudySlugs.map((slug) => {
+      const workPath = `/work/${slug}`;
+      const languages: Record<string, string> = Object.fromEntries(
+        LOCALES.map((alt) => [alt, urlFor(alt, workPath)]),
+      );
+      if (LOCALES.includes('en')) {
+        languages['x-default'] = urlFor('en', workPath);
+      }
+      return {
+        url: urlFor(locale, workPath),
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.75,
+        alternates: { languages },
+      };
+    }),
+  );
+
+  return [...staticEntries, ...blogEntries, ...caseStudyEntries];
 }

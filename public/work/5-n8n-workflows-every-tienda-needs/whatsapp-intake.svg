@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1E1810"/>
+    </marker>
+    <style>
+      .n { fill: #fff; stroke: #1E1810; stroke-width: 1.5; }
+      .lbl { font-size: 13px; font-weight: 700; fill: #1E1810; }
+      .sub { font-size: 10px; fill: #575250; }
+      .ttl { font-size: 14px; font-weight: 700; fill: #f96e03; }
+    </style>
+  </defs>
+  <text x="20" y="25" class="ttl">1 · WhatsApp intake with auto-catalog lookup</text>
+  <line x1="40" y1="100" x2="200" y2="100" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="270" y1="100" x2="430" y2="100" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="500" y1="100" x2="660" y2="100" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr)"/>
+  <g transform="translate(40,60)">
+    <rect width="160" height="80" rx="6" class="n"/>
+    <text x="80" y="25" text-anchor="middle" class="lbl">WA Webhook</text>
+    <text x="80" y="42" text-anchor="middle" class="sub">POST /wa-in</text>
+    <text x="80" y="58" text-anchor="middle" class="sub">onReceived</text>
+  </g>
+  <g transform="translate(270,60)">
+    <rect width="160" height="80" rx="6" class="n"/>
+    <text x="80" y="25" text-anchor="middle" class="lbl">Code: Lookup SKU</text>
+    <text x="80" y="42" text-anchor="middle" class="sub">regex /SKU-(\w+)/</text>
+    <text x="80" y="58" text-anchor="middle" class="sub">from catalog</text>
+  </g>
+  <g transform="translate(500,60)">
+    <rect width="160" height="80" rx="6" class="n"/>
+    <text x="80" y="25" text-anchor="middle" class="lbl">WhatsApp Send</text>
+    <text x="80" y="42" text-anchor="middle" class="sub">sendText</text>
+    <text x="80" y="58" text-anchor="middle" class="sub">Sí, $X en M — $Y</text>
+  </g>
+  <text x="450" y="190" text-anchor="middle" class="sub" font-style="italic">target: &lt; 2 s reply, &lt; 30 s end-to-end</text>
+</svg>

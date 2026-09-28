@@ -8,7 +8,11 @@
     "contact": "Contato",
     "skipToContent": "Pular para o conteúdo principal",
     "toggleMenu": "Abrir ou fechar o menu",
-    "startProject": "Iniciar projeto"
+    "startProject": "Iniciar projeto",
+    "process": "Processo",
+    "about": "Sobre mim",
+    "guide": "Guia",
+    "compare": "Comparar"
   },
   "hero": {
     "eyebrow": "Consultoria em automação com IA",
@@ -20,14 +24,53 @@
   "about": {
     "eyebrow": "Sobre mim",
     "title": "Eu coloco automações com IA rodando em produção. De verdade.",
-    "p1": "A maioria dos \"consultores de IA\" entrega slides. Eu entrego fluxos no n8n, chatbots e ferramentas internas que já estão rodando na sexta-feira seguinte.",
-    "p2": "Mais de 5 anos colocando sistemas em produção. Fui ACM na Maker, Inc., em São Francisco, antes de virar independente.",
-    "cta": "Veja como eu trabalho"
+    "photoAlt": "Andrés Morales, consultor de IA baseado em Bogotá",
+    "teamAlt": "Andrés com uma equipe cliente LATAM ao redor da mesa de planejamento",
+    "teamCaption": "Em campo com uma equipe cliente LATAM — a cadência semanal de demos faz o trabalho acontecer na sala, não em decks de status.",
+    "p1": "A maioria dos \"consultores de IA\" entrega slides. Eu entrego fluxos no n8n e chatbots que estão rodando em produção na sexta. Trabalho com PMEs da LATAM e startups dos EUA que já têm uma operação real, não um slide de runway.",
+    "p2": "Modelei para Porsche, Sony e Renault. Ensinei salsa e espanhol para estudantes internacionais na International House Bogotá. Cofundei a HomeSquad, uma empresa de serviços de limpeza que operava em várias cidades da América do Sul. Depois: vendas B2B na Andean Traders (+22% de receita sobre Zoho CRM), e-commerce na Acoa (WordPress + analytics, impulsionou vendas online), executive search na TORTORICI & PARTNERS (25 placements sênior em agronegócio, biocombustíveis, mineração e transporte) e avaliação de IA na TELUS International. Desenvolvedor de IA e web desde junho de 2022.",
+    "p3": "Cheguei ao código e à IA por um caminho não linear — por isso otimizo para o que vai para produção, não para a teoria. Automações com IA + design UI/UX + web de produção, um projeto por vez. A maioria dos engagements tocam os três.",
+    "skillsEyebrow": "No que trabalho",
+    "skillsTitle": "Tooling e stacks do dia a dia.",
+    "skillsBody": "Uma lista não exaustiva — me mantenho atualizado com o que o engagement precisa.",
+    "skillsAI": "IA / automação",
+    "skillsAIList": "n8n, Make, OpenAI, Anthropic, Wompi, HubSpot, Pipedrive, Airtable, Notion, Slack, WhatsApp Business API, Evolution API, LangChain, pgvector",
+    "skillsUX": "Design UI / UX",
+    "skillsUXList": "Figma, FigJam, Maze, Useberry, Hotjar, PostHog, Notion, Loom",
+    "skillsWeb": "Web / infra",
+    "skillsWebList": "Next.js, React, TypeScript, Tailwind, Prisma, PostgreSQL, Medusa, Stripe, Vercel, Hetzner, Caddy, Docker, Mailcow",
+    "valuesEyebrow": "Como trabalho",
+    "valuesTitle": "Três coisas com as que pode contar.",
+    "valuesBody": "Estas são não negociáveis. Dão forma a cada engagement e à forma como tarifo o trabalho.",
+    "value1Title": "Preço fixo, nunca por horas",
+    "value1Body": "Cotizo line items depois da chamada de scoping e o contrato os trava. Se o escopo muda mid-build, eu flag antes de fazer o trabalho extra, nunca depois. Sem faturas surpresa.",
+    "value2Title": "Tudo é seu",
+    "value2Body": "Código no seu GitHub, arquivos de design no seu Figma, workflows como JSON portátil, credenciais no seu password manager. Nada vive nas minhas contas. O handover é um não-evento.",
+    "value3Title": "Demos semanais, não status updates",
+    "value3Body": "Toda sexta você tem um demo funcional, não uma mensagem de Slack. O trabalho entrega em slices — você vê em produção, reage, ajustamos. Não tem \"estamos no track\" sem um link.",
+    "hours": "Horário",
+    "hoursBody": "Seg–Sex · 8h–18h GMT-5. Respondo em menos de 24 h nos dias úteis. Não faturo por horas — cada engagement é um contrato de preço fixo.",
+    "cta": "Veja como trabalho",
+    "ctaBookCall": "Agendar chamada de scoping",
+    "metaDescription": "Consultor de IA e web. Entrega automações com IA, UI/UX e web de produção para PMEs da LATAM e startups dos EUA. Em Bogotá.",
+    "heroBadge": "Disponível para novos engagements — Q4 2026",
+    "faqQ1": "Você trabalha por hora ou preço fixo?",
+    "faqA1": "Só preço fixo. Coto por linhas de trabalho depois da chamada de scoping e o contrato trava. Mudanças de escopo são sinalizadas antes de fazer o trabalho extra, não depois.",
+    "faqQ2": "Quem é dono do código e dos arquivos de design ao final do engagement?",
+    "faqA2": "Você. O código fica no seu GitHub, os arquivos de design no seu Figma, os workflows como JSON portátil, as credenciais no seu password manager. Nada fica nas minhas contas — o handover é um não-evento.",
+    "faqQ3": "Como você mantém os projetos no track?",
+    "faqA3": "Toda sexta você recebe um demo funcional em produção, não uma mensagem no Slack. O trabalho é entregue em fatias — você vê, reage, ajustamos. Nada de 'estamos no caminho' sem um link.",
+    "breadcrumbHome": "Início",
+    "breadcrumbAbout": "About",
+    "servicesLinkDesc": "IA, UI/UX e web de produção",
+    "portfolioLinkDesc": "Trabalhos selecionados",
+    "contactLinkDesc": "Começar um projeto"
   },
   "services": {
     "eyebrow": "O que eu faço",
     "title": "Três frentes. Um único objetivo.",
     "subtitle": "Automação com IA, design UI/UX e desenvolvimento web de produção — o mesmo projeto, visto por três ângulos diferentes.",
+    "metaDescription": "Automação com IA, design UI/UX e desenvolvimento web com Next.js para PMEs LATAM e startups dos EUA. Três linhas, um objetivo.",
     "track1": "Automação com IA",
     "track2": "Design UI/UX",
     "track3": "Desenvolvimento web",
@@ -57,7 +100,12 @@
     "builtWith": "Feito com {heart} em Next.js",
     "githubLabel": "Perfil no GitHub",
     "linkedinLabel": "Perfil no LinkedIn",
-    "ariaNavLabel": "Navegação do rodapé"
+    "ariaNavLabel": "Navegação do rodapé",
+    "compareTitle": "Comparar",
+    "compareDesc": "Comparativos de ferramentas e serviços",
+    "compareLink1Label": "Make vs n8n",
+    "compareLink2Label": "Consultor IA vs agência",
+    "compareLink3Label": "Vercel vs AWS Amplify"
   },
   "contact": {
     "eyebrow": "Frente 04 · Vamos conversar",
@@ -91,9 +139,35 @@
     "formErrorPrefix": "Não consegui enviar:",
     "formErrorFallback": "Como alternativa, escreva para",
     "formErrorEmail": "info@andresmorales.com.co",
-    "formErrorSuffix": "direto."
+    "formErrorSuffix": "direto.",
+    "faqTitle": "Perguntas frequentes",
+    "faqSubtitle": "Cinco coisas que as pessoas perguntam antes de escrever — se a sua não está aqui, mande uma mensagem ou agende uma chamada.",
+    "faqItems": [
+      {
+        "q": "Quão rápido você responde as mensagens?",
+        "a": "Eu leio pessoalmente cada e-mail e envio de formulário em até 24 horas nos dias úteis. Consultas urgentes sobre projetos costumam ser respondidas no mesmo dia útil."
+      },
+      {
+        "q": "Você trabalha com clientes fora do Brasil?",
+        "a": "Sim — a maioria dos meus clientes ativos está nos EUA, México, Colômbia e no resto da LATAM. Trabalho 100% remoto e tenho sobreposição com os fusos US Eastern, Central e da maior parte da LATAM."
+      },
+      {
+        "q": "Qual a diferença entre o formulário de contato e o briefing?",
+        "a": "O formulário é para perguntas rápidas, segundas opiniões e conversas exploratórias. O briefing é para quem já sabe o que quer e quer uma proposta com escopo — são 5 passos e leva cerca de 5 minutos."
+      },
+      {
+        "q": "Posso agendar uma chamada sem mandar mensagem antes?",
+        "a": "Sim. O botão à direita abre minha agenda direto — 30 minutos, gratuito, sem compromisso. Use se preferir falar em vez de escrever."
+      },
+      {
+        "q": "Você assina NDAs antes da primeira chamada?",
+        "a": "Sim, NDAs mútuos são comuns em projetos que envolvem dados proprietários ou lógica de negócio. Podemos assinar um antes da chamada para a conversa não ficar limitada por confidencialidade."
+      }
+    ]
   },
   "brief": {
+    "metaTitle": "Brief de projeto — Conte-me o que construir",
+    "metaDescription": "Conte-me o que quer automatizar. Formulário de 5 minutos, leio cada envio pessoalmente e respondo em menos de 24h.",
     "eyebrow": "Frente 04 · Briefing",
     "title": "Briefing",
     "subtitle1": "Algumas perguntas rápidas pra eu conseguir dimensionar seu projeto já na primeira chamada. Quanto mais contexto, melhor.",
@@ -588,6 +662,8 @@
     "draftsDescription": "Posts gerados pela pipeline de notícias. Aprove para publicar, ou descarte."
   },
   "cumple": {
+    "metaTitle": "Aniversário 2025 — Pacote de automação",
+    "metaDescription": "Pacote de automação pra comemorar o mês do seu aniversário: vagas limitadas, escopo fechado e entrega rápida. Garanta sua vaga.",
     "eyebrow": "Campanha especial",
     "title": "Aniversário 2025",
     "body": "Pacote de automação pra comemorar o mês do seu aniversário: vagas limitadas, escopo fechado e entrega rápida.",
@@ -621,7 +697,14 @@
     "heroCta2": "Ver serviços",
     "featuredEyebrow": "Trabalhos de clientes em destaque",
     "featuredTitle": "Sites e plataformas no ar",
-    "featuredSubtitle": "Nove projetos rodando. Clica em qualquer card pra abrir o site e ver ele funcionando.",
+    "featuredSubtitle": "Nove projetos em destaque no ar. Clica em qualquer card pra abrir o site e ver ele funcionando.",
+    "moreEyebrow": "Mais trabalhos no ar",
+    "moreTitle": "Outras plataformas que desenhei e entreguei",
+    "moreSubtitle": "Sites adicionais, lojas e sistemas em produção — alguns multi-tenant, outros projetos de cliente.",
+    "perfEyebrow": "Desempenho",
+    "perfTitle": "Construído pra velocidade",
+    "perfSubtitle": "Pontuação ao vivo do PageSpeed Insights pra andresmorales.com.co (desktop, Lighthouse 13.5) — Performance 100, Accessibility 100. Capturado em 24 de setembro de 2026.",
+    "perfAlt": "Scoreboard do PageSpeed Insights pra andresmorales.com.co — Performance 100, Accessibility 100, Best Practices 100, SEO 100",
     "cardBadgeLive": "No ar",
     "cardDemoCreds": "Credenciais de demo",
     "cardEmail": "E-mail",
@@ -639,10 +722,10 @@
     "proj3Subtitle": "PMS — Sistema de gestão hoteleira",
     "proj3Metric": "No ar · acesso demo",
     "proj3Desc": "Plataforma completa de reservas pra uma rede de hostels: reservas, canais, governança, analytics — tudo pra gerenciar várias propriedades num único painel.",
-    "proj4Title": "HubIAgency",
-    "proj4Subtitle": "Agência de IA — marca + site completos",
-    "proj4Metric": "No ar · serviços de IA",
-    "proj4Desc": "Identidade de marca, site e ferramentas pra uma agência de automação com IA.",
+    "proj4Title": "Temptum",
+    "proj4Subtitle": "Consultoria de IA aplicada pra empresas",
+    "proj4Metric": "Site corporativo · IA",
+    "proj4Desc": "Site corporativo pra consultoria de IA — serviços, cases, equipe com foto real e formulário de briefing integrado com Brevo.",
     "proj5Title": "SUPERLLANTAS",
     "proj5Subtitle": "Loja de pneus — e-commerce completo",
     "proj5Metric": "No ar · catálogo 4×4",
@@ -659,10 +742,22 @@
     "proj8Subtitle": "Serviço de bots pra Telegram",
     "proj8Metric": "No ar · ES/EN",
     "proj8Desc": "Site de marketing pra um produto de automação no Telegram.",
-    "proj9Title": "Tory Skateshop",
-    "proj9Subtitle": "Loja de skate e streetwear",
-    "proj9Metric": "No ar · 64 produtos",
-    "proj9Desc": "Loja de streetwear e skate com catálogo de marca, filtros (Adidas, Bape, DC) e chatbot integrado pra dar suporte.",
+    "proj9Title": "Cleida",
+    "proj9Subtitle": "Domínio + e-mail empresarial (Mailcow)",
+    "proj9Metric": "No ar · 32 caixas postais",
+    "proj9Desc": "Primeiro domínio de cliente migrado pra Mailcow: NS/MX/SPF/DKIM/DMARC configurados na Namecheap, 32 caixas postais sincronizadas do InterServer.",
+    "proj10Title": "Gato Coletivo",
+    "proj10Subtitle": "Assinaturas e comunidade pra empreendedores",
+    "proj10Metric": "No ar · Wompi + WhatsApp",
+    "proj10Desc": "Plataforma de assinaturas com pagamentos recorrentes via Wompi e comunicação automatizada por WhatsApp (Evolution API) pra uma rede de empreendedores.",
+    "proj11Title": "Velvet & Pearl (MECCA)",
+    "proj11Subtitle": "E-commerce de skincare, haircare e perfume",
+    "proj11Metric": "No ar · 568 produtos",
+    "proj11Desc": "Loja online sincronizada com Mastershop pra uma marca de beleza — filtros por categoria, checkout completo e painel administrativo.",
+    "proj13Title": "Hubiagency",
+    "proj13Subtitle": "Site de marketing pra agências",
+    "proj13Metric": "No ar · template pra agências",
+    "proj13Desc": "Template de site de marketing pra agências digitais — serviços, portfólio, contato.",
     "autoEyebrow": "Automação inteligente em ação",
     "autoTitle": "O que é automatizado, entrega mais rápido",
     "autoSubtitle": "Fluxos reais que entreguei pra clientes que precisavam fazer mais em menos tempo — medidos por resultado, não por feature.",
@@ -712,7 +807,7 @@
   },
   "legal": {
     "privacy": {
-      "metaTitle": "Política de Privacidade",
+      "metaTitle": "Política de privacidade — Manejo de dados",
       "metaDescription": "Como recolho, uso e protejo seus dados em andresmorales.com.co.",
       "h1": "Política de Privacidade",
       "lastUpdated": "Última atualização: julho 2026",
@@ -756,6 +851,421 @@
     "footerLinks": {
       "privacy": "Privacidade",
       "terms": "Termos"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Investimento",
+    "title": "Faixas honestas, sem orçamento escondido",
+    "subtitle": "Três níveis por serviço. O preço exato depende do escopo — mas a faixa é onde a maioria dos projetos em cada nível termina custando. Cada engagement é um contrato de preço fixo depois de uma chamada de scoping de 30 min, nunca uma fatura por horas.",
+    "methodology": "Metodologia",
+    "methodologyBody": "As faixas são calibradas contra dados de mercado 2025-2026 para consultores seniores independentes de IA / design / web nos EUA e UE. Ficam 40-60% abaixo do que boutiques de San Francisco, Londres ou Berlim cobram pelo mesmo escopo — sem sacrificar qualidade. O preço final depende de escopo, integrações e timeline. A chamada de scoping é de graça e trava os line items antes do trabalho começar.",
+    "aiTitle": "Automação com IA",
+    "aiT1": "AI Kickstart",
+    "aiT1Range": "$4,500 — $7,500",
+    "aiT1Body": "Um workflow, uma integração. Normalmente uma automação single-channel (Slack + Sheets + OpenAI) ou um chatbot custom. Entregue em 1-2 semanas.",
+    "aiT2": "Automation Build",
+    "aiT2Range": "$12,000 — $25,000",
+    "aiT2Body": "Build multi-workflow (3-6 fluxos) com integrações custom (HubSpot, Pipedrive, Airtable, n8n, Wompi). Eval + monitoring de produção incluídos. Entregue em 3-6 semanas.",
+    "aiT3": "AI Platform",
+    "aiT3Range": "$40,000 — $80,000",
+    "aiT3Body": "Sistema multi-agent com integrações custom, SSO, eval harness, observability stack, e timeline de 2-4 meses. Projetado para ops que já tocam 6+ sistemas.",
+    "uxTitle": "Design UI / UX",
+    "uxT1": "Redesign de landing",
+    "uxT1Range": "$1,500 — $3,500",
+    "uxT1Body": "Uma página, um Figma, mobile responsive. Entregue em 1-2 semanas.",
+    "uxT2": "Redesign de app",
+    "uxT2Range": "$4,500 — $12,000",
+    "uxT2Body": "5-20 telas principais, design system (cores / type / spacing), protótipo, handoff. Entregue em 3-6 semanas.",
+    "uxT3": "Design system + audit",
+    "uxT3Range": "$8,000 — $20,000",
+    "uxT3Body": "Reconstrução completa do design system + audit heurístico do produto atual. Útil antes de um rebuild grande. Entregue em 4-8 semanas.",
+    "webTitle": "Desenvolvimento Web",
+    "webT1": "Site de marketing",
+    "webT1Range": "$3,000 — $8,000",
+    "webT1Body": "Site Next.js single-region (1-5 páginas), CMS, formulário de contato, SEO básico. Entregue em 2-4 semanas.",
+    "webT2": "E-commerce single-region",
+    "webT2Range": "$5,000 — $15,000",
+    "webT2Body": "Stripe ou Wompi, 1-50 SKUs, busca de produtos, admin básico. Entregue em 4-8 semanas.",
+    "webT3": "E-commerce multi-region",
+    "webT3Range": "$12,000 — $30,000",
+    "webT3Body": "Storefront multi-region, múltiplas moedas, integrações custom, painel admin. Entregue em 8-16 semanas.",
+    "retainer": "Retainer de otimização contínua",
+    "retainerRange": "$3,500 — $8,000 / mês",
+    "retainerBody": "Depois do launch: monitoring, eval, iteração de prompts, updates de modelos, rollout de novos workflows. Compromisso mínimo de 3 meses. Cancela quando quiser depois disso.",
+    "rangesCaveat": "As faixas refletem projetos típicos. Orçamento final depois de uma chamada de scoping de 30 min. Não faturo por horas — cada engagement é um contrato de preço fixo.",
+    "ctaQuote": "Agendar chamada de scoping"
+  },
+  "process": {
+    "heroEyebrow": "Como trabalho",
+    "heroTitle": "Cinco passos do kickoff à iteração.",
+    "heroSubtitle": "O mesmo ritmo para cada engagement, desde um AI Kickstart de 1 semana até um AI Platform de 3 meses. Sem surpresas, sem scope creep — o contrato trava os line items no dia 1 e o trabalho entrega no dia N.",
+    "tracksEyebrow": "Por serviço",
+    "tracksTitle": "Mesmos cinco passos, três formas diferentes.",
+    "tracksSubtitle": "AI / UX / Web têm sua própria cadência. O esqueleto é idêntico; os ossos mudam.",
+    "aiLabel": "Automação com IA",
+    "uxLabel": "Design UI / UX",
+    "webLabel": "Desenvolvimento Web",
+    "step1Title": "Audit",
+    "step1Body": "1 semana de deep-dive. Mapeamos seu stack atual, o trabalho manual que está te custando mais, e os sistemas que já têm os dados. Output: um audit doc de 5-10 páginas com oportunidades rankeadas e preço fixo por workflow.",
+    "step2Title": "Chamada de scoping",
+    "step2Body": "Video call de 30 min. Te levo pelo audit e você escolhe 1-3 das oportunidades. Output: um scope de uma página com line items, preço fixo, e timeline. O contrato trava o trabalho.",
+    "step3Title": "Build",
+    "step3Body": "1-6 semanas dependendo do tier. Trabalho em weekly slices — toda sexta você tem um demo funcional, não um status update. Se o scope muda mid-build, eu flag antes de fazer o trabalho extra, nunca depois.",
+    "step4Title": "Ship",
+    "step4Body": "Deploy em produção com eval + monitoring em lugar. Você é dono de cada linha de código, cada API key, cada workflow JSON. Nada vive nas minhas contas.",
+    "step5Title": "Iterar",
+    "step5Body": "Retainer opcional: monitoring, eval, iteração de prompts, updates de modelos, rollout de novos workflows. Compromisso mínimo de 3 meses, cancela quando quiser depois. A maioria dos clientes mantém um retainer pequeno para acumular wins.",
+    "ctaCall": "Agendar chamada de scoping",
+    "ctaProcess": "Ler a metodologia completa"
+  },
+  "seoMeta": {
+    "work": {
+      "barriotech": {
+        "en": "Multi-tenant marketplace for Colombian street vendors: digital storefronts, Wompi payments, and WhatsApp buyer notifications from one phone.",
+        "es": "Marketplace multi-tenant para vendedores informales colombianos: vitrina digital, pagos Wompi y notificaciones WhatsApp, todo desde un celular.",
+        "pt": "Marketplace multi-tenant para vendedores informais colombianos: vitrine digital, pagamentos Wompi e notificações WhatsApp, tudo do celular."
+      },
+      "juan-becerra": {
+        "en": "Editorial menswear storefront for a premium Colombian label — mood-driven hero, classic typography, quiet checkout that respects the brand.",
+        "es": "Vitrina editorial de moda masculina premium para una marca colombiana — hero con mood, tipografía clásica y checkout silencioso.",
+        "pt": "Vitrine editorial de moda masculina premium para uma marca colombiana — hero com mood, tipografia clássica e checkout silencioso."
+      },
+      "kambelleh": {
+        "en": "Multi-property PMS for a hostel chain: reservations, calendar, channels, housekeeping, and analytics from one dashboard, no per-booking fee.",
+        "es": "PMS multi-propiedad para cadenas de hostales: reservas, calendario, canales, housekeeping y analytics en un panel, sin fee por reserva.",
+        "pt": "PMS multi-propriedade para redes de hostels: reservas, calendário, canais, housekeeping e analytics em um painel, sem taxa por reserva."
+      },
+      "temptum": {
+        "en": "Single-page Next.js site for an AI consulting firm: team, case studies, and a Brevo-backed briefing form that captures qualified leads in 5 fields.",
+        "es": "Sitio single-page en Next.js para consultora de IA: equipo, casos de estudio y formulario Brevo que captura leads calificados en 5 campos.",
+        "pt": "Site single-page em Next.js para consultoria de IA: equipe, cases e formulário Brevo que captura leads qualificados em 5 campos."
+      },
+      "superllantas": {
+        "en": "Tire e-commerce for a Colombian retailer: vehicle-fitment search and WhatsApp checkout instead of a credit-card funnel — built for LATAM buyers.",
+        "es": "E-commerce de llantas para minorista colombiano: búsqueda por vehículo y checkout por WhatsApp, sin funnel de tarjeta, hecho para compradores LATAM.",
+        "pt": "E-commerce de pneus para varejista colombiano: busca por veículo e checkout por WhatsApp, sem funil de cartão, feito para compradores LATAM."
+      },
+      "soapartesana": {
+        "en": "Editorial storefront for a handmade soap brand in LATAM: no carousel, no popups, no urgency timers — reads like the brand's lookbook, converts like a shop.",
+        "es": "Vitrina editorial para una marca de jabones artesanales en LATAM: sin carrusel, sin popups, sin timers de urgencia — se lee como el lookbook de la marca.",
+        "pt": "Vitrine editorial para uma marca de sabonetes artesanais na LATAM: sem carrossel, sem popups, sem timers de urgência — lê-se como o lookbook da marca."
+      },
+      "carmen-job-search": {
+        "en": "AI-assisted job matching demo: paste a job description and a resume, get a 0–100% match score, missing skills, and rationale in under 30 seconds.",
+        "es": "Demo de matching de empleo con IA: pega una descripción de puesto y un CV, recibe score 0–100%, skills faltantes y rationale en menos de 30 segundos.",
+        "pt": "Demo de matching de emprego com IA: cole uma vaga e um currículo, receba score 0–100%, skills faltantes e rationale em menos de 30 segundos."
+      },
+      "talobot": {
+        "en": "Turnkey WhatsApp and Telegram bot for LATAM small shops: answers 80% of customer questions (orders, hours, pricing) automatically, no engineering needed.",
+        "es": "Bot llave en mano de WhatsApp y Telegram para tiendas LATAM: responde automáticamente 80% de preguntas de clientes (pedidos, horarios, precios).",
+        "pt": "Bot pronto pra usar de WhatsApp e Telegram para lojas LATAM: responde automaticamente 80% das perguntas (pedidos, horários, preços), sem engenharia."
+      },
+      "cleida": {
+        "en": "Mailcow email migration for cleida.com.co: 27 of 32 mailboxes synced, MX/SPF/DKIM/DMARC configured in Namecheap. Annual saving $450/yr.",
+        "es": "Migración de correo a Mailcow para cleida.com.co: 27 de 32 buzones sincronizados, MX/SPF/DKIM/DMARC en Namecheap. Ahorro anual $450/año.",
+        "pt": "Migração de e-mail para Mailcow em cleida.com.co: 27 de 32 caixas sincronizadas, MX/SPF/DKIM/DMARC na Namecheap. Economia anual de US$450."
+      },
+      "gato-colectivo": {
+        "en": "Second tenant on the Barriotech multi-tenant marketplace, themed for El Gato Colectivo on gato.andresmorales.com.co. Same architecture, different config.",
+        "es": "Segundo tenant en el marketplace multi-tenant Barriotech, con tema para El Gato Colectivo en gato.andresmorales.com.co. Misma arquitectura, distinta config.",
+        "pt": "Segundo tenant no marketplace multi-tenant Barriotech, com tema para o Gato Coletivo em gato.andresmorales.com.co. Mesma arquitetura, config distinta."
+      },
+      "mecca": {
+        "en": "Editorial e-commerce for Velvet & Pearl (MECCA): 568 SKUs synced from Mastershop to Next.js + PostgreSQL. Archived after client's 2026 renewal cycle.",
+        "es": "E-commerce editorial para Velvet & Pearl (MECCA): 568 SKUs sincronizados desde Mastershop a Next.js + PostgreSQL. Archivado tras renovación 2026.",
+        "pt": "E-commerce editorial para Velvet & Pearl (MECCA): 568 SKUs sincronizados do Mastershop para Next.js + PostgreSQL. Arquivado após renovação 2026."
+      },
+      "hubiagency": {
+        "en": "Marketing site template for digital agencies — services, portfolio, contact — built to demo agency design without paying for a custom mockup.",
+        "es": "Plantilla de sitio de marketing para agencias digitales — servicios, portafolio, contacto — para mostrar diseño sin pagar un mockup custom.",
+        "pt": "Template de site de marketing para agências digitais — serviços, portfólio, contato — para mostrar design sem pagar um mockup custom."
+      }
+    },
+    "blog": {
+      "agente-ia-whatsapp-colombia": {
+        "es": "Cómo implementar un agente IA para WhatsApp Business en Colombia: casos de uso, costos en COP y framework de decisión para tu tienda."
+      },
+      "automacao-ia-pme-brasil": {
+        "pt": "Como uma PME brasileira pode recuperar 15–25 horas semanais com n8n, agentes de IA e webhooks — sem montar time de engenharia."
+      },
+      "automatizar-con-ia-colombia": {
+        "es": "Cómo una Pyme colombiana recupera 15–25 horas semanales automatizando con n8n, agentes de IA y webhooks — sin contratar programador."
+      },
+      "automatizar-tienda-online-colombia": {
+        "es": "Automatiza una tienda online en Colombia con n8n, WhatsApp Business y WooCommerce. Procesos, costos en COP y ROI esperado en 2026."
+      },
+      "consultor-automatizacion-ia-colombia": {
+        "es": "Qué hace un consultor de IA en Colombia, cuánto cobra en 2026 y cómo diferenciar uno serio de un revendedor de cursos."
+      },
+      "gpt-56-ya-esta-aqui-lo-que-tu-pyme-en-bogota-lima-o-cdmx-deb": {
+        "en": "GPT-5.6 is here. Should your LATAM SMB in Bogotá, Lima, or CDMX actually switch? Practical guide on cost, latency, and SMB use cases."
+      },
+      "hire-ai-automation-consultant": {
+        "en": "What an AI automation consultant does, what they should charge in 2026, and 7 red flags to spot course resellers. Real USD price ranges."
+      },
+      "n8n-ai-automation": {
+        "en": "How a small business can replace 20 hours of weekly manual work with n8n workflows, AI agents, and webhooks — without hiring engineers."
+      },
+      "n8n-vs-make-brasil": {
+        "pt": "Comparativo honesto de n8n, Make e Zapier para automatizar um negócio no Brasil em 2026: custos em reais e integrações locais."
+      },
+      "n8n-vs-make-colombia": {
+        "es": "Comparativa honesta de n8n, Make y Zapier para automatizar un negocio en Colombia: costos, latencia e integraciones locales."
+      }
+    }
+  }
+,
+  "compare": {
+    "breadcrumbCompare": "Comparar",
+    "lastReviewed": "Última revisão 26 set 2026",
+    "makeVsN8n": {
+      "metaTitle": "Make vs n8n em 2026 — comparativo honesto",
+      "metaDescription": "Comparativo honesto Make vs n8n em 2026: preços, hospedagem, curva de aprendizado e integrações. Escolha pelo time, não pela lista de recursos.",
+      "eyebrow": "Comparativo",
+      "heroBadge": "Atualizado set 2026",
+      "h1": "Make vs n8n em 2026: qual plataforma de automação combina com seu time?",
+      "subtitle": "As duas rodam fluxos em produção em escala. A escolha certa depende se seu time escreve código ou prefere um construtor visual caprichado.",
+      "tldr": "n8n se seu time escreve código ou quer self-hosting; Make se seu time é não-técnico e você prefere capricho sobre flexibilidade. As duas rodam fluxos de produção em escala — escolha por time, não por lista de recursos.",
+      "tableIntro": "Quatro critérios que realmente decidem.",
+      "xCol": "Make",
+      "yCol": "n8n",
+      "rows": [
+        {
+          "criterion": "Modelo de preços",
+          "x": "Por operação, medido",
+          "y": "Self-hosted grátis; cloud a partir de ~$24/mês",
+          "winner": "n8n se o time consegue self-host"
+        },
+        {
+          "criterion": "Hospedagem",
+          "x": "Apenas cloud (hospedado pela Make)",
+          "y": "Self-host ou cloud",
+          "winner": "Empate — depende da capacidade de ops"
+        },
+        {
+          "criterion": "Curva de aprendizado",
+          "x": "Visual, mais fácil para não-devs",
+          "y": "Code-friendly, mais íngreme sem devs",
+          "winner": "Make para times não-técnicos"
+        },
+        {
+          "criterion": "Integrações",
+          "x": "Mais de 1.500 apps no catálogo",
+          "y": "Mais de 400 nodes, todos open source",
+          "winner": "Make (volume); n8n (APIs sob medida)"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Preços — o que você realmente paga",
+          "body": "Make cobra por operação, então um fluxo que ramifica para cinco sistemas custa cinco créditos por execução. Automações pesadas inflam a fatura mais rápido do que se espera. n8n é grátis em self-hosted; o tier cloud começa perto de $24/mês com preço previsível por execução. Se seu time já roda infra própria, n8n é dramaticamente mais barato em escala."
+        },
+        {
+          "title": "Hospedagem e residência de dados",
+          "body": "Make roda 100% na infraestrutura da Make. n8n pode rodar no seu notebook, num VPS de $5, ou no n8n Cloud. Para times LATAM com requisitos de residência de dados ou dados sensíveis de clientes, self-hostear n8n elimina uma classe inteira de perguntas de compliance antes de aparecerem."
+        },
+        {
+          "title": "Curva de aprendizado — quem constrói",
+          "body": "Make é genuinamente mais fácil para não-desenvolvedores; o editor visual é um dos melhores da categoria. n8n recompensa times confortáveis com código — expressões JS, nodes HTTP, um modelo real de fluxo de dados — e é mais íngreme para usuários puros de no-code. Os sinais de contratação importam: se seu time é metade desenvolvedores, n8n compõe; se não, Make entrega mais rápido."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Escolha Make quando…",
+        "yTitle": "Escolha n8n quando…",
+        "x": [
+          "Seu time é majoritariamente não-técnico e você precisa entregar automações esta semana.",
+          "Você quer uma UI caprichada e o catálogo mais amplo de integrações pré-construídas.",
+          "Você consegue modelar o custo como uma linha previsível de operações."
+        ],
+        "y": [
+          "Seu time escreve código e quer controle total sobre a lógica e os dados.",
+          "Você precisa de self-hosting por residência de dados, custo ou compliance.",
+          "Você planeja integrar com APIs sob medida ou construir componentes reutilizáveis."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "O n8n é realmente grátis?",
+          "answer": "Sim, se você auto-hospedar. A licença fair-code permite rodar, modificar e manter seus fluxos sem pagar n8n. Os planos n8n Cloud começam perto de $24/mês e eliminam o trabalho de ops de manter você mesmo."
+        },
+        {
+          "question": "O Make escala para produção?",
+          "answer": "Sim. Make roda em produção em empresas processando milhões de operações por mês. O teto é custo operacional e governança, não capacidade — faça o orçamento de créditos como faria com qualquer fatura cloud."
+        },
+        {
+          "question": "Posso migrar de Make para n8n (ou vice-versa)?",
+          "answer": "Sim, mas os fluxos não portam diretamente. As duas ferramentas importam e exportam JSON; planeje uma a duas semanas de reconstrução por fluxo importante, mais testes. Tire as credenciais do escopo da migração — exporte uma vez e reuse."
+        }
+      ],
+      "ctaLabel": "Agendar chamada de escopo →",
+      "ctaTitle": "Precisa de ajuda para decidir?",
+      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma serve para seu time, stack e orçamento. Sem pitch — só uma recomendação clara."
+    },
+    "aiVsAgency": {
+      "metaTitle": "Consultor IA vs agência — comparativo 2026",
+      "metaDescription": "Consultor IA vs agência: quando contratar ajuda técnica solo e quando você precisa de um time de agência completo. Custo, velocidade, trabalho hands-on e estratégia.",
+      "eyebrow": "Comparativo",
+      "heroBadge": "Atualizado set 2026",
+      "h1": "Consultor IA vs agência: qual escolher para seu projeto de automação?",
+      "subtitle": "Os dois entregam trabalho de IA. A troca é profundidade técnica direta versus capacidade de estratégia ampla e escala de time.",
+      "tldr": "Contrate um consultor IA solo quando precisar de trabalho hands-on em n8n/Make, integrações sob medida e responsabilidade técnica direta. Contrate uma agência quando precisar de uma camada mais ampla de marketing/estratégia ou um time maior para campanhas contínuas.",
+      "tableIntro": "Quatro dimensões que determinam o fit.",
+      "xCol": "Consultor IA",
+      "yCol": "Agência",
+      "rows": [
+        {
+          "criterion": "Custo",
+          "x": "$2K–$50K escopo fixo",
+          "y": "$10K–$200K+ retainer",
+          "winner": "Consultor por dólar de output"
+        },
+        {
+          "criterion": "Velocidade ao primeiro output",
+          "x": "1–2 semanas para um demo funcional",
+          "y": "4–8 semanas de kickoff",
+          "winner": "Consultor"
+        },
+        {
+          "criterion": "Trabalho técnico hands-on",
+          "x": "Sim — quem você atende constrói",
+          "y": "Frequentemente delegado a juniors",
+          "winner": "Consultor"
+        },
+        {
+          "criterion": "Camada de estratégia contínua",
+          "x": "Bandwidth limitada",
+          "y": "Sim — marca, conteúdo, mídia paga",
+          "winner": "Agência"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Estrutura de custo e o que você paga",
+          "body": "Um consultor solo cotiza um escopo fixo contra entregáveis — código, fluxos, integrações, um demo funcional. Uma agência precifica contra retainers que agrupam estratégia, account management e um time de entrega. Para trabalho puramente técnico de IA, o dólar do consultor rende mais. A matemática inverte quando você precisa de criatividade, conteúdo ou mídia paga rodando em paralelo."
+        },
+        {
+          "title": "Velocidade ao primeiro output",
+          "body": "Consultores tipicamente entregam um demo funcional em uma a duas semanas; a primeira chamada é a de escopo, a primeira sexta-feira é um demo ao vivo. Agências costumam gastar quatro a oito semanas em kickoff: docs de estratégia, planos de conta e onboarding do time antes de o trabalho produtivo começar. Se você precisa provar valor rápido, o consultor ganha em velocidade."
+        },
+        {
+          "title": "Responsabilidade técnica direta",
+          "body": "Com um consultor, a pessoa que você contratou é quem escreve o fluxo, faz o deploy da integração e arruma o bug às 23h. Com uma agência, o senior que vendeu o trabalho raramente é quem constrói. Se o entregável é técnico e as quebras são caras, o modelo de responsabilidade direta é mais seguro."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Contrate um consultor quando…",
+        "yTitle": "Contrate uma agência quando…",
+        "x": [
+          "O entregável é técnico — automações, integrações, features de IA — não campanhas de marketing.",
+          "Você quer que quem escopou o trabalho seja quem construa.",
+          "Você precisa de um demo funcional nas próximas duas semanas, não um deck de proposta."
+        ],
+        "y": [
+          "Você precisa de criatividade, conteúdo, mídia paga e engenharia rodando em paralelo.",
+          "Seu roadmap cruza estratégia de marca, execução de campanhas e builds técnicos.",
+          "Você precisa de um time completo para output sustentado por muitos meses."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "Quando um consultor solo atinge o teto?",
+          "answer": "Quando o escopo cruza para marketing, estratégia de marca ou execução contínua de campanhas em escala. Para trabalho puramente técnico de IA — automações, integrações, ferramentas internas — um consultor senior escala mais longe por dólar do que um time de agência. O teto aparece quando você precisa de criatividade, conteúdo e mídia paga rodando em paralelo com engenharia."
+        },
+        {
+          "question": "Como verifico que um consultor IA realmente entrega?",
+          "answer": "Peça demos em produção, não decks de pitch nem Looms. A cadência semanal de demos é o teste: se ele está entregando, você vê ao vivo na sexta. Qualquer outra coisa — screenshots mockados, walkthroughs gravados, \"terminamos semana que vem\" — é uma bandeira amarela."
+        },
+        {
+          "question": "E se eu passar do tamanho do consultor?",
+          "answer": "Você é dono de tudo: código, arquivos de design, fluxos, credenciais, documentação. A transição é um não-evento porque nada fica preso à conta do consultor. Você pode contratar outro consultor ou montar um time interno sem pagar taxa de transferência nem perder acesso."
+        }
+      ],
+      "ctaLabel": "Agendar chamada de escopo →",
+      "ctaTitle": "Em dúvida sobre qual rota serve?",
+      "ctaBody": "Uma chamada de 30 minutos mapeia seu escopo ao modelo de engagement certo. Você sai com uma recomendação clara, não com um orçamento de trabalho que não precisa."
+    },
+    "vercelVsAmplify": {
+      "metaTitle": "Vercel vs AWS Amplify para Next.js — 2026",
+      "metaDescription": "Vercel vs AWS Amplify para Next.js em 2026: DX, preços em escala, lock-in e performance edge. Escolha pela fase, não pelo hype.",
+      "eyebrow": "Comparativo",
+      "heroBadge": "Atualizado set 2026",
+      "h1": "Vercel vs AWS Amplify para Next.js: quando cada um vence",
+      "subtitle": "Os dois fazem deploy de Next.js em produção. A escolha é developer experience versus controle fino de custos em AWS em escala.",
+      "tldr": "Vercel para apps Next.js onde DX e time-to-deploy importam. AWS Amplify quando você já está fundo em AWS ou precisa de controle fino de custos em escala. Os dois rodam Next.js em produção.",
+      "tableIntro": "Quatro critérios que movem a agulha.",
+      "xCol": "Vercel",
+      "yCol": "AWS Amplify",
+      "rows": [
+        {
+          "criterion": "DX de Next.js",
+          "x": "Nativo — feito pelo time do Next.js",
+          "y": "Bom, mas mais setup e config",
+          "winner": "Vercel"
+        },
+        {
+          "criterion": "Preços em escala",
+          "x": "Premium, especialmente em bandwidth",
+          "y": "Mais barato, especialmente com Savings Plans",
+          "winner": "Amplify (em escala)"
+        },
+        {
+          "criterion": "Vendor lock-in",
+          "x": "Médio — recursos Vercel-específicos",
+          "y": "Menor — AWS-nativo, portável",
+          "winner": "Amplify"
+        },
+        {
+          "criterion": "Edge / performance global",
+          "x": "Edge network built-in, zero config",
+          "y": "Precisa de config extra de CloudFront",
+          "winner": "Vercel"
+        }
+      ],
+      "criteria": [
+        {
+          "title": "Developer experience de Next.js",
+          "body": "Vercel é construído pelo time por trás do Next.js, então recursos de framework — Server Components, App Router, ISR, Edge Runtime — funcionam no dia em que saem. Amplify se atualizou em 2024 e suporta App Router e SSR bem, mas você escreverá mais configuração: build commands, seleção de runtime e setup de edge functions não são tão automatizados. Para protótipo-a-Series-A, a DX da Vercel economiza horas."
+        },
+        {
+          "title": "Preços em escala",
+          "body": "Vercel Pro começa em $20/seat/mês e os custos de bandwidth crescem rápido em sites de alto tráfego. Amplify fatura contra infraestrutura AWS — você paga pelo que provisiona, e Savings Plans ou capacidade reservada podem baixar custos 30–60% em escala. Para produtos pré-PMF, a economia da Vercel está ok. Para produtos em escala, faça as contas."
+        },
+        {
+          "title": "Lock-in e portabilidade",
+          "body": "Recursos Vercel-específicos — Edge Config, KV, o image loader proprietário — prendem você à plataforma. Amplify faz deploy do output padrão de Next.js sobre infraestrutura AWS padrão, então sair da AWS é uma migração cloud normal e não um rewrite. Se multi-cloud ou portabilidade importa, Amplify é o lar mais seguro no longo prazo."
+        }
+      ],
+      "whenToUse": {
+        "xTitle": "Escolha Vercel quando…",
+        "yTitle": "Escolha AWS Amplify quando…",
+        "x": [
+          "Você entrega rápido e valoriza DX framework-nativa sobre knobs de infra.",
+          "Seu time é pequeno e não quer gerenciar infra de AWS.",
+          "Você precisa de edge runtime e ISR funcionando out-of-the-box."
+        ],
+        "y": [
+          "Você já está fundo em AWS e quer uma fatura, um modelo IAM, uma VPC.",
+          "Custo em escala é restrição de primeira ordem — alto tráfego, margens apertadas.",
+          "Portabilidade e infraestrutura padrão importam para suas opções de saída."
+        ]
+      },
+      "faqs": [
+        {
+          "question": "Posso migrar de Vercel para Amplify depois?",
+          "answer": "Sim, com esforço. Next.js em si é agnóstico de framework, então o código da aplicação se move limpo. O lock-in está na camada de plataforma: env vars, edge config, image optimization, build pipeline. Planeje uma a duas semanas para uma migração não-trivial, mais testes contra tráfego de produção."
+        },
+        {
+          "question": "Vale a pena o preço premium da Vercel?",
+          "answer": "Para protótipos e produtos pré-PMF, quase sempre sim — a DX economiza horas de engenharia que custam mais que a fatura. Para produtos em escala, faça as contas: Amplify mais CloudFront mais capacidade reservada pode ser 30–60% mais barato com tráfego alto sustentado."
+        },
+        {
+          "question": "O Amplify suporta o App Router do Next.js completamente?",
+          "answer": "Sim, desde 2024. Server Components, SSR, ISR e Edge Runtime funcionam todos. O setup é mais manual que Vercel — você configura o runtime e os build commands sozinho — mas o suporte de runtime é maduro e battle-tested."
+        }
+      ],
+      "ctaLabel": "Agendar chamada de escopo →",
+      "ctaTitle": "Escolhendo o host certo para sua fase?",
+      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma encaixa no seu padrão de tráfego, tamanho de time e teto de custo. Sem pitch — uma recomendação clara."
     }
   }
 }

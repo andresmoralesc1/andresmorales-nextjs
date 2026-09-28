@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1E1810"/>
+    </marker>
+    <style>
+      .n { fill: #fff; stroke: #1E1810; stroke-width: 1.5; }
+      .lbl { font-size: 13px; font-weight: 700; fill: #1E1810; }
+      .sub { font-size: 10px; fill: #575250; }
+      .y { fill: #fff8e6; stroke: #f96e03; stroke-width: 1.5; }
+      .w { fill: #ffe6e6; stroke: #c33; stroke-width: 1.5; }
+      .ttl { font-size: 14px; font-weight: 700; fill: #f96e03; }
+    </style>
+  </defs>
+  <text x="20" y="25" class="ttl">5 · Inventory low-stock alert → Telegram (every 4 h)</text>
+
+  <line x1="40" y1="80" x2="180" y2="80" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <line x1="260" y1="80" x2="370" y2="80" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <line x1="450" y1="80" x2="600" y2="80" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <line x1="700" y1="80" x2="800" y2="80" stroke="#1E1810" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+  <g transform="translate(40,50)">
+    <rect width="140" height="60" rx="6" class="n"/>
+    <text x="70" y="22" text-anchor="middle" class="lbl">Cron</text>
+    <text x="70" y="40" text-anchor="middle" class="sub">every 4 h</text>
+  </g>
+  <g transform="translate(180,50)">
+    <rect width="80" height="60" rx="6" class="n"/>
+    <text x="40" y="22" text-anchor="middle" class="lbl">Read</text>
+    <text x="40" y="40" text-anchor="middle" class="sub">Postgres</text>
+  </g>
+  <g transform="translate(280,50)">
+    <rect width="80" height="60" rx="6" class="y"/>
+    <text x="40" y="22" text-anchor="middle" class="lbl">If</text>
+    <text x="40" y="40" text-anchor="middle" class="sub">stock &lt; 5</text>
+  </g>
+  <g transform="translate(450,50)">
+    <rect width="150" height="60" rx="6" class="w"/>
+    <text x="75" y="22" text-anchor="middle" class="lbl">Telegram Alert</text>
+    <text x="75" y="40" text-anchor="middle" class="lbl">🚨 low stock</text>
+  </g>
+  <g transform="translate(700,50)">
+    <rect width="100" height="60" rx="6" class="n"/>
+    <text x="50" y="22" text-anchor="middle" class="lbl">Log</text>
+    <text x="50" y="40" text-anchor="middle" class="sub">audit row</text>
+  </g>
+
+  <text x="40" y="160" class="lbl">SQL filter:</text>
+  <text x="40" y="180" class="sub" font-style="italic">SELECT sku, name, stock FROM products WHERE stock &lt; 5;</text>
+
+  <text x="40" y="200" class="sub">Tune the 5-unit threshold per category — a T-shirt at 5 is fine, a $2k jacket at 5 is a problem.</text>
+</svg>

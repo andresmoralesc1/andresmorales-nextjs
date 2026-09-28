@@ -65,7 +65,7 @@ export function SkillsClient({
     <section ref={sectionRef} className="section bg-theme-5 overflow-hidden">
       <div className="container-page grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+          <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
             {eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-4xl mb-4">{title}</h2>

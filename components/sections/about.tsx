@@ -8,7 +8,7 @@ export async function About() {
   return (
     <section className="section bg-theme-5">
       <Reveal className="container-page">
-        <h2 className="text-sm uppercase tracking-widest text-black mb-2">
+        <h2 className="text-sm uppercase tracking-widest text-secondary mb-2">
           {dict.homeAbout.eyebrow}
         </h2>
         <h3 className="font-heading text-2xl md:text-3xl mb-4 max-w-3xl">

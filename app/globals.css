@@ -26,7 +26,7 @@
     background-color: #F8F5F4;
   }
   .btn {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-secondary font-bold uppercase tracking-wide text-sm transition-colors;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-secondary font-bold uppercase tracking-wide text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2;
   }
   /* Primary brand CTA. Renders the personal-brand orange (#f96e03 —
      the orange from the WordPress site that survives across the whole
@@ -44,6 +44,16 @@
      official hovers-shade defined in tailwind.config.ts). */
   .btn-theme {
     @apply btn bg-theme-1 text-secondary hover:bg-theme-2;
+  }
+  /* When the mobile sticky CTA bar is mounted, reserve its height at the
+     bottom of <body> so page content can scroll clear of the overlay. */
+  .has-sticky-mobile-cta {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 640px) {
+    .has-sticky-mobile-cta {
+      padding-bottom: 0;
+    }
   }
   .btn-accent {
     @apply btn bg-theme-1 text-secondary hover:bg-theme-2;
@@ -409,11 +419,14 @@
 }
 .text_4041, .text_4042, .text_4043 {
   display: inline-block;
-  animation: bounce 2.4s ease-in-out infinite;
+  /* ease-out-quint: smooth deceleration, no elastic snap. Still reads
+     as "bouncy" because the keyframes overshoot (translateY(-10px)) but
+     the in/out blend is no longer dated. */
+  animation: float-bob 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 .text_4042 { animation-delay: 0.2s; }
 .text_4043 { animation-delay: 0.4s; }
-@keyframes bounce {
+@keyframes float-bob {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
@@ -422,6 +435,37 @@
   .text_4041,
   .text_4042,
   .text_4043 {
+    animation: none;
+  }
+}
+
+/* White noise overlay on the TV screen. The feTurbulence filter
+   is defined inline in the React component (SVG <defs>) and applied
+   here. The div sits on top of the screen text so the signal is
+   partially obscured, just like a tuned-off analog TV. */
+.tv_noise {
+  position: absolute;
+  inset: 0;
+  /* background-image is set inline from the React side as a data-URL
+     noise texture (NOISE_BG in 404-error-page.tsx). Mixing it with
+     `screen` (light additive) gives the classic CRT static look. */
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0.85;
+  /* Slight roll to simulate analog static drift. 180ms is in
+     between calm (2000ms) and broken (50ms). Disabled when
+     prefers-reduced-motion is on. */
+  animation: tv-noise-roll 180ms steps(4) infinite;
+}
+@keyframes tv-noise-roll {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, 1%); }
+  50%  { transform: translate(1%, -1%); }
+  75%  { transform: translate(-1%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tv_noise {
     animation: none;
   }
 }

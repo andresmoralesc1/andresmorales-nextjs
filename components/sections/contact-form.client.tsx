@@ -93,7 +93,39 @@ export function ContactFormClient({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl" noValidate>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 max-w-xl"
+      noValidate
+      data-webmcp-form-id="contact"
+      data-webmcp-name="Contact form"
+      data-webmcp-description="Send a short message to Andrés. Requires name, email, and message."
+    >
+      {/* WebMCP annotation: lets AI agents (Chrome 146+ with WebMCP flag, or
+          any browser with the upcoming WebMCP polyfill) identify and fill
+          this form reliably. JSON-LD with JSON Schema draft 2020-12 for
+          input_schema. Invisible to browsers without WebMCP — it's a
+          script type they don't render. See
+          https://github.com/webmachinelearning/webmcp */}
+      <script
+        type="application/webmcp-form+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            name: 'contact',
+            description:
+              'Send a message to Andrés Morales. Reply within 48 business hours.',
+            input_schema: {
+              type: 'object',
+              required: ['name', 'email', 'message'],
+              properties: {
+                name: { type: 'string', minLength: 1, maxLength: 100 },
+                email: { type: 'string', format: 'email' },
+                message: { type: 'string', minLength: 10, maxLength: 5000 },
+              },
+            },
+          }),
+        }}
+      />
       <div style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }} aria-hidden="true">
         <label htmlFor="website">{dict.honeypotLabel}</label>
         <input
@@ -114,6 +146,9 @@ export function ContactFormClient({
           name="name"
           autoComplete="name"
           required
+          data-webmcp-field-name="name"
+          data-webmcp-field-type="string"
+          data-webmcp-field-required="true"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           disabled={state === 'loading'}
@@ -129,6 +164,10 @@ export function ContactFormClient({
           autoComplete="email"
           inputMode="email"
           required
+          data-webmcp-field-name="email"
+          data-webmcp-field-type="string"
+          data-webmcp-field-format="email"
+          data-webmcp-field-required="true"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           disabled={state === 'loading'}
@@ -143,6 +182,9 @@ export function ContactFormClient({
           rows={5}
           required
           placeholder={messagePlaceholder}
+          data-webmcp-field-name="message"
+          data-webmcp-field-type="string"
+          data-webmcp-field-required="true"
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           disabled={state === 'loading'}

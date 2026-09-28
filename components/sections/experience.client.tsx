@@ -90,7 +90,7 @@ function TimelineItem({
           <span className="text-xs font-secondary font-bold text-secondary uppercase tracking-widest">
             {job.dates}
           </span>
-          <span className="text-[10px] font-secondary font-bold text-text/80 uppercase tracking-wider">
+          <span className="text-[10px] font-secondary font-bold text-text uppercase tracking-wider">
             · #{String(index + 1).padStart(2, '0')}
           </span>
         </div>
@@ -120,7 +120,7 @@ export function ExperienceClient({ dict }: { dict: ExperienceDict }) {
     <section className="section bg-theme-5">
       <div className="container-page">
         <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-widest text-black mb-2 font-secondary font-bold">
+          <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
             {dict.eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-4xl mb-3">{dict.title}</h2>

@@ -7,7 +7,7 @@
 // to 3 localized bodies; the listing/index pages group by slug and pick the
 // right one based on the current locale (with fallback to `en`).
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { marked } from 'marked';
 
@@ -141,6 +141,30 @@ function fileFor(slug: string, locale: BlogLocale): string | null {
   if (locale !== 'en') {
     const fallback = join(CONTENT_DIR, `${slug}.en.md`);
     if (existsSync(fallback)) return fallback;
+  }
+  return null;
+}
+
+/**
+ * Last-modified timestamp for a (slug, locale) post. Uses the source
+ * file's mtime, falling back to the en file's mtime when the locale
+ * variant is missing (en is the canonical body for fallback). Returns
+ * `null` when neither file exists.
+ *
+ * Used by the sitemap to give Google a real `lastmod` per post instead
+ * of `new Date()` (which would lie to crawlers and devalue the
+ * `lastmod` signal for SEO).
+ */
+export function postMtime(slug: string, locale: BlogLocale): Date | null {
+  for (const loc of locale === 'en' ? ['en'] : [locale, 'en']) {
+    const f = join(CONTENT_DIR, `${slug}.${loc}.md`);
+    if (existsSync(f)) {
+      try {
+        return statSync(f).mtime;
+      } catch {
+        return null;
+      }
+    }
   }
   return null;
 }

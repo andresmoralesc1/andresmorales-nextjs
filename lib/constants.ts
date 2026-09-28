@@ -6,8 +6,12 @@
  * next to the code that uses it, not here.
  */
 
-/** Google Calendar scheduling link for the "free strategy call" CTAs. */
-export const CALENDAR_BOOKING_URL = 'https://calendar.app.google/NHF1ScCWjh4WJaey6';
+/** Google Calendar scheduling link for the "free strategy call" CTAs.
+ *  Single source of truth — every CTA (hero, cta, brief, contact, services,
+ *  portfolio, cumple-2025, wizard) reads from here. Update this and every
+ *  page follows. 2026-09-23: consolidated all hardcoded duplicates here.
+ */
+export const CALENDAR_BOOKING_URL = 'https://calendar.app.google/QvUUb5xu4927P95a8';
 
 /** Primary contact email used site-wide. */
 export const CONTACT_EMAIL = 'info@andresmorales.com.co';

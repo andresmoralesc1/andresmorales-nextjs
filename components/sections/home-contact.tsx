@@ -21,7 +21,7 @@ export async function HomeContact() {
           <div className="grid md:grid-cols-2">
             {/* Left: copy + primary CTA */}
             <div className="p-8 md:p-10 lg:p-12">
-              <p className="text-xs uppercase tracking-widest text-black mb-3 font-secondary font-bold">
+              <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
                 {dict.homeContact.eyebrow}
               </p>
               <h2 className="font-heading text-3xl md:text-4xl mb-4 text-secondary">

@@ -2,6 +2,24 @@
 
 import React from 'react';
 
+// Inline SVG noise texture as a data URL — small (~600 bytes) and
+// zero network round-trip. feTurbulence is unreliable when the host
+// SVG has zero size (the filter region collapses), so we pre-render
+// the noise at build time and tile it via CSS background-repeat.
+// baseFrequency 0.9 / 1.1 gives the classic "fine static" texture.
+// The feColorMatrix drops the alpha to ~22% so the noise tints the
+// screen without overpowering the orange "NO SIGNAL" text.
+const NOISE_BG = `url("data:image/svg+xml;utf8,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180">' +
+  '<filter id="n">' +
+  '<feTurbulence type="fractalNoise" baseFrequency="0.9 1.1" numOctaves="2" seed="7"/>' +
+  '<feColorMatrix type="matrix" values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   0 0 0 0.22 0"/>' +
+  '</filter>' +
+  '<rect width="100%" height="100%" filter="url(#n)"/>' +
+  '</svg>'
+)}")`;
+
+
 // Inline `cn` to avoid pulling in clsx + tailwind-merge for one callsite.
 // Ponytail: this stays local. Promote to lib/utils.ts when a second use appears.
 const cn = (...inputs: Array<string | undefined | false | null>) =>
@@ -30,6 +48,10 @@ const RetroTvError = React.forwardRef<HTMLDivElement, RetroTvErrorProps>(
         className={cn('main_wrapper flex items-center justify-center', className)}
         {...props}
       >
+        {/* SVG <defs> with feTurbulence — drives the white-noise overlay on
+            the TV screen. Inline so there's no extra HTTP request; the filter
+            is shared via <defs> so the same noise texture is reused across
+            the page without recomputing per element. */}
         <div className="main">
           <div className="antenna">
             <div className="antenna_shadow"></div>
@@ -53,9 +75,17 @@ const RetroTvError = React.forwardRef<HTMLDivElement, RetroTvErrorProps>(
               <div className="screen_out">
                 <div className="screen_out1">
                   <div className="screen">
+                    {/* White-noise overlay — applies the feTurbulence
+                        filter from the inline <defs> above. Sits above the
+                        screen text so the signal is partially obscured
+                        (visually authentic to a tuned-off analog TV). */}
+                    <div className="tv_noise" style={{ backgroundImage: NOISE_BG }} aria-hidden />
                     <span className="notfound_text">{errorMessage}</span>
                   </div>
                   <div className="screenM">
+                    {/* Animated duplicate of the screen text — pulses
+                        horizontally to mimic CRT scanline drift. */}
+                    <div className="tv_noise" style={{ backgroundImage: NOISE_BG }} aria-hidden />
                     <span className="notfound_text">{errorMessage}</span>
                   </div>
                 </div>

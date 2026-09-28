@@ -44,7 +44,7 @@ export function Breadcrumbs({
     >
       <ol className="flex flex-wrap items-center gap-1.5">
         <li>
-          <Link href={homeHref} className="hover:text-primary transition-colors">
+          <Link href={homeHref} className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm">
             {homeLabel}
           </Link>
         </li>
@@ -54,13 +54,13 @@ export function Breadcrumbs({
               ›
             </span>
             {item.current || !item.path ? (
-              <span aria-current="page" className="text-primary font-semibold">
+              <span aria-current="page" className="text-secondary font-semibold">
                 {item.name}
               </span>
             ) : (
               <Link
                 href={lang === 'en' ? item.path : `/${lang}${item.path}`}
-                className="hover:text-primary transition-colors"
+                className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
               >
                 {item.name}
               </Link>

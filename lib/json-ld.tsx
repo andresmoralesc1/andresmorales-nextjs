@@ -119,6 +119,61 @@ export function faqSchema(
 }
 
 /**
+ * Build a LocalBusiness schema for SEO. Use on the /contact page (and
+ * optionally the home page) so the Google Business Profile signal is
+ * reinforced by the same NAP (Name / Address / Phone) the GBP already
+ * publishes. Mismatches between the two are a common source of local
+ * ranking instability, so keep them aligned.
+ *
+ * For an AI / dev-consulting practice, "name" and "url" are required;
+ * the geo + address are recommended. Pass null for any field that does
+ * not apply (omit vs sending empty string — schema.org ignores null).
+ */
+export function localBusinessSchema(b: {
+  name: string;
+  url?: string;
+  description?: string;
+  streetAddress?: string;
+  addressLocality?: string;
+  addressRegion?: string;
+  postalCode?: string;
+  addressCountry?: string;
+  geo?: { lat: number; lng: number };
+  telephone?: string;
+  email?: string;
+  priceRange?: string;
+  openingHours?: string[];
+}): Record<string, unknown> {
+  const addr =
+    b.streetAddress ||
+    b.addressLocality ||
+    b.postalCode ||
+    b.addressCountry
+      ? {
+          '@type': 'PostalAddress',
+          ...(b.streetAddress && { streetAddress: b.streetAddress }),
+          ...(b.addressLocality && { addressLocality: b.addressLocality }),
+          ...(b.addressRegion && { addressRegion: b.addressRegion }),
+          ...(b.postalCode && { postalCode: b.postalCode }),
+          ...(b.addressCountry && { addressCountry: b.addressCountry }),
+        }
+      : undefined;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: b.name,
+    ...(b.url && { url: b.url }),
+    ...(b.description && { description: b.description }),
+    ...(b.email && { email: b.email }),
+    ...(b.telephone && { telephone: b.telephone }),
+    ...(addr && { address: addr }),
+    ...(b.geo && { geo: { '@type': 'GeoCoordinates', ...b.geo } }),
+    ...(b.priceRange && { priceRange: b.priceRange }),
+    ...(b.openingHours?.length && { openingHours: b.openingHours }),
+  };
+}
+
+/**
  * Build a HowTo schema for a process / methodology page. The site uses
  * this on /services/* to mark the 5-step engagement model as a
  * structured HowTo. Like FAQPage, the steps must be visible in the
@@ -142,5 +197,32 @@ export function howToSchema(opts: {
       name: s.name,
       text: s.text,
     })),
+  };
+}
+
+/**
+ * Build an Article schema for a long-form blog / guide post. Pairs with
+ * the ArticleHero + ArticleToc + SeriesNav cluster components under
+ * /guide/[slug]. Author defaults to the site owner.
+ */
+export function articleSchema(opts: {
+  headline: string;
+  description: string;
+  datePublished: string; // ISO yyyy-mm-dd
+  dateModified?: string;
+  author?: string;
+  url?: string;
+  image?: string;
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: opts.headline,
+    description: opts.description,
+    datePublished: opts.datePublished,
+    ...(opts.dateModified && { dateModified: opts.dateModified }),
+    author: { '@type': 'Person', name: opts.author ?? 'Andrés Morales' },
+    ...(opts.url && { url: opts.url }),
+    ...(opts.image && { image: opts.image }),
   };
 }

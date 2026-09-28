@@ -1,0 +1,94 @@
+{
+  "$schema": "https://ard-spec.org/schemas/ai-catalog/v1.json",
+  "schema": "ard/1.0",
+  "name": "Andrés Morales · Portfolio",
+  "description": "AI-agent discoverability manifest for andresmorales.com.co — exposes the contact form, project brief wizard, and calendar booking endpoint to autonomous agents.",
+  "owner": {
+    "name": "Andrés Morales",
+    "url": "https://andresmorales.com.co"
+  },
+  "resources": [
+    {
+      "type": "form",
+      "id": "contact",
+      "name": "Contact form",
+      "description": "Short contact message — name, email, message. Use for quick questions or general inquiries. Sends a transactional email to andres@andresmorales.com.co via Brevo.",
+      "url": "https://andresmorales.com.co/contact",
+      "method": "POST",
+      "endpoint": "https://andresmorales.com.co/api/contact",
+      "contentType": "application/json",
+      "fields": [
+        { "name": "name", "type": "string", "required": true, "minLength": 1, "maxLength": 100 },
+        { "name": "email", "type": "string", "format": "email", "required": true },
+        { "name": "message", "type": "string", "required": true, "minLength": 10, "maxLength": 2000 }
+      ]
+    },
+    {
+      "type": "form",
+      "id": "brief",
+      "name": "Project brief wizard",
+      "description": "Structured 5-step project brief (about-you → project type → problem → goal → logistics). Use when the visitor wants to scope a paid engagement. Sends a transactional email to andres@andresmorales.com.co and creates a task in ClickUp.",
+      "url": "https://andresmorales.com.co/brief",
+      "method": "POST",
+      "endpoint": "https://andresmorales.com.co/api/brief",
+      "contentType": "application/json",
+      "fields": [
+        { "name": "name", "type": "string", "required": true, "minLength": 1, "maxLength": 100 },
+        { "name": "email", "type": "string", "format": "email", "required": true },
+        { "name": "company", "type": "string", "required": false, "maxLength": 200 },
+        { "name": "role", "type": "string", "required": false, "maxLength": 200 },
+        {
+          "name": "projectType",
+          "type": "string",
+          "enum": ["web", "automation", "ai-integration", "consulting", "other"],
+          "required": true
+        },
+        { "name": "projectTypeOther", "type": "string", "required": false, "maxLength": 200 },
+        { "name": "problem", "type": "string", "required": true, "minLength": 20, "maxLength": 4000 },
+        {
+          "name": "tools",
+          "type": "array",
+          "items": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "frequency",
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "one-off", "ad-hoc"],
+          "required": true
+        },
+        { "name": "goal", "type": "string", "required": true, "minLength": 20, "maxLength": 4000 },
+        { "name": "successMetric", "type": "string", "required": false, "maxLength": 1000 },
+        {
+          "name": "budget",
+          "type": "string",
+          "enum": ["under2k", "2to5k", "5to15k", "15to50k", "over50k"],
+          "required": true
+        },
+        {
+          "name": "timeline",
+          "type": "string",
+          "enum": ["asap", "1month", "1to3months", "over3months", "flexible"],
+          "required": true
+        },
+        { "name": "additionalNotes", "type": "string", "required": false, "maxLength": 4000 },
+        { "name": "lang", "type": "string", "enum": ["en", "es", "pt"], "required": false }
+      ]
+    },
+    {
+      "type": "action",
+      "id": "schedule_call",
+      "name": "Schedule a free 30-min strategy call",
+      "description": "Returns the booking URL for a Google Calendar appointment slot. Open in a new tab. No authentication required.",
+      "url": "https://calendar.app.google/QvUUb5xu4927P95a8",
+      "method": "GET"
+    },
+    {
+      "type": "action",
+      "id": "open_portfolio",
+      "name": "Open portfolio page",
+      "description": "Open the live portfolio with all featured projects and the PageSpeed scoreboard.",
+      "url": "https://andresmorales.com.co/portfolio"
+    }
+  ]
+}
