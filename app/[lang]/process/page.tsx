@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Reveal } from '@/components/reveal';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
-import { getCurrentDictionary } from '@/lib/dictionary';
-import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
+import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, faqSchema } from '@/lib/json-ld';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
@@ -30,7 +30,10 @@ export function generateStaticParams() {
 }
 
 export default async function ProcessPage() {
-  const dict = await getCurrentDictionary();
+  const [dict, locale] = await Promise.all([
+    getCurrentDictionary(),
+    getCurrentLocale(),
+  ]);
   const p = dict.process;
 
   return (
@@ -148,6 +151,35 @@ export default async function ProcessPage() {
           <p className="text-xs text-text mt-6 italic max-w-xl mx-auto">
             {p.ctaProcess}
           </p>
+        </div>
+      </section>
+
+      {/* Internal cross-links: /process and /about reinforce each
+          other in topical authority (methodology ↔ founder credibility),
+          and /blog surfaces content the user might want next. Same
+          pill-style as the /vs/* section above so the user gets one
+          consistent pattern for "where to go next". */}
+      <section className="section bg-background">
+        <div className="container-page max-w-4xl text-center">
+          <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-4">
+            {p.crossLinksEyebrow}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+            <Link
+              href={getLocalizedPath('/about', locale)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-theme-9 hover:border-theme-1 rounded-full text-sm font-secondary font-bold text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+            >
+              {dict.nav.about}
+              <span aria-hidden>→</span>
+            </Link>
+            <Link
+              href={getLocalizedPath('/blog', locale)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-theme-9 hover:border-theme-1 rounded-full text-sm font-secondary font-bold text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+            >
+              {dict.nav.blog}
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
         </div>
       </section>
 

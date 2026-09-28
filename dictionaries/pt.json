@@ -86,7 +86,8 @@
     "stat3Value": "24",
     "stat3Label": "rodando por dia",
     "stat4Value": "3",
-    "stat4Label": "entregáveis por engagement"
+    "stat4Label": "entregáveis por engagement",
+    "crossLinksEyebrow": "Continue explorando"
   },
   "services": {
     "eyebrow": "O que eu faço",
@@ -952,7 +953,8 @@
     "compareEyebrow": "Como o ritmo se compara",
     "compareMakeVsN8n": "Make vs n8n",
     "compareVercelVsAmplify": "Vercel vs AWS Amplify",
-    "compareAiVsAgency": "Consultor IA vs agência"
+    "compareAiVsAgency": "Consultor IA vs agência",
+    "crossLinksEyebrow": "Continue explorando"
   },
   "seoMeta": {
     "work": {

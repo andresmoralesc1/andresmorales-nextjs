@@ -86,7 +86,8 @@
     "stat3Value": "24",
     "stat3Label": "running daily",
     "stat4Value": "3",
-    "stat4Label": "deliverables per engagement"
+    "stat4Label": "deliverables per engagement",
+    "crossLinksEyebrow": "Keep exploring"
   },
   "services": {
     "eyebrow": "What I do",
@@ -1204,7 +1205,8 @@
     "compareEyebrow": "How the rhythm compares",
     "compareMakeVsN8n": "Make vs n8n",
     "compareVercelVsAmplify": "Vercel vs AWS Amplify",
-    "compareAiVsAgency": "AI consultant vs agency"
+    "compareAiVsAgency": "AI consultant vs agency",
+    "crossLinksEyebrow": "Keep exploring"
   },
   "pricing": {
     "eyebrow": "Investment",

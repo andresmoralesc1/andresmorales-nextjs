@@ -255,22 +255,31 @@ export default async function AboutPage({
         </Reveal>
       </section>
 
-      {/* Cross-links to relevant work */}
+      {/* Cross-links to relevant work — the 5 places the user
+          naturally wants next after /about: services + portfolio
+          (capabilities + proof), process + blog (methodology + content),
+          contact (start a project). 5 cards on md+ keeps the grid
+          proportional; on mobile they stack 2-wide. */}
       <section className="section bg-background">
-        <div className="container-page max-w-4xl">
-          <div className="grid md:grid-cols-3 gap-4">
+        <div className="container-page max-w-5xl">
+          <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-6 text-center">
+            {a.crossLinksEyebrow}
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {[
               { href: '/services', label: dict.nav.services, desc: a.servicesLinkDesc },
               { href: '/portfolio', label: dict.nav.portfolio, desc: a.portfolioLinkDesc },
+              { href: '/process', label: dict.nav.process, desc: 'See the 5-step rhythm' },
+              { href: '/blog', label: dict.nav.blog, desc: 'Field notes on AI + web' },
               { href: '/contact', label: dict.nav.contact, desc: a.contactLinkDesc },
             ].map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className="block rounded-xl border border-theme-9 bg-primary p-5 hover:border-theme-1 transition-colors"
+                className="block rounded-xl border border-theme-9 bg-primary p-4 md:p-5 hover:border-theme-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
               >
                 <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-1">{l.label} →</p>
-                <p className="text-secondary font-heading text-lg">{l.desc}</p>
+                <p className="text-secondary font-heading text-sm md:text-base leading-snug">{l.desc}</p>
               </Link>
             ))}
           </div>
