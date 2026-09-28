@@ -355,8 +355,8 @@
   "homeHero": {
     "greeting": "Hi, I'm",
     "name": "Andrés Morales",
-    "role1": "AI automation consultant",
-    "role2": "I help teams scale without the chaos.",
+    "role1": "I help teams scale without the chaos.",
+    "role2": "AI automation consultant",
     "labelEmail": "✉",
     "labelPhone": "☎",
     "labelLinkedin": "in",

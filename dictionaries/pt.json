@@ -367,8 +367,8 @@
   "homeHero": {
     "greeting": "Olá, eu sou",
     "name": "Andrés Morales",
-    "role1": "Consultor de automação com IA",
-    "role2": "Ajudando empresas a escalar com menos esforço",
+    "role1": "Ajudando empresas a escalar com menos esforço.",
+    "role2": "Consultor de automação com IA",
     "labelEmail": "✉",
     "labelPhone": "☎",
     "labelLinkedin": "in",

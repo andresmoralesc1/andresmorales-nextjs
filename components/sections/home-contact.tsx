@@ -71,7 +71,10 @@ export async function HomeContact() {
                   label="home-email"
                   className="inline-flex items-center gap-2 text-primary hover:text-theme-1 text-base md:text-lg font-secondary font-semibold break-all"
                 >
-                  <span aria-hidden="true" className="text-theme-1">✉</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-theme-1" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <path d="M3 7l9 6 9-6" />
+                  </svg>
                   info@andresmorales.com.co
                 </TrackLink>
               </div>
