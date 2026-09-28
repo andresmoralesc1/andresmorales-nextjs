@@ -1205,7 +1205,31 @@
       ],
       "ctaLabel": "Agendar chamada de escopo →",
       "ctaTitle": "Em dúvida sobre qual rota serve?",
-      "ctaBody": "Uma chamada de 30 minutos mapeia seu escopo ao modelo de engagement certo. Você sai com uma recomendação clara, não com um orçamento de trabalho que não precisa."
+      "ctaBody": "Uma chamada de 30 minutos mapeia seu escopo ao modelo de engagement certo. Você sai com uma recomendação clara, não com um orçamento de trabalho que não precisa.",
+      "workflowCheck": {
+        "eyebrow": "REALIDADE",
+        "heading": "Assim roda um engagement com consultor solo, de ponta a ponta",
+        "subtitle": "Um dos 24 workflows ativos de clientes rodando hoje. Sem intermediários de agência, sem project managers.",
+        "captionLabel": "Fluxo real de engagement",
+        "caption": "Inquiry → entrega em 2-4 semanas, não 2-4 meses",
+        "callouts": [
+          {
+            "title": "Tempo de resposta",
+            "stat": "<24h de resposta, sempre",
+            "body": "Respondo as mensagens dos clientes pessoalmente. Sem filas de ticket, sem account managers. A pessoa que constrói o sistema é quem responde o email."
+          },
+          {
+            "title": "Modelo de custo",
+            "stat": "Preço fixo, sem overhead de agência",
+            "body": "Você paga pelo trabalho, não pelo organograma. Um projeto solo de R$25k entrega o mesmo código que um projeto de agência de R$125k — mesmo n8n, mesma Vercel, mesmo repo."
+          },
+          {
+            "title": "Responsabilidade",
+            "stat": "1 pessoa, 1 telefone",
+            "body": "Quando o workflow quebra às 2h da manhã, você me liga. Não um account manager que abre um ticket. 30 dias de suporte incluídos em cada build."
+          }
+        ]
+      }
     },
     "vercelVsAmplify": {
       "metaTitle": "Vercel vs AWS Amplify para Next.js — 2026",
@@ -1288,7 +1312,31 @@
       ],
       "ctaLabel": "Agendar chamada de escopo →",
       "ctaTitle": "Escolhendo o host certo para sua fase?",
-      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma encaixa no seu padrão de tráfego, tamanho de time e teto de custo. Sem pitch — uma recomendação clara."
+      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma encaixa no seu padrão de tráfego, tamanho de time e teto de custo. Sem pitch — uma recomendação clara.",
+      "workflowCheck": {
+        "eyebrow": "REALIDADE",
+        "heading": "Este é meu pipeline de deploy na Vercel, rodando agora",
+        "subtitle": "Um dos 5+ deploys de produção nesta semana. Por que está na Vercel e não no AWS Amplify.",
+        "captionLabel": "Pipeline real de deploy",
+        "caption": "andresmorales-nextjs · git push → produção em ~90s",
+        "callouts": [
+          {
+            "title": "Velocidade de deploy",
+            "stat": "~90s do git push à produção",
+            "body": "O cache de build no edge da Vercel deixa os rebuilds de Next.js quase instantâneos. AWS Amplify leva em média 3-5 min para o mesmo tamanho de projeto."
+          },
+          {
+            "title": "Modelo de custo",
+            "stat": "$0/mês no Hobby, previsível no Pro",
+            "body": "Vercel Pro é $20/usuário/mês fixo. AWS Amplify: minutos de build ($0.01/min após o tier grátis) + storage + transferência — imprevisível para um site de portfólio."
+          },
+          {
+            "title": "Confiabilidade",
+            "stat": "100% READY nos últimos 5 deploys",
+            "body": "5 deploys de produção na última hora, todos READY. O mesmo projeto no Amplify ainda estaria no primeiro build. Dados de Set 2026."
+          }
+        ]
+      }
     }
   },
   "blog": {

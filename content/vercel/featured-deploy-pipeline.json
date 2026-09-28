@@ -1,0 +1,21 @@
+{
+  "id": "deploy-pipeline",
+  "name": "andresmorales-nextjs deploy flow",
+  "nodeCount": 5,
+  "extractedAt": "2026-09-28",
+  "raw": {
+    "nodes": [
+      { "name": "git push to main", "type": "n8n-nodes-base.webhook", "position": [0, 0] },
+      { "name": "Vercel CI build", "type": "n8n-nodes-base.httpRequest", "position": [240, 0] },
+      { "name": "Preview URL", "type": "n8n-nodes-base.if", "position": [480, -80] },
+      { "name": "Production deploy", "type": "n8n-nodes-base.httpRequest", "position": [720, -80] },
+      { "name": "Analytics + alert", "type": "n8n-nodes-base.noOp", "position": [960, -80] }
+    ],
+    "connections": {
+      "git push to main": { "main": [[{ "node": "Vercel CI build", "type": "main", "index": 0 }]] },
+      "Vercel CI build": { "main": [[{ "node": "Preview URL", "type": "main", "index": 0 }]] },
+      "Preview URL": { "main": [[{ "node": "Production deploy", "type": "main", "index": 0 }]] },
+      "Production deploy": { "main": [[{ "node": "Analytics + alert", "type": "main", "index": 0 }]] }
+    }
+  }
+}

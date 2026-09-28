@@ -1,11 +1,18 @@
 import type { Metadata } from 'next';
 import { Reveal } from '@/components/reveal';
 import { Cta } from '@/components/sections/cta';
+import { WorkflowCanvas } from '@/components/sections/workflow-canvas';
 import { TrackCta } from '@/components/track';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { layoutWorkflow } from '@/lib/workflow-layout';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
+// Snapshot of the user's solo-consultant engagement flow, modeled in
+// the n8n-shape so the same WorkflowCanvas renders it. The six nodes
+// describe the actual pipeline: inquiry → 30-min scoping call →
+// fixed-price proposal → build → handoff w/ Loom → 30-day support.
+import featuredEngagement from '@/content/agency/featured-engagement-pipeline.json';
 
 const SLUG = 'ai-consultant-vs-agency';
 
@@ -50,6 +57,8 @@ export default async function AiConsultantVsAgencyPage({
   const faqLocale =
     safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US';
 
+  const workflow = layoutWorkflow(featuredEngagement as any);
+
   return (
     <>
       <JsonLd data={faqSchema(faqs, faqLocale)} />
@@ -90,6 +99,16 @@ export default async function AiConsultantVsAgencyPage({
           </div>
         </Reveal>
       </section>
+
+      <WorkflowCanvas
+        eyebrow={c.workflowCheck.eyebrow}
+        heading={c.workflowCheck.heading}
+        subtitle={c.workflowCheck.subtitle}
+        workflow={workflow}
+        callouts={c.workflowCheck.callouts}
+        caption={c.workflowCheck.caption}
+        captionLabel={c.workflowCheck.captionLabel}
+      />
 
       {/* Comparison table */}
       <section className="section bg-background">

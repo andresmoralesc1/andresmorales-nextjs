@@ -1,11 +1,20 @@
 import type { Metadata } from 'next';
 import { Reveal } from '@/components/reveal';
 import { Cta } from '@/components/sections/cta';
+import { WorkflowCanvas } from '@/components/sections/workflow-canvas';
 import { TrackCta } from '@/components/track';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { layoutWorkflow } from '@/lib/workflow-layout';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
+// Snapshot of the user's Vercel deploy pipeline, captured as if it were
+// an n8n workflow so the same WorkflowCanvas component renders it.
+// The five "nodes" are real steps in the andresmorales-nextjs project:
+// git push → Vercel CI → preview deploy branch → production deploy →
+// analytics/alert. The If node (preview) is what makes this a real
+// branch, not a linear line.
+import featuredDeploy from '@/content/vercel/featured-deploy-pipeline.json';
 
 const SLUG = 'vercel-vs-aws-amplify';
 
@@ -50,6 +59,8 @@ export default async function VercelVsAwsAmplifyPage({
   const faqLocale =
     safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US';
 
+  const workflow = layoutWorkflow(featuredDeploy as any);
+
   return (
     <>
       <JsonLd data={faqSchema(faqs, faqLocale)} />
@@ -90,6 +101,16 @@ export default async function VercelVsAwsAmplifyPage({
           </div>
         </Reveal>
       </section>
+
+      <WorkflowCanvas
+        eyebrow={c.workflowCheck.eyebrow}
+        heading={c.workflowCheck.heading}
+        subtitle={c.workflowCheck.subtitle}
+        workflow={workflow}
+        callouts={c.workflowCheck.callouts}
+        caption={c.workflowCheck.caption}
+        captionLabel={c.workflowCheck.captionLabel}
+      />
 
       {/* Comparison table */}
       <section className="section bg-background">

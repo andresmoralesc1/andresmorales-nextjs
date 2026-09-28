@@ -1,0 +1,23 @@
+{
+  "id": "engagement-pipeline",
+  "name": "Solo consultant client engagement",
+  "nodeCount": 6,
+  "extractedAt": "2026-09-28",
+  "raw": {
+    "nodes": [
+      { "name": "Client inquiry", "type": "n8n-nodes-base.webhook", "position": [0, 0] },
+      { "name": "Scoping call (30 min)", "type": "n8n-nodes-base.noOp", "position": [240, 0] },
+      { "name": "Fixed-price proposal", "type": "n8n-nodes-base.code", "position": [480, 0] },
+      { "name": "Build + ship", "type": "n8n-nodes-base.httpRequest", "position": [720, 0] },
+      { "name": "Handoff + Loom", "type": "n8n-nodes-base.noOp", "position": [960, 0] },
+      { "name": "30-day support", "type": "n8n-nodes-base.wait", "position": [1200, 0] }
+    ],
+    "connections": {
+      "Client inquiry": { "main": [[{ "node": "Scoping call (30 min)", "type": "main", "index": 0 }]] },
+      "Scoping call (30 min)": { "main": [[{ "node": "Fixed-price proposal", "type": "main", "index": 0 }]] },
+      "Fixed-price proposal": { "main": [[{ "node": "Build + ship", "type": "main", "index": 0 }]] },
+      "Build + ship": { "main": [[{ "node": "Handoff + Loom", "type": "main", "index": 0 }]] },
+      "Handoff + Loom": { "main": [[{ "node": "30-day support", "type": "main", "index": 0 }]] }
+    }
+  }
+}
