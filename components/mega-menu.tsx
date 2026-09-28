@@ -87,28 +87,33 @@ export function MegaMenu({ trigger, sections, cta }: Props) {
       {open ? (
         <div
           role="menu"
-          // Micro-interaction: fade + slide-down + subtle scale on open.
-          // Scale starts at 0.98 (just below 1) so the eye picks up
-          // motion without a perceptible "pop". Origin is top-right so
-          // the panel appears to grow out of the trigger.
-          className="absolute right-0 top-full mt-2 w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-theme-9 bg-primary shadow-xl z-40 origin-top-right motion-safe:animate-[mega-in_180ms_ease-out]"
+          // w-80 (320px) is the right size for 4 short labels in a single
+          // column. The previous w-[min(640px,...)] forced the panel
+          // off-screen on smaller viewports because the More trigger is
+          // at the right edge of the centered nav, and a 640px panel
+          // right-aligned to it has nowhere to go.
+          //
+          // 2-col grid kept at sm+ so a future 6+ section can use 2
+          // columns without another class change. The current 4 items
+          // (1 section) render as a single column.
+          className="absolute right-0 top-full mt-2 w-80 sm:w-[28rem] rounded-2xl border border-theme-9 bg-primary shadow-xl z-40 origin-top-right motion-safe:animate-[mega-in_180ms_ease-out]"
           style={{
             animation: 'mega-in 180ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          <div className="p-6 grid sm:grid-cols-2 gap-6">
+          <div className="p-5 sm:p-6 grid sm:grid-cols-2 gap-x-6 gap-y-4">
             {sections.map((s) => (
               <div key={s.title}>
-                <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-3">
+                <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-2.5">
                   {s.title}
                 </p>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {s.links.map((l) => (
                     <li key={l.href}>
                       <Link
                         href={l.href}
                         role="menuitem"
-                        className="block px-2 py-1.5 -mx-2 rounded-md text-base text-secondary hover:bg-theme-1/5 hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1"
+                        className="block px-2.5 py-1.5 -mx-2.5 rounded-md text-[15px] text-secondary hover:bg-theme-1/5 hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1"
                       >
                         {l.label}
                       </Link>
@@ -119,7 +124,7 @@ export function MegaMenu({ trigger, sections, cta }: Props) {
             ))}
           </div>
           {cta ? (
-            <div className="px-6 py-3 border-t border-theme-9 bg-background">
+            <div className="px-5 sm:px-6 py-3 border-t border-theme-9 bg-background rounded-b-2xl">
               <Link
                 href={cta.href}
                 className="text-sm font-secondary font-bold text-accent hover:opacity-80 transition-opacity inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
