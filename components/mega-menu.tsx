@@ -87,7 +87,14 @@ export function MegaMenu({ trigger, sections, cta }: Props) {
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-theme-9 bg-primary shadow-xl z-40"
+          // Micro-interaction: fade + slide-down + subtle scale on open.
+          // Scale starts at 0.98 (just below 1) so the eye picks up
+          // motion without a perceptible "pop". Origin is top-right so
+          // the panel appears to grow out of the trigger.
+          className="absolute right-0 top-full mt-2 w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-theme-9 bg-primary shadow-xl z-40 origin-top-right motion-safe:animate-[mega-in_180ms_ease-out]"
+          style={{
+            animation: 'mega-in 180ms cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
         >
           <div className="p-6 grid sm:grid-cols-2 gap-6">
             {sections.map((s) => (

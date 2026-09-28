@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { getLocalizedPath, type Dictionary, type Locale } from '@/lib/i18n';
 import { LocaleSwitcherWrapper } from '@/components/LocaleSwitcherWrapper';
 import { MobileMenu } from '@/components/MobileMenu';
@@ -35,6 +36,7 @@ export function HeaderClient({
   locale: Locale;
 }) {
   const [condensed, setCondensed] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setCondensed(window.scrollY > 40);
@@ -42,6 +44,21 @@ export function HeaderClient({
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Micro-interaction: animated underline on hover + persistent
+  // underline when the link is the current route. The actual gradient
+  // is in .link-underline (globals.css); here we toggle `is-active` to
+  // keep the underline visible without hover.
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(href + '/');
+  };
+  const navLinkClass = (href: string) =>
+    `link-underline py-1 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm ${
+      isActive(href)
+        ? 'text-accent [background-size:100%_1px]'
+        : 'text-secondary hover:text-accent'
+    }`;
 
   // Build the mega-menu data once. Five top-level items consume
   // Home, Services, Portfolio, About us directly. The "More" mega-menu
@@ -77,7 +94,11 @@ export function HeaderClient({
       >
         <Link
           href={getLocalizedPath('/', locale)}
-          className="block transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+          // Logo micro-interaction: subtle 1.04× scale on hover. The
+          // transition is 200ms with the same easing the rest of the
+          // header uses (transition-colors duration-300 family) so it
+          // feels coherent with the link-underline animation.
+          className="block transition-transform duration-200 ease-out hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
           aria-label="Andrés Morales — Home"
         >
           <Image
@@ -100,25 +121,29 @@ export function HeaderClient({
           <nav aria-label="Primary" className="flex items-center gap-5">
             <Link
               href={getLocalizedPath('/', locale)}
-              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+              className={navLinkClass(getLocalizedPath('/', locale))}
+              aria-current={isActive(getLocalizedPath('/', locale)) ? 'page' : undefined}
             >
               {dict.nav.home}
             </Link>
             <Link
               href={getLocalizedPath('/services', locale)}
-              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+              className={navLinkClass(getLocalizedPath('/services', locale))}
+              aria-current={isActive(getLocalizedPath('/services', locale)) ? 'page' : undefined}
             >
               {dict.nav.services}
             </Link>
             <Link
               href={getLocalizedPath('/portfolio', locale)}
-              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+              className={navLinkClass(getLocalizedPath('/portfolio', locale))}
+              aria-current={isActive(getLocalizedPath('/portfolio', locale)) ? 'page' : undefined}
             >
               {dict.nav.portfolio}
             </Link>
             <Link
               href={getLocalizedPath('/about', locale)}
-              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+              className={navLinkClass(getLocalizedPath('/about', locale))}
+              aria-current={isActive(getLocalizedPath('/about', locale)) ? 'page' : undefined}
             >
               {dict.nav.about}
             </Link>
