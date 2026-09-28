@@ -1290,5 +1290,9 @@
       "ctaTitle": "¿Eligiendo el host correcto para tu etapa?",
       "ctaBody": "Una llamada de 30 minutos alcanza para saber qué plataforma encaja con tu patrón de tráfico, tamaño de equipo y techo de costo. Sin pitch — una recomendación clara."
     }
+  },
+  "blog": {
+    "relatedPosts": "Notas relacionadas",
+    "updatedOn": "Actualizado el {date}"
   }
 }

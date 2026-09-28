@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { existsSync, readdirSync } from 'node:fs';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { getDictionary, DEFAULT_LOCALE, LOCALES, type Locale } from '@/lib/i18n';
-import { getPost, type BlogLocale, listAllPostSlugs, listSlugsByLocale } from '@/lib/blog';
+import { getPost, listPosts, postMtime, type BlogLocale, listAllPostSlugs, listSlugsByLocale } from '@/lib/blog';
 import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
 import styles from './blog-prose.module.css';
@@ -143,6 +143,35 @@ export default async function BlogPostPage({
 
   const dict = await getCurrentDictionary();
 
+  // Last-updated: show "Updated X" only if the file mtime is at least
+  // one day after the published date. Avoids the visual noise of
+  // "Updated Sep 28" on a post published Sep 28 (where the difference
+  // is just metadata write time).
+  const mtime = postMtime(slug, lang);
+  const publishedDate = new Date(post.date);
+  const oneDay = 24 * 60 * 60 * 1000;
+  const showUpdated =
+    mtime && mtime.getTime() - publishedDate.getTime() > oneDay;
+  const updatedDateStr = showUpdated
+    ? mtime!.toLocaleDateString(
+        lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+        { year: 'numeric', month: 'long', day: 'numeric' },
+      )
+    : '';
+
+  // Related posts: score by tag overlap, fall back to most recent
+  // posts in the same locale. Cap at 3.
+  const candidates = listPosts(lang).filter((p) => p.slug !== slug);
+  const scored = candidates
+    .map((p) => ({
+      post: p,
+      score: p.tags.filter((t) => post.tags.includes(t)).length,
+    }))
+    .sort((a, b) =>
+      b.score !== a.score ? b.score - a.score : b.post.date.localeCompare(a.post.date),
+    );
+  const related = scored.slice(0, 3).map((s) => s.post);
+
   return (
     <main className="container-page py-16 min-h-[60vh] max-w-3xl">
       <p className="text-xs uppercase tracking-widest text-secondary font-bold mb-3">
@@ -194,6 +223,11 @@ export default async function BlogPostPage({
             {' · '}
             {post.author}
           </p>
+          {showUpdated ? (
+            <p className="text-xs text-theme-5/70 mt-1">
+              {dict.blog.updatedOn.replace('{date}', updatedDateStr)}
+            </p>
+          ) : null}
           <div className="flex flex-wrap gap-2">
             {post.tags.map((t) => (
               <span
@@ -239,6 +273,43 @@ export default async function BlogPostPage({
           ✏ Edit post
         </a>
       </footer>
+
+      {related.length > 0 ? (
+        <section className="mt-16 pt-8 border-t border-theme-9" aria-labelledby="related-posts">
+          <h2
+            id="related-posts"
+            className="text-xs uppercase tracking-widest text-accent font-bold mb-6"
+          >
+            {dict.blog.relatedPosts}
+          </h2>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <TrackLink
+                  href={r.href}
+                  event="blog_post_clicked"
+                  label={`blog-related-${r.slug}`}
+                  className="block group"
+                >
+                  <p className="text-xs text-theme-5/70 mb-2">
+                    <time dateTime={r.date}>
+                      {new Date(r.date).toLocaleDateString(
+                        lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+                        { year: 'numeric', month: 'short', day: 'numeric' },
+                      )}
+                    </time>
+                    {' · '}
+                    {r.readingTime} min
+                  </p>
+                  <h3 className="font-heading text-base font-bold text-secondary group-hover:text-accent transition-colors leading-snug">
+                    {r.title}
+                  </h3>
+                </TrackLink>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </main>
   );
 }

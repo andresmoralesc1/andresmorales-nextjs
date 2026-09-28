@@ -1259,5 +1259,9 @@
         "es": "Comparativa honesta de n8n, Make y Zapier para automatizar un negocio en Colombia: costos, latencia e integraciones locales."
       }
     }
+  },
+  "blog": {
+    "relatedPosts": "Related notes",
+    "updatedOn": "Updated {date}"
   }
 }
