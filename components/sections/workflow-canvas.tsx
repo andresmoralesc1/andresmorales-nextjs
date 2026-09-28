@@ -153,7 +153,11 @@ export function WorkflowCanvas({
               return (
                 <div
                   key={i}
-                  className="rounded-xl border border-theme-9 bg-theme-5 p-4 md:p-5 border-l-4 border-l-theme-1"
+                  // No left-border accent — that pattern is one of the
+                  // clearest AI-generated UIs tells. The orange dot at
+                  // the title and the cream `bg-theme-5` against the
+                  // section bg carry the visual hierarchy.
+                  className="rounded-xl border border-theme-9 bg-theme-5 p-4 md:p-5"
                 >
                   <p className="text-xs uppercase tracking-widest text-text mb-1 font-secondary font-bold flex items-center gap-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-theme-1" aria-hidden="true" />
