@@ -43,10 +43,17 @@ export function NavItem({
       event="nav_link_clicked"
       label={`nav-${href === '/' ? 'home' : href.replace(/^\//, '')}`}
       aria-current={isActive ? 'page' : undefined}
-      className={`${visClass} items-center border-b-2 text-sm font-secondary font-bold uppercase tracking-widest link-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm ${
+      // `relative` so the active-state pseudo can position against this
+      // element. The active indicator used to be `border-b-2 border-theme-1`,
+      // but the 2px bottom border clashed with `rounded-sm` (focus ring):
+      // border-b-2 sits 2px above the bottom edge and stops 2px short of
+      // the rounded corners, leaving tiny "ears" at each end. Replacing
+      // with an absolute pseudo (after:) gives clean full-width bar that
+      // doesn't fight the focus ring's radius.
+      className={`${visClass} relative items-center text-sm font-secondary font-bold uppercase tracking-widest link-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm ${
         isActive
-          ? 'text-secondary border-theme-1'
-          : 'text-secondary border-transparent hover:text-accent hover:border-theme-1/30'
+          ? 'text-secondary after:absolute after:left-0 after:right-0 after:bottom-[-3px] after:h-[2px] after:bg-theme-1 after:rounded-full'
+          : 'text-secondary hover:text-accent'
       }`}
     >
       {label}
