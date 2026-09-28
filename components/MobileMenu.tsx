@@ -99,7 +99,9 @@ export function MobileMenu({
         aria-label={dict.nav.toggleMenu}
         aria-expanded={open}
         aria-controls={drawerId}
-        className="md:hidden relative h-10 w-10 inline-flex items-center justify-center rounded-md hover:bg-secondary/5 active:bg-secondary/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+        // h-11 w-11 = 44×44, the iOS HIG minimum tap target.
+        // Was h-10 w-10 (40×40) — bumped back for thumb ergonomics.
+        className="md:hidden relative h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-secondary/5 active:bg-secondary/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
         onClick={() => setOpen(!open)}
       >
         <span
@@ -123,8 +125,8 @@ export function MobileMenu({
         <nav
           ref={drawerRef}
           id={drawerId}
-          aria-label={dict.footer.ariaNavLabel}
-          className="md:hidden border-t border-theme-9 bg-background absolute left-0 right-0 top-full shadow-lg max-h-[calc(100vh-3rem)] overflow-y-auto"
+          aria-label={dict.nav.toggleMenu}
+          className="md:hidden border-t border-theme-9 bg-background absolute left-0 right-0 top-full shadow-xl max-h-[calc(100vh-3.5rem)] overflow-y-auto"
         >
           <div className="container-page py-4 flex flex-col">
             {MENU.map((m) => (

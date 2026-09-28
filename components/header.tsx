@@ -13,5 +13,18 @@ export async function Header() {
     getCurrentDictionary(),
     getCurrentLocale(),
   ]);
-  return <HeaderClient dict={dict} locale={locale} />;
+  return (
+    <>
+      {/* Skip link: keyboard users hit Tab once to bypass the entire
+          8-link nav + locale switcher + CTA and jump straight to <main>.
+          sr-only by default; becomes visible only on focus. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-theme-1 focus:text-secondary focus:rounded-md focus:font-secondary focus:font-bold focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+      >
+        {dict.nav.skipToContent}
+      </a>
+      <HeaderClient dict={dict} locale={locale} />
+    </>
+  );
 }

@@ -88,7 +88,11 @@ export function LocaleSwitcher({ currentLocale, t, className }: LocaleSwitcherPr
             className={
               'inline-flex items-center justify-center rounded-md px-1.5 py-1 ' +
               'transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 ' +
-              (isActive ? 'opacity-100' : 'opacity-50 hover:opacity-80')
+              // Inactive went from opacity-50 → 70. Flag emojis on
+              // Samsung/Windows already render muted (regional indicator
+              // letters vs. full flag), so 50% was doubling the dim and
+              // hiding clickability.
+              (isActive ? 'opacity-100' : 'opacity-70 hover:opacity-90')
             }
           >
             <span aria-hidden="true">{LOCALE_FLAGS[loc]}</span>

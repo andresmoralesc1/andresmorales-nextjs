@@ -34,7 +34,11 @@ export function HeaderClient({
   const [condensed, setCondensed] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setCondensed(window.scrollY > 8);
+    // Threshold raised 8px → 40px: at 8px the header shrinks almost
+    // immediately on any tap-and-flick (mobile Safari overscroll),
+    // causing a distracting bounce. 40px matches "user has actually
+    // scrolled" intent.
+    const onScroll = () => setCondensed(window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -42,15 +46,18 @@ export function HeaderClient({
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-300 ${
+      className={`sticky top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-300 motion-reduce:transition-none ${
         condensed
           ? 'bg-background/80 backdrop-blur-sm shadow-sm'
           : 'bg-background'
       }`}
     >
       <div
-        className={`container-page flex items-center justify-between transition-[height] duration-300 ${
-          condensed ? 'h-12' : 'h-16'
+        className={`container-page flex items-center justify-between transition-[height] duration-300 motion-reduce:transition-none ${
+          // Condensed h-12 (48px) with h-10 logo (40px) leaves only 4px
+          // padding top+bottom. h-14 (56px) gives 8px each side — less
+          // cramped when the user has actually committed to scrolling.
+          condensed ? 'h-14' : 'h-16'
         }`}
       >
         <Link
@@ -63,19 +70,20 @@ export function HeaderClient({
             alt="Andrés Morales"
             width={196}
             height={94}
-            className="h-10 w-auto"
+            className="h-10 md:h-11 w-auto"
             priority
           />
         </Link>
 
         {/* Desktop nav + CTA + locale switcher */}
-        <div className="hidden md:flex items-center gap-5">
+        <div className="hidden md:flex items-center gap-4">
           <nav aria-label="Primary" className="flex items-center gap-6">
             {MENU.map((m) => (
               <NavItem
                 key={m.href}
                 href={getLocalizedPath(m.href, locale)}
                 label={dict.nav[m.labelKey]}
+                minBp={m.minBp}
               />
             ))}
           </nav>
