@@ -382,7 +382,7 @@ export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Lo
               type="button"
               onClick={handleBack}
               disabled={submitting}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-secondary hover:text-accent transition-colors disabled:opacity-50"
+              className="px-4 py-2 min-h-[44px] rounded-lg text-sm font-medium text-secondary hover:text-accent transition-colors disabled:opacity-50"
             >
               {dict.brief.wizardBack}
             </button>
@@ -390,7 +390,7 @@ export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Lo
             <button
               type="button"
               onClick={clearDraft}
-              className="px-3 py-2 text-xs text-text hover:text-text underline"
+              className="px-3 py-2 min-h-[44px] text-xs text-text hover:text-text underline"
               title={dict.brief.wizardStartOverConfirm}
             >
               {dict.brief.wizardStartOver}
@@ -494,7 +494,7 @@ function RadioGroup<V extends string>(props: {
             <label
               key={opt.value}
               htmlFor={id}
-              className={`p-3 rounded-lg border-2 cursor-pointer transition-all text-sm font-medium flex items-center gap-2 ${
+              className={`p-4 min-h-[44px] rounded-lg border-2 cursor-pointer transition-all text-sm font-medium flex items-center gap-2 ${
                 selected
                   ? 'border-theme-1 bg-theme-1 text-secondary'
                   : 'border-theme-9 bg-primary text-text hover:border-theme-1/40'

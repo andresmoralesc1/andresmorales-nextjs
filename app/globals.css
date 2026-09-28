@@ -62,7 +62,11 @@
     @apply btn border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary;
   }
   .input {
-    @apply w-full px-3.5 py-2.5 rounded-lg border border-theme-9 bg-primary text-secondary placeholder:text-text/60 focus:border-theme-1 focus:ring-2 focus:ring-theme-1/20 outline-none transition-colors;
+    /* text-base (16px) on inputs is required by iOS Safari: inputs <16px
+       trigger an unwanted zoom on focus. min-h-[44px] matches the iOS
+       HIG minimum tap target so a focused input is always tappable with
+       a thumb without bumping into the field. */
+    @apply w-full px-3.5 py-2.5 min-h-[44px] text-base rounded-lg border border-theme-9 bg-primary text-secondary placeholder:text-text/60 focus:border-theme-1 focus:ring-2 focus:ring-theme-1/20 outline-none transition-colors;
   }
 }
 
