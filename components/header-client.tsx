@@ -76,14 +76,32 @@ export function HeaderClient({
 
   return (
     <header
+      // Always translucent + blurred (the 'gloss' effect) so the page
+      // content shows through faintly. The condensed state just turns
+      // up the blur + adds a shadow + a top highlight stripe. No full
+      // opaque cream at any point — that's what made the header feel
+      // disconnected from the page on long scroll.
       className={`sticky top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-300 motion-reduce:transition-none ${
         condensed
-          ? 'bg-background/80 backdrop-blur-sm shadow-sm'
-          : 'bg-background'
+          ? 'bg-background/75 backdrop-blur-md shadow-sm'
+          : 'bg-background/85 backdrop-blur-sm'
       }`}
     >
+      {/* Gloss highlight: a 1px horizontal line + a soft 1-unit
+          vertical fade at the very top. Together they read as a
+          glassy 'shine' on the header edge — the visual signature of
+          frosted-glass UIs. Pointer-events-none so they don't
+          interfere with click targets. */}
       <div
-        className={`container-page flex items-center justify-between transition-[height] duration-300 motion-reduce:transition-none ${
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-theme-1/40 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-b from-primary/30 to-transparent"
+      />
+      <div
+        className={`container-page flex items-center justify-between transition-[height] duration-300 motion-reduce:transition-none relative ${
           condensed ? 'h-14' : 'h-16'
         }`}
       >
