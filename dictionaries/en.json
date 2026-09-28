@@ -12,7 +12,19 @@
     "process": "Process",
     "about": "About",
     "guide": "Guide",
-    "compare": "Compare"
+    "compare": "Compare",
+    "more": "More",
+    "moreSections": {
+      "decide": "Decide",
+      "learn": "Learn",
+      "work": "Work",
+      "process": "Process",
+      "about": "About me",
+      "guides": "Guides",
+      "blog": "Blog",
+      "compare": "Compare",
+      "startCta": "Start a project"
+    }
   },
   "hero": {
     "eyebrow": "AI Automation Consultant",

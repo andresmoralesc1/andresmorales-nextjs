@@ -6,23 +6,26 @@ import Image from 'next/image';
 import { getLocalizedPath, type Dictionary, type Locale } from '@/lib/i18n';
 import { LocaleSwitcherWrapper } from '@/components/LocaleSwitcherWrapper';
 import { MobileMenu } from '@/components/MobileMenu';
-import { NavItem } from '@/components/NavItem';
-import { MENU } from '@/lib/menu';
+import { MegaMenu } from '@/components/mega-menu';
 import { TrackCta } from '@/components/track';
 
 /**
- * Header (client) — owns scroll-aware condensation.
+ * Header (client) — owns scroll-aware condensation + the desktop
+ * mega-menu.
  *
  * Server `Header` (components/header.tsx) loads the dictionary + locale and
  * hands them off here. Keeping the data fetch on the server and only the
  * interactive bits on the client keeps the bundle small.
  *
- * Condensation: once the user has scrolled past 8px, the header drops from
- * h-16 (64px) to h-12 (48px) and gains a backdrop-blur + a subtle shadow.
- * One scroll listener, one state — both transitions share it.
+ * Top-level nav is intentionally short (Home · Services · More) — the
+ * 5 secondary destinations (Work, Process, About, Guides, Blog,
+ * Compare) all live inside the single "More" mega-menu. Mobile keeps
+ * the full list inside the hamburger drawer; this is desktop-only
+ * condensation.
  *
- * ponytail: threshold is 8px to avoid jitter on tiny scrolls. upgrade path:
- * rAF throttle if scroll events become a perf concern (mobile Safari).
+ * Condensation: once the user has scrolled past 40px the header drops
+ * from h-16 (64px) to h-14 (56px) and gains a backdrop-blur + a subtle
+ * shadow. One scroll listener, one state.
  */
 export function HeaderClient({
   dict,
@@ -34,15 +37,35 @@ export function HeaderClient({
   const [condensed, setCondensed] = useState(false);
 
   useEffect(() => {
-    // Threshold raised 8px → 40px: at 8px the header shrinks almost
-    // immediately on any tap-and-flick (mobile Safari overscroll),
-    // causing a distracting bounce. 40px matches "user has actually
-    // scrolled" intent.
     const onScroll = () => setCondensed(window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Build the mega-menu data once. Two sections — "Decide" (the
+  // pre-purchase evaluation: work, process, about) and "Learn"
+  // (content marketing: guides, blog, compare). Each link gets the
+  // locale prefix automatically via getLocalizedPath.
+  const m = dict.nav.moreSections;
+  const megaSections = [
+    {
+      title: m.decide,
+      links: [
+        { href: getLocalizedPath('/portfolio', locale), label: m.work },
+        { href: getLocalizedPath('/process', locale), label: m.process },
+        { href: getLocalizedPath('/about', locale), label: m.about },
+      ],
+    },
+    {
+      title: m.learn,
+      links: [
+        { href: getLocalizedPath('/guide/ai-automation-latam-2026', locale), label: m.guides },
+        { href: getLocalizedPath('/blog', locale), label: m.blog },
+        { href: getLocalizedPath('/vs/make-vs-n8n', locale), label: m.compare },
+      ],
+    },
+  ];
 
   return (
     <header
@@ -54,9 +77,6 @@ export function HeaderClient({
     >
       <div
         className={`container-page flex items-center justify-between transition-[height] duration-300 motion-reduce:transition-none ${
-          // Condensed h-12 (48px) with h-10 logo (40px) leaves only 4px
-          // padding top+bottom. h-14 (56px) gives 8px each side — less
-          // cramped when the user has actually committed to scrolling.
           condensed ? 'h-14' : 'h-16'
         }`}
       >
@@ -70,28 +90,46 @@ export function HeaderClient({
             alt="Andrés Morales"
             width={196}
             height={94}
-            className="h-10 md:h-11 w-auto"
+            // priority + sizes: Next applies modern formats (AVIF/WebP)
+            // and serves the right size for the viewport, which de-bloats
+            // the colormap PNG and gives a sharper render on hi-dpi.
+            sizes="(max-width: 768px) 120px, 160px"
+            className="h-9 md:h-10 w-auto"
             priority
+            quality={100}
           />
         </Link>
 
         {/* Desktop nav + CTA + locale switcher */}
-        <div className="hidden md:flex items-center gap-4">
-          <nav aria-label="Primary" className="flex items-center gap-6">
-            {MENU.map((m) => (
-              <NavItem
-                key={m.href}
-                href={getLocalizedPath(m.href, locale)}
-                label={dict.nav[m.labelKey]}
-                minBp={m.minBp}
-              />
-            ))}
+        <div className="hidden md:flex items-center gap-5">
+          <nav aria-label="Primary" className="flex items-center gap-5">
+            <Link
+              href={getLocalizedPath('/', locale)}
+              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+            >
+              {dict.nav.home}
+            </Link>
+            <Link
+              href={getLocalizedPath('/services', locale)}
+              className="text-base font-medium tracking-normal text-secondary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
+            >
+              {dict.nav.services}
+            </Link>
+            <MegaMenu
+              trigger={dict.nav.more}
+              sections={megaSections}
+              cta={{
+                href: getLocalizedPath('/brief', locale),
+                label: m.startCta,
+              }}
+            />
           </nav>
+
+          <span className="w-px h-5 bg-theme-9" aria-hidden="true" />
 
           <LocaleSwitcherWrapper
             dict={{ locale: dict.locale }}
             locale={locale}
-            className="ml-1"
           />
 
           <TrackCta
@@ -104,7 +142,7 @@ export function HeaderClient({
           </TrackCta>
         </div>
 
-        {/* Mobile menu drawer */}
+        {/* Mobile menu drawer (still shows the full list) */}
         <MobileMenu dict={dict} locale={locale} />
       </div>
     </header>

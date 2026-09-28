@@ -12,7 +12,19 @@
     "process": "Proceso",
     "about": "Sobre mí",
     "guide": "Guía",
-    "compare": "Comparar"
+    "compare": "Comparar",
+    "more": "Más",
+    "moreSections": {
+      "decide": "Decide",
+      "learn": "Aprende",
+      "work": "Trabajos",
+      "process": "Proceso",
+      "about": "Sobre mí",
+      "guides": "Guías",
+      "blog": "Notas",
+      "compare": "Comparar",
+      "startCta": "Empezar proyecto"
+    }
   },
   "hero": {
     "eyebrow": "Consultor de automatización con IA",
