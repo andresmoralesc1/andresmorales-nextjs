@@ -9,7 +9,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 
 interface LinkItem {
@@ -54,7 +53,14 @@ export function MoreMenu({
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={navigationMenuTriggerStyle()}>
+          {/* Trigger styled as a plain text link, identical to the
+              4 other top-level nav items. navigationMenuTriggerStyle()
+              gives a 'bg-background + hover:bg-accent' pill which is
+              too button-like for a nav-link context. We get the chevron
+              and the open-state rotation for free from the primitive;
+              we override the rest with the same classes the other nav
+              links use. */}
+          <NavigationMenuTrigger className="group inline-flex items-center gap-1.5 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm text-secondary hover:text-accent data-[state=open]:text-accent">
             {trigger}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
