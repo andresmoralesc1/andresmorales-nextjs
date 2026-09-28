@@ -60,7 +60,7 @@ export function MoreMenu({
               and the open-state rotation for free from the primitive;
               we override the rest with the same classes the other nav
               links use. */}
-          <NavigationMenuTrigger className="group inline-flex items-center gap-1.5 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm text-secondary hover:text-accent data-[state=open]:text-accent">
+          <NavigationMenuTrigger className="group link-underline inline-flex items-center gap-1.5 py-1 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm text-secondary hover:text-accent data-[state=open]:text-accent">
             {trigger}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
