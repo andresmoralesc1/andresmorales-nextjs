@@ -1,7 +1,11 @@
 import type { WorkflowLayout, PositionedNode } from '@/lib/workflow-layout';
 
 interface Callout {
-  nodeId: string;
+  // Optional: if set, the callout is annotated with the actual n8n
+  // node name it refers to (e.g. "Loop Over Events"). If absent, the
+  // callout renders as a generic annotation. Used to keep i18n dict
+  // entries simple — not every callout needs a nodeId.
+  nodeId?: string;
   title: string;
   stat: string;
   body: string;
@@ -145,7 +149,7 @@ export function WorkflowCanvas({
           {/* Callouts */}
           <div className="space-y-4">
             {callouts.map((c, i) => {
-              const node = nodeById.get(c.nodeId);
+              const node = c.nodeId ? nodeById.get(c.nodeId) : undefined;
               return (
                 <div
                   key={i}

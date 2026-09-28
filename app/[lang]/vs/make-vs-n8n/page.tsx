@@ -1,11 +1,19 @@
 import type { Metadata } from 'next';
 import { Reveal } from '@/components/reveal';
 import { Cta } from '@/components/sections/cta';
+import { WorkflowCanvas } from '@/components/sections/workflow-canvas';
 import { TrackCta } from '@/components/track';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { layoutWorkflow } from '@/lib/workflow-layout';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
+// Snapshot of one real workflow from the user's n8n instance — committed
+// in content/n8n/featured-workflow.json. If the workflow stops being
+// representative, regenerate via:
+//   docker exec telchar-postgres-1 psql -U neuralflow -d n8n_db -tA -F $'\t' -c "..." > content/n8n/featured-workflow.json
+// See plan: docs/superpowers/plans/2026-09-28-vs-make-vs-n8n-page-redesign.md
+import featuredWorkflow from '@/content/n8n/featured-workflow.json';
 
 const SLUG = 'make-vs-n8n';
 
@@ -50,6 +58,13 @@ export default async function MakeVsN8nPage({
   const faqLocale =
     safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US';
 
+  // Workflow layout computed once per render. The JSON snapshot is
+  // committed to the repo (see content/n8n/featured-workflow.json) so
+  // the page doesn't need network access at build/runtime.
+  // Cast through `any` for the JSON-shape mismatch (n8n nodes are
+  // strictly typed but the JSON is snapshot-typed).
+  const workflow = layoutWorkflow(featuredWorkflow as any);
+
   return (
     <>
       <JsonLd data={faqSchema(faqs, faqLocale)} />
@@ -84,12 +99,25 @@ export default async function MakeVsN8nPage({
             <p className="text-xs uppercase tracking-widest text-text mb-2 font-secondary font-bold">
               TL;DR
             </p>
-            <p className="text-secondary font-heading text-lg md:text-xl leading-relaxed">
+            <p className="text-secondary font-heading text-lg md:text-xl leading-relaxed whitespace-pre-line">
               {c.tldr}
             </p>
           </div>
         </Reveal>
       </section>
+
+      {/* Workflow reality check — real n8n workflow as the page's
+          centerpiece. The data is from content/n8n/featured-workflow.json
+          (a snapshot of the user's actual production workflow). */}
+      <WorkflowCanvas
+        eyebrow={c.workflowCheck.eyebrow}
+        heading={c.workflowCheck.heading}
+        subtitle={c.workflowCheck.subtitle}
+        workflow={workflow}
+        callouts={c.workflowCheck.callouts}
+        caption={c.workflowCheck.caption}
+        captionLabel={c.workflowCheck.captionLabel}
+      />
 
       {/* Comparison table */}
       <section className="section bg-background">
