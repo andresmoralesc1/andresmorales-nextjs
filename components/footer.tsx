@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { getLocalizedPath, type Locale } from '@/lib/i18n';
 import { LocaleSwitcherWrapper } from '@/components/LocaleSwitcherWrapper';
@@ -41,6 +42,24 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
       <div className={`container-page py-16 grid gap-10 relative z-10 ${variant === 'warm' ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
         {/* Column 1: Brand + reach me + tagline */}
         <div>
+          <Link
+            href={getLocalizedPath('/', locale)}
+            aria-label="Andrés Morales — Home"
+            className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-3 rounded-sm"
+          >
+            <Image
+              src="/logo-wp.png"
+              alt="Andrés Morales"
+              width={196}
+              height={94}
+              // logo-wp.png is a dark-on-transparent PNG. Footer bg is
+              // theme-3 (#1E1810) — also dark. `invert` flips the logo
+              // so the brand mark stays visible without baking a second
+              // light-mode file into /public.
+              className="h-10 w-auto invert"
+            />
+          </Link>
+
           <h3 className="font-heading text-xl font-semibold mb-6 text-primary">
             {dict.footer.tagline}
           </h3>

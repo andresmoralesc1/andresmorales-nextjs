@@ -16,14 +16,35 @@ export async function generateMetadata({
   const { lang } = await params;
   const dict = await getCurrentDictionary();
   const m = dict.metadata;
+  const path = lang === 'en' ? '/blog' : `/${lang}/blog`;
+  // Build the OG card with the list path. Without this, Next falls
+  // back to the home card, which is the same image for every blog
+  // list page — boring on social shares, and the title shown on the
+  // card is the home headline instead of the blog section title.
+  const ogImage = `/api/og?lang=${lang}&path=${encodeURIComponent(path)}&title=${encodeURIComponent(m.blogTitle)}`;
   return {
     title: m.blogTitle,
     description: m.blogDescription,
+    openGraph: {
+      title: m.blogTitle,
+      description: m.blogDescription,
+      type: 'website',
+      url: `https://andresmorales.com.co${path}`,
+      siteName: 'Andrés Morales',
+      locale: lang === 'es' ? 'es_CO' : lang === 'pt' ? 'pt_BR' : 'en_US',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: m.blogTitle }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: m.blogTitle,
+      description: m.blogDescription,
+      images: [ogImage],
+    },
     alternates: {
       // EN has no locale prefix (served at /blog), ES/PT add it.
       // Matches the URL the user sees in the address bar so Google
       // doesn't dedupe /blog against /en/blog as duplicate content.
-      canonical: lang === 'en' ? '/blog' : `/${lang}/blog`,
+      canonical: path,
       languages: {
         en: '/blog',
         es: '/es/blog',
