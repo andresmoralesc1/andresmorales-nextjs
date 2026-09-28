@@ -56,9 +56,10 @@ Mobile: SVG stacks above callouts (or callouts as accordion).
    - PT: same shape.
 
 2. **TL;DR opener** (en/es/pt) — prepend a one-line "I use n8n for X, here's why":
-   - EN: "I've shipped 30+ workflows on n8n since 2023 — and only 2 on Make. Here's why."
-   - ES: "Llevo 30+ workflows en n8n desde 2023 — y solo 2 en Make. Por qué."
+   - EN: "I've shipped N workflows on n8n since YYYY — and only M on Make. Here's why."
+   - ES: "Llevo N workflows en n8n desde YYYY — y solo M en Make. Por qué."
    - PT: similar.
+   - **N and M and YYYY come from n8n MCP `list_workflows` (count of active vs archived) and the earliest workflow `createdAt`. Verify at implementation time, don't fabricate.**
 
 3. **New section copy keys** in `dictionaries/*.json`:
    - `compare.makeVsN8n.workflowCheck.eyebrow` = "REALITY CHECK" / "REALIDAD" / "REALIDADE"
@@ -105,7 +106,7 @@ Execution stats (for the stats row): n8n MCP doesn't expose per-workflow executi
 
 ## Cost numbers (for callouts)
 
-Make.com pricing is public:
+Make.com pricing (source: make.com/en/pricing as of 2026-09):
 - $0.0006 per operation on Core ($9/mo)
 - $0.0024 per operation on Pro ($16/mo)
 - $0.008 per operation on Teams ($29/mo)
@@ -113,7 +114,7 @@ Make.com pricing is public:
 n8n self-hosted: infrastructure cost only (~$20-50/mo VPS for the user's likely scale).
 n8n cloud: same per-operation model as Make.
 
-We can compute rough per-workflow cost: `nodes × operations_per_run × executions × make_rate`. We pick conservative numbers and round to "~$0.002/op" — no need to be precise, just concrete.
+We can compute rough per-workflow cost: `nodes × operations_per_run × executions × make_rate`. We pick conservative numbers and round to "~$0.002/op" — no need to be precise, just concrete. **Verify Make.com pricing at implementation time** — prices do change. Add "as of Sep 2026" caveat in the callout to avoid dating the page badly.
 
 ## Out of scope
 
