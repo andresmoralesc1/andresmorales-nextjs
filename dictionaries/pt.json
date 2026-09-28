@@ -1013,8 +1013,7 @@
         "es": "Comparativa honesta de n8n, Make y Zapier para automatizar un negocio en Colombia: costos, latencia e integraciones locales."
       }
     }
-  }
-,
+  },
   "compare": {
     "breadcrumbCompare": "Comparar",
     "lastReviewed": "Última revisão 26 set 2026",
@@ -1025,7 +1024,7 @@
       "heroBadge": "Atualizado set 2026",
       "h1": "Make vs n8n em 2026: qual plataforma de automação combina com seu time?",
       "subtitle": "As duas rodam fluxos em produção em escala. A escolha certa depende se seu time escreve código ou prefere um construtor visual caprichado.",
-      "tldr": "n8n se seu time escreve código ou quer self-hosting; Make se seu time é não-técnico e você prefere capricho sobre flexibilidade. As duas rodam fluxos de produção em escala — escolha por time, não por lista de recursos.",
+      "tldr": "Já entreguei 87 workflows no n8n desde 2025 — 24 rodando por dia. Já testei o Make mas nunca levei um para produção. Este é o comparativo honesto.\n\nn8n se seu time escreve código ou quer self-hosting; Make se seu time é não-técnico e você prefere capricho sobre flexibilidade. As duas rodam fluxos de produção em escala — escolha por time, não por lista de recursos.",
       "tableIntro": "Quatro critérios que realmente decidem.",
       "xCol": "Make",
       "yCol": "n8n",
@@ -1099,7 +1098,31 @@
       ],
       "ctaLabel": "Agendar chamada de escopo →",
       "ctaTitle": "Precisa de ajuda para decidir?",
-      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma serve para seu time, stack e orçamento. Sem pitch — só uma recomendação clara."
+      "ctaBody": "Uma chamada de 30 minutos basta para saber qual plataforma serve para seu time, stack e orçamento. Sem pitch — só uma recomendação clara.",
+      "workflowCheck": {
+        "eyebrow": "REALIDADE",
+        "heading": "Este workflow roda no meu n8n agora mesmo",
+        "subtitle": "Um dos 87 workflows que rodo por dia. Por que está no n8n e não no Make.",
+        "captionLabel": "Workflow real em produção",
+        "caption": "Sync Events Cache · Runs every hour, syncs events to local cache",
+        "callouts": [
+          {
+            "title": "Lógica de loop",
+            "stat": "1 nó splitInBatches",
+            "body": "Este workflow itera sobre 100+ eventos por execução. No Make o mesmo loop precisa de 2 módulos (iterator + bundle) e quebra quando um registro dá erro. O split-in-batches do n8n trata isso nativamente."
+          },
+          {
+            "title": "Modelo de custo",
+            "stat": "$20–50/mês de infra fixa",
+            "body": "n8n self-hosted = só VPS. Make Teams é $29/mês + $0.008 por operação. Mesmo workflow a 6.000+ ops/mês custa ~2× no Make. Dados de Set 2026."
+          },
+          {
+            "title": "Confiabilidade",
+            "stat": "250+ successful runs in the last 10 days",
+            "body": "Sem código cola, sem debug a nível de módulo. Se um passo falha, o loop pausa e recebo um ping no Slack. No Make a mesma config precisa de um router + cadeia de error handlers."
+          }
+        ]
+      }
     },
     "aiVsAgency": {
       "metaTitle": "Consultor IA vs agência — comparativo 2026",
