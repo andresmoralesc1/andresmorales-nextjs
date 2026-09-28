@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 
 import {
   NavigationMenu,
@@ -8,7 +10,6 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 
 interface LinkItem {
@@ -53,16 +54,21 @@ export function MoreMenu({
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          {/* Trigger styled as a plain text link, identical to the
-              4 other top-level nav items. navigationMenuTriggerStyle()
-              gives a 'bg-background + hover:bg-accent' pill which is
-              too button-like for a nav-link context. We get the chevron
-              and the open-state rotation for free from the primitive;
-              we override the rest with the same classes the other nav
-              links use. */}
-          <NavigationMenuTrigger className="group link-underline inline-flex items-center gap-1.5 py-1 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm text-secondary hover:text-accent data-[state=open]:text-accent">
+          {/* Trigger uses the Radix primitive directly instead of the
+              shadcn wrapper because navigationMenuTriggerStyle() ships
+              with bg-background + hover:bg-accent (a filled-pill look)
+              and tailwind-merge can't resolve those when our nav
+              links use no background fill — the conflicting classes
+              were stacking instead of overriding. The primitive
+              renders the chevron + open-state rotation for free, so we
+              only need to add the link-underline + nav-link classes. */}
+          <NavigationMenuPrimitive.Trigger className="group link-underline inline-flex items-center gap-1.5 py-1 text-base font-medium tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm text-secondary hover:text-accent data-[state=open]:text-accent">
             {trigger}
-          </NavigationMenuTrigger>
+            <ChevronDownIcon
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
+              aria-hidden="true"
+            />
+          </NavigationMenuPrimitive.Trigger>
           <NavigationMenuContent>
             <div className="p-4 md:p-5 w-[min(22rem,calc(100vw-2rem))]">
               <div className="mb-3">
