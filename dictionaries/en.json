@@ -1349,5 +1349,8 @@
   "blog": {
     "relatedPosts": "Related notes",
     "updatedOn": "Updated {date}"
+  },
+  "guide": {
+    "keepReading": "Keep reading"
   }
 }

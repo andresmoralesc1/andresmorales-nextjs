@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { join } from 'node:path';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import matter from 'gray-matter';
 import { renderMarkdown } from '@/lib/markdown';
-import { getCurrentDictionary } from '@/lib/dictionary';
-import type { Locale } from '@/lib/i18n';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
+import { type Locale, getLocalizedPath } from '@/lib/i18n';
 import { ArticleHero, type Article } from '@/components/article-hero';
 import { ArticleToc, type TocItem } from '@/components/article-toc';
 import { SeriesNav, type SeriesItem } from '@/components/series-nav';
@@ -12,6 +13,7 @@ import { Cta } from '@/components/sections/cta';
 import { Reveal } from '@/components/reveal';
 import { pageMetadata } from '@/lib/metadata';
 import { LOCALES, isLocale } from '@/lib/i18n';
+import { listGuideSlugsByLocale } from '@/lib/blog';
 import { JsonLd, articleSchema, breadcrumbSchema } from '@/lib/json-ld';
 import styles from './guide-prose.module.css';
 
@@ -108,6 +110,28 @@ export default async function GuidePage({
   const html = renderMarkdown(article.raw.replace(/^---[\s\S]*?---\n/, ''));
   const toc = extractToc(article.raw);
 
+  // Related guides: pick up to 3 OTHER guides in the same locale.
+  // The list comes from the same helper that powers the sitemap, so
+  // guides that exist in the file system always appear in this list.
+  // Title is derived from the slug (kebab-case → Title Case) since
+  // we don't load each guide's frontmatter just to render the link
+  // label — it'd be 3x filesystem reads per page render.
+  const [dict, locale] = await Promise.all([
+    getCurrentDictionary(),
+    getCurrentLocale(),
+  ]);
+  const otherGuides = [...listGuideSlugsByLocale()[safeLang]]
+    .filter((s) => s !== slug)
+    .slice(0, 3);
+  const relatedGuides = otherGuides.map((s) => ({
+    slug: s,
+    href: getLocalizedPath(`/guide/${s}`, locale),
+    title: s
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' '),
+  }));
+
   const articleData: Article = {
     ...article.data,
     byline: article.data.byline ?? 'Andrés Morales',
@@ -188,6 +212,37 @@ export default async function GuidePage({
           </div>
         </section>
       ) : null}
+
+      {/* Cross-link to other guides + the blog — the user just read a
+          long-form guide, the natural next step is another guide
+          (related topic) or the field-notes blog. Uses the same
+          pill-style as /process and /about cross-link sections. */}
+      <section className="section bg-background">
+        <div className="container-page max-w-3xl text-center">
+          <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-4">
+            {dict.guide.keepReading}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {relatedGuides.map((rg) => (
+              <Link
+                key={rg.slug}
+                href={rg.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-theme-9 hover:border-theme-1 rounded-full text-sm font-secondary font-bold text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+              >
+                {rg.title}
+                <span aria-hidden>→</span>
+              </Link>
+            ))}
+            <Link
+              href={getLocalizedPath('/blog', locale)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-theme-9 hover:border-theme-1 rounded-full text-sm font-secondary font-bold text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2"
+            >
+              {dict.nav.blog}
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <Cta />
     </>

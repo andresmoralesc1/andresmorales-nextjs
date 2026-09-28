@@ -1380,5 +1380,8 @@
   "blog": {
     "relatedPosts": "Notas relacionadas",
     "updatedOn": "Actualizado el {date}"
+  },
+  "guide": {
+    "keepReading": "Sigue leyendo"
   }
 }
