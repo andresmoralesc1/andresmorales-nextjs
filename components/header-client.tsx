@@ -116,54 +116,63 @@ export function HeaderClient({
           />
         </Link>
 
-        {/* Desktop nav + CTA + locale switcher */}
-        <div className="hidden md:flex items-center gap-5">
-          <nav aria-label="Primary" className="flex items-center gap-5">
-            <Link
-              href={getLocalizedPath('/', locale)}
-              className={navLinkClass(getLocalizedPath('/', locale))}
-              aria-current={isActive(getLocalizedPath('/', locale)) ? 'page' : undefined}
-            >
-              {dict.nav.home}
-            </Link>
-            <Link
-              href={getLocalizedPath('/services', locale)}
-              className={navLinkClass(getLocalizedPath('/services', locale))}
-              aria-current={isActive(getLocalizedPath('/services', locale)) ? 'page' : undefined}
-            >
-              {dict.nav.services}
-            </Link>
-            <Link
-              href={getLocalizedPath('/portfolio', locale)}
-              className={navLinkClass(getLocalizedPath('/portfolio', locale))}
-              aria-current={isActive(getLocalizedPath('/portfolio', locale)) ? 'page' : undefined}
-            >
-              {dict.nav.portfolio}
-            </Link>
-            <Link
-              href={getLocalizedPath('/about', locale)}
-              className={navLinkClass(getLocalizedPath('/about', locale))}
-              aria-current={isActive(getLocalizedPath('/about', locale)) ? 'page' : undefined}
-            >
-              {dict.nav.about}
-            </Link>
-            <MegaMenu
-              trigger={dict.nav.more}
-              sections={megaSections}
-              cta={{
-                href: getLocalizedPath('/brief', locale),
-                label: m.startCta,
-              }}
-            />
-          </nav>
+        {/* Desktop nav: centered between the logo (left) and the
+            locale+CTA group (right). flex-1 + justify-center makes
+            the nav occupy all available middle space and center its
+            items within. On narrower viewports the layout still works
+            because gap-5 keeps the items breathable when the absolute
+            middle shrinks. */}
+        <nav
+          aria-label="Primary"
+          className="hidden md:flex flex-1 items-center justify-center gap-5"
+        >
+          <Link
+            href={getLocalizedPath('/', locale)}
+            className={navLinkClass(getLocalizedPath('/', locale))}
+            aria-current={isActive(getLocalizedPath('/', locale)) ? 'page' : undefined}
+          >
+            {dict.nav.home}
+          </Link>
+          <Link
+            href={getLocalizedPath('/services', locale)}
+            className={navLinkClass(getLocalizedPath('/services', locale))}
+            aria-current={isActive(getLocalizedPath('/services', locale)) ? 'page' : undefined}
+          >
+            {dict.nav.services}
+          </Link>
+          <Link
+            href={getLocalizedPath('/portfolio', locale)}
+            className={navLinkClass(getLocalizedPath('/portfolio', locale))}
+            aria-current={isActive(getLocalizedPath('/portfolio', locale)) ? 'page' : undefined}
+          >
+            {dict.nav.portfolio}
+          </Link>
+          <Link
+            href={getLocalizedPath('/about', locale)}
+            className={navLinkClass(getLocalizedPath('/about', locale))}
+            aria-current={isActive(getLocalizedPath('/about', locale)) ? 'page' : undefined}
+          >
+            {dict.nav.about}
+          </Link>
+          <MegaMenu
+            trigger={dict.nav.more}
+            sections={megaSections}
+            cta={{
+              href: getLocalizedPath('/brief', locale),
+              label: m.startCta,
+            }}
+          />
+        </nav>
 
+        {/* Locale switcher + CTA — right-aligned. The subtle vertical
+            divider visually separates the navigation from the action
+            area (locale + primary CTA). */}
+        <div className="hidden md:flex items-center gap-3 shrink-0">
           <span className="w-px h-5 bg-theme-9" aria-hidden="true" />
-
           <LocaleSwitcherWrapper
             dict={{ locale: dict.locale }}
             locale={locale}
           />
-
           <TrackCta
             href={getLocalizedPath('/brief', locale)}
             label="header-cta"
