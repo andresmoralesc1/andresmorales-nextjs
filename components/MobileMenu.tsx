@@ -38,12 +38,23 @@ export function MobileMenu({
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
-  // Close on outside click
+  // Close on outside click.
+  // Race-condition fix: the mousedown listener closes the drawer when
+  // the user taps anywhere outside it, INCLUDING the trigger button.
+  // Without this guard, tapping the X (which IS the trigger) would:
+  //   1. mousedown → outside-click handler closes drawer
+  //   2. mouseup
+  //   3. click → button's onClick toggles `open` back to true
+  // Net result: drawer re-opens instantly, user thinks close is broken.
+  // Skip the close if the target is inside the trigger — it owns its
+  // own toggle via onClick.
   useEffect(() => {
     if (!open) return;
     const onMouse = (e: MouseEvent) => {
       const t = e.target as Node | null;
-      if (t && drawerRef.current && !drawerRef.current.contains(t)) {
+      if (!t) return;
+      if (triggerRef.current?.contains(t)) return;
+      if (drawerRef.current && !drawerRef.current.contains(t)) {
         setOpen(false);
       }
     };
