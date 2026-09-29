@@ -10,6 +10,7 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { marked } from 'marked';
+import { addHeadingIds } from '@/lib/slugify';
 
 export type BlogLocale = 'en' | 'es' | 'pt';
 
@@ -199,7 +200,7 @@ function loadPost(slug: string, locale: BlogLocale): BlogPost | null {
   // until Andrés promotes them to `content/blog/<slug>.<lang>.md` (or
   // removes the `draft:` flag from the published location).
   if (meta.draft) return null;
-  const html = marked.parse(body) as string;
+  const html = addHeadingIds(marked.parse(body) as string);
 
   return {
     ...meta,
