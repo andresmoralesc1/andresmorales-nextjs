@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Reveal } from '@/components/reveal';
+import { LazyParticles } from '@/components/lazy-particles';
 import { Cta } from '@/components/sections/cta';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
@@ -62,7 +63,8 @@ export default async function AboutPage({
 
       {/* Hero — full-bleed photo + title overlay */}
       <section className="section bg-background relative overflow-hidden">
-        <div className="container-page max-w-4xl text-center pt-12">
+        <LazyParticles id="about-particles-canvas" variant="soft" />
+        <div className="container-page max-w-4xl text-center pt-12 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary border border-theme-9 text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-4">
             <span className="w-2 h-2 rounded-full bg-green-500" />
             {a.heroBadge}

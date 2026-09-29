@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Reveal } from '@/components/reveal';
 import { Cta } from '@/components/sections/cta';
-import { ParticlesBackground } from '@/components/particles-background';
+import { LazyParticles } from '@/components/lazy-particles';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
@@ -39,7 +39,7 @@ export default async function ProcessPage() {
   return (
     <>
       <section className="section bg-background relative overflow-hidden">
-        <ParticlesBackground id="hero-particles-process" variant="soft" />
+        <LazyParticles id="hero-particles-process" variant="soft" />
         <div className="container-page text-center max-w-3xl relative z-10">
           <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
             {p.heroEyebrow}
