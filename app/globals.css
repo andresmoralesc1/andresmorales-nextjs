@@ -8,6 +8,16 @@
   }
   body {
     @apply bg-background text-secondary font-body antialiased;
+    /* Static dot pattern — SVG data URI inline (0 bytes HTTP, 0 JS).
+       Same orange (theme-1 #f96e03) as the particles in the hero, but
+       fixed (no movement) so it works on every page without a JS
+       budget. Background-attachment-fixed is intentionally NOT
+       used — a static pattern scrolls with the content so it doesn't
+       feel like the page is haunted. Tiled at ~160px squares so the
+       dots are large enough to read but sparse enough to stay
+       subtle. Hidden under most content via z-index stacking. */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><circle cx='80' cy='80' r='1.2' fill='%23f96e03' fill-opacity='0.18'/></svg>");
+    background-repeat: repeat;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
