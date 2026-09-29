@@ -76,7 +76,7 @@ export function MoreMenu({
                 frosted blur; the ring + shadow on top give the panel
                 edge a clear boundary. Width matches the viewport
                 width from the primitive (no override). */}
-            <div className="p-4 md:p-5 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-theme-9 bg-background/80 backdrop-blur-md shadow-lg">
+            <div className="p-4 md:p-5 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-theme-9 bg-background/90 backdrop-blur-md shadow-lg">
               <div className="mb-3">
                 <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold">
                   {learnLabel}
