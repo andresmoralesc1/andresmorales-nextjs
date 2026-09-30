@@ -137,7 +137,10 @@
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "AI consultant vs agency",
     "compareLink3Label": "Vercel vs AWS Amplify",
-    "reachMeCta": "Email me"
+    "reachMeCta": "Email me",
+    "availableBadge": "Available · Q4 2026",
+    "servicesTitle": "Services",
+    "moreTitle": "See more"
   },
   "contact": {
     "eyebrow": "Contact",

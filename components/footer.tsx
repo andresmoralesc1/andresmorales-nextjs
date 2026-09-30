@@ -76,6 +76,14 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
             />
           </Link>
 
+          {/* Available badge — mirrors heroBadge so visitors at the
+              bottom of the page get the same availability signal. Same
+              green pulse for visual consistency. */}
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/15 border border-green-500/40 text-green-300 text-xs uppercase tracking-widest font-secondary font-bold mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse motion-reduce:animate-none" />
+            {dict.footer.availableBadge}
+          </span>
+
           <h3 className="font-heading text-xl font-semibold mb-6 text-primary">
             {dict.footer.tagline}
           </h3>
@@ -137,12 +145,15 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
           </div>
         </div>
 
-        {/* Column 3: Explore (services) — only in default B2B variant.
-            Personal campaigns hide this column to preserve warm tone. */}
+        {/* Column 3: Servicios + Más — split the old 'Explore' into
+            2 sub-groups so the user can scan them separately. Servicios
+            is what I make; Más is everything else worth knowing about.
+            The Brief + Contact CTAs get pulled up under the email block
+            so the conversion path is one tap from the logo. */}
         {variant !== 'warm' && (
           <div>
             <h3 className="font-heading text-lg font-semibold mb-4 text-primary">
-              {dict.footer.explore}
+              {dict.footer.servicesTitle}
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
@@ -165,6 +176,12 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
                   {dict.services.track3}
                 </TrackLink>
               </li>
+            </ul>
+
+            <h3 className="font-heading text-lg font-semibold mb-4 text-primary mt-8">
+              {dict.footer.moreTitle}
+            </h3>
+            <ul className="space-y-2.5 text-sm">
               <li>
                 <TrackLink href={getLocalizedPath('/portfolio', locale)} event="nav_link_clicked" label="footer-portfolio" className="footer-link">
                   {dict.nav.portfolio}
@@ -189,8 +206,11 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
           </div>
         )}
 
-        {/* Column 4: Compare — only in default B2B variant.
-            Personal campaigns hide this column to preserve warm tone. */}
+        {/* Column 4: Comparativas — only in default B2B variant.
+            Personal campaigns hide this column to preserve warm tone.
+            Renamed from 'Compare' to 'Comparativas' so it's clear this
+            column is about side-by-side comparisons (not generic
+            'compare' as in 'contact form'). */}
         {variant !== 'warm' && (
           <div>
             <h3 className="font-heading text-lg font-semibold mb-4 text-primary">

@@ -137,7 +137,10 @@
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "Consultor IA vs agencia",
     "compareLink3Label": "Vercel vs AWS Amplify",
-    "reachMeCta": "Escríbeme"
+    "reachMeCta": "Escríbeme",
+    "availableBadge": "Disponible · Q4 2026",
+    "servicesTitle": "Servicios",
+    "moreTitle": "Ver más"
   },
   "contact": {
     "eyebrow": "Línea 04 · Charlemos",

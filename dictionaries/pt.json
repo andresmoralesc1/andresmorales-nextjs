@@ -137,7 +137,10 @@
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "Consultor IA vs agência",
     "compareLink3Label": "Vercel vs AWS Amplify",
-    "reachMeCta": "Fale comigo"
+    "reachMeCta": "Fale comigo",
+    "availableBadge": "Disponível · Q4 2026",
+    "servicesTitle": "Serviços",
+    "moreTitle": "Ver mais"
   },
   "contact": {
     "eyebrow": "Frente 04 · Vamos conversar",
