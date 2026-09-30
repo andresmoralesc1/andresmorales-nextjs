@@ -97,7 +97,7 @@ export async function Footer({ variant = 'default' }: { variant?: 'default' | 'w
               className="btn-theme"
             >
               <SocialIcon name="email" size="w-4 h-4" />
-              {dict.footer.email}
+              {dict.footer.reachMeCta}
             </a>
           </div>
         </div>

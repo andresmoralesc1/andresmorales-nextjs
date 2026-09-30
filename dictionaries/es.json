@@ -136,7 +136,8 @@
     "compareDesc": "Comparativas de herramientas y servicios",
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "Consultor IA vs agencia",
-    "compareLink3Label": "Vercel vs AWS Amplify"
+    "compareLink3Label": "Vercel vs AWS Amplify",
+    "reachMeCta": "Escríbeme"
   },
   "contact": {
     "eyebrow": "Línea 04 · Charlemos",

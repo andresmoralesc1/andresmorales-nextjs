@@ -136,7 +136,8 @@
     "compareDesc": "Tool and service comparisons",
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "AI consultant vs agency",
-    "compareLink3Label": "Vercel vs AWS Amplify"
+    "compareLink3Label": "Vercel vs AWS Amplify",
+    "reachMeCta": "Email me"
   },
   "contact": {
     "eyebrow": "Contact",
