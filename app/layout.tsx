@@ -149,6 +149,12 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // GA4 measurement ID. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env.local
+  // to override the hardcoded default. The hardcoded fallback keeps
+  // analytics firing on every deploy without needing env-var setup.
+  const GA_MEASUREMENT_ID =
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XF0Q2FGR95';
+
   // Note: locale-dependent UI lives in `app/[lang]/layout.tsx` so it
   // re-renders when the user switches between `/` ↔ `/es` ↔ `/pt`. The
   // root layout in App Router is shared across all routes and does NOT
@@ -321,11 +327,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             traffic numbers without violating GDPR / Colombia's
             Ley 1581/2012. If the env var is unset, the tag is omitted
             entirely — useful when you're only running Umami. */}
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+        {GA_MEASUREMENT_ID && (
           <>
             <Script
               id="ga4-loader"
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
               strategy="lazyOnload"
             />
             <Script
@@ -341,7 +347,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     wait_for_update: 500
                   });
                   gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                  gtag('config', '${GA_MEASUREMENT_ID}', {
                     anonymize_ip: true,
                     send_page_view: true
                   });
