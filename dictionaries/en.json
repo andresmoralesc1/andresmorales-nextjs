@@ -190,7 +190,24 @@
         "q": "Can I see examples of past work?",
         "a": "Yes — see the portfolio page. I also share detailed case studies on the scoping call."
       }
-    ]
+    ],
+    "emailNotification": {
+      "title": "New contact form message",
+      "subtitle": "A short message was submitted from the contact form",
+      "fieldName": "Name",
+      "fieldEmail": "Email",
+      "fieldMessage": "Message",
+      "replyTo": "Reply directly to"
+    },
+    "emailAutoReply": {
+      "subject": "I got your message — reply within 24 business hours",
+      "greeting": "Hi {firstName},",
+      "body1": "Thanks for reaching out. I read every message personally and will reply within one business day with a concrete next step.",
+      "body2": "If your project is time-sensitive (a launch, a missed deadline, an urgent bug), reply to this email and mark it urgent — that jumps the queue.",
+      "signature": "Andrés",
+      "footer": "See current availability or book a 30-min call:",
+      "linkText": "andresmorales.com.co/contact"
+    }
   },
   "brief": {
     "eyebrow": "Project brief",

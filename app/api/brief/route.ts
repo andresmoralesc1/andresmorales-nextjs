@@ -310,6 +310,16 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Anti-spam #3: timing. Bots submit in <1s. Real users take ~30s to fill
+  // a 5-step wizard. Server tracks mounted-at via `_t` field in ms.
+  // Threshold of 1500ms is conservative — drops fast bots without false
+  // positives (matches the threshold used on /api/contact).
+  const t = (body && typeof body === 'object' && (body as Record<string, unknown>)._t) as unknown;
+  if (typeof t === 'number' && t > 0 && t < 1500) {
+    console.warn(`[brief] too-fast submission ip=${ip} _t=${t}ms`);
+    return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
+  }
+
   const result = validatePayload(body);
   // `validatePayload` returns a discriminated union `{ ok: true, data }
   // | { ok: false, error }`. The `result.ok = false` branch must be

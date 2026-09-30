@@ -20,6 +20,7 @@ type FormState = 'idle' | 'loading' | 'success' | 'error';
 
 export function ContactFormClient({
   dict,
+  lang,
   // Server-rendered form labels (from the parent server component).
   nameLabel,
   emailLabel,
@@ -28,6 +29,9 @@ export function ContactFormClient({
   messageHelp,
 }: {
   dict: FormDict;
+  // Locale the form was rendered in. Sent to the API so the
+  // notification + auto-reply emails match the user's language.
+  lang: string;
   nameLabel: string;
   emailLabel: string;
   messageLabel: string;
@@ -52,7 +56,10 @@ export function ContactFormClient({
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, _t: Date.now() - mountedAt }),
+        // `lang` tells the API route which dictionary to use for the
+        // email templates (notification + auto-reply). Defaults to the
+        // locale the form was rendered in.
+        body: JSON.stringify({ ...form, _t: Date.now() - mountedAt, lang }),
       });
 
       if (!res.ok) {

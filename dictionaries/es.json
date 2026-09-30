@@ -194,7 +194,24 @@
         "q": "¿Firmas NDAs antes de la primera llamada?",
         "a": "Sí, los NDAs mutuos son comunes para proyectos que tocan datos propietarios o lógica de negocio. Podemos firmar uno antes de la llamada para que la conversación no esté limitada por confidencialidad."
       }
-    ]
+    ],
+    "emailNotification": {
+      "title": "Nuevo mensaje del formulario de contacto",
+      "subtitle": "Se envió un mensaje corto desde el formulario de contacto",
+      "fieldName": "Nombre",
+      "fieldEmail": "Email",
+      "fieldMessage": "Mensaje",
+      "replyTo": "Responde directamente a"
+    },
+    "emailAutoReply": {
+      "subject": "Recibí tu mensaje — respondo en menos de 24h hábiles",
+      "greeting": "Hola {firstName},",
+      "body1": "Gracias por escribir. Leo cada mensaje personalmente y respondo en menos de un día hábil con un siguiente paso concreto.",
+      "body2": "Si tu proyecto tiene urgencia (un lanzamiento, una fecha límite cercana, un bug crítico), responde este email y márcalo como urgente — salta la cola.",
+      "signature": "Andrés",
+      "footer": "Revisa mi disponibilidad o agenda una llamada de 30 min:",
+      "linkText": "andresmorales.com.co/es/contact"
+    }
   },
   "brief": {
     "metaTitle": "Brief de proyecto — Cuéntame qué construir",

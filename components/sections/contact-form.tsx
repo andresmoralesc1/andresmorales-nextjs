@@ -1,13 +1,16 @@
-import { getCurrentDictionary } from '@/lib/dictionary';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { ContactFormClient } from '@/components/sections/contact-form.client';
 
 // Server wrapper around the client `ContactFormClient`. Resolves the
 // dictionary server-side so the form labels and help text translate
-// based on the URL locale prefix.
+// based on the URL locale prefix. `lang` is plumbed through so the
+// API route can pick the right dictionary for the notification +
+// auto-reply emails (matching the form's render locale).
 export async function ContactForm() {
-  const d = await getCurrentDictionary();
+  const [d, lang] = await Promise.all([getCurrentDictionary(), getCurrentLocale()]);
   return (
     <ContactFormClient
+      lang={lang}
       nameLabel={d.contact.formNameLabel}
       emailLabel={d.contact.formEmailLabel}
       messageLabel={d.contact.formMessageLabel}

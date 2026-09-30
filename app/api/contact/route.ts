@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
+import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
 // 5 contact messages / hour / IP. Generous than /api/brief because the
@@ -17,6 +18,7 @@ const MAX_BODY_BYTES = 2 * 1024;
 // Docs: https://developers.brevo.com/reference/sendtransacemail
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL || process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
+const TO_NAME = process.env.BREVO_TO_NAME || 'Andrés Morales';
 const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
 const FROM_NAME = process.env.CONTACT_FROM_NAME || process.env.BRIEF_FROM_NAME || 'Andrés Morales · Portfolio Contact';
 
@@ -24,6 +26,7 @@ type ContactPayload = {
   name: string;
   email: string;
   message: string;
+  lang?: string;
 };
 
 function escapeHtml(s: string): string {
@@ -35,37 +38,43 @@ function escapeHtml(s: string): string {
     .replace(/'/g, '&#39;');
 }
 
-function renderEmailHtml(p: ContactPayload): string {
-  // Reuse the same visual style as the brief email for inbox consistency.
+function renderEmailHtml(p: ContactPayload, dict: Dictionary): string {
+  const n = dict.contact.emailNotification;
+  const subtitle = n.subtitle.replace('{name}', p.name).replace('{email}', p.email);
+  const replyTo = n.replyTo.replace('{email}', p.email);
   return `
-    <div style="font-family:Roboto,Arial,sans-serif;max-width:680px;margin:0 auto;">
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
       <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">New Contact Form Message</h1>
-        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">From ${escapeHtml(p.name)} — ${escapeHtml(p.email)}</p>
+        <h1 style="margin:0;font-size:22px;">${escapeHtml(n.title)}</h1>
+        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">${escapeHtml(subtitle)}</p>
       </div>
       <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">Name</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(p.name)}</td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">Email</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;"><a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a></td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">Message</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;white-space:pre-wrap;">${escapeHtml(p.message)}</td></tr>
+        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">${escapeHtml(n.fieldName)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(p.name)}</td></tr>
+        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">${escapeHtml(n.fieldEmail)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;"><a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a></td></tr>
+        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">${escapeHtml(n.fieldMessage)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;white-space:pre-wrap;">${escapeHtml(p.message)}</td></tr>
       </table>
       <p style="margin-top:24px;font-size:13px;color:#575250;">
-        Reply directly to <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
+        ${escapeHtml(replyTo)} <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
       </p>
     </div>
   `;
 }
 
-function renderEmailText(p: ContactPayload): string {
-  return [
-    `NEW CONTACT FORM MESSAGE`,
-    `========================`,
+function renderEmailText(p: ContactPayload, dict: Dictionary): string {
+  const n = dict.contact.emailNotification;
+  const upper = (s: string) => s.toUpperCase();
+  const sep = (label: string) => `${upper(label)}\n${'-'.repeat(label.length)}`;
+  const lines = [
+    sep(n.title),
+    '='.repeat(n.title.length),
     ``,
-    `From:  ${p.name} <${p.email}>`,
+    `${n.fieldName}: ${p.name}`,
+    `${n.fieldEmail}: ${p.email}`,
     ``,
-    `MESSAGE`,
-    `-------`,
+    sep(n.fieldMessage),
     p.message,
-  ].join('\n');
+  ];
+  return lines.join('\n');
 }
 
 function validatePayload(body: unknown): { ok: true; data: ContactPayload } | { ok: false; error: string } {
@@ -83,24 +92,30 @@ function validatePayload(body: unknown): { ok: true; data: ContactPayload } | { 
     return { ok: false, error: 'Invalid email' };
   }
 
+  // `lang` is optional. Whitelisted via isLocale (same as /api/brief);
+  // undefined if missing so the route falls back to DEFAULT_LOCALE.
+  const langRaw = b.lang;
+  const lang = typeof langRaw === 'string' && isLocale(langRaw) ? langRaw : undefined;
+
   return {
     ok: true,
     data: {
       name: String(b.name).trim().slice(0, 200),
       email: String(b.email).trim().slice(0, 200),
       message: String(b.message).trim().slice(0, 4000),
+      lang,
     },
   };
 }
 
-async function sendViaBrevo(data: ContactPayload): Promise<{ ok: boolean; error?: string; status?: number }> {
+async function sendViaBrevo(data: ContactPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string; status?: number }> {
   const payload = {
     sender: { name: FROM_NAME, email: FROM_EMAIL },
-    to: [{ email: TO_EMAIL, name: 'Andrés' }],
+    to: [{ email: TO_EMAIL, name: TO_NAME }],
     replyTo: { email: data.email, name: data.name },
-    subject: `Contact: ${data.name}`,
-    htmlContent: renderEmailHtml(data),
-    textContent: renderEmailText(data),
+    subject: `${dict.contact.emailNotification.title}: ${data.name}`,
+    htmlContent: renderEmailHtml(data, dict),
+    textContent: renderEmailText(data, dict),
   };
 
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -125,9 +140,69 @@ async function sendViaBrevo(data: ContactPayload): Promise<{ ok: boolean; error?
   return { ok: false, status: res.status, error: JSON.stringify(body) };
 }
 
+// Auto-reply mirrors the pattern in /api/brief/route.ts. Same Brevo
+// endpoint, parallel route. Localized via dict.contact.emailAutoReply.
+async function sendAutoReply(p: ContactPayload, dict: Dictionary, lang: string): Promise<void> {
+  const ar = dict.contact.emailAutoReply;
+  const firstName = p.name.split(' ')[0] || p.name;
+  const greeting = ar.greeting.replace('{firstName}', escapeHtml(firstName));
+  const subject = ar.subject.replace('{firstName}', firstName);
+  const linkUrl = lang === 'en'
+    ? 'https://andresmorales.com.co/contact'
+    : `https://andresmorales.com.co/${lang}/contact`;
+
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
+      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
+        <h1 style="margin:0;font-size:22px;">${greeting}</h1>
+      </div>
+      <div style="padding:24px 32px;color:#575250;line-height:1.6;">
+        <p>${escapeHtml(ar.body1)}</p>
+        <p>${escapeHtml(ar.body2)}</p>
+        <p style="margin-top:32px;">${escapeHtml(ar.signature)}</p>
+        <p style="font-size:13px;color:#999;margin-top:24px;">
+          ${escapeHtml(ar.footer)} <a href="${linkUrl}" style="color:#f96e03;">${escapeHtml(ar.linkText)}</a>.
+        </p>
+      </div>
+    </div>
+  `;
+  const text = `${ar.greeting.replace('{firstName}', firstName)}
+
+${ar.body1}
+
+${ar.body2}
+
+${ar.signature}
+
+---
+${ar.footer} ${linkUrl}.`;
+
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': BREVO_API_KEY,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: FROM_NAME, email: FROM_EMAIL },
+      to: [{ email: p.email, name: p.name }],
+      replyTo: { email: FROM_EMAIL, name: TO_NAME },
+      subject,
+      htmlContent: html,
+      textContent: text,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Brevo auto-reply failed: ${res.status} ${body}`);
+  }
+}
+
 export async function POST(req: NextRequest) {
   // Drop oversized payloads before parsing. 2 KB is the contact form's
-  // realistic ceiling — anything larger is abuse.
+  // realistic ceiling — anything larger is almost certainly abuse.
   const tooBig = enforceBodySize(req, MAX_BODY_BYTES);
   if (tooBig) return tooBig;
 
@@ -186,7 +261,12 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const sendResult = await sendViaBrevo(data);
+    // Resolve the locale for email templates. If the contact was submitted
+    // without `lang` (e.g. hand-crafted curl), fall back to DEFAULT_LOCALE.
+    const lang = data.lang ?? DEFAULT_LOCALE;
+    const dict = await getDictionary(lang);
+
+    const sendResult = await sendViaBrevo(data, dict);
     if (!sendResult.ok) {
       console.error('[contact] Brevo error:', sendResult.status, sendResult.error);
       return NextResponse.json(
@@ -194,6 +274,13 @@ export async function POST(req: NextRequest) {
         { status: 502 }
       );
     }
+
+    // Fire-and-forget auto-reply to the user. Failure here does NOT
+    // affect the contact send — already logged + replied in the inbox.
+    // Same non-blocking pattern as /api/brief.
+    sendAutoReply(data, dict, lang).catch((err) => {
+      console.warn('[contact] auto-reply failed (non-fatal):', err);
+    });
 
     return NextResponse.json({ ok: true, emailSent: true });
   } catch (err) {

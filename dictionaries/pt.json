@@ -194,7 +194,24 @@
         "q": "Você assina NDAs antes da primeira chamada?",
         "a": "Sim, NDAs mútuos são comuns em projetos que envolvem dados proprietários ou lógica de negócio. Podemos assinar um antes da chamada para a conversa não ficar limitada por confidencialidade."
       }
-    ]
+    ],
+    "emailNotification": {
+      "title": "Nova mensagem do formulário de contato",
+      "subtitle": "Uma mensagem curta foi enviada pelo formulário de contato",
+      "fieldName": "Nome",
+      "fieldEmail": "E-mail",
+      "fieldMessage": "Mensagem",
+      "replyTo": "Responda diretamente a"
+    },
+    "emailAutoReply": {
+      "subject": "Recebi sua mensagem — respondo em até 24h úteis",
+      "greeting": "Oi {firstName},",
+      "body1": "Obrigado por entrar em contato. Leio cada mensagem pessoalmente e respondo em até um dia útil com um próximo passo concreto.",
+      "body2": "Se o seu projeto for urgente (um lançamento, um prazo apertado, um bug crítico), responda este e-mail e marque como urgente — isso pula a fila.",
+      "signature": "Andrés",
+      "footer": "Veja minha disponibilidade ou agende uma call de 30 min:",
+      "linkText": "andresmorales.com.co/pt/contact"
+    }
   },
   "brief": {
     "metaTitle": "Brief de projeto — Conte-me o que construir",

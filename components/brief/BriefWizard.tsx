@@ -148,6 +148,14 @@ export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Lo
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  // Mount-time for the bot-timing check on /api/brief (server rejects
+  // submissions faster than 1500ms). Mirrors the pattern in
+  // contact-form.client.tsx.
+  const [mountedAt, setMountedAt] = useState(0);
+
+  useEffect(() => {
+    setMountedAt(Date.now());
+  }, []);
 
   // Hydrate from localStorage once on mount
   useEffect(() => {
@@ -198,8 +206,9 @@ export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Lo
         headers: { 'Content-Type': 'application/json' },
         // `lang` tells the API route which dictionary to use for the email
         // templates (notification + auto-reply). Defaults to the locale the
-        // form was rendered in.
-        body: JSON.stringify({ ...data, lang }),
+        // form was rendered in. `_t` (ms since mount) is the bot-timing
+        // signal the route uses to reject sub-1500ms submissions.
+        body: JSON.stringify({ ...data, lang, _t: Date.now() - mountedAt }),
       });
       const json: unknown = await res.json().catch(() => null);
       if (!res.ok) {
