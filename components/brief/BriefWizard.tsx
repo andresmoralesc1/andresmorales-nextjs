@@ -140,7 +140,15 @@ function isStepValid(step: number, d: BriefData): boolean {
   }
 }
 
-export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Locale }) {
+export default function BriefWizard({
+  dict,
+  lang,
+  onBackToHub,
+}: {
+  dict: Dictionary;
+  lang: Locale;
+  onBackToHub?: () => void;
+}) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<BriefData>(INITIAL);
@@ -290,10 +298,21 @@ export default function BriefWizard({ dict, lang }: { dict: Dictionary; lang: Lo
     <div className="rounded-2xl bg-primary border border-theme-9 shadow-sm overflow-hidden">
       {/* Progress bar */}
       <div className="px-6 pt-6 pb-4 border-b border-theme-9 bg-background">
-        <div className="flex items-center justify-between mb-3 text-sm">
-          <span className="font-secondary uppercase tracking-wider text-secondary">
-            {wizardStep}
-          </span>
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3 text-sm">
+          <div className="flex items-center gap-3">
+            {onBackToHub && (
+              <button
+                type="button"
+                onClick={onBackToHub}
+                className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-secondary font-bold text-secondary/70 hover:text-accent transition-colors py-1 px-2.5 rounded-lg bg-theme-5/50 border border-theme-9"
+              >
+                <span>←</span> {dict.briefHub?.changePath || 'Cambiar tipo de proyecto'}
+              </button>
+            )}
+            <span className="font-secondary uppercase tracking-wider text-secondary">
+              {wizardStep}
+            </span>
+          </div>
           <span className="font-secondary uppercase tracking-wider text-text">
             {stepLabels[step]}
           </span>
@@ -503,23 +522,34 @@ function RadioGroup<V extends string>(props: {
             <label
               key={opt.value}
               htmlFor={id}
-              className={`p-4 min-h-[44px] rounded-lg border-2 cursor-pointer transition-all text-sm font-medium flex items-center gap-2 ${
+              className={`p-3.5 sm:p-4 min-h-[48px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-sm font-medium flex items-center justify-between gap-3 ${
                 selected
-                  ? 'border-theme-1 bg-theme-1 text-secondary'
-                  : 'border-theme-9 bg-primary text-text hover:border-theme-1/40'
+                  ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.01]'
+                  : 'border-theme-9 bg-primary text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary'
               }`}
             >
-              <input
-                type="radio"
-                id={id}
-                name={name}
-                value={opt.value}
-                checked={selected}
-                onChange={() => onChange(opt.value)}
-                className="sr-only"
-              />
-              {opt.icon && <span aria-hidden="true">{opt.icon}</span>}
-              <span>{opt.label}</span>
+              <div className="flex items-center gap-2.5">
+                <input
+                  type="radio"
+                  id={id}
+                  name={name}
+                  value={opt.value}
+                  checked={selected}
+                  onChange={() => onChange(opt.value)}
+                  className="sr-only"
+                />
+                {opt.icon && <span className="text-base" aria-hidden="true">{opt.icon}</span>}
+                <span>{opt.label}</span>
+              </div>
+              <span
+                className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] flex-none transition-colors ${
+                  selected
+                    ? 'border-theme-1 bg-theme-1 text-secondary font-bold'
+                    : 'border-theme-9 bg-background'
+                }`}
+              >
+                {selected && '✓'}
+              </span>
             </label>
           );
         })}
@@ -707,10 +737,10 @@ function Step3({
               <label
                 key={tool}
                 htmlFor={id}
-                className={`px-3 py-1.5 rounded-full text-sm border cursor-pointer transition-colors ${
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm border cursor-pointer transition-all duration-200 inline-flex items-center gap-1.5 ${
                   selected
-                    ? 'border-theme-1 bg-theme-1 text-secondary'
-                    : 'border-theme-9 text-text hover:border-theme-1/40 bg-primary'
+                    ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.02]'
+                    : 'border-theme-9 text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary bg-primary'
                 }`}
               >
                 <input
@@ -722,7 +752,10 @@ function Step3({
                   onChange={() => toggleTool(tool)}
                   className="sr-only"
                 />
-                {tool}
+                <span className={selected ? 'text-theme-1 font-bold' : 'text-secondary/40'}>
+                  {selected ? '✓' : '+'}
+                </span>
+                <span>{tool}</span>
               </label>
             );
           })}

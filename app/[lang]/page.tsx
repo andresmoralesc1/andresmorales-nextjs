@@ -2,8 +2,8 @@ import { Hero } from '@/components/sections/hero';
 import { About } from '@/components/sections/about';
 import { ServicesIcons } from '@/components/sections/services-icons';
 import { Skills } from '@/components/sections/skills';
-import { Cta } from '@/components/sections/cta';
 import { Experience } from '@/components/sections/experience';
+import { RecentWork } from '@/components/sections/recent-work';
 import { HomeContact } from '@/components/sections/home-contact';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
@@ -38,9 +38,8 @@ export default async function HomePage() {
       <About />
       <ServicesIcons />
       <Skills />
-      <Cta />
       <Experience />
-
+      <RecentWork />
       <HomeContact />
     </>
   );

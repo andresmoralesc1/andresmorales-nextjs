@@ -35,6 +35,17 @@ type AnalyticsEvent =
   | 'brief_submitted'
   | 'brief_submit_error'
   | 'brief_draft_cleared'
+  // Brief web funnel
+  | 'brief_web_mode_selected'
+  | 'brief_web_started'
+  | 'brief_web_step_advanced'
+  | 'brief_web_step_back'
+  | 'brief_web_submitted'
+  | 'brief_web_submit_error'
+  | 'brief_web_draft_cleared'
+  // Brief hub funnel
+  | 'brief_hub_path_selected'
+  | 'brief_hub_path_changed'
   // Marketing site conversions
   | 'cta_clicked'           // any "Book a call" / "Start Project" / "Hire me"
   | 'contact_form_viewed'   // user opened the contact form
@@ -45,7 +56,13 @@ type AnalyticsEvent =
   | 'blog_post_clicked'     // clicked from the blog index
   | 'blog_external_link_clicked' // clicked outbound link inside a post
   | 'locale_switched'       // user changed language
-  | 'nav_link_clicked';     // any nav/footer link with the path as prop
+  | 'nav_link_clicked'     // any nav/footer link with the path as prop
+  // Proposals
+  | 'proposal_hero_interacted'
+  | 'proposal_plan_selected'
+  | 'proposal_whatsapp_clicked'
+  | 'proposal_brief_clicked'
+  | 'proposal_roi_calculated';
 
 type Detail = Record<string, string | number | boolean | undefined>;
 

@@ -16,6 +16,10 @@ export async function ContactForm() {
       messageLabel={d.contact.formMessageLabel}
       messagePlaceholder={d.contact.formMessagePlaceholder}
       messageHelp={d.contact.formMessageHelp}
+      consentLabel={d.contact.formConsentLabel}
+      consentPrivacyLink={d.contact.formConsentPrivacy}
+      consentError={d.contact.formConsentError}
+      privacyPath={lang === 'en' ? '/privacy' : `/${lang}/privacy`}
       dict={{
         honeypotLabel: d.contactForm.honeypotLabel,
         submit: d.contactForm.submit,

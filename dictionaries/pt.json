@@ -14,6 +14,7 @@
     "guide": "Guia",
     "compare": "Comparar",
     "more": "Mais",
+    "logoAriaLabel": "Andrés Morales — Início",
     "moreSections": {
       "decide": "Decide",
       "learn": "Aprenda",
@@ -107,6 +108,13 @@
     "track3": "Desenvolvimento web",
     "ctaSeeAll": "Ver todos os serviços"
   },
+  "homeRecent": {
+    "eyebrow": "Trabalhos recentes",
+    "title": "Três sites lançados em 2026.",
+    "subtitle": "Uma amostra dos projetos em produção — casos completos no portfólio.",
+    "viewAll": "Ver os 12 projetos →",
+    "liveBadge": "No ar"
+  },
   "homeContact": {
     "eyebrow": "Da Colômbia, atendendo o mundo.",
     "title": "Vamos conversar",
@@ -131,9 +139,21 @@
     "builtWith": "Feito com {heart} em Next.js",
     "githubLabel": "Perfil no GitHub",
     "linkedinLabel": "Perfil no LinkedIn",
+    "instagramLabel": "Perfil no Instagram",
+    "facebookLabel": "Página no Facebook",
+    "whatsappLabel": "Conversa no WhatsApp",
     "ariaNavLabel": "Navegação do rodapé",
     "compareTitle": "Comparar",
     "compareDesc": "Comparativos de ferramentas e serviços",
+    "legalTitle": "Legal",
+    "legalEntityLabel": "Andrés Morales — AI Consulting",
+    "legalAddressLabel": "Constituída em",
+    "legalAddressCity": "Bogotá, D.C.",
+    "legalAddressCountry": "Colômbia",
+    "legalEmailLabel": "Contato",
+    "legalControllerLabel": "Controlador de dados",
+    "policyColumnTitle": "Políticas",
+    "dataProtectionLabel": "Proteção de dados",
     "compareLink1Label": "Make vs n8n",
     "compareLink2Label": "Consultor IA vs agência",
     "compareLink3Label": "Vercel vs AWS Amplify",
@@ -168,6 +188,9 @@
     "formMessageHelp": "Geralmente respondo em menos de 24 h. Se preferir falar, do lado direito dá pra agendar uma chamada de 30 min →",
     "formSubmit": "Enviar mensagem",
     "formSubmitting": "Enviando…",
+    "formConsentLabel": "Aceito ser contatado sobre minha mensagem e li a {privacy}.",
+    "formConsentPrivacy": "Política de Privacidade",
+    "formConsentError": "Confirme que leu a política de privacidade antes de enviar.",
     "formSuccessTitle": "✓ Mensagem enviada",
     "formSuccessBody": "Valeu por entrar em contato. Geralmente respondo em menos de 24 horas.",
     "formSuccessRetry": "Enviar outra mensagem →",
@@ -419,28 +442,28 @@
     "eyebrow": "O que eu faço",
     "title": "O que eu faço",
     "subtitle": "Analiso as necessidades do seu negócio, identifico onde dá pra automatizar e desenho sistemas inteligentes que te ajudam a escalar com eficiência — da ideia à execução.",
-    "salesTitle": "Vendas",
-    "salesDesc": "Quem vem de vendas sabe: receita é o oxigênio do negócio. Uso minha comunicação afiada e a capacidade de construir relacionamento pra ajudar empresas a bater meta — com IA ou sem ela.",
     "aiTitle": "Automação com IA",
     "aiDesc": "Eu não construo só automação — eu desenho experiências inteligentes que guiam o usuário, resolvem problemas e escalam por conta própria. Você trabalha menos, aproveita mais.",
-    "uiTitle": "Analista de UI/UX",
-    "uiDesc": "Como designer UI/UX, entendo que uma boa interface não é só bonita — é convincente. Meu foco é prender a atenção e, ao mesmo tempo, passar a mensagem certa com clareza."
+    "uiTitle": "Design UI/UX",
+    "uiDesc": "Desenho interfaces claras, rápidas e fáceis de usar. O objetivo não é só ficar bonito — é tornar o próximo passo óbvio pra que as pessoas realmente convertam.",
+    "webTitle": "Web com IA",
+    "webDesc": "Apps web e dashboards de produção entregues com IA integrada — não colada depois. Next.js + TypeScript + seus dados, deploy em Vercel ou na sua própria infra."
   },
   "homeSkills": {
     "eyebrow": "Habilidades",
     "title": "Onde meu tempo foi investido",
-    "subtitle": "Ao longo da última década — e onde estou investindo agora. Cada barra mostra a experiência relativa nas ferramentas que uso no dia a dia.",
+    "subtitle": "Stack AI-first — as ferramentas que uso no dia a dia pra entregar automações, agentes e web de produção.",
     "liveBadge": "Dados ao vivo — atualizados esta semana",
-    "sales": "Vendas",
-    "webDesigner": "Web designer",
-    "uxAnalyst": "Analista de UX",
-    "wordpress": "WordPress",
+    "n8n": "n8n",
     "aiAgents": "Agentes de IA",
-    "aiAutomations": "Automações com IA",
-    "customerService": "Atendimento ao cliente",
-    "prospecting": "Prospecção",
-    "digitalMarketing": "Marketing digital",
-    "photoshop": "Photoshop"
+    "llmApis": "OpenAI / Anthropic",
+    "make": "Make",
+    "nextReact": "Next.js / React",
+    "typescript": "TypeScript",
+    "vercelCloudflare": "Vercel / Cloudflare",
+    "postgresPrisma": "PostgreSQL / Prisma",
+    "python": "Python",
+    "dockerInfra": "Docker + Caddy"
   },
   "homeCta": {
     "title": "Vamos destravar seu potencial",
@@ -864,7 +887,7 @@
       "whyTitle": "Por que os recolho",
       "whyBody": "Para responder sua mensagem, entregar o trabalho que acordamos, evitar spam e abuso, e entender quais páginas são úteis. Nunca vendo seus dados. Nunca os compartilho com terceiros para marketing.",
       "thirdPartiesTitle": "Serviços de terceiros",
-      "thirdPartiesBody": "Os envios do formulário de contato são enviados por email via Brevo (email transacional, hospedado na UE). Os briefs também criam uma tarefa no ClickUp (gestão de projetos, hospedado nos EUA). Ambos os processadores têm acordos de tratamento de dados. O Plausible Analytics é cookieless e auto-hospedado na UE.",
+      "thirdPartiesBody": "Os envios do formulário de contato e as solicitações de apagamento são entregues via Mailcow (email auto-hospedado em mail.cleida.com.co, co-localizado com o cluster de e-mail de cleida.com.co). Os briefs também criam uma tarefa no ClickUp (gestão de projetos, hospedado nos EUA). Ambos os processadores têm acordos de tratamento de dados. O Plausible Analytics é cookieless e auto-hospedado na UE. O Google Analytics 4 é opt-in e só carrega depois que você aceitar o banner de cookies — o IP é anonimizado antes do armazenamento.",
       "retentionTitle": "Por quanto tempo os guardo",
       "retentionBody": "Os envios ficam na minha caixa de entrada até o projeto terminar e ser faturado, depois são arquivados para registros fiscais. Você pode pedir para deletá-los antes.",
       "rightsTitle": "Seus direitos",
@@ -897,7 +920,136 @@
     },
     "footerLinks": {
       "privacy": "Privacidade",
-      "terms": "Termos"
+      "terms": "Termos",
+      "refund": "Reembolsos",
+      "cookies": "Cookies",
+      "deleteData": "Apagar meus dados"
+    },
+    "refund": {
+      "metaTitle": "Política de reembolso — Andrés Morales",
+      "metaDescription": "Quando entradas, marcos e horas pré-pagas são reembolsáveis em engagements de andresmorales.com.co.",
+      "h1": "Política de Reembolso",
+      "lastUpdated": "Última atualização: outubro 2026",
+      "intro": "Resumo em linguagem clara de quando você pode receber seu dinheiro de volta. Engagements são a preço fixo, então reembolsos se aplicam a situações específicas — não a 'mudei de ideia' depois do trabalho começar.",
+      "depositsTitle": "Entradas",
+      "depositsBody": "Uma entrada reserva um espaço na minha agenda e bloqueia tempo pro seu projeto. É reembolsável integralmente se eu não comecei a trabalhar e você cancelar em até 7 dias corridos do pagamento. Depois do trabalho começar, a entrada não é reembolsável.",
+      "milestonesTitle": "Pagamentos por marcos",
+      "milestonesBody": "Cada marco está amarrado a um entregável por escrito no seu brief. Se você cancelar antes do marco começar, ele é reembolsável. Uma vez iniciado, o trabalho não é reembolsável.",
+      "unusedHoursTitle": "Horas pré-pagas não usadas",
+      "unusedHoursBody": "Horas pré-pagas não usadas expiram 12 meses após a compra. Nos primeiros 30 dias são reembolsáveis integralmente, descontada uma taxa de 5% do processador de pagamento.",
+      "disputesTitle": "Disputas e estornos",
+      "disputesBody": "Se você tem uma preocupação, escreva primeiro para info@andresmorales.com.co — respondo em 5 dias úteis e a maioria se resolve sem escalar. Abrir um estorno sem me contatar antes é violação destes termos e pode encerrar o engagement.",
+      "howTitle": "Como pedir reembolso",
+      "howBody": "Escreva para info@andresmorales.com.co com o número da fatura e o motivo. Respondo em 5 dias úteis. Reembolsos aprovados são feitos no método de pagamento original em 10 dias úteis."
+    },
+    "cookies": {
+      "metaTitle": "Política de cookies — andresmorales.com.co",
+      "metaDescription": "Quais cookies e tecnologias similares o andresmorales.com.co usa, por que e como controlar.",
+      "h1": "Política de Cookies",
+      "lastUpdated": "Última atualização: outubro 2026",
+      "intro": "Esta página lista cada cookie e tecnologia similar usada em andresmorales.com.co, o que faz, quem define e por quanto tempo fica. Resumo: o site funciona sem cookies; só analytics e suas preferências usam, e só depois do seu consentimento.",
+      "whatTitle": "O que são cookies",
+      "whatBody": "Cookies são pequenos arquivos de texto que seu navegador guarda no dispositivo. 'Tecnologias similares' inclui localStorage, sessionStorage, IndexedDB e pixels. Podem ser definidos pelo site que você visita (primeira parte) ou por um terceiro cujo código roda no site.",
+      "essentialTitle": "Cookies estritamente necessárias",
+      "essentialBody": "São obrigatórias pro site funcionar e não podem ser desativadas. Incluem a preferência de idioma (pro site saber qual idioma mostrar) e um token CSRF no envio de formulários. Não são guardados dados pessoais — só um identificador de sessão.",
+      "analyticsTitle": "Cookies de analytics",
+      "analyticsBody": "Se você der consentimento, o Google Analytics 4 (GA4) define cookies para distinguir visitantes únicos e sessões. Endereços IP são anonimizados antes do armazenamento. Você pode recusar cookies de analytics e o site continua funcionando normal.",
+      "preferencesTitle": "Cookies de preferências",
+      "preferencesBody": "Se você aceitar, sua escolha no banner de cookies fica em localStorage (não é um cookie) pra não perguntar de novo a cada visita. Guarda por 12 meses, depois pergunta de novo.",
+      "thirdPartyTitle": "Cookies de terceiros",
+      "thirdPartyBody": "Nenhuma é definida por padrão. Se você carregar um vídeo embarcado do YouTube ou Vimeo nas páginas de case studies, o provedor do embed pode definir seus próprios cookies — controlados pela política de privacidade deles, não nossa.",
+      "manageTitle": "Como gerenciar cookies",
+      "manageBody": "Use o banner de cookies na sua primeira visita pra conceder ou recusar consentimento. Pra mudar de ideia depois, limpe o armazenamento do navegador pra andresmorales.com.co e o banner reaparece. Você pode bloquear ou apagar cookies nas configurações do navegador; bloquear as estritamente necessárias quebra o envio de formulários.",
+      "contactTitle": "Perguntas",
+      "contactBody": "Escreva para info@andresmorales.com.co."
+    },
+    "deleteMyData": {
+      "metaTitle": "Apagar meus dados — andresmorales.com.co",
+      "metaDescription": "Solicite a eliminação dos seus dados pessoais em andresmorales.com.co sob GDPR / CCPA / Lei 1581.",
+      "h1": "Apagar meus dados",
+      "lastUpdated": "Última atualização: outubro 2026",
+      "intro": "Use este formulário pra pedir que eu apague os dados pessoais que tenho sobre você. Sob o GDPR, CCPA, a LGPD do Brasil e a Lei 1581/2012 da Colômbia você tem esse direito. Respondo em 15 dias úteis.",
+      "verifyTitle": "Como verifico que é você",
+      "verifyBody": "Pra evitar que alguém peça pra apagar seus dados, confirmo respondendo ao email registrado a partir do mesmo endereço. Se você não tem mais acesso a esse email, inclua um número de fatura anterior ou referência de projeto pra eu cruzar.",
+      "scopeTitle": "O que é apagado",
+      "scopeBody": "Payloads de contato e brief, correspondência de email do seu endereço, arquivos de projeto do seu engagement, e identificadores de analytics associados ao seu IP. Registros fiscais (faturas que sou obrigado por lei a guardar) ficam pelo período legal na Colômbia e depois são apagados.",
+      "scopeNotTitle": "O que não é apagado",
+      "scopeNotBody": "Analytics agregados e anonimizados (sem identificadores), cases publicados com sua permissão, e qualquer registro que precise ser mantido por lei.",
+      "formTitle": "Formulário de solicitação",
+      "formEmailLabel": "Seu email (o que eu tenho registrado)",
+      "formEmailHelp": "Responderei a este endereço pra verificar a solicitação.",
+      "formScopeLabel": "O que apagar",
+      "formScopeAll": "Tudo ligado ao meu email",
+      "formScopeContact": "Só envios do formulário de contato",
+      "formScopeAnalytics": "Só identificadores de analytics",
+      "formReasonLabel": "Motivo (opcional)",
+      "formReasonHelp": "Me ajuda a melhorar, mas não é obrigatório.",
+      "formSubmit": "Enviar solicitação de apagamento",
+      "formSubmitting": "Enviando…",
+      "formSuccessTitle": "Solicitação recebida",
+      "formSuccessBody": "Responderei a {email} em 15 dias úteis pra verificar e completar o apagamento. Se não receber a resposta, cheque spam ou escreva direto pra info@andresmorales.com.co.",
+      "formErrorPrefix": "Não foi possível enviar:",
+      "formErrorSuffix": "Escreva direto pra info@andresmorales.com.co.",
+      "formErrorEmail": "Digite um email válido",
+      "manualTitle": "Prefere email?",
+      "manualBody": "Envie a mesma coisa pra info@andresmorales.com.co com assunto 'Solicitação de apagamento de dados'. Eu resolvo daí."
+    },
+    "cookieBanner": {
+      "title": "Cookies em andresmorales.com.co",
+      "body": "Uso um cookie estritamente necessário pra preferência de idioma e, só se você aceitar, Google Analytics (anonimizado) pra entender quais páginas são úteis. Sem marketing, sem pixels de rastreamento, sem venda de dados. Você pode mudar de ideia quando quiser.",
+      "accept": "Aceitar todos",
+      "reject": "Recusar não essenciais",
+      "preferences": "Preferências",
+      "preferencesTitle": "Preferências de cookies",
+      "analyticsLabel": "Analytics (Google Analytics 4)",
+      "analyticsHelp": "IP anonimizado, só visualizações de página. Sem rastreamento entre sites.",
+      "essentialLabel": "Estritamente necessárias (sempre ativas)",
+      "essentialHelp": "Preferência de idioma + CSRF de formulários. Não dá pra desativar.",
+      "save": "Salvar preferências",
+      "close": "Fechar",
+      "policyLink": "Ler a Política de Cookies"
+    },
+    "gdprRights": {
+      "title": "Seus direitos sob o GDPR (EEE / Reino Unido)",
+      "intro": "Se você está no Espaço Econômico Europeu ou no Reino Unido, o RGPD te dá os seguintes direitos. Eu os honro independentemente de onde você mora.",
+      "access": "Direito de acesso — pedir uma cópia dos dados pessoais que tenho sobre você.",
+      "rectification": "Direito de retificação — corrigir dados inexatos ou incompletos.",
+      "erasure": "Direito ao apagamento ('direito ao esquecimento') — apagar seus dados, salvo exceções legais.",
+      "restriction": "Direito à limitação — limitar como processo seus dados enquanto uma disputa é resolvida.",
+      "portability": "Direito à portabilidade — receber seus dados em formato legível por máquina.",
+      "object": "Direito de oposição — se opor ao processamento baseado em interesse legítimo ou marketing direto.",
+      "automated": "Direito sobre decisões automatizadas — não tomo decisões sobre você por meios automatizados.",
+      "withdraw": "Direito de retirar o consentimento — a qualquer momento, sem afetar o processamento prévio.",
+      "complain": "Direito de apresentar reclamação a uma autoridade de controle do seu país."
+    },
+    "ccpaRights": {
+      "title": "Seus direitos sob CCPA / CPRA (Califórnia)",
+      "intro": "Se você reside na Califórnia, a CCPA e a CPRA te dão os seguintes direitos.",
+      "know": "Direito de saber qual informação pessoal é coletada, usada, compartilhada ou divulgada.",
+      "delete": "Direito de apagar informação pessoal que tenho sobre você.",
+      "correct": "Direito de corrigir informação pessoal inexata.",
+      "optOut": "Direito de recusar a venda ou compartilhamento de informação pessoal. Não vendo nem compartilho informação pessoal para publicidade comportamental entre contextos.",
+      "limit": "Direito de limitar o uso de informação pessoal sensível ao necessário para prestar o serviço.",
+      "nondiscriminate": "Direito a não ser discriminado por exercer qualquer um dos direitos acima.",
+      "doNotSellLink": "Não vender nem compartilhar minha informação pessoal"
+    },
+    "lawfulBasis": {
+      "title": "Base legal do processamento (GDPR Artigo 6)",
+      "intro": "Sob o GDPR preciso declarar a base legal de cada atividade de processamento. Resumo:",
+      "consent": "Consentimento — cookies de analytics e qualquer rastreamento não essencial. Pode retirar a qualquer momento.",
+      "contract": "Contrato — processamento necessário para entregar os serviços contratados.",
+      "legal": "Obrigação legal — guardar registros fiscais (faturas) pelo período legal colombiano.",
+      "legitimate": "Interesse legítimo — prevenção de spam e abuso, analytics básicos do site (com consentimento). Peso contra seus direitos e ofereço opção de sair.",
+      "vital": "Interesses vitais — não se aplica a este site."
+    },
+    "internationalTransfers": {
+      "title": "Transferências internacionais de dados",
+      "intro": "Alguns dos meus processadores (ClickUp, Google Analytics) ficam fora do seu país. O e-mail de saída é entregue via Mailcow (auto-hospedado em mail.cleida.com.co — sem SaaS de terceiros). Onde o GDPR se aplica, as transferências internacionais são protegidas por Cláusulas Contratuais Padrão (SCCs) aprovadas pela Comissão Europeia. Onde a SIC da Colômbia ou a ANPD do Brasil se aplicam, as transferências usam garantias contratuais equivalentes.",
+      "processors": "Processadores e localizações: Mailcow (auto-hospedado, mail.cleida.com.co — para e-mail de saída), Google Analytics / GCP (Irlanda / EUA, EU-US Data Privacy Framework, só carrega após consentimento de cookies), ClickUp (EUA com SCCs), Hetzner (Alemanha, UE para backups)."
+    },
+    "children": {
+      "title": "Privacidade de menores",
+      "intro": "Este site não é direcionado a menores de 16 anos (ou 13 sob COPPA, onde aplicável). Não recolho dados pessoais de menores de propósito. Se você acredita que um menor enviou dados pelo formulário de contato ou brief, escreva para info@andresmorales.com.co e apago em 7 dias úteis."
     }
   },
   "pricing": {
@@ -1078,6 +1230,7 @@
   },
   "compare": {
     "breadcrumbCompare": "Comparar",
+    "faqHeading": "Perguntas frequentes",
     "lastReviewed": "Última revisão 26 set 2026",
     "makeVsN8n": {
       "metaTitle": "Make vs n8n em 2026 — comparativo honesto",
@@ -1407,5 +1560,739 @@
   },
   "guide": {
     "keepReading": "Continue lendo"
+  },
+  "playground": {
+    "title": "Playground",
+    "description": "Laboratório de componentes — UI em produção, criada ao vivo. Peças novas aterrissam aqui primeiro.",
+    "mascot": {
+      "index": "01/01",
+      "discipline": "Portfólio",
+      "tagline": "Feito na Colômbia",
+      "collection": [
+        "Trabalhos",
+        "Selecionados"
+      ],
+      "reel": [
+        "Portfólio @ 2026",
+        "Andrés Morales"
+      ],
+      "year": "2026",
+      "initials": "AM",
+      "badge": "Contrate",
+      "line2": "Portfólio",
+      "line3": "Andrés",
+      "word": "Morales",
+      "verticalTag": "Cali",
+      "seekingLabel": "Procurando*",
+      "seeking": "Novos projetos",
+      "greetings": [
+        "Olá!",
+        "Vamos fazer algo incrível.",
+        "Psst, estou disponível.",
+        "Para de me cutucar :)"
+      ],
+      "href": "mailto:contacto@andresmorales.com.co"
+    },
+    "ticket": {
+      "brand": "Andrés Morales",
+      "company": "Andrés Morales",
+      "eyebrow": [
+        "Automação IA · UI/UX · Produção",
+        "Operando desde Cali, Colômbia",
+        "Disponível para novos projetos"
+      ],
+      "headline": [
+        "Faça a coisa.",
+        "Sem boilerplate."
+      ],
+      "description": "Estúdio independente em Cali. Fluxos de automação, UI feita à mão e web ponta-a-ponta — para times que preferem ter pronto a debater.",
+      "cta": "Vamos conversar",
+      "sections": [
+        "Visão geral",
+        "Serviços",
+        "Portfólio",
+        "Processo",
+        "Sobre",
+        "Brief",
+        "Preços",
+        "Contato"
+      ],
+      "statusLabels": [
+        "Disponível",
+        "Ocupado"
+      ],
+      "statusCaption": "Status do estúdio",
+      "countLabel": "Fundado em 2014",
+      "count": 2014,
+      "rate": 0,
+      "blurb": "Do brief ao deploy, o estúdio mantém tudo em um só lugar: escopo, design, construção, entrega. Briefs chegam na mesa, entregas vão pro cliente.",
+      "linkGroups": {
+        "product": {
+          "title": "Serviços",
+          "links": [
+            "Automação IA",
+            "Design UI/UX",
+            "Web com IA",
+            "Produção"
+          ]
+        },
+        "demos": {
+          "title": "Demos ao Vivo",
+          "links": [
+            "E-commerce Tênis",
+            "Brief Web Interativo"
+          ]
+        },
+        "resources": {
+          "title": "Recursos",
+          "links": [
+            "Blog",
+            "Guias",
+            "Comparar",
+            "Perguntas frequentes"
+          ]
+        }
+      },
+      "legal": [
+        "Todos os direitos reservados",
+        "Termos de uso",
+        "Política de privacidade"
+      ]
+    }
+  },
+  "briefWeb": {
+    "metaTitle": "Briefing de Projeto Web — Me conta o site que você precisa",
+    "metaDescription": "Escolha entre um briefing expresso de 3-5 minutos ou um briefing detalhado de 15-20 minutos para o seu projeto web. Respondo em até 24 horas.",
+    "eyebrow": "Frente 05 · Briefing Web",
+    "title": "Me conta sobre o seu projeto web. Escolha o ritmo ideal para você.",
+    "subtitle1": "Duas opções de acordo com seu tempo: 3–5 min para ir direto ao ponto, ou 15–20 min para alinhar cada detalhe.",
+    "subtitle2": "Prefere conversar diretamente sem preencher formulários?",
+    "stats1": "<24h",
+    "stats1Label": "Resposta com análise e próximos passos",
+    "stats2": "2 opções",
+    "stats2Label": "Expresso (3 min) ou Detalhado (15 min)",
+    "stats3": "100%",
+    "stats3Label": "Código sob medida, moderno e otimizado",
+    "selectorTitle": "Quanto tempo você tem disponível hoje?",
+    "selectorSubtitle": "Ambos os caminhos fornecem o necessário para começar. Escolha o que melhor se adapta ao seu momento.",
+    "modeExpressBadge": "⚡ 3 a 5 min",
+    "modeExpressTitle": "Briefing Expresso",
+    "modeExpressSubtitle": "Para quem não tem tempo e quer ir direto ao ponto",
+    "modeExpressDesc": "As perguntas essenciais para entender o tipo de site, objetivo principal, estimativa de investimento e prazo desejado.",
+    "modeExpressBullet1": "3 passos rápidos e simples",
+    "modeExpressBullet2": "Menos de 7 perguntas diretas",
+    "modeExpressBullet3": "Estimativa e contato em menos de 24h",
+    "modeExpressCta": "Começar Briefing Expresso (3 min) →",
+    "modeDetailedBadge": "🔍 15 a 20 min",
+    "modeDetailedTitle": "Briefing Detalhado",
+    "modeDetailedSubtitle": "Para quem quer estruturar todo o projeto no detalhe",
+    "modeDetailedDesc": "Ideal se você tem tempo e quer definir estilo visual, identidade, mapa do site, funcionalidades, público e conteúdo.",
+    "modeDetailedBullet1": "6 passos estratégicos completos",
+    "modeDetailedBullet2": "Arquitetura, design, público e escopo",
+    "modeDetailedBullet3": "Orçamento preciso com preço fechado",
+    "modeDetailedCta": "Começar Briefing Detalhado (15 min) →",
+    "activeModeExpress": "Modo Expresso ativo (3–5 min)",
+    "activeModeDetailed": "Modo Detalhado ativo (15–20 min)",
+    "switchModeButton": "Trocar opção",
+    "switchModeConfirm": "Deseja trocar de modo? Seus dados básicos de contato serão mantidos.",
+    "wizardStep": "Passo {current} de {total}",
+    "wizardBack": "← Voltar",
+    "wizardStartOver": "Recomeçar",
+    "wizardStartOverConfirm": "Reiniciar todas as respostas? Seu progresso salvo neste formulário será apagado.",
+    "wizardDraftSaved": "💾 Rascunho salvo · {count} resposta",
+    "wizardDraftSavedPlural": "💾 Rascunho salvo · {count} respostas",
+    "wizardDraftTitle": "Seu progresso fica salvo automaticamente no seu navegador por 30 dias",
+    "wizardDisabledTitle": "Preencha os campos obrigatórios para continuar",
+    "wizardNext": "Próximo →",
+    "wizardSubmit": "Enviar briefing web →",
+    "wizardSending": "Enviando briefing web…",
+    "wizardRedirecting": "Briefing enviado com sucesso! Redirecionando…",
+    "wizardEscapeHatch": "Prefere agendar uma chamada?",
+    "wizardEscapeHatchCta": "Agende uma conversa gratuita de 30 min →",
+    "expressStep1Title": "Fale sobre você",
+    "expressStep2Title": "Seu projeto web",
+    "expressStep3Title": "Investimento e prazos",
+    "detailedStep1Title": "Sobre você e sua marca",
+    "detailedStep2Title": "Identidade visual e estilo",
+    "detailedStep3Title": "Público e proposta de valor",
+    "detailedStep4Title": "Estrutura e funcionalidades",
+    "detailedStep5Title": "Conteúdo e idiomas",
+    "detailedStep6Title": "Logística e investimento",
+    "fieldName": "Seu nome",
+    "fieldNamePlaceholder": "Ex.: Camila Silva",
+    "fieldEmail": "E-mail",
+    "fieldEmailPlaceholder": "camila@empresa.com.br",
+    "fieldEmailError": "Insira um e-mail válido",
+    "fieldCompany": "Empresa ou projeto",
+    "fieldCompanyPlaceholder": "Ex.: Studio Alfa ou Marca pessoal",
+    "fieldRole": "Seu cargo",
+    "fieldRolePlaceholder": "Ex.: Fundador(a), Gerente, Designer",
+    "fieldPhone": "Telefone / WhatsApp (opcional)",
+    "fieldPhonePlaceholder": "+55 (11) 98765-4321",
+    "fieldCurrentSite": "Site atual (se tiver)",
+    "fieldCurrentSitePlaceholder": "https://meusiteatual.com.br",
+    "fieldWebTypeLegend": "Que tipo de site você precisa?",
+    "webTypes": {
+      "landing": "Landing Page (Página única para captação ou lançamento de produto)",
+      "corporate": "Site Institucional (Múltiplas páginas de serviços e empresa)",
+      "ecommerce": "Loja Virtual / E-commerce (Catálogo e checkout de pagamentos)",
+      "webapp": "Web App / Plataforma sob medida (Painel de clientes, SaaS)",
+      "redesign": "Redesenho completo de site existente",
+      "other": "Outro tipo de projeto web"
+    },
+    "fieldWebTypeOther": "Que tipo de web você tem em mente?",
+    "fieldWebTypeOtherPlaceholder": "Descreva brevemente o tipo de site...",
+    "fieldGoalLegend": "Qual o objetivo principal do site?",
+    "goals": {
+      "leads": "Captar clientes potenciais e orçamentos",
+      "sales": "Vender produtos ou assinaturas diretamente",
+      "credibility": "Gerar autoridade, confiança e posicionamento de marca",
+      "automation": "Automatizar agendamentos, suporte ou dúvidas frequentes",
+      "launch": "Lançamento de nova empresa, marca ou serviço",
+      "other": "Outro objetivo"
+    },
+    "fieldGoalOther": "Conte-nos o objetivo",
+    "fieldGoalOtherPlaceholder": "O que você espera que a página alcance?",
+    "fieldReferences": "Sites de referência ou concorrentes que você gosta",
+    "fieldReferencesPlaceholder": "Cole links de 2 ou 3 sites que te inspiram em design ou estilo...",
+    "fieldReferencesNotes": "O que você gosta nessas referências?",
+    "fieldReferencesNotesPlaceholder": "Ex.: Gosto da tipografia limpa, das animações suaves e da navegação clara...",
+    "fieldBrandSummary": "O que sua marca faz e qual o seu diferencial?",
+    "fieldBrandSummaryPlaceholder": "Conte em 2-3 frases o que você oferece e por que os clientes te escolhem...",
+    "fieldBrandValues": "Valores ou personalidade da marca",
+    "fieldBrandValuesPlaceholder": "Ex.: Proximidade, sofisticação, inovação, transparência...",
+    "fieldLogoLegend": "Você tem logo e identidade visual?",
+    "logoOptions": {
+      "vector": "Sim, tenho logo vetorizado (.SVG, .AI, .EPS ou PDF)",
+      "image": "Sim, mas apenas em imagem (PNG ou JPG)",
+      "need_design": "Não, preciso criar do zero",
+      "partial": "Tenho um esboço ou logo preliminar"
+    },
+    "fieldColors": "Você tem paleta de cores definida?",
+    "fieldColorsPlaceholder": "Indique códigos HEX (ex.: #1E1810, #F96E03) ou descreva as cores ideais...",
+    "fieldVibeLegend": "Que sensações o design deve transmitir?",
+    "vibes": [
+      "Minimalista & Limpo",
+      "Moderno & Tecnológico",
+      "Elegante & Premium",
+      "Próximo & Humano",
+      "Ousado & Criativo",
+      "Corporativo & Seguro"
+    ],
+    "fieldAudience": "Quem é seu cliente ou usuário ideal?",
+    "fieldAudiencePlaceholder": "Descreva o perfil: quem é, o que busca e qual problema você resolve...",
+    "fieldMainCta": "Qual a ação principal que o visitante deve fazer?",
+    "fieldMainCtaPlaceholder": "Ex.: Agendar uma conversa, preencher formulário, comprar online, chamar no WhatsApp...",
+    "fieldPagesLegend": "Quais páginas ou seções você considera necessárias?",
+    "pageOptions": [
+      "Início (Home)",
+      "Sobre nós / História",
+      "Serviços / Soluções",
+      "Catálogo / Loja",
+      "Casos de sucesso / Portfólio",
+      "Blog / Artigos",
+      "Preços / Planos",
+      "Contato / Localização",
+      "Agendamento / Calendário"
+    ],
+    "fieldFeaturesLegend": "Funcionalidades especiais necessárias",
+    "featureOptions": [
+      "Multi-idioma (2 ou mais idiomas)",
+      "Meios de pagamento (Stripe, etc.)",
+      "Integração com WhatsApp direto",
+      "Automação de CRM ou e-mail (HubSpot, Make, n8n)",
+      "Painel administrativo (CMS)",
+      "Área restrita de clientes / login",
+      "SEO técnico avançado"
+    ],
+    "fieldContentOriginLegend": "Quem cuidará dos textos do site?",
+    "contentOrigins": {
+      "client": "Eu entregarei os textos prontos",
+      "need_copywriting": "Preciso de redação profissional (copywriting)",
+      "mix": "Tenho rascunhos e preciso de ajuda para lapidar",
+      "existing": "Reaproveitaremos os textos do site atual"
+    },
+    "fieldMediaLegend": "Você tem fotos e recursos visuais?",
+    "mediaOptions": {
+      "yes": "Sim, tenho fotos profissionais em alta resolução",
+      "partial": "Tenho algumas fotos, mas precisaremos de imagens de apoio",
+      "need_help": "Não, precisaremos de banco de imagens e recursos gráficos"
+    },
+    "fieldLanguages": "Em quais idiomas o site estará?",
+    "fieldLanguagesPlaceholder": "Ex.: Somente Português / Português e Inglês / Trilíngue...",
+    "fieldDomainHostingLegend": "Você já tem domínio e hospedagem?",
+    "domainHostingOptions": {
+      "both": "Sim, tenho domínio e hospedagem",
+      "domain_only": "Apenas o domínio registrado",
+      "none": "Nenhum dos dois, preciso de orientação completa",
+      "not_sure": "Não tenho certeza"
+    },
+    "fieldBudgetLegend": "Faixa estimada de investimento",
+    "budgets": {
+      "under2k": "Menos de R$ 10.000 (< $2.000 USD)",
+      "2to5k": "R$ 10.000 – R$ 25.000 ($2.000 – $5.000 USD)",
+      "5to15k": "R$ 25.000 – R$ 60.000 ($5.000 – $12.000 USD)",
+      "15to50k": "Mais de R$ 60.000 (> $12.000 USD)",
+      "flexible": "Prefiro que você recomende com base no escopo"
+    },
+    "fieldTimelineLegend": "Prazo desejado para lançamento",
+    "timelines": {
+      "asap": "O quanto antes (urgente)",
+      "1month": "Em 3 a 4 semanas",
+      "1to2months": "1 a 2 meses",
+      "flexible": "Flexível, o foco é na qualidade"
+    },
+    "fieldNotes": "Alguma observação, restrição ou detalhe extra?",
+    "fieldNotesPlaceholder": "Conte qualquer detalhe relevante, prazos rígidos ou dúvidas...",
+    "summaryToggle": "Revise suas respostas antes de enviar ↓",
+    "summaryMode": "Modalidade",
+    "summaryContact": "Contato",
+    "summaryWebType": "Tipo de site",
+    "summaryGoal": "Objetivo",
+    "summaryBudget": "Orçamento",
+    "summaryTimeline": "Prazo",
+    "email": {
+      "title": "Novo Briefing de Projeto Web",
+      "subtitle": "De {name} — {email}",
+      "fieldMode": "Modalidade do briefing",
+      "fieldCompany": "Empresa",
+      "fieldRole": "Cargo",
+      "fieldPhone": "Telefone / WhatsApp",
+      "fieldCurrentSite": "Site atual",
+      "fieldWebType": "Tipo de site",
+      "fieldGoal": "Objetivo principal",
+      "fieldReferences": "Referências web",
+      "fieldReferencesNotes": "Notas das referências",
+      "fieldBrandSummary": "Resumo da marca",
+      "fieldBrandValues": "Valores da marca",
+      "fieldLogo": "Status do logo",
+      "fieldColors": "Cores",
+      "fieldVibes": "Estilo / Sensações",
+      "fieldAudience": "Público-alvo",
+      "fieldMainCta": "CTA principal",
+      "fieldPages": "Páginas necessárias",
+      "fieldFeatures": "Funcionalidades chave",
+      "fieldContentOrigin": "Redação dos textos",
+      "fieldMedia": "Fotos / Recursos",
+      "fieldLanguages": "Idiomas",
+      "fieldDomainHosting": "Domínio e hospedagem",
+      "fieldBudget": "Orçamento",
+      "fieldTimeline": "Prazo",
+      "fieldNotes": "Notas adicionais",
+      "replyTo": "Responda diretamente para {email}"
+    },
+    "emailAutoReply": {
+      "subject": "Recebi seu briefing web — respondo em até 24 horas",
+      "greeting": "Olá {firstName},",
+      "body1": "Muito obrigado por compartilhar os detalhes do seu projeto web. Recebi suas respostas e vou analisá-las com atenção.",
+      "body2": "Em menos de 24 horas úteis, retorno com uma análise preliminar, sugestões e uma proposta clara de próximos passos.",
+      "signature": "— Andrés Morales",
+      "footer": "Você recebeu este e-mail porque enviou o briefing web em",
+      "linkText": "andresmorales.com.co/brief-web"
+    },
+    "faqTitle": "Perguntas frequentes sobre o briefing web",
+    "faqSubtitle": "Cinco perguntas essenciais antes de enviar. Se tiver outra dúvida, tiramos na conversa.",
+    "faqItems": [
+      {
+        "q": "Qual é a diferença entre o Briefing Expresso e o Briefing Detalhado?",
+        "a": "O Briefing Expresso (3-5 min) foca nas variáveis essenciais para dar uma estimativa ágil quando você tem pouco tempo. O Briefing Detalhado (15-20 min) aprofunda em arquitetura, mapa do site, estilo e funcionalidades para um orçamento preciso com preço fechado."
+      },
+      {
+        "q": "O que acontece depois que eu envio o briefing?",
+        "a": "Leio pessoalmente cada envio em menos de 24 horas úteis. Respondo por e-mail com observações de escopo, proposta ou um convite para uma conversa rápida de 20 minutos para alinhar detalhes."
+      },
+      {
+        "q": "Quais tecnologias você utiliza para desenvolver os sites?",
+        "a": "Utilizo stack moderno e robusto: Next.js (React), TypeScript, Tailwind CSS, foco em Core Web Vitals, CMS gerenciável se necessário e arquitetura preparada para SEO internacional e alta performance."
+      },
+      {
+        "q": "E se eu ainda não tiver textos ou fotos prontas?",
+        "a": "Sem problemas. Você pode sinalizar no briefing e eu te oriento na redação dos textos (copywriting) e na seleção de recursos visuais de alta qualidade antes de iniciar a programação."
+      },
+      {
+        "q": "O orçamento inclui domínio e hospedagem?",
+        "a": "Eu te guio na contratação do domínio e hospedagem em seu nome para que você mantenha 100% da posse dos seus ativos digitais, configurando SSL, DNS e deploy contínuo."
+      }
+    ]
+  },
+  "sneakerProposal": {
+    "metaTitle": "Proposta E-commerce de Sneakers & Streetwear | Andrés Morales",
+    "metaDescription": "Proposta técnica e comercial de e-commerce de alta performance para loja de tênis e streetwear. Arquitetura Next.js, drops exclusivos e gateways de pagamento.",
+    "badge": "Proposta Comercial Exclusiva // 2026",
+    "clientTitle": "E-commerce High-Performance para Sneakers & Streetwear",
+    "clientSubtitle": "Design de experiência interativa, arquitetura Next.js ultra-rápida (<0.8s), drops com contagem regressiva, matriz dinâmica de tamanhos e checkout ágil.",
+    "metaAuthor": "Andrés Morales — Senior Fullstack & Web Architect",
+    "metaDelivery": "5 Semanas (Metodologia Ágil)",
+    "metaStack": "Next.js 15 App Router • TypeScript • Tailwind CSS • n8n Automations • Cloudflare Edge",
+    "heroShowcase": {
+      "badge": "DEMO AO VIVO // FRONTEND DE IMPACTO",
+      "title": "Experiência Hero Proposta (Interativa)",
+      "description": "Recriação fiel da interface do usuário: tênis com breakout 3D, troca de modelos em tempo real, microinterações a 60 FPS e carregamento móvel instantâneo.",
+      "toggleClient": "Experiência Cliente",
+      "toggleTech": "Raio-X Técnico",
+      "navMen": "Masculino",
+      "navWomen": "Feminino",
+      "navDrops": "Drops 🔥",
+      "navSale": "Sale",
+      "brandBadge": "EDIÇÃO LIMITADA // DROP EXCLUSIVO",
+      "sizeLabel": "Selecione seu tamanho (US)",
+      "sizeGuide": "Guia de tamanhos (US / EU / CM / BR)",
+      "addToCart": "Adicionar ao carrinho",
+      "addedToCart": "Adicionado ao pedido!",
+      "cartBadge": "Carrinho",
+      "stockStatus": "Em estoque — Envio prioritário hoje",
+      "shippingNote": "Envio seguro para todo o país • Pagamento facilitado disponível",
+      "altTitle": "Outros modelos da coleção",
+      "quickSwitch": "Ver detalhes",
+      "models": [
+        {
+          "id": "aj1",
+          "name": "Air Jordan 1 High OG",
+          "edition": "Bred High OG Heritage Edition",
+          "desc": "O lendário clássico de basquete de 1985 com couro premium, cano acolchoado e o icônico solado vermelho e preto.",
+          "priceCop": "$689.900 COP",
+          "priceUsd": "$175 USD",
+          "rating": "4.9",
+          "reviews": 142,
+          "badge": "HYPE DROP",
+          "colorName": "Black / Varsity Red",
+          "image": "/sneakers/air-jordan-1-retro-high-og.png",
+          "thumb": "/sneakers/thumb-jordan-1.jpg"
+        },
+        {
+          "id": "aj12",
+          "name": "Air Jordan 12 Retro",
+          "edition": "Varsity Red Edition",
+          "desc": "Silhueta inspirada na bandeira japonesa com costura radial em couro e placa de fibra de carbono.",
+          "priceCop": "$749.900 COP",
+          "priceUsd": "$190 USD",
+          "rating": "5.0",
+          "reviews": 98,
+          "badge": "POUCAS UNIDADES",
+          "colorName": "White / Gym Red",
+          "image": "/sneakers/air-jordan-12-retro-gym-red.png",
+          "thumb": "/sneakers/thumb-jordan-12.jpg"
+        },
+        {
+          "id": "am90",
+          "name": "Nike Air Max Alpha Stealth",
+          "edition": "Dark Stealth Max Air Edition",
+          "desc": "Amortecimento Max Air visível no calcanhar com cápsula pressurizada, suporte lateral em TPU e solado multidirecional para máxima tração urbana.",
+          "priceCop": "$549.900 COP",
+          "priceUsd": "$140 USD",
+          "rating": "4.8",
+          "reviews": 115,
+          "badge": "MAIS VENDIDO",
+          "colorName": "Black / White / Stealth Grey",
+          "image": "/sneakers/nike-air-max-alpha-stealth.png",
+          "thumb": "/sneakers/thumb-nike-air-max.jpg"
+        }
+      ]
+    },
+    "diagnostic": {
+      "badge": "01. DIAGNÓSTICO & OPORTUNIDADE",
+      "title": "Por que os e-commerces tradicionais de tênis perdem até 40% das vendas?",
+      "intro": "Na cultura streetwear, a compra é movida a hype e impulso. Mais de 80% do público acessa via celular pelo Instagram ou WhatsApp. Qualquer atraso destrói a conversão.",
+      "stats": [
+        {
+          "value": "84%",
+          "label": "Tráfego 100% mobile",
+          "desc": "Usuários comprando diretamente das redes sociais sem tolerância a lentidão."
+        },
+        {
+          "value": "<0.8s",
+          "label": "Tempo de carga alvo",
+          "desc": "Cada 100ms extras reduzem a taxa de conversão em 7% (estudos Google)."
+        },
+        {
+          "value": "38%",
+          "label": "Devoluções de calçados",
+          "desc": "Geradas por tabelas de tamanho confusas entre padrões US, EU e nacional."
+        },
+        {
+          "value": "65%",
+          "label": "Carrinhos abandonados",
+          "desc": "Provocados por checkouts lentos ou falta de opções ágeis de pagamento."
+        }
+      ],
+      "comparisonTitle": "Comparativo Técnico: Plataformas Genéricas vs Arquitetura Headless",
+      "comparisonSubtitle": "Diferenças fundamentais entre um modelo pronto e engenharia de software sob medida.",
+      "standard": {
+        "title": "E-commerce Convencional (Shopify Padrão / WooCommerce)",
+        "badge": "Gargalos comuns",
+        "points": [
+          "Temas pesados com dezenas de plugins que aumentam o tempo de carregamento para 4s+.",
+          "Quedas de servidor durante picos de acessos em lançamentos de drops.",
+          "Checkout padrão longo com atritos que reduzem a conversão.",
+          "Custos mensais crescentes em plugins e comissões sobre cada venda.",
+          "Dificuldade de criar microinterações 3D sem deixar a loja lenta."
+        ]
+      },
+      "proposed": {
+        "title": "Arquitetura Headless Next.js (Esta Proposta)",
+        "badge": "Vantagem competitiva",
+        "points": [
+          "Carregamento instantâneo em <0.8s com imagens otimizadas em WebP/AVIF.",
+          "Infraestrutura serverless no Edge preparada para suportar milhares de visitas em simultâneo.",
+          "Checkout em 1 clique preparado para meios locais de pagamento e parcelamento.",
+          "Código 100% de sua propriedade: sem comissões recorrentes de plataforma.",
+          "Experiência imersiva com tênis em 3D e animações fluidas a 60 FPS."
+        ]
+      }
+    },
+    "features": {
+      "badge": "02. PILARES DA SOLUÇÃO",
+      "title": "6 Funcionalidades Especializadas para uma Loja de Tênis Líder",
+      "subtitle": "Cada detalhe foi desenhado para acelerar a decisão de compra e fidelizar a comunidade sneakerhead.",
+      "list": [
+        {
+          "icon": "⚡",
+          "title": "Drop Engine com Contagem Regressiva & Lista VIP",
+          "desc": "Módulo de lançamentos com temporizador e captura de WhatsApp para liberar acesso antecipado exclusivo e esgotar estoques rapidamente.",
+          "highlight": "Gera senso de urgência e constrói sua base de clientes VIP."
+        },
+        {
+          "icon": "👟",
+          "title": "Matriz Dinâmica de Tamanhos & Fit Guide",
+          "desc": "Conversor instantâneo de numeração com recomendação de ajuste real, diminuindo custos com trocas e logística reversa.",
+          "highlight": "Economiza recursos em devoluções e fretes de troca."
+        },
+        {
+          "icon": "💳",
+          "title": "Checkout Rápido em 1 Clique com Meios Locais",
+          "desc": "Integração completa com as principais opções de pagamento, parcelamento sem juros e entrega segura.",
+          "highlight": "Aumenta a aprovação de pedidos e o ticket médio."
+        },
+        {
+          "icon": "🤖",
+          "title": "Automações Pós-Compra com n8n & WhatsApp",
+          "desc": "Envio automático de código de rastreamento por WhatsApp, recuperação de carrinhos abandonados e alertas de estoque crítico.",
+          "highlight": "Reduz até 80% dos chamados repetitivos de suporte."
+        },
+        {
+          "icon": "🔍",
+          "title": "Filtros Facetados Ultrarrápidos",
+          "desc": "Busca instantânea por modelo, silhueta, marca e tamanho em estoque sem recarregar a página.",
+          "highlight": "O cliente encontra seu par exato em menos de 3 toques."
+        },
+        {
+          "icon": "📈",
+          "title": "SEO Estruturado & Google Shopping Orgânico",
+          "desc": "Marcação Schema.org Product e Offer para exibir fotos, preço e estoque nos resultados visuais do Google.",
+          "highlight": "Tráfego orgânico qualificado pronto para comprar."
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "03. CRONOGRAMA DE ENTREGAS",
+      "title": "Plano de Execução em 5 Semanas",
+      "subtitle": "Metodologia ágil com entregas semanais para testar no seu celular desde o primeiro sprint.",
+      "weeks": [
+        {
+          "week": "Semana 1",
+          "title": "Estratégia, Arquitetura & Direção Visual",
+          "deliverables": [
+            "Definição de estrutura de catálogo, tamanhos e atributos de calçados",
+            "Design UI/UX em alta fidelidade no Figma (Mobile e Desktop)",
+            "Configuração do repositório, pipeline e arquitetura Next.js"
+          ]
+        },
+        {
+          "week": "Semana 2",
+          "title": "Frontend Interativo & Catálogo High-Performance",
+          "deliverables": [
+            "Desenvolvimento do Hero interativo 3D breakout com troca de modelos",
+            "Catálogo com filtros rápidos por tamanho, marca e preço",
+            "Página de produto com galeria em AVIF e matriz de tamanhos dinâmica"
+          ]
+        },
+        {
+          "week": "Semana 3",
+          "title": "Gateways de Pagamento, Checkout & Logística",
+          "deliverables": [
+            "Integração de gateways de pagamento e parcelamento",
+            "Configuração do fluxo de cálculo de frete por região",
+            "Checkout em 1 clique otimizado para alta conversão"
+          ]
+        },
+        {
+          "week": "Semana 4",
+          "title": "Automações n8n & Integração WhatsApp API",
+          "deliverables": [
+            "Disparo automático de rastreio de pedido por WhatsApp",
+            "Fluxo de recuperação de carrinhos abandonados",
+            "Testes de carga e otimização Core Web Vitals (>90 PageSpeed)"
+          ]
+        },
+        {
+          "week": "Semana 5",
+          "title": "Cadastro de Catálogo, QA & Lançamento",
+          "deliverables": [
+            "Acompanhamento no cadastro do estoque e produtos iniciais",
+            "Testes de ponta a ponta em ambiente produtivo real",
+            "Migração de domínio, emissão de certificados SSL e lançamento do Drop #1"
+          ]
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "04. PLANOS MENSAIS DE CRESCIMENTO // RETAINERS",
+      "title": "Acompanhamento, Ads & Criação de Conteúdo com IA",
+      "subtitle": "Um e-commerce sem visitas não gera vendas. Cuidamos para que sua loja fature diariamente com anúncios no Meta/TikTok e produções audiovisuais hiper-realistas geradas com Google Veo 2, Veo 3 e Nanobanana.",
+      "selectPlan": "Escolher este plano mensal",
+      "timelineLabel": "Modalidade:",
+      "plans": [
+        {
+          "id": "tier1",
+          "name": "Tier 1 — Starter Growth",
+          "tagline": "Para validar anúncios, manter a loja ativa e gerar conteúdo regular com IA.",
+          "priceCop": "$119.998 COP",
+          "priceUsd": "$30 USD",
+          "timeline": "Mensal (Sem fidelidade)",
+          "popular": false,
+          "features": [
+            "Gestão de Meta Ads (Facebook & Instagram): 1 campanha ativa de conversão ou mensagens",
+            "Criação de conteúdo com IA (Nanobanana / Midjourney): 4 criativos estáticos hiper-realistas por mês",
+            "Manutenção técnica contínua, monitoramento 99.9% uptime e cópias de segurança",
+            "Atualização mensal de catálogo (até 5 novos tênis ou drops por mês)",
+            "Configuração do Pixel do Meta e API de conversões para medir vendas",
+            "Relatório mensal de desempenho de anúncios e vendas geradas"
+          ]
+        },
+        {
+          "id": "tier2",
+          "name": "Tier 2 — Scale & Hype Pro",
+          "badge": "RECOMENDADO // MAIS POPULAR",
+          "tagline": "Acelere suas vendas com Video Ads cinematográficos criados com Veo 2 e gestão de redes sociais.",
+          "priceCop": "$249.998 COP",
+          "priceUsd": "$63 USD",
+          "timeline": "Mensal (Sem fidelidade)",
+          "popular": true,
+          "features": [
+            "Gestão avançada de Meta Ads: Prospecção de público sneakerhead + Retargeting de carrinhos abandonados",
+            "Produção de Video Ads com Google Veo 2: 4 vídeos cinematográficos de tênis em movimento com estética de comercial",
+            "Criação de conteúdo gráfico com Nanobanana: 8 criativos adicionais para stories, reels e banners",
+            "Gestão de Redes Sociais: 3 postagens semanais no Instagram com copys persuasivos e hashtags estratégicas",
+            "Automação de WhatsApp: Respostas rápidas para dúvidas de tamanhos e links diretos de pagamento",
+            "Atualização contínua de catálogo (até 15 referências ou drops por mês)",
+            "Relatório quinzenal de ROAS (retorno do investimento) e otimização de orçamento"
+          ]
+        },
+        {
+          "id": "tier3",
+          "name": "Tier 3 — Dominance Flagship",
+          "tagline": "Agência digital completa: Multicanal Ads (Meta + TikTok), produção cinematográfica com Veo 3 e n8n.",
+          "priceCop": "$499.998 COP",
+          "priceUsd": "$125 USD",
+          "timeline": "Mensal (Sem fidelidade)",
+          "popular": false,
+          "features": [
+            "Anúncios Multicanal: Meta Ads (Instagram/FB) + TikTok Ads + Google Shopping orgânico",
+            "Produção High-End com Google Veo 3: 8 vídeos cinematográficos hiper-realistas (macro 4K, giros 3D complexos, câmera lenta estilo Nike)",
+            "Pacote mensal completo de criativos publicitários com Nanobanana e edição profissional",
+            "Gestão Integral de Redes Sociais: Calendário completo (Instagram + TikTok) com stories diários em lançamentos",
+            "Automações avançadas n8n: Recuperação automática de carrinhos no WhatsApp aos 30 min e envio de rastreio",
+            "Otimização contínua da loja (CRO): Testes A/B, banners promocionais e cupons de desconto",
+            "Suporte prioritário 24/7 direto pelo WhatsApp com Andrés Morales + reunião quinzenal de estratégia"
+          ]
+        }
+      ]
+    },
+    "guarantees": {
+      "badge": "05. NOSSO COMPROMISSO",
+      "title": "3 Garantias Contratuais para sua Tranquilidade",
+      "items": [
+        {
+          "title": "Garantia de Performance (>90 no Google PageSpeed)",
+          "desc": "Garantimos em contrato pontuação superior a 90 no PageSpeed mobile. Caso não atinja, realizamos as otimizações sem custo adicional até cumprir."
+        },
+        {
+          "title": "Zero Quedas em Picos de Tráfego",
+          "desc": "A infraestrutura serverless absorve com tranquilidade milhares de acessos simultâneos durante campanhas e drops em redes sociais."
+        },
+        {
+          "title": "100% Posse do Código e Dados",
+          "desc": "Todo o código-fonte, contas de pagamento e domínios ficam registrados em seu nome desde o primeiro dia. Sem comissões sobre vendas."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Pronto para Construir o E-commerce de Tênis Definitivo?",
+      "subtitle": "Vamos agendar uma conversa rápida de 20 minutos para tirar dúvidas, alinhar o catálogo e definir o início dos trabalhos.",
+      "whatsappBtn": "Falar sobre esta proposta no WhatsApp",
+      "callBtn": "Agendar videoconferência de Kickoff (20 min)",
+      "printBtn": "Salvar ou imprimir proposta (PDF)"
+    },
+    "baseOffer": {
+      "badge": "03. DESENVOLVIMENTO WEB // PAGAMENTO ÚNICO",
+      "title": "Sua Loja E-commerce em Next.js (Última Tecnologia)",
+      "subtitle": "Um e-commerce ultra-rápido (<0.8s), visualmente impactante com tênis em 3D breakout e pronto para vender desde o primeiro dia.",
+      "priceCop": "$500.000 COP",
+      "priceUsd": "$125 USD",
+      "tagline": "Investimento único de desenvolvimento. Sem comissões sobre vendas nem mensalidades obrigatórias de plataforma.",
+      "timeline": "2 a 3 semanas",
+      "hostingBadge": "Hospedagem Vitalícia no Edge",
+      "hostingDesc": "Hospedado no Cloudflare/Vercel Edge Serverless. Zero custo mensal de servidor para você.",
+      "sslBadge": "Certificados SSL Vitalícios",
+      "sslDesc": "Criptografia bancária e cadeado de segurança permanente incluso sem custos adicionais.",
+      "domainBadge": "Domínio por Conta do Cliente",
+      "domainDesc": "Te orientamos na contratação do seu domínio (.com / .co) em seu próprio nome por ~$45.000 COP/ano (~$12 USD/ano).",
+      "features": [
+        "Desenvolvimento completo em Next.js 15 (arquitetura de última geração com carregamento móvel em <0.8s)",
+        "Hero interativo de alto impacto com tênis em breakout 3D (igual à demonstração superior)",
+        "Catálogo de produtos com filtros instantâneos por silhueta (High/Mid/Low), marca e numeração",
+        "Matriz interativa de tamanhos (US / EU / CM / BR) com recomendação de ajuste real para reduzir trocas",
+        "Gateways de pagamento: Wompi, cartões, parcelamento em cuotas e pagamento na entrega",
+        "Hospedagem vitalícia no Edge: Você economiza entre $100.000 e $300.000 COP em servidores todo mês!",
+        "Certificados de segurança SSL vitalícios para pagamentos e navegação 100% protegida",
+        "Otimização 100% responsiva para compras por impulso no Instagram Ads e TikTok",
+        "Treinamento em vídeo para gerenciar seus produtos, fotos e pedidos"
+      ],
+      "cta": "Contratar Loja Web por $500.000 COP"
+    }
+  },
+  "briefHub": {
+    "metaTitle": "Briefing Interativo — Escolha o tipo de projeto",
+    "metaDescription": "Escolha o caminho ideal para o seu projeto: Site ou E-commerce, Automação & IA, ou Consultoria técnica.",
+    "eyebrow": "Linha 04 · Briefing Interativo",
+    "title": "Que tipo de projeto você gostaria de orçar?",
+    "subtitle": "Escolha o caminho adequado para receber perguntas precisas e uma proposta com preço fechado em até 24h.",
+    "changePath": "Trocar tipo de projeto",
+    "activePath": "Caminho ativo",
+    "pathWeb": "Site & E-commerce",
+    "pathAutomation": "Automação & IA",
+    "pathConsulting": "Consultoria Direta",
+    "webCardBadge": "Design & Código sob medida",
+    "webCardTitle": "Site ou E-commerce",
+    "webCardSubtitle": "Landing pages, lojas virtuais, redesign ou web apps",
+    "webCardDesc": "Design UI/UX de alto impacto, catálogo de produtos, meios de pagamento, animações fluidas e SEO otimizado.",
+    "webCardBullets": [
+      "Opções Expressa (3 min) ou Detalhada (15 min)",
+      "Perguntas sobre identidade visual, páginas e referências",
+      "Orçamento fechado e personalizado em até 24h"
+    ],
+    "webCardCta": "Iniciar Briefing Web →",
+    "automationCardBadge": "Operações & IA",
+    "automationCardTitle": "Automação e Integrações com IA",
+    "automationCardSubtitle": "Agentes inteligentes, Make, n8n, CRM e fluxos automatizados",
+    "automationCardDesc": "Elimine tarefas manuais repetitivas, integre suas ferramentas e amplie a produtividade da sua equipe.",
+    "automationCardBullets": [
+      "5 etapas focadas em gargalos operacionais",
+      "Mapeamento de ferramentas (Sheets, Slack, CRM, WhatsApp)",
+      "Métricas de economia de tempo e proposta transparente"
+    ],
+    "automationCardCta": "Iniciar Briefing de Automação →",
+    "consultingCardBadge": "1 a 1 gratuito",
+    "consultingCardTitle": "Consultoria ou Chamada Direta",
+    "consultingCardSubtitle": "Videoconferência de 30 min ou diagnóstico técnico sob medida",
+    "consultingCardDesc": "Tem um requisito muito específico, dúvidas de arquitetura ou prefere conversar ao vivo antes do formulário?",
+    "consultingCardBullets": [
+      "30 minutos via Google Meet / Zoom",
+      "Avaliação de viabilidade e custos em tempo real",
+      "Sem compromissos comerciais"
+    ],
+    "consultingCardCta": "Agendar chamada de 30 min →",
+    "consultingAltText": "Prefere enviar uma mensagem direta?",
+    "consultingAltCta": "Ir para contato →"
   }
 }

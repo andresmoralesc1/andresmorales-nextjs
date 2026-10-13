@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
+import { sendMail } from '@/lib/email';
 
 // Brief has a max of 5 submissions / hour / IP (see checkRateLimit below).
 // Body size guard: 10 KB is plenty for a full brief (name + email + role
@@ -9,12 +10,12 @@ import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/
 // measures ~1.5-3 KB in practice.
 const MAX_BODY_BYTES = 10 * 1024;
 
-// Brevo transactional email API
-// Docs: https://developers.brevo.com/reference/sendtransacemail
-const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
-const TO_EMAIL = process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
-const FROM_EMAIL = process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
+// Self-hosted Mailcow SMTP — see lib/email.ts for the transport config.
+// Recipient + sender fall back to the Mailcow mailbox. BRIEF_*_EMAIL
+// env vars are kept as optional overrides for testing.
+const TO_EMAIL = process.env.BRIEF_TO_EMAIL || process.env.MAILCOW_USER || 'info@andresmorales.com.co';
 const FROM_NAME = process.env.BRIEF_FROM_NAME || 'Andrés Morales · Portfolio Brief';
+const MAIL_CONFIGURED = Boolean(process.env.MAILCOW_PASSWORD);
 
 // ── ClickUp integration ─────────────────────────────────────────────────
 // When a brief is received, also create a task in a ClickUp list so you
@@ -225,36 +226,19 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
     },
   };
 }
-async function sendViaBrevo(data: BriefPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string; status?: number }> {
-  const payload = {
-    sender: { name: FROM_NAME, email: FROM_EMAIL },
-    to: [{ email: TO_EMAIL, name: 'Andres' }],
-    replyTo: { email: data.email, name: data.name },
-    subject: `${dict.brief.email.title}: ${data.name} — ${projectTypeLabel(data, dict)}`,
-    htmlContent: renderEmailHtml(data, dict),
-    textContent: renderEmailText(data, dict),
-  };
-
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key': BREVO_API_KEY,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (res.ok) return { ok: true };
-
-  let body: unknown = null;
+async function sendNotification(data: BriefPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string }> {
   try {
-    body = await res.json();
-  } catch {
-    body = await res.text().catch(() => null);
+    await sendMail({
+      to: TO_EMAIL,
+      replyTo: data.email,
+      subject: `${dict.brief.email.title}: ${data.name} — ${projectTypeLabel(data, dict)}`,
+      html: renderEmailHtml(data, dict),
+      text: renderEmailText(data, dict),
+    });
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'unknown' };
   }
-
-  return { ok: false, status: res.status, error: JSON.stringify(body) };
 }
 
 export async function POST(req: NextRequest) {
@@ -334,10 +318,10 @@ export async function POST(req: NextRequest) {
   // against the limit (so a human user fixing typos isn't punished).
   bumpRateLimit(RATE_LIMIT_ROUTE, ip);
 
-  // If Brevo key is not configured, we don't fail the UX — we just log the brief.
-  // This lets the route work in dev/demo without leaking the API setup.
-  if (!BREVO_API_KEY) {
-    console.warn('[brief] BREVO_API_KEY not set — brief received but not emailed:', {
+  // If Mailcow is not configured, we don't fail the UX — we just log the brief.
+  // This lets the route work in dev/demo without leaking the SMTP setup.
+  if (!MAIL_CONFIGURED) {
+    console.warn('[brief] MAILCOW_PASSWORD not set — brief received but not emailed:', {
       from: data.name,
       email: data.email,
       type: data.projectType,
@@ -351,9 +335,9 @@ export async function POST(req: NextRequest) {
     const lang = data.lang ?? DEFAULT_LOCALE;
     const dict = await getDictionary(lang);
 
-    const sendResult = await sendViaBrevo(data, dict);
+    const sendResult = await sendNotification(data, dict);
     if (!sendResult.ok) {
-      console.error('[brief] Brevo error:', sendResult.status, sendResult.error);
+      console.error('[brief] Mailcow error:', sendResult.error);
       return NextResponse.json(
         { error: 'Failed to send' },
         { status: 502 }
@@ -363,7 +347,7 @@ export async function POST(req: NextRequest) {
     // Fire-and-forget auto-reply to the user. Failure here does NOT
     // affect the brief send — already logged + replied in the inbox.
     // await is intentionally skipped so we don't inflate the response
-    // time if Brevo is slow on the second send.
+    // time if the SMTP relay is slow on the second send.
     sendAutoReply(data, dict, lang).catch((err) => {
       console.warn('[brief] auto-reply failed (non-fatal):', err);
     });
@@ -384,8 +368,7 @@ export async function POST(req: NextRequest) {
 }
 
 // Send a confirmation email to whoever filled the brief. Uses the same
-// verified sender so nothing leaves the andres@andresmorales.com.co
-// envelope. Same Brevo endpoint, parallel route.
+// Mailcow transport so nothing leaves the user's own mail server.
 async function sendAutoReply(p: BriefPayload, dict: Dictionary, lang: string): Promise<void> {
   const firstName = p.name.split(' ')[0] || p.name;
   const greeting = dict.brief.emailAutoReply.greeting.replace('{firstName}', escapeHtml(firstName));
@@ -423,29 +406,14 @@ ${dict.brief.emailAutoReply.signature}
 ---
 ${dict.brief.emailAutoReply.footer} ${briefUrl}.`;
 
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key': BREVO_API_KEY,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-      sender: { name: FROM_NAME, email: FROM_EMAIL },
-      // User is the recipient. Using email-to-name "Andrés" would confuse;
-      // use the user's own name (or fall back to their email) as the "to" name.
-      to: [{ email: p.email, name: p.name }],
-      replyTo: { email: FROM_EMAIL, name: 'Andrés Morales' },
-      subject,
-      htmlContent: html,
-      textContent: text,
-    }),
+  await sendMail({
+    to: p.email,
+    toName: p.name,
+    replyTo: TO_EMAIL,
+    subject,
+    html,
+    text,
   });
-
-  if (!res.ok) {
-    const body = await res.text().catch(() => '');
-    throw new Error(`Brevo auto-reply failed: ${res.status} ${body}`);
-  }
 }
 
 // GET returns a simple health check (does NOT expose whether the key is set)

@@ -14,6 +14,7 @@
     "guide": "Guide",
     "compare": "Compare",
     "more": "More",
+    "logoAriaLabel": "Andrés Morales — Home",
     "moreSections": {
       "decide": "Decide",
       "learn": "Learn",
@@ -107,6 +108,13 @@
     "ctaSeeAll": "See all services",
     "metaDescription": "Three tracks: AI automation, UI/UX design, and production web. Fixed-price engagements after a 30-min scoping call."
   },
+  "homeRecent": {
+    "eyebrow": "Recent work",
+    "title": "Three sites that shipped in 2026.",
+    "subtitle": "A taste of the live builds — full case studies on the portfolio page.",
+    "viewAll": "View all 12 projects →",
+    "liveBadge": "Live"
+  },
   "homeContact": {
     "eyebrow": "From Colombia, working with teams worldwide.",
     "title": "Let's talk",
@@ -131,6 +139,9 @@
     "builtWith": "Built with {heart} using Next.js",
     "githubLabel": "GitHub profile",
     "linkedinLabel": "LinkedIn profile",
+    "instagramLabel": "Instagram profile",
+    "facebookLabel": "Facebook page",
+    "whatsappLabel": "WhatsApp chat",
     "ariaNavLabel": "Footer navigation",
     "compareTitle": "Compare",
     "compareDesc": "Tool and service comparisons",
@@ -140,7 +151,16 @@
     "reachMeCta": "Email me",
     "availableBadge": "Available · Q4 2026",
     "servicesTitle": "Services",
-    "moreTitle": "See more"
+    "moreTitle": "See more",
+    "legalTitle": "Legal",
+    "legalEntityLabel": "Andrés Morales — AI Consulting",
+    "legalAddressLabel": "Registered in",
+    "legalAddressCity": "Bogotá, D.C.",
+    "legalAddressCountry": "Colombia",
+    "legalEmailLabel": "Contact",
+    "legalControllerLabel": "Data controller",
+    "policyColumnTitle": "Policies",
+    "dataProtectionLabel": "Data protection"
   },
   "contact": {
     "eyebrow": "Contact",
@@ -168,6 +188,9 @@
     "formMessageHelp": "A few sentences are enough. I will reply within one business day.",
     "formSubmit": "Send message",
     "formSubmitting": "Sending…",
+    "formConsentLabel": "I agree to be contacted about my message and have read the {privacy}.",
+    "formConsentPrivacy": "Privacy Policy",
+    "formConsentError": "Please confirm you've read the privacy policy before sending.",
     "formSuccessTitle": "Message sent",
     "formSuccessBody": "I will reply within one business day. If urgent, email info@andresmorales.com.co.",
     "formSuccessRetry": "Send another",
@@ -407,28 +430,28 @@
     "eyebrow": "What I do",
     "title": "What I do",
     "subtitle": "I look at how your business runs, find the work AI can take off your plate, and design smart systems that help you scale — from idea to execution.",
-    "salesTitle": "Sales",
-    "salesDesc": "I know what it takes to hit a number. I help businesses grow revenue with clear messaging, solid follow-up, and systems that don't drop leads on the floor.",
     "aiTitle": "AI Automation",
     "aiDesc": "I don't just build automations — I design intelligent experiences that guide your users, solve real problems, and scale your business while you sleep. Work less, grow more.",
-    "uiTitle": "UI/UX Analyst",
-    "uiDesc": "I design interfaces that are clear, fast, and easy to use. The goal isn't just to look good — it's to make the next step obvious so people actually convert."
+    "uiTitle": "UI/UX Design",
+    "uiDesc": "I design interfaces that are clear, fast, and easy to use. The goal isn't just to look good — it's to make the next step obvious so people actually convert.",
+    "webTitle": "AI-Powered Web",
+    "webDesc": "Production-grade web apps and dashboards that ship with AI baked in — not bolted on. Next.js + TypeScript + your data, deployed on Vercel or your own infra."
   },
   "homeSkills": {
     "eyebrow": "Skills",
     "title": "Where my time has gone",
-    "subtitle": "Over the last decade — and where I'm investing next. Each bar shows the relative experience in the tools I use day to day.",
+    "subtitle": "AI-first stack — the tools I use day to day to ship automations, agents, and production web.",
     "liveBadge": "Live data — last updated this week",
-    "sales": "Sales",
-    "webDesigner": "Web designer",
-    "uxAnalyst": "UX Analyst",
-    "wordpress": "WordPress",
+    "n8n": "n8n",
     "aiAgents": "AI Agents",
-    "aiAutomations": "AI Automations",
-    "customerService": "Customer Service",
-    "prospecting": "Prospecting",
-    "digitalMarketing": "Digital Marketing",
-    "photoshop": "Photoshop"
+    "llmApis": "OpenAI / Anthropic",
+    "make": "Make",
+    "nextReact": "Next.js / React",
+    "typescript": "TypeScript",
+    "vercelCloudflare": "Vercel / Cloudflare",
+    "postgresPrisma": "PostgreSQL / Prisma",
+    "python": "Python",
+    "dockerInfra": "Docker + Caddy"
   },
   "homeCta": {
     "title": "Ready to scale without the chaos?",
@@ -833,7 +856,7 @@
       "whyTitle": "Why I collect it",
       "whyBody": "To reply to your message, deliver the work we agreed on, prevent spam and abuse, and understand which pages are useful. I never sell your data. I never share it with third parties for marketing.",
       "thirdPartiesTitle": "Third-party services",
-      "thirdPartiesBody": "Contact form submissions are emailed via Brevo (transactional email, EU-hosted). Project briefs also create a task in ClickUp (project management, US-hosted). Both processors are bound by data-processing agreements. Plausible Analytics is cookieless and self-hosted in the EU.",
+      "thirdPartiesBody": "Contact form submissions and data-deletion requests are delivered via Mailcow (self-hosted email on mail.cleida.com.co, co-located with the cleida.com.co mail cluster). Project briefs also create a task in ClickUp (project management, US-hosted). Both processors are bound by data-processing agreements. Plausible Analytics is cookieless and self-hosted in the EU. Google Analytics 4 is opt-in and only loads after you accept the cookie banner — IP is anonymised before storage.",
       "retentionTitle": "How long I keep it",
       "retentionBody": "Form submissions stay in my inbox until the project is finished and invoiced, then archived for tax records. You can ask me to delete them earlier.",
       "rightsTitle": "Your rights",
@@ -866,11 +889,141 @@
     },
     "footerLinks": {
       "privacy": "Privacy",
-      "terms": "Terms"
+      "terms": "Terms",
+      "refund": "Refunds",
+      "cookies": "Cookies",
+      "deleteData": "Delete my data"
+    },
+    "refund": {
+      "metaTitle": "Refund Policy — Andrés Morales",
+      "metaDescription": "When deposits, milestones, and unused hours are refundable on andresmorales.com.co engagements.",
+      "h1": "Refund Policy",
+      "lastUpdated": "Last updated: October 2026",
+      "intro": "Plain-language summary of when you can get money back. Engagements are fixed-price, so refunds apply to specific situations — not 'changed my mind' after work has started.",
+      "depositsTitle": "Deposits",
+      "depositsBody": "A deposit locks a slot in my schedule and reserves time for your project. It is refundable in full if I have not started work and you cancel within 7 calendar days of paying. After work has started, deposits are non-refundable.",
+      "milestonesTitle": "Milestone payments",
+      "milestonesBody": "Each milestone is tied to a written deliverable in your brief. If you cancel before a milestone starts, that milestone is refundable. Once started, work is non-refundable.",
+      "unusedHoursTitle": "Unused prepaid hours",
+      "unusedHoursBody": "Unused prepaid hours expire 12 months after purchase. Within the first 30 days they are refundable in full minus a 5% payment-processing fee.",
+      "disputesTitle": "Disputes and chargebacks",
+      "disputesBody": "If you have a concern, email info@andresmorales.com.co first — I respond within 5 business days and most situations are resolved without escalation. Filing a chargeback without contacting me first is a breach of these terms and may terminate the engagement.",
+      "howTitle": "How to request a refund",
+      "howBody": "Email info@andresmorales.com.co with your invoice number and the reason. I respond within 5 business days. Approved refunds are issued to the original payment method within 10 business days."
+    },
+    "cookies": {
+      "metaTitle": "Cookie Policy — andresmorales.com.co",
+      "metaDescription": "What cookies and similar technologies andresmorales.com.co uses, why, and how to control them.",
+      "h1": "Cookie Policy",
+      "lastUpdated": "Last updated: October 2026",
+      "intro": "This page lists every cookie and similar technology used on andresmorales.com.co, what it does, who sets it, and how long it lives. The short version: the site works without cookies; only analytics and your preferences use them, and only after you consent.",
+      "whatTitle": "What are cookies",
+      "whatBody": "Cookies are small text files your browser stores on your device. 'Similar technologies' includes localStorage, sessionStorage, IndexedDB, and pixels. They can be set by the site you visit (first-party) or by a third party whose code runs on the site.",
+      "essentialTitle": "Strictly necessary cookies",
+      "essentialBody": "These are required for the site to work and cannot be switched off. They include the locale preference (so the site knows which language to show) and a CSRF token on form submissions. No personal data is stored — only a session identifier.",
+      "analyticsTitle": "Analytics cookies",
+      "analyticsBody": "If you grant consent, Google Analytics 4 (GA4) sets cookies to distinguish unique visitors and sessions. IP addresses are anonymized before storage. You can decline analytics cookies and the site continues to work normally.",
+      "preferencesTitle": "Preference cookies",
+      "preferencesBody": "If you accept, your cookie-banner choice is stored in localStorage (not a cookie) so you are not asked again on every visit. Stored for 12 months, then re-prompted.",
+      "thirdPartyTitle": "Third-party cookies",
+      "thirdPartyBody": "None are set by default. If you load an embedded YouTube video or Vimeo clip from the case-study pages, the embed provider may set its own cookies — controlled by their privacy policy, not ours.",
+      "manageTitle": "How to manage cookies",
+      "manageBody": "Use the cookie banner on your first visit to grant or refuse consent. To change your mind later, clear your browser storage for andresmorales.com.co and the banner will reappear. You can also block or delete cookies in your browser settings; blocking strictly-necessary cookies will break form submission.",
+      "contactTitle": "Questions",
+      "contactBody": "Email info@andresmorales.com.co."
+    },
+    "deleteMyData": {
+      "metaTitle": "Delete my data — andresmorales.com.co",
+      "metaDescription": "Request deletion of your personal data held by andresmorales.com.co under GDPR / CCPA / Ley 1581.",
+      "h1": "Delete my data",
+      "lastUpdated": "Last updated: October 2026",
+      "intro": "Use this form to ask me to delete the personal data I hold about you. Under GDPR, CCPA, Brazil's LGPD, and Colombia's Ley 1581/2012 you have the right to do this. I respond within 15 business days.",
+      "verifyTitle": "How I verify it's you",
+      "verifyBody": "To prevent someone else from requesting deletion of your data, I confirm by replying to the email address on file from the same address. If you no longer have access to that email, include any prior invoice number or project reference so I can match records.",
+      "scopeTitle": "What gets deleted",
+      "scopeBody": "Contact-form and brief-submission payloads, email correspondence tied to your address, project files linked to your engagement, and analytics identifiers associated with your IP. Tax records (invoices I am legally required to keep) are retained for the statutory period in Colombia and then deleted.",
+      "scopeNotTitle": "What does not get deleted",
+      "scopeNotBody": "Aggregated, anonymized analytics (no identifiers), published portfolio case studies with your permission, and any records I am legally required to retain.",
+      "formTitle": "Request form",
+      "formEmailLabel": "Your email (the one I have on file)",
+      "formEmailHelp": "I will reply to this address to verify the request.",
+      "formScopeLabel": "What to delete",
+      "formScopeAll": "Everything tied to my email",
+      "formScopeContact": "Contact-form submissions only",
+      "formScopeAnalytics": "Analytics identifiers only",
+      "formReasonLabel": "Reason (optional)",
+      "formReasonHelp": "Helps me improve, but not required.",
+      "formSubmit": "Send deletion request",
+      "formSubmitting": "Sending…",
+      "formSuccessTitle": "Request received",
+      "formSuccessBody": "I will reply to {email} within 15 business days to verify and complete the deletion. If you do not receive the reply, check spam or email info@andresmorales.com.co directly.",
+      "formErrorPrefix": "Could not send:",
+      "formErrorSuffix": "Email info@andresmorales.com.co directly.",
+      "formErrorEmail": "Enter a valid email",
+      "manualTitle": "Prefer email?",
+      "manualBody": "Send the same info to info@andresmorales.com.co with subject 'Data deletion request'. I will handle it from there."
+    },
+    "cookieBanner": {
+      "title": "Cookies on andresmorales.com.co",
+      "body": "I use one strictly-necessary cookie for the locale preference and, only if you accept, Google Analytics (anonymized) to understand which pages are useful. No marketing, no tracking pixels, no data sale. You can change your mind anytime.",
+      "accept": "Accept all",
+      "reject": "Reject non-essential",
+      "preferences": "Preferences",
+      "preferencesTitle": "Cookie preferences",
+      "analyticsLabel": "Analytics (Google Analytics 4)",
+      "analyticsHelp": "Anonymized IP, page views only. No cross-site tracking.",
+      "essentialLabel": "Strictly necessary (always on)",
+      "essentialHelp": "Locale preference + form CSRF. Cannot be disabled.",
+      "save": "Save preferences",
+      "close": "Close",
+      "policyLink": "Read the Cookie Policy"
+    },
+    "gdprRights": {
+      "title": "Your rights under GDPR (EEA / UK)",
+      "intro": "If you are in the European Economic Area or the UK, the General Data Protection Regulation gives you the following rights. I honor them regardless of where you live.",
+      "access": "Right of access — request a copy of the personal data I hold about you.",
+      "rectification": "Right to rectification — correct inaccurate or incomplete data.",
+      "erasure": "Right to erasure ('right to be forgotten') — delete your data, subject to legal exceptions.",
+      "restriction": "Right to restriction — limit how I process your data while a dispute is resolved.",
+      "portability": "Right to data portability — receive your data in a machine-readable format.",
+      "object": "Right to object — object to processing based on legitimate interest or for direct marketing.",
+      "automated": "Right related to automated decision-making — I do not make decisions about you by automated means.",
+      "withdraw": "Right to withdraw consent — at any time, without affecting prior lawful processing.",
+      "complain": "Right to lodge a complaint with a supervisory authority in your country."
+    },
+    "ccpaRights": {
+      "title": "Your rights under CCPA / CPRA (California)",
+      "intro": "If you are a California resident, the California Consumer Privacy Act and California Privacy Rights Act give you the following rights.",
+      "know": "Right to know what personal information is collected, used, shared, or disclosed.",
+      "delete": "Right to delete personal information I hold about you.",
+      "correct": "Right to correct inaccurate personal information.",
+      "optOut": "Right to opt out of the sale or sharing of personal information. I do not sell or share personal information for cross-context behavioral advertising.",
+      "limit": "Right to limit use of sensitive personal information to that necessary to provide the service.",
+      "nondiscriminate": "Right to non-discrimination for exercising any of the above rights.",
+      "doNotSellLink": "Do Not Sell or Share My Personal Information"
+    },
+    "lawfulBasis": {
+      "title": "Lawful basis for processing (GDPR Article 6)",
+      "intro": "Under GDPR I must declare the legal basis for each processing activity. The summary:",
+      "consent": "Consent — analytics cookies and any non-essential tracking. You can withdraw at any time.",
+      "contract": "Contract — processing needed to deliver the services you engaged.",
+      "legal": "Legal obligation — retaining tax records (invoices) for the Colombian statutory period.",
+      "legitimate": "Legitimate interest — spam and abuse prevention, basic site analytics (with consent). I balance these against your rights and provide an opt-out.",
+      "vital": "Vital interests — not applicable to this site."
+    },
+    "internationalTransfers": {
+      "title": "International data transfers",
+      "intro": "Some of my processors (ClickUp, Google Analytics) are based outside your country. Outbound email is delivered via Mailcow (self-hosted on mail.cleida.com.co — no third-party SaaS). Where GDPR applies, international transfers are protected by Standard Contractual Clauses (SCCs) approved by the European Commission. Where Colombia's SIC or Brazil's ANPD apply, transfers rely on equivalent contractual safeguards.",
+      "processors": "Processors and locations: Mailcow (self-hosted, mail.cleida.com.co — for outbound email), Google Analytics / GCP (Ireland / US, EU-US Data Privacy Framework, only loaded after cookie consent), ClickUp (US with SCCs), Hetzner (Germany, EU for backups)."
+    },
+    "children": {
+      "title": "Children's privacy",
+      "intro": "This site is not directed at children under 16 (or 13 under COPPA, where applicable). I do not knowingly collect personal data from children. If you believe a child has submitted data through the contact form or brief, email info@andresmorales.com.co and I will delete it within 7 business days."
     }
   },
   "compare": {
     "breadcrumbCompare": "Compare",
+    "faqHeading": "FAQ",
     "lastReviewed": "Last reviewed Sep 26, 2026",
     "makeVsN8n": {
       "metaTitle": "Make vs n8n in 2026 — honest comparison",
@@ -1376,5 +1529,739 @@
   },
   "guide": {
     "keepReading": "Keep reading"
+  },
+  "playground": {
+    "title": "Playground",
+    "description": "Component lab — in-progress UI built live. New bits land here first.",
+    "mascot": {
+      "index": "01/01",
+      "discipline": "Portfolio",
+      "tagline": "Made in Colombia",
+      "collection": [
+        "Selected",
+        "Work"
+      ],
+      "reel": [
+        "Portfolio @ 2026",
+        "Andrés Morales"
+      ],
+      "year": "2026",
+      "initials": "AM",
+      "badge": "Hire me",
+      "line2": "Portfolio",
+      "line3": "Andrés",
+      "word": "Morales",
+      "verticalTag": "Cali",
+      "seekingLabel": "Looking for*",
+      "seeking": "New projects",
+      "greetings": [
+        "Hey there!",
+        "Let's build something cool.",
+        "Psst, I'm available.",
+        "Stop poking me :)"
+      ],
+      "href": "mailto:contacto@andresmorales.com.co"
+    },
+    "ticket": {
+      "brand": "Andrés Morales",
+      "company": "Andrés Morales",
+      "eyebrow": [
+        "AI Automation · UI/UX · Production",
+        "Currently shipping in Cali, Colombia",
+        "Available for new projects"
+      ],
+      "headline": [
+        "Ship the thing.",
+        "Skip the boilerplate."
+      ],
+      "description": "Independent practice based in Cali. Automation flows, hand-built UI, and end-to-end web — for teams that would rather have it done than debate it.",
+      "cta": "Let's talk",
+      "sections": [
+        "Overview",
+        "Services",
+        "Portfolio",
+        "Process",
+        "About",
+        "Brief",
+        "Pricing",
+        "Contact"
+      ],
+      "statusLabels": [
+        "Available",
+        "Booked"
+      ],
+      "statusCaption": "Studio Status",
+      "countLabel": "Est. 2014",
+      "count": 2014,
+      "rate": 0,
+      "blurb": "From intake to deploy, the studio keeps work in one place: scope, design, build, ship. Briefs land on the desk, deliverables land on the client.",
+      "linkGroups": {
+        "product": {
+          "title": "Services",
+          "links": [
+            "AI Automation",
+            "UI/UX Design",
+            "AI-Powered Web",
+            "Production"
+          ]
+        },
+        "demos": {
+          "title": "Live Demos",
+          "links": [
+            "Sneaker E-commerce",
+            "Interactive Web Brief"
+          ]
+        },
+        "resources": {
+          "title": "Resources",
+          "links": [
+            "Blog",
+            "Guides",
+            "Compare",
+            "FAQ"
+          ]
+        }
+      },
+      "legal": [
+        "All rights reserved",
+        "Terms of use",
+        "Privacy Policy"
+      ]
+    }
+  },
+  "briefWeb": {
+    "metaTitle": "Web Project Brief — Tell Me What Website You Need",
+    "metaDescription": "Choose between a 3-5 minute express brief or a 15-20 minute detailed brief for your website project. I reply within 24 hours.",
+    "eyebrow": "Line 05 · Web Brief",
+    "title": "Tell me about your web project. Choose the pace that fits you best.",
+    "subtitle1": "Two options according to your time: 3–5 min to get straight to the point, or 15–20 min to outline every detail.",
+    "subtitle2": "Prefer to talk directly without filling forms?",
+    "stats1": "<24h",
+    "stats1Label": "Reply with scope analysis and next steps",
+    "stats2": "2 options",
+    "stats2Label": "Express (3 min) or Detailed (15 min)",
+    "stats3": "100%",
+    "stats3Label": "Custom, modern, and high-performance code",
+    "selectorTitle": "How much time do you have today?",
+    "selectorSubtitle": "Both paths give us what we need to get started. Pick the one that fits your current availability.",
+    "modeExpressBadge": "⚡ 3 to 5 min",
+    "modeExpressTitle": "Express Brief",
+    "modeExpressSubtitle": "For busy founders and teams who want to get straight to the point",
+    "modeExpressDesc": "The core questions to understand the type of website, main goals, approximate budget, and launch timeline.",
+    "modeExpressBullet1": "3 quick and simple steps",
+    "modeExpressBullet2": "Under 7 focused questions",
+    "modeExpressBullet3": "Estimate and contact in <24h",
+    "modeExpressCta": "Start Express Brief (3 min) →",
+    "modeDetailedBadge": "🔍 15 to 20 min",
+    "modeDetailedTitle": "Detailed Brief",
+    "modeDetailedSubtitle": "For those who want to map out every detail of the project",
+    "modeDetailedDesc": "Ideal if you have the time and want to define visual style, brand identity, sitemap, key features, target audience, and content.",
+    "modeDetailedBullet1": "6 comprehensive strategic steps",
+    "modeDetailedBullet2": "Architecture, design, audience, and scope",
+    "modeDetailedBullet3": "Precise fixed-price scope proposal",
+    "modeDetailedCta": "Start Detailed Brief (15 min) →",
+    "activeModeExpress": "Express Mode active (3–5 min)",
+    "activeModeDetailed": "Detailed Mode active (15–20 min)",
+    "switchModeButton": "Switch brief option",
+    "switchModeConfirm": "Do you want to switch modes? Your core contact details will be preserved.",
+    "wizardStep": "Step {current} of {total}",
+    "wizardBack": "← Back",
+    "wizardStartOver": "Start over",
+    "wizardStartOverConfirm": "Reset all answers? Your saved progress in this form will be cleared.",
+    "wizardDraftSaved": "💾 Draft saved · {count} answer",
+    "wizardDraftSavedPlural": "💾 Draft saved · {count} answers",
+    "wizardDraftTitle": "Your progress is automatically saved in your browser for 30 days",
+    "wizardDisabledTitle": "Please fill in the required fields to continue",
+    "wizardNext": "Next →",
+    "wizardSubmit": "Submit web brief →",
+    "wizardSending": "Submitting web brief…",
+    "wizardRedirecting": "Web brief submitted! Redirecting…",
+    "wizardEscapeHatch": "Prefer to book a call?",
+    "wizardEscapeHatchCta": "Book a free 30-min strategy call →",
+    "expressStep1Title": "About you",
+    "expressStep2Title": "Your web project",
+    "expressStep3Title": "Investment & timeline",
+    "detailedStep1Title": "About you & your brand",
+    "detailedStep2Title": "Visual identity & style",
+    "detailedStep3Title": "Audience & value proposition",
+    "detailedStep4Title": "Structure & features",
+    "detailedStep5Title": "Content & languages",
+    "detailedStep6Title": "Logistics & budget",
+    "fieldName": "Your name",
+    "fieldNamePlaceholder": "E.g.: Alex Morgan",
+    "fieldEmail": "Email address",
+    "fieldEmailPlaceholder": "alex@company.com",
+    "fieldEmailError": "Enter a valid email address",
+    "fieldCompany": "Company or project",
+    "fieldCompanyPlaceholder": "E.g.: Acme Studio or Personal Brand",
+    "fieldRole": "Your role",
+    "fieldRolePlaceholder": "E.g.: Founder, Marketing Lead, Product Manager",
+    "fieldPhone": "Phone / WhatsApp (optional)",
+    "fieldPhonePlaceholder": "+1 (555) 234-5678",
+    "fieldCurrentSite": "Current website (if any)",
+    "fieldCurrentSitePlaceholder": "https://mycurrentsite.com",
+    "fieldWebTypeLegend": "What type of website do you need?",
+    "webTypes": {
+      "landing": "Landing Page (Single page to capture leads or launch a product)",
+      "corporate": "Corporate / Company Website (Multi-page services site)",
+      "ecommerce": "Online Store / E-commerce (Product catalog and checkout)",
+      "webapp": "Custom Web App / Platform (Client dashboard, SaaS portal)",
+      "redesign": "Complete redesign of an existing website",
+      "other": "Other web project type"
+    },
+    "fieldWebTypeOther": "What kind of web project do you have in mind?",
+    "fieldWebTypeOtherPlaceholder": "Briefly describe the website...",
+    "fieldGoalLegend": "What is the primary goal of the website?",
+    "goals": {
+      "leads": "Generate qualified leads and inquiries",
+      "sales": "Sell products or subscriptions directly",
+      "credibility": "Build authority, trust, and brand positioning",
+      "automation": "Automate bookings, support, or frequent inquiries",
+      "launch": "Launch a new business, brand, or offering",
+      "other": "Other goal"
+    },
+    "fieldGoalOther": "Tell us the goal",
+    "fieldGoalOtherPlaceholder": "What should this website achieve?",
+    "fieldReferences": "Reference websites or competitors that you like",
+    "fieldReferencesPlaceholder": "Paste 2-3 links to sites whose design, flow, or style you admire...",
+    "fieldReferencesNotes": "What do you like about these references?",
+    "fieldReferencesNotesPlaceholder": "E.g.: Clean typography, smooth transitions, easy navigation...",
+    "fieldBrandSummary": "What does your business do and what makes you unique?",
+    "fieldBrandSummaryPlaceholder": "Tell us in 2-3 sentences what you offer and why clients choose you...",
+    "fieldBrandValues": "Brand values or personality",
+    "fieldBrandValuesPlaceholder": "E.g.: Approachable, premium, tech-forward, transparent...",
+    "fieldLogoLegend": "Do you have a logo and visual guide?",
+    "logoOptions": {
+      "vector": "Yes, I have vector logo files (.SVG, .AI, .EPS, or PDF)",
+      "image": "Yes, but only image files (PNG or JPG)",
+      "need_design": "No, I need one designed from scratch",
+      "partial": "I have a preliminary draft or sketch"
+    },
+    "fieldColors": "Do you have a defined color palette?",
+    "fieldColorsPlaceholder": "List HEX codes (e.g.: #1E1810, #F96E03) or describe preferred colors...",
+    "fieldVibeLegend": "What feelings should the design convey?",
+    "vibes": [
+      "Minimalist & Clean",
+      "Modern & Tech-forward",
+      "Elegant & Premium",
+      "Warm & Approachable",
+      "Bold & Creative",
+      "Corporate & Reliable"
+    ],
+    "fieldAudience": "Who is your ideal customer or user?",
+    "fieldAudiencePlaceholder": "Describe their profile: who they are, what they need, and what problem you solve...",
+    "fieldMainCta": "What is the primary action a visitor should take?",
+    "fieldMainCtaPlaceholder": "E.g.: Schedule a call, fill out an inquiry form, buy online, message on WhatsApp...",
+    "fieldPagesLegend": "What pages or sections do you need?",
+    "pageOptions": [
+      "Home page",
+      "About us / Story",
+      "Services / Solutions",
+      "Products / Catalog",
+      "Case studies / Portfolio",
+      "Blog / Articles",
+      "Pricing / Plans",
+      "Contact / Location",
+      "Booking / Calendar"
+    ],
+    "fieldFeaturesLegend": "Special features required",
+    "featureOptions": [
+      "Multi-language (2 or more languages)",
+      "Payment gateway (Stripe, etc.)",
+      "Direct WhatsApp chat integration",
+      "CRM or email automation (HubSpot, Make, n8n)",
+      "Self-managed CMS",
+      "Client portal / Authentication",
+      "Advanced technical SEO"
+    ],
+    "fieldContentOriginLegend": "Who will handle the website copy?",
+    "contentOrigins": {
+      "client": "I will provide final ready-to-publish copy",
+      "need_copywriting": "I need professional copywriting assistance",
+      "mix": "I have drafts and need help polishing them",
+      "existing": "We will reuse copy from the current website"
+    },
+    "fieldMediaLegend": "Do you have photography and visual assets?",
+    "mediaOptions": {
+      "yes": "Yes, I have high-resolution photos and assets",
+      "partial": "I have some photos, but we will need stock/support imagery",
+      "need_help": "No, we will need graphic assets and curated stock imagery"
+    },
+    "fieldLanguages": "What language(s) will the site support?",
+    "fieldLanguagesPlaceholder": "E.g.: English only / English & Spanish / Trilingual...",
+    "fieldDomainHostingLegend": "Do you already have a domain and hosting?",
+    "domainHostingOptions": {
+      "both": "Yes, I have both domain and hosting",
+      "domain_only": "I only have the domain registered",
+      "none": "Neither, I need full guidance",
+      "not_sure": "Not sure"
+    },
+    "fieldBudgetLegend": "Estimated investment budget",
+    "budgets": {
+      "under2k": "Under $2,000 USD",
+      "2to5k": "$2,000 – $5,000 USD",
+      "5to15k": "$5,000 – $12,000 USD",
+      "15to50k": "Over $12,000 USD",
+      "flexible": "Recommend based on scope"
+    },
+    "fieldTimelineLegend": "Desired launch timeframe",
+    "timelines": {
+      "asap": "As soon as possible (urgent)",
+      "1month": "Within 3 to 4 weeks",
+      "1to2months": "1 to 2 months",
+      "flexible": "Flexible, focus on quality"
+    },
+    "fieldNotes": "Any additional notes or requirements?",
+    "fieldNotesPlaceholder": "Tell us about specific constraints, hard deadlines, or questions...",
+    "summaryToggle": "Review your answers before submitting ↓",
+    "summaryMode": "Mode",
+    "summaryContact": "Contact",
+    "summaryWebType": "Website type",
+    "summaryGoal": "Primary goal",
+    "summaryBudget": "Budget",
+    "summaryTimeline": "Timeline",
+    "email": {
+      "title": "New Web Project Brief",
+      "subtitle": "From {name} — {email}",
+      "fieldMode": "Brief mode",
+      "fieldCompany": "Company",
+      "fieldRole": "Role",
+      "fieldPhone": "Phone / WhatsApp",
+      "fieldCurrentSite": "Current site",
+      "fieldWebType": "Website type",
+      "fieldGoal": "Primary goal",
+      "fieldReferences": "Web references",
+      "fieldReferencesNotes": "Reference notes",
+      "fieldBrandSummary": "Brand summary",
+      "fieldBrandValues": "Brand values",
+      "fieldLogo": "Logo status",
+      "fieldColors": "Colors",
+      "fieldVibes": "Style / Vibe",
+      "fieldAudience": "Target audience",
+      "fieldMainCta": "Primary CTA",
+      "fieldPages": "Pages needed",
+      "fieldFeatures": "Key features",
+      "fieldContentOrigin": "Copywriting",
+      "fieldMedia": "Photos / Media",
+      "fieldLanguages": "Languages",
+      "fieldDomainHosting": "Domain & hosting",
+      "fieldBudget": "Budget",
+      "fieldTimeline": "Timeline",
+      "fieldNotes": "Additional notes",
+      "replyTo": "Reply directly to {email}"
+    },
+    "emailAutoReply": {
+      "subject": "Received your web brief — I will reply within 24 hours",
+      "greeting": "Hi {firstName},",
+      "body1": "Thank you for sharing your web project details. I have received your answers and will review them thoroughly.",
+      "body2": "Within 24 business hours, I will follow up with a preliminary analysis, recommendations, and clear next steps.",
+      "signature": "— Andrés Morales",
+      "footer": "You received this because you submitted the web brief on",
+      "linkText": "andresmorales.com.co/brief-web"
+    },
+    "faqTitle": "Frequently asked questions about the web brief",
+    "faqSubtitle": "Five key questions before submitting. If yours is not listed, we can discuss it on a call.",
+    "faqItems": [
+      {
+        "q": "What is the difference between the Express Brief and the Detailed Brief?",
+        "a": "The Express Brief (3-5 min) captures the core variables to give you a quick directional estimate when time is tight. The Detailed Brief (15-20 min) dives deep into architecture, styling, sitemap, and technical features for a fixed-price scope without surprises."
+      },
+      {
+        "q": "What happens after I submit the brief?",
+        "a": "I review every submission personally within 24 business hours. You will receive an email with scope observations, budget options, or an invite for a brief 20-min alignment call."
+      },
+      {
+        "q": "What technologies do you use for web development?",
+        "a": "Modern production-grade stack: Next.js (React), TypeScript, Tailwind CSS, performance optimization (Core Web Vitals), headless CMS if needed, and clean architecture ready for international SEO and high speed."
+      },
+      {
+        "q": "What if I do not have finalized copy or photos yet?",
+        "a": "No problem. Note it in the brief and I can guide you through persuasive copywriting and sourcing high-quality visual assets before coding begins."
+      },
+      {
+        "q": "Does the estimate include domain and hosting?",
+        "a": "I assist you in registering domain and hosting in your own name so you retain 100% ownership of your digital assets, configuring SSL, DNS, and continuous deployment."
+      }
+    ]
+  },
+  "sneakerProposal": {
+    "metaTitle": "Sneakers & Streetwear E-commerce Proposal | Andrés Morales",
+    "metaDescription": "High-performance commercial and technical proposal for an online sneaker and streetwear store. Next.js architecture, exclusive drops, and LATAM payment gateways.",
+    "badge": "Exclusive Commercial Proposal // 2026",
+    "clientTitle": "High-Performance Sneakers & Streetwear E-commerce",
+    "clientSubtitle": "Cult interactive UX, ultra-fast Next.js architecture (<0.8s), countdown drop engine, dynamic size conversion matrix, and streamlined payment flows.",
+    "metaAuthor": "Andrés Morales — Senior Fullstack & Web Architect",
+    "metaDelivery": "5 Weeks (Agile Methodology)",
+    "metaStack": "Next.js 15 App Router • TypeScript • Tailwind CSS • n8n Automations • Cloudflare Edge",
+    "heroShowcase": {
+      "badge": "LIVE DEMO // HIGH-IMPACT FRONTEND",
+      "title": "Proposed Hero Experience (Interactive)",
+      "description": "Faithful preview of the shopper experience: 3D breakout sneaker, real-time colorway switching, 60 FPS microinteractions, and sub-second mobile loading.",
+      "toggleClient": "Shopper View",
+      "toggleTech": "Technical Anatomy",
+      "navMen": "Men",
+      "navWomen": "Women",
+      "navDrops": "Drops 🔥",
+      "navSale": "Sale",
+      "brandBadge": "LIMITED EDITION // EXCLUSIVE DROP",
+      "sizeLabel": "Select your size (US)",
+      "sizeGuide": "Size conversion guide (US / EU / CM)",
+      "addToCart": "Add to cart",
+      "addedToCart": "Added to order!",
+      "cartBadge": "Cart",
+      "stockStatus": "In stock — Dispatched today",
+      "shippingNote": "Insured nationwide delivery • Cash on delivery & installment options available",
+      "altTitle": "Other silhouettes from the drop",
+      "quickSwitch": "View details",
+      "models": [
+        {
+          "id": "aj1",
+          "name": "Air Jordan 1 High OG",
+          "edition": "Bred High OG Heritage Edition",
+          "desc": "The legendary 1985 basketball classic with premium full-grain leather, padded collar, and the iconic red and black rubber outsole.",
+          "priceCop": "$689.900 COP",
+          "priceUsd": "$175 USD",
+          "rating": "4.9",
+          "reviews": 142,
+          "badge": "HYPE DROP",
+          "colorName": "Black / Varsity Red",
+          "image": "/sneakers/air-jordan-1-retro-high-og.png",
+          "thumb": "/sneakers/thumb-jordan-1.jpg"
+        },
+        {
+          "id": "aj12",
+          "name": "Air Jordan 12 Retro",
+          "edition": "Varsity Red Edition",
+          "desc": "Japanese sunrise flag silhouette with radiating quilted leather and carbon-fiber shank plate.",
+          "priceCop": "$749.900 COP",
+          "priceUsd": "$190 USD",
+          "rating": "5.0",
+          "reviews": 98,
+          "badge": "FEW LEFT",
+          "colorName": "White / Gym Red",
+          "image": "/sneakers/air-jordan-12-retro-gym-red.png",
+          "thumb": "/sneakers/thumb-jordan-12.jpg"
+        },
+        {
+          "id": "am90",
+          "name": "Nike Air Max Alpha Stealth",
+          "edition": "Dark Stealth Max Air Edition",
+          "desc": "Visible Max Air cushioning unit in the heel, TPU lateral support, and multidirectional tread for supreme urban traction.",
+          "priceCop": "$549.900 COP",
+          "priceUsd": "$140 USD",
+          "rating": "4.8",
+          "reviews": 115,
+          "badge": "BESTSELLER",
+          "colorName": "Black / White / Stealth Grey",
+          "image": "/sneakers/nike-air-max-alpha-stealth.png",
+          "thumb": "/sneakers/thumb-nike-air-max.jpg"
+        }
+      ]
+    },
+    "diagnostic": {
+      "badge": "01. DIAGNOSTIC & OPPORTUNITY",
+      "title": "Why Traditional Sneaker E-commerce Loses Up to 40% of Sales",
+      "intro": "In sneakerhead and streetwear culture, buying is driven by impulse and hype. Over 80% of visits originate from mobile phones (Instagram Ads, TikTok, and WhatsApp shares). Every second of delay destroys conversion.",
+      "stats": [
+        {
+          "value": "84%",
+          "label": "100% Mobile traffic",
+          "desc": "Shoppers browsing directly from social stories with zero tolerance for slow pages."
+        },
+        {
+          "value": "<0.8s",
+          "label": "Target load time",
+          "desc": "Every additional 100ms lag cuts conversion rate by 7% (Google/Deloitte research)."
+        },
+        {
+          "value": "38%",
+          "label": "Footwear returns",
+          "desc": "Driven by confusing size conversions between regional, US, and EU standards."
+        },
+        {
+          "value": "65%",
+          "label": "Abandoned carts",
+          "desc": "Triggered by multi-step checkouts, surprise fees, or missing localized payment options."
+        }
+      ],
+      "comparisonTitle": "Technical Comparison: Standard E-commerce vs Headless Architecture",
+      "comparisonSubtitle": "The concrete differences between an off-the-shelf template and high-performance custom engineering.",
+      "standard": {
+        "title": "Conventional E-commerce (Stock Shopify / WooCommerce)",
+        "badge": "Common bottlenecks",
+        "points": [
+          "Bloated themes burdened with 20+ plugins slowing loading to 3.8s - 5.5s.",
+          "Server slowdowns or outages during high-concurrency drop launches.",
+          "Rigid multi-step checkout causing friction during high-intent purchases.",
+          "Compounding monthly app subscriptions and transactional platform fees.",
+          "Inability to implement fluid 3D microinteractions without tanking performance."
+        ]
+      },
+      "proposed": {
+        "title": "Next.js Headless Architecture (This Proposal)",
+        "badge": "Proven competitive advantage",
+        "points": [
+          "Instant sub-0.8s load times with automatic AVIF/WebP image optimization.",
+          "Serverless Edge infrastructure handling thousands of concurrent shoppers seamlessly.",
+          "1-click checkout supporting cards, local bank rails (PSE), installment plans (Addi), and COD.",
+          "100% client-owned code: no platform royalties, zero recurring app fees.",
+          "Immersive visual experience with 3D breakout sneakers and silky 60 FPS animations."
+        ]
+      }
+    },
+    "features": {
+      "badge": "02. SOLUTION PILLARS",
+      "title": "6 Specialized Capabilities for a Leading Sneaker Store",
+      "subtitle": "Engineered to accelerate purchasing decisions, protect inventory, and cultivate a loyal sneakerhead community.",
+      "list": [
+        {
+          "icon": "⚡",
+          "title": "Drop Engine with Countdown & VIP Waitlist",
+          "desc": "Live countdown timer module with early-access WhatsApp capture. Enables pre-launch signups so you can notify VIPs 15 minutes prior to sell out inventory rapidly.",
+          "highlight": "Builds authentic FOMO and grows your proprietary VIP list."
+        },
+        {
+          "icon": "👟",
+          "title": "Dynamic Size Matrix & Fit Advisory",
+          "desc": "Instant real-time sizing table (US / EU / CM / Local) with tailored fit notes ('True to size / Runs half size small'). Drastically curbs reverse logistics costs.",
+          "highlight": "Saves money on courier return fees and size exchanges."
+        },
+        {
+          "icon": "💳",
+          "title": "1-Click Local Checkout (Wompi + Addi + COD)",
+          "desc": "Full integration with preferred regional payment methods: debit/credit, instant bank transfers, 0% interest installments via Addi, and validated cash on delivery.",
+          "highlight": "Maximizes order approval rates and basket sizes."
+        },
+        {
+          "icon": "🤖",
+          "title": "Post-Purchase Automations via n8n & WhatsApp",
+          "desc": "Automated WhatsApp dispatch with real-time tracking numbers, automated cart recovery reminders at 30 minutes, and low-stock alerts for the fulfillment crew.",
+          "highlight": "Eliminates up to 80% of repetitive customer support tracking inquiries."
+        },
+        {
+          "icon": "🔍",
+          "title": "Faceted Instant Search & Filters",
+          "desc": "Lightning-fast product filtering by silhouette (High, Mid, Low), brand (Jordan, Nike, Yeezy), in-stock size, and price bracket without page refreshes.",
+          "highlight": "Helps shoppers find their exact pair and size in under 3 taps."
+        },
+        {
+          "icon": "📈",
+          "title": "Structured SEO & Organic Google Shopping",
+          "desc": "Engineered Schema.org Product, Offer, and AggregateRating tags so product cards rank in Google Image and Shopping results with price, ratings, and live stock.",
+          "highlight": "Zero-cost organic acquisition from high-intent searchers."
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "03. IMPLEMENTATION ROADMAP",
+      "title": "5-Week Delivery Plan",
+      "subtitle": "Phased delivery milestones with testable staging builds on your phone starting from sprint one.",
+      "weeks": [
+        {
+          "week": "Week 1",
+          "title": "Strategy, Architecture & Visual Art Direction",
+          "deliverables": [
+            "Catalog hierarchy, sizing taxonomy, brand architecture, and attributes definition",
+            "High-fidelity UI/UX design in Figma (Mobile & Desktop) with authentic streetwear aesthetic",
+            "GitHub repository setup, CI/CD pipeline, and Next.js design system component tokens"
+          ]
+        },
+        {
+          "week": "Week 2",
+          "title": "Interactive Frontend & High-Performance Catalog",
+          "deliverables": [
+            "3D breakout hero development with dynamic model switcher",
+            "Fast faceted catalog view with live filtering by size, brand, and pricing",
+            "Product detail page with AVIF gallery, zoom, and interactive size matrix"
+          ]
+        },
+        {
+          "week": "Week 3",
+          "title": "Payment Gateways, Checkout & Logistics Logic",
+          "deliverables": [
+            "Payment gateway integration (Wompi, Mercado Pago, cards, PSE)",
+            "Addi integration (buy-now-pay-later installments without credit cards)",
+            "Cash-on-delivery workflow with city-based shipping calculation"
+          ]
+        },
+        {
+          "week": "Week 4",
+          "title": "n8n Automations & WhatsApp API Integration",
+          "deliverables": [
+            "Automated order confirmation and tracking number dispatch over WhatsApp",
+            "30-minute abandoned cart follow-up automation flow",
+            "Stress load testing and Core Web Vitals optimization (>90 PageSpeed score)"
+          ]
+        },
+        {
+          "week": "Week 5",
+          "title": "Catalog Seeding, End-to-End QA & Launch",
+          "deliverables": [
+            "Assistance with initial inventory seeding and SKU setup",
+            "Full live-transaction end-to-end checkout testing in production",
+            "Production domain cutover, SSL provisioning, and Drop #1 launch readiness"
+          ]
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "04. MONTHLY GROWTH PLANS // RETAINERS",
+      "title": "Growth Advisory, Ads & AI Content Production",
+      "subtitle": "An e-commerce store without traffic generates zero revenue. We ensure daily sales through targeted Meta/TikTok campaigns and cinematic generative content produced with Google Veo 2, Veo 3, and Nanobanana.",
+      "selectPlan": "Choose this monthly plan",
+      "timelineLabel": "Terms:",
+      "plans": [
+        {
+          "id": "tier1",
+          "name": "Tier 1 — Starter Growth",
+          "tagline": "To validate ads, maintain store uptime, and publish regular AI-generated creative assets.",
+          "priceCop": "$119,998 COP",
+          "priceUsd": "$30 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": false,
+          "features": [
+            "Meta Ads Management (Facebook & Instagram): 1 optimized conversion or messaging campaign",
+            "AI Content Creation (Nanobanana / Midjourney): 4 photorealistic ad creatives per month",
+            "Continuous technical maintenance, 99.9% uptime server monitoring, and secure backups",
+            "Monthly catalog updates (up to 5 new sneaker drops or SKU updates per month)",
+            "Meta Pixel and Conversion API (CAPI) tracking configuration",
+            "Monthly transparent ad performance and sales analytics report"
+          ]
+        },
+        {
+          "id": "tier2",
+          "name": "Tier 2 — Scale & Hype Pro",
+          "badge": "RECOMMENDED // MOST POPULAR",
+          "tagline": "Accelerate sales with cinematic Video Ads generated by Veo 2 and social media management.",
+          "priceCop": "$249,998 COP",
+          "priceUsd": "$63 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": true,
+          "features": [
+            "Advanced Meta Ads Management: Sneakerhead audience prospecting + High-intent abandoned cart retargeting",
+            "Video Ads Production with Google Veo 2: 4 cinematic motion sneaker videos with luxury streetwear aesthetic",
+            "Visual Content Creation with Nanobanana: 8 additional high-impact ad stills for stories, reels, and feeds",
+            "Social Media Management: 3 weekly posts/reels on Instagram with persuasive copywriting and hashtags",
+            "WhatsApp Quick-Reply Automation: Instant responses for sizing inquiries and direct checkout links",
+            "Ongoing catalog management (up to 15 new sneaker drops or price adjustments per month)",
+            "Bi-weekly ROAS (Return On Ad Spend) performance report and budget optimization"
+          ]
+        },
+        {
+          "id": "tier3",
+          "name": "Tier 3 — Dominance Flagship",
+          "tagline": "Full-service digital agency: Multichannel Ads (Meta + TikTok), commercial production with Veo 3, and n8n.",
+          "priceCop": "$499,998 COP",
+          "priceUsd": "$125 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": false,
+          "features": [
+            "Full Multichannel Ads: Meta Ads (Instagram/FB) + TikTok Ads + Organic Google Shopping integration",
+            "High-End Commercial Production with Google Veo 3: 8 cinematic 4K hyperrealistic videos (macro textures, dynamic 3D camera sweeps, slow-motion studio lighting matching Nike campaigns)",
+            "Comprehensive monthly advertising creative suite with Nanobanana and pro motion editing",
+            "Full Social Media Management: Complete content calendar (Instagram + TikTok) with daily story hype during drops",
+            "Advanced n8n Automations: Automatic 30-min WhatsApp abandoned cart recovery and courier tracking dispatch",
+            "Ongoing Conversion Rate Optimization (CRO): A/B testing checkout flows, flash sales, and discount banners",
+            "24/7 Priority VIP support over WhatsApp with Andrés Morales + Bi-weekly 1-on-1 strategy sessions"
+          ]
+        }
+      ]
+    },
+    "guarantees": {
+      "badge": "05. OUR COMMITMENT",
+      "title": "3 Contractual Guarantees for Total Peace of Mind",
+      "items": [
+        {
+          "title": "Performance Guarantee (>90 on Google PageSpeed)",
+          "desc": "We contractually commit to a 90+ score on Google PageSpeed Mobile. If unmet, we optimize at zero additional charge until verified."
+        },
+        {
+          "title": "Zero Downtime During High-Traffic Drops",
+          "desc": "Serverless edge infrastructure absorbs thousands of concurrent visits when marketing campaigns launch or influencers post drops."
+        },
+        {
+          "title": "100% Ownership of Code and Data",
+          "desc": "All codebase, accounts, domain records, and databases belong entirely to you from day one. Zero lock-in and zero platform commissions."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Build the Ultimate Sneaker E-commerce?",
+      "subtitle": "Let us align on your brand vision, clarify technical questions, and lock in the kickoff date.",
+      "whatsappBtn": "Discuss this proposal on WhatsApp",
+      "callBtn": "Book 20-min Kickoff Video Call",
+      "printBtn": "Save or print proposal (PDF)"
+    },
+    "baseOffer": {
+      "badge": "03. WEB DEVELOPMENT // ONE-TIME PAYMENT",
+      "title": "Your Next.js E-commerce Store (Latest Tech Stack)",
+      "subtitle": "An ultra-fast e-commerce (<0.8s), visually striking with 3D breakout sneakers, ready to convert traffic into sales from day one.",
+      "priceCop": "$500,000 COP",
+      "priceUsd": "$125 USD",
+      "tagline": "One-time development investment. Zero sales commissions, zero mandatory platform subscriptions.",
+      "timeline": "2 to 3 weeks",
+      "hostingBadge": "Lifetime Edge Hosting",
+      "hostingDesc": "Hosted on Cloudflare/Vercel Edge Serverless. Zero monthly server hosting bills for you.",
+      "sslBadge": "Lifetime SSL Certificates",
+      "sslDesc": "Bank-grade encryption and perpetual security padlock included at no extra charge.",
+      "domainBadge": "Domain Provided by Client",
+      "domainDesc": "We guide you step-by-step to register your domain (.com / .co) in your own name for ~$12 USD/yr.",
+      "features": [
+        "Built entirely on Next.js 15 (cutting-edge architecture with sub-0.8s mobile loading)",
+        "High-impact interactive hero with 3D breakout sneaker display (matching the demo above)",
+        "Faceted product catalog with live filtering by silhouette (High/Mid/Low), brand, and size",
+        "Dynamic interactive sizing matrix (US / EU / CM / Local) with real fit notes to eliminate returns",
+        "Colombian & LATAM payment gateways: Wompi, cards, bank transfers, Addi (0% installments), and cash on delivery",
+        "Lifetime Edge cloud hosting: Save between $30 to $80 USD/mo compared to traditional servers!",
+        "Lifetime SSL security certificates for 100% protected checkout and browsing",
+        "100% mobile-first optimization engineered for impulse shoppers from Instagram and TikTok",
+        "Personalized video training so you can manage your inventory, drops, and orders effortlessly"
+      ],
+      "cta": "Get Your Web Store for $500,000 COP"
+    }
+  },
+  "briefHub": {
+    "metaTitle": "Interactive Brief — Choose your project type",
+    "metaDescription": "Choose the path that best fits your project: Website or E-commerce, Automation & AI, or Technical Consulting.",
+    "eyebrow": "Line 04 · Interactive Brief",
+    "title": "What type of project would you like to scope?",
+    "subtitle": "Choose the right path to get targeted questions and a fixed-price proposal in under 24 hours.",
+    "changePath": "Change project type",
+    "activePath": "Active path",
+    "pathWeb": "Website & E-commerce",
+    "pathAutomation": "Automation & AI",
+    "pathConsulting": "Direct Consulting",
+    "webCardBadge": "Custom Design & Code",
+    "webCardTitle": "Website or E-commerce",
+    "webCardSubtitle": "Landing pages, online stores, redesigns or web apps",
+    "webCardDesc": "High-impact UI/UX design, product catalog, payment gateways, smooth animations, and top-tier SEO performance.",
+    "webCardBullets": [
+      "Express (3 min) or Detailed (15 min) options",
+      "Questions tailored to visual identity, pages, and references",
+      "Personalized fixed-price quote in under 24h"
+    ],
+    "webCardCta": "Start Web Brief →",
+    "automationCardBadge": "Operations & AI",
+    "automationCardTitle": "Automation & AI Integrations",
+    "automationCardSubtitle": "AI agents, Make, n8n, CRM, and automated workflows",
+    "automationCardDesc": "Eliminate repetitive manual tasks, connect your existing tools, and scale your team's operational productivity.",
+    "automationCardBullets": [
+      "5 structured steps focused on bottlenecks",
+      "Tool mapping (Sheets, Slack, CRM, WhatsApp)",
+      "Time savings metrics and clear proposal"
+    ],
+    "automationCardCta": "Start Automation Brief →",
+    "consultingCardBadge": "Free 1-on-1 Call",
+    "consultingCardTitle": "Consulting or Direct Scoping Call",
+    "consultingCardSubtitle": "30-min video call or tailored technical scoping",
+    "consultingCardDesc": "Have a custom requirement, architecture questions, or prefer discussing it live before filling out a form?",
+    "consultingCardBullets": [
+      "30 minutes via Google Meet / Zoom",
+      "Live feasibility and ballpark pricing",
+      "Zero commercial pressure"
+    ],
+    "consultingCardCta": "Book 30-min call →",
+    "consultingAltText": "Prefer to drop a quick message?",
+    "consultingAltCta": "Go to contact form →"
   }
 }

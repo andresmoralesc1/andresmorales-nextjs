@@ -4,6 +4,10 @@ import { SkillsClient } from '@/components/sections/skills.client';
 // Server wrapper around the client `SkillsClient`. Reads the dictionary
 // on the server (where the `x-locale` header is available), then passes
 // the resolved strings down as props.
+//
+// Skill keys + percentages live in the client component (the chart
+// shape is hardcoded there to keep the math simple). The dict only
+// carries the human-readable labels.
 export async function Skills() {
   const dict = await getCurrentDictionary();
   return (
@@ -13,16 +17,16 @@ export async function Skills() {
       subtitle={dict.homeSkills.subtitle}
       liveBadge={dict.homeSkills.liveBadge}
       dict={{
-        sales: dict.homeSkills.sales,
-        webDesigner: dict.homeSkills.webDesigner,
-        uxAnalyst: dict.homeSkills.uxAnalyst,
-        wordpress: dict.homeSkills.wordpress,
+        n8n: dict.homeSkills.n8n,
         aiAgents: dict.homeSkills.aiAgents,
-        aiAutomations: dict.homeSkills.aiAutomations,
-        customerService: dict.homeSkills.customerService,
-        prospecting: dict.homeSkills.prospecting,
-        digitalMarketing: dict.homeSkills.digitalMarketing,
-        photoshop: dict.homeSkills.photoshop,
+        llmApis: dict.homeSkills.llmApis,
+        make: dict.homeSkills.make,
+        nextReact: dict.homeSkills.nextReact,
+        typescript: dict.homeSkills.typescript,
+        vercelCloudflare: dict.homeSkills.vercelCloudflare,
+        postgresPrisma: dict.homeSkills.postgresPrisma,
+        python: dict.homeSkills.python,
+        dockerInfra: dict.homeSkills.dockerInfra,
       }}
     />
   );

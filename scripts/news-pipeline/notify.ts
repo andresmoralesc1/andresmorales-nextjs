@@ -1,9 +1,10 @@
-// notify.ts — Sends an email via Brevo and (optionally) a Telegram message
-// when a new draft is ready for review. Brevo is required (already used by
-// the contact form), Telegram is optional and silent-skipped if env vars
-// are missing.
+// notify.ts — Sends an email via Mailcow SMTP and (optionally) a Telegram
+// message when a new draft is ready for review. Mailcow is the local SMTP
+// relay (mail.cleida.com.co); Telegram is optional and silent-skipped if
+// env vars are missing.
 
 import type { Draft } from './generate.js';
+import nodemailer from 'nodemailer';
 
 interface NotifyArgs {
   draft: Draft;
@@ -12,7 +13,9 @@ interface NotifyArgs {
   previewUrl: string; // absolute URL the human can click
 }
 
-const BREVO_API = 'https://api.brevo.com/v3/smtp/email';
+const MAILCOW_HOST = process.env.MAILCOW_HOST || 'mail.cleida.com.co';
+const MAILCOW_PORT = Number(process.env.MAILCOW_PORT || 465);
+const MAILCOW_USER = process.env.MAILCOW_USER || 'andres@andresmorales.com.co';
 
 function buildApproveUrl(slug: string, locale: string): string {
   const base = process.env.PREVIEW_BASE_URL || 'http://localhost:3006';
@@ -27,23 +30,28 @@ function buildApproveUrl(slug: string, locale: string): string {
 }
 
 export async function notify(args: NotifyArgs): Promise<void> {
-  await sendBrevoEmail(args);
+  await sendMailcowEmail(args);
   await sendTelegram(args);
 }
 
-async function sendBrevoEmail(args: NotifyArgs): Promise<void> {
-  const apiKey = process.env.BREVO_API_KEY;
-  const toEmail = process.env.BRIEF_TO_EMAIL || 'info@andresmorales.com.co';
-  const fromEmail = process.env.BREVO_FROM_EMAIL || 'andres@andresmorales.com.co';
-
-  if (!apiKey) {
-    console.warn('[notify] BREVO_API_KEY not set. Skipping email.');
+async function sendMailcowEmail(args: NotifyArgs): Promise<void> {
+  const pass = process.env.MAILCOW_PASSWORD;
+  if (!pass) {
+    console.warn('[notify] MAILCOW_PASSWORD not set. Skipping email.');
     return;
   }
 
+  const toEmail = process.env.BRIEF_TO_EMAIL || 'info@andresmorales.com.co';
+  const transporter = nodemailer.createTransport({
+    host: MAILCOW_HOST,
+    port: MAILCOW_PORT,
+    secure: MAILCOW_PORT === 465,
+    auth: { user: MAILCOW_USER, pass },
+  });
+
   const approveUrl = buildApproveUrl(args.slug, args.locale);
   const subject = `[Blog] Nuevo borrador esperando aprobación: ${args.draft.frontmatter.title}`;
-  const htmlContent = `
+  const html = `
     <h2>Nuevo borrador esperando aprobación</h2>
     <p><strong>Título:</strong> ${args.draft.frontmatter.title}</p>
     <p><strong>Slug:</strong> ${args.slug} (${args.locale})</p>
@@ -55,27 +63,15 @@ async function sendBrevoEmail(args: NotifyArgs): Promise<void> {
   `;
 
   try {
-    const res = await fetch(BREVO_API, {
-      method: 'POST',
-      headers: {
-        'api-key': apiKey,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: { email: fromEmail, name: 'Andrés Morales Blog Pipeline' },
-        to: [{ email: toEmail }],
-        subject,
-        htmlContent,
-      }),
+    await transporter.sendMail({
+      from: `"Andrés Morales Blog Pipeline" <${MAILCOW_USER}>`,
+      to: toEmail,
+      subject,
+      html,
     });
-    if (!res.ok) {
-      const t = await res.text();
-      console.warn(`[notify] Brevo returned ${res.status}: ${t.slice(0, 200)}`);
-    } else {
-      console.log(`[notify] Email sent to ${toEmail}.`);
-    }
+    console.log(`[notify] Email sent to ${toEmail} via Mailcow.`);
   } catch (err) {
-    console.warn(`[notify] Brevo fetch failed: ${(err as Error).message}`);
+    console.warn(`[notify] Mailcow send failed: ${(err as Error).message}`);
   }
 }
 

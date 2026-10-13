@@ -3,36 +3,17 @@ import { Reveal } from '@/components/reveal';
 
 // "What I do" — 3 icon boxes. Server component, reads from dictionary.
 //
+// 3 cards focus on the delivery: AI Automation / UI/UX / AI-Powered Web.
+// Sales-era card removed 2026-10 — the practice is now AI-first, the
+// "I came from sales" bio lives in the about page instead.
+//
 // Icons (strokeWidth 1.75 + round caps/joins for refined look at
-// 32px): bar chart for sales, 4-point sparkle for AI, 3x3 grid for
-// UI/UX. Each chosen to read as the concept at a glance, not as
-// generic "tech" clipart.
+// 32px): 4-point sparkle for AI, 3x3 grid for UI/UX, layered code
+// bracket for web. Each chosen to read as the concept at a glance,
+// not as generic "tech" clipart.
 export async function ServicesIcons() {
   const dict = await getCurrentDictionary();
   const services = [
-    {
-      title: dict.homeServicesIcons.salesTitle,
-      desc: dict.homeServicesIcons.salesDesc,
-      icon: (
-        // Bar chart — 3 vertical bars at increasing height + baseline.
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-8 h-8"
-          aria-hidden="true"
-        >
-          <path d="M4 20V20" />
-          <path d="M4 20h16" />
-          <path d="M8 20v-7" />
-          <path d="M12 20v-12" />
-          <path d="M16 20v-15" />
-        </svg>
-      ),
-    },
     {
       title: dict.homeServicesIcons.aiTitle,
       desc: dict.homeServicesIcons.aiDesc,
@@ -74,6 +55,27 @@ export async function ServicesIcons() {
           <path d="M3 15h18" />
           <path d="M9 3v18" />
           <path d="M15 3v18" />
+        </svg>
+      ),
+    },
+    {
+      title: dict.homeServicesIcons.webTitle,
+      desc: dict.homeServicesIcons.webDesc,
+      icon: (
+        // Layered code brackets `</>` — the universal "code/web" mark.
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-8 h-8"
+          aria-hidden="true"
+        >
+          <path d="M8 7 L3 12 L8 17" />
+          <path d="M16 7 L21 12 L16 17" />
+          <path d="M14 5 L10 19" />
         </svg>
       ),
     },

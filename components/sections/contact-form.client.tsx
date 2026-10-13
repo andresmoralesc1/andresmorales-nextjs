@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
+import Link from 'next/link';
 import { track } from '@/lib/analytics';
 
 type FormDict = {
@@ -27,6 +28,10 @@ export function ContactFormClient({
   messageLabel,
   messagePlaceholder,
   messageHelp,
+  consentLabel,
+  consentPrivacyLink,
+  consentError,
+  privacyPath,
 }: {
   dict: FormDict;
   // Locale the form was rendered in. Sent to the API so the
@@ -37,8 +42,13 @@ export function ContactFormClient({
   messageLabel: string;
   messagePlaceholder: string;
   messageHelp: string;
+  consentLabel: string;
+  consentPrivacyLink: string;
+  consentError: string;
+  privacyPath: string;
 }) {
   const [form, setForm] = useState({ name: '', email: '', message: '', website: '' });
+  const [consent, setConsent] = useState(false);
   const [state, setState] = useState<FormState>('idle');
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [mountedAt, setMountedAt] = useState(0);
@@ -49,6 +59,15 @@ export function ContactFormClient({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // GDPR Art. 6(1)(a): consent must be a freely-given, specific,
+    // informed and unambiguous indication. An unchecked checkbox that
+    // blocks send is the CNIL/ICO recommended pattern; pre-checked is
+    // not consent. Reject the submit here if the box is unchecked.
+    if (!consent) {
+      setState('error');
+      setErrorMsg(consentError);
+      return;
+    }
     setState('loading');
     setErrorMsg('');
 
@@ -59,7 +78,7 @@ export function ContactFormClient({
         // `lang` tells the API route which dictionary to use for the
         // email templates (notification + auto-reply). Defaults to the
         // locale the form was rendered in.
-        body: JSON.stringify({ ...form, _t: Date.now() - mountedAt, lang }),
+        body: JSON.stringify({ ...form, consent: true, _t: Date.now() - mountedAt, lang }),
       });
 
       if (!res.ok) {
@@ -77,6 +96,7 @@ export function ContactFormClient({
       setState('success');
       track('contact_form_submitted', { emailSent: data.emailSent === true });
       setForm({ name: '', email: '', message: '', website: '' });
+      setConsent(false);
     } catch (err) {
       setState('error');
       setErrorMsg(err instanceof Error ? err.message : 'Unknown error');
@@ -217,6 +237,29 @@ export function ContactFormClient({
           </span>
         </div>
       )}
+
+      <div className="pt-2">
+        <label className="flex items-start gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            required
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            disabled={state === 'loading'}
+            className="mt-1 min-h-[44px] min-w-[44px]"
+            data-webmcp-field-name="consent"
+            data-webmcp-field-type="boolean"
+            data-webmcp-field-required="true"
+          />
+          <span className="text-sm text-secondary/85 leading-relaxed">
+            {consentLabel.replace('{privacy}', '')}
+            <Link href={privacyPath} className="underline hover:no-underline font-medium text-secondary">
+              {consentPrivacyLink}
+            </Link>
+            .
+          </span>
+        </label>
+      </div>
 
       <button
         type="submit"

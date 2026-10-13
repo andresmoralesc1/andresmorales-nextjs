@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
-import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/json-ld';
 import { getCurrentDictionary } from '@/lib/dictionary';
@@ -244,7 +244,7 @@ export default async function UiUxDesignPage() {
               {s.ctaCall}
             </a>
             <a
-              href="/brief"
+              href={getLocalizedPath('/brief?type=web', lang)}
               className="inline-flex items-center justify-center px-8 py-4 rounded-md font-secondary font-bold uppercase tracking-wide text-sm border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors"
             >
               {s.ctaBrief}

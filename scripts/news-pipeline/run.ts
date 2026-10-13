@@ -6,7 +6,7 @@
 //   3. generate → LLM writes ES draft + translates to EN, PT
 //   4. pexels → download cover image per locale
 //   5. save → write <slug>.<lang>.md to content/blog/drafts/
-//   6. notify → email via Brevo + Telegram
+//   6. notify → email via Mailcow SMTP + Telegram
 //
 // Usage:
 //   node --import tsx scripts/news-pipeline/run.ts
@@ -14,10 +14,10 @@
 // Required env vars:
 //   MINIMAX_API_KEY (or in ~/.hermes/auth.json)
 //   PEXELS_API_KEY
-//   BREVO_API_KEY
+//   MAILCOW_HOST, MAILCOW_PORT, MAILCOW_USER, MAILCOW_PASSWORD
 // Optional:
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
-//   BREVO_FROM_EMAIL (default andres@andresmorales.com.co)
+//   MAIL_FROM_EMAIL (default andres@andresmorales.com.co)
 //   BRIEF_TO_EMAIL (default info@andresmorales.com.co)
 //   PREVIEW_BASE_URL (default http://localhost:3006)
 

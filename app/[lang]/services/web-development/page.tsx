@@ -289,7 +289,7 @@ export default async function WebDevelopmentPage() {
               Book a free scoping call →
             </a>
             <a
-              href="/brief"
+              href={getLocalizedPath('/brief?type=web', locale)}
               className="inline-flex items-center justify-center px-8 py-4 rounded-md font-secondary font-bold uppercase tracking-wide text-sm border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors"
             >
               Or send a brief

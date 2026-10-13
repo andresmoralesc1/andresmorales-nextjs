@@ -94,7 +94,7 @@ export function HeaderClient({
           // header uses (transition-colors duration-300 family) so it
           // feels coherent with the link-underline animation.
           className="block transition-transform duration-200 ease-out hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm"
-          aria-label="Andrés Morales — Home"
+          aria-label={dict.nav.logoAriaLabel}
         >
           <Image
             src="/logo-wp.png"

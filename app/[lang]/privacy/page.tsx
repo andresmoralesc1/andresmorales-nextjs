@@ -90,6 +90,85 @@ export default async function PrivacyPage() {
             <p>{t.contactBody}</p>
           </section>
         </div>
+
+        {/* Extended GDPR / CCPA / age-gate disclosures — appended after the
+            base privacy copy. Each section reads from dict.legal so the
+            same component is locale-agnostic. The Do Not Sell link (CCPA
+            §1798.135) is required when a business collects personal info;
+            we publish one even though we do not sell, because the link
+            also satisfies opt-out business-to-business obligations. */}
+        <hr className="my-10 border-theme-9" />
+        <div className="prose-content space-y-8 text-secondary/90 leading-relaxed">
+          <section>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">
+              {dict.legal.gdprRights.title}
+            </h2>
+            <p className="mb-3">{dict.legal.gdprRights.intro}</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>{dict.legal.gdprRights.access}</li>
+              <li>{dict.legal.gdprRights.rectification}</li>
+              <li>{dict.legal.gdprRights.erasure}</li>
+              <li>{dict.legal.gdprRights.restriction}</li>
+              <li>{dict.legal.gdprRights.portability}</li>
+              <li>{dict.legal.gdprRights.object}</li>
+              <li>{dict.legal.gdprRights.automated}</li>
+              <li>{dict.legal.gdprRights.withdraw}</li>
+              <li>{dict.legal.gdprRights.complain}</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">
+              {dict.legal.ccpaRights.title}
+            </h2>
+            <p className="mb-3">{dict.legal.ccpaRights.intro}</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>{dict.legal.ccpaRights.know}</li>
+              <li>{dict.legal.ccpaRights.delete}</li>
+              <li>{dict.legal.ccpaRights.correct}</li>
+              <li>{dict.legal.ccpaRights.optOut}</li>
+              <li>{dict.legal.ccpaRights.limit}</li>
+              <li>{dict.legal.ccpaRights.nondiscriminate}</li>
+            </ul>
+            <p className="mt-4">
+              <a
+                href="/api/delete-my-data"
+                className="underline hover:no-underline font-medium"
+              >
+                {dict.legal.ccpaRights.doNotSellLink}
+              </a>
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">
+              {dict.legal.lawfulBasis.title}
+            </h2>
+            <p className="mb-3">{dict.legal.lawfulBasis.intro}</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><strong>{dict.legal.lawfulBasis.consent}</strong></li>
+              <li><strong>{dict.legal.lawfulBasis.contract}</strong></li>
+              <li><strong>{dict.legal.lawfulBasis.legal}</strong></li>
+              <li><strong>{dict.legal.lawfulBasis.legitimate}</strong></li>
+              <li><strong>{dict.legal.lawfulBasis.vital}</strong></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">
+              {dict.legal.internationalTransfers.title}
+            </h2>
+            <p className="mb-3">{dict.legal.internationalTransfers.intro}</p>
+            <p>{dict.legal.internationalTransfers.processors}</p>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">
+              {dict.legal.children.title}
+            </h2>
+            <p>{dict.legal.children.intro}</p>
+          </section>
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
+import { sendMail } from '@/lib/email';
 
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
 // 5 contact messages / hour / IP. Generous than /api/brief because the
@@ -13,14 +14,14 @@ const RATE_LIMIT_ROUTE = 'contact';
 // typical). Anything larger is almost certainly abuse.
 const MAX_BODY_BYTES = 2 * 1024;
 
-// Lightweight contact form endpoint — sends to inbox via Brevo.
-// Mirrors the pattern in app/api/brief/route.ts (same sender + validation).
-// Docs: https://developers.brevo.com/reference/sendtransacemail
-const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
-const TO_EMAIL = process.env.CONTACT_TO_EMAIL || process.env.BRIEF_TO_EMAIL || 'andres@andresmorales.com.co';
-const TO_NAME = process.env.BREVO_TO_NAME || 'Andrés Morales';
-const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || process.env.BRIEF_FROM_EMAIL || 'andres@andresmorales.com.co';
-const FROM_NAME = process.env.CONTACT_FROM_NAME || process.env.BRIEF_FROM_NAME || 'Andrés Morales · Portfolio Contact';
+// Self-hosted Mailcow SMTP — see lib/email.ts for the transport config.
+// Recipient + sender fall back to the Mailcow mailbox configured in
+// lib/email.ts. The CONTACT_*_EMAIL env vars are kept as optional
+// overrides for testing or routing to a different mailbox.
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL || process.env.MAILCOW_USER || 'info@andresmorales.com.co';
+const TO_NAME = process.env.CONTACT_TO_NAME || 'Andrés Morales';
+const FROM_NAME = process.env.CONTACT_FROM_NAME || 'Andrés Morales · Portfolio Contact';
+const MAIL_CONFIGURED = Boolean(process.env.MAILCOW_PASSWORD);
 
 type ContactPayload = {
   name: string;
@@ -108,40 +109,24 @@ function validatePayload(body: unknown): { ok: true; data: ContactPayload } | { 
   };
 }
 
-async function sendViaBrevo(data: ContactPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string; status?: number }> {
-  const payload = {
-    sender: { name: FROM_NAME, email: FROM_EMAIL },
-    to: [{ email: TO_EMAIL, name: TO_NAME }],
-    replyTo: { email: data.email, name: data.name },
-    subject: `${dict.contact.emailNotification.title}: ${data.name}`,
-    htmlContent: renderEmailHtml(data, dict),
-    textContent: renderEmailText(data, dict),
-  };
-
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key': BREVO_API_KEY,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (res.ok) return { ok: true };
-
-  let body: unknown = null;
+async function sendNotification(data: ContactPayload, dict: Dictionary): Promise<{ ok: boolean; error?: string }> {
   try {
-    body = await res.json();
-  } catch {
-    body = await res.text().catch(() => null);
+    await sendMail({
+      to: TO_EMAIL,
+      toName: TO_NAME,
+      replyTo: data.email,
+      subject: `${dict.contact.emailNotification.title}: ${data.name}`,
+      html: renderEmailHtml(data, dict),
+      text: renderEmailText(data, dict),
+    });
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'unknown' };
   }
-
-  return { ok: false, status: res.status, error: JSON.stringify(body) };
 }
 
-// Auto-reply mirrors the pattern in /api/brief/route.ts. Same Brevo
-// endpoint, parallel route. Localized via dict.contact.emailAutoReply.
+// Auto-reply mirrors the pattern in /api/brief/route.ts. Same Mailcow
+// transport, parallel route. Localized via dict.contact.emailAutoReply.
 async function sendAutoReply(p: ContactPayload, dict: Dictionary, lang: string): Promise<void> {
   const ar = dict.contact.emailAutoReply;
   const firstName = p.name.split(' ')[0] || p.name;
@@ -177,27 +162,14 @@ ${ar.signature}
 ---
 ${ar.footer} ${linkUrl}.`;
 
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key': BREVO_API_KEY,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      sender: { name: FROM_NAME, email: FROM_EMAIL },
-      to: [{ email: p.email, name: p.name }],
-      replyTo: { email: FROM_EMAIL, name: TO_NAME },
-      subject,
-      htmlContent: html,
-      textContent: text,
-    }),
+  await sendMail({
+    to: p.email,
+    toName: p.name,
+    replyTo: TO_EMAIL,
+    subject,
+    html,
+    text,
   });
-
-  if (!res.ok) {
-    const body = await res.text().catch(() => '');
-    throw new Error(`Brevo auto-reply failed: ${res.status} ${body}`);
-  }
 }
 
 export async function POST(req: NextRequest) {
@@ -252,8 +224,11 @@ export async function POST(req: NextRequest) {
   // would otherwise lock out a legitimate user sharing an IP).
   bumpRateLimit(RATE_LIMIT_ROUTE, ip);
 
-  if (!BREVO_API_KEY) {
-    console.warn('[contact] BREVO_API_KEY not set — message received but not emailed:', {
+  if (!MAIL_CONFIGURED) {
+    // Dev / preview fallback. The form still returns 200 so the UI shows
+    // the success state and the message lands in server logs for review.
+    // In production, MAILCOW_PASSWORD is set and we never hit this branch.
+    console.warn('[contact] MAILCOW_PASSWORD not set — message received but not emailed:', {
       from: data.name,
       email: data.email,
     });
@@ -266,9 +241,9 @@ export async function POST(req: NextRequest) {
     const lang = data.lang ?? DEFAULT_LOCALE;
     const dict = await getDictionary(lang);
 
-    const sendResult = await sendViaBrevo(data, dict);
+    const sendResult = await sendNotification(data, dict);
     if (!sendResult.ok) {
-      console.error('[contact] Brevo error:', sendResult.status, sendResult.error);
+      console.error('[contact] Mailcow error:', sendResult.error);
       return NextResponse.json(
         { error: 'Failed to send' },
         { status: 502 }

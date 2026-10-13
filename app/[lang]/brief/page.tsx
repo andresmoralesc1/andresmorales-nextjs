@@ -1,4 +1,5 @@
-import BriefWizard from '@/components/brief/BriefWizard';
+import { Suspense } from 'react';
+import BriefHub from '@/components/brief/BriefHub';
 import { Reveal } from '@/components/reveal';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
@@ -111,31 +112,54 @@ export default async function BriefPage() {
       <JsonLd data={[howTo, faq, breadcrumbs]} />
       {/* Hero */}
       <section className="section bg-background">
-        <Reveal as="div" stagger className="container-page max-w-3xl">
+        <Reveal as="div" stagger className="container-page max-w-4xl">
           <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-4">
-            {dict.brief.eyebrow}
+            {dict.briefHub.eyebrow}
           </p>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4">
             {dict.brief.title}
           </h1>
-          <p className="text-text text-lg mb-2">{dict.brief.subtitle1}</p>
+          <p className="text-text text-lg mb-2">{dict.briefHub.subtitle}</p>
           <p className="text-secondary/70 text-sm mb-8">{dict.brief.subtitle2}</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-            {trustStats.map(({ n, label }) => (
-              <div key={label}>
-                <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">{n}</div>
-                <p className="text-secondary/70 text-xs md:text-sm mt-1">{label}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 border-t border-theme-9">
+            <div>
+              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">&lt;24h</div>
+              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+                {lang === 'en' ? 'Fixed-price quote & scoping' : lang === 'pt' ? 'Proposta com preço fechado' : 'Cotización a precio cerrado'}
+              </p>
+            </div>
+            <div>
+              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">
+                {lang === 'en' ? '3 Paths' : lang === 'pt' ? '3 Caminhos' : '3 Caminos'}
               </div>
-            ))}
+              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+                {lang === 'en' ? 'Web, Automation or Scoping Call' : lang === 'pt' ? 'Web, Automação ou Chamada 1 a 1' : 'Web, Automatización o Llamada 1 a 1'}
+              </p>
+            </div>
+            <div>
+              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">100%</div>
+              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+                {lang === 'en' ? 'Custom architecture, zero spam' : lang === 'pt' ? 'Código sob medida, 0 spam' : 'Código a medida, 0 spam'}
+              </p>
+            </div>
           </div>
         </Reveal>
       </section>
 
-      {/* Wizard */}
+      {/* Brief Hub & Wizards */}
       <section className="section bg-background pt-0">
-        <div className="container-page max-w-3xl">
-          <BriefWizard dict={dict} lang={lang} />
+        <div className="container-page max-w-6xl">
+          <Suspense
+            fallback={
+              <div className="rounded-2xl bg-primary border border-theme-9 p-12 text-center text-secondary/60">
+                <div className="inline-block w-6 h-6 border-2 border-secondary/30 border-t-accent rounded-full animate-spin mb-3" />
+                <p className="text-sm font-medium">Cargando brief interactivo…</p>
+              </div>
+            }
+          >
+            <BriefHub dict={dict} lang={lang} />
+          </Suspense>
         </div>
       </section>
 

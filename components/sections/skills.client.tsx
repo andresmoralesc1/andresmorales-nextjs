@@ -5,17 +5,22 @@ import { useEffect, useRef, useState } from 'react';
 // Skills section — client component (viewport animation). Labels come in
 // from the parent (server) so the dictionary can be resolved on the
 // server side via the `x-locale` header.
+//
+// Percentages are the order in the chart — the user re-ordered the
+// list in 2026-10 to project an AI-first focus (n8n on top, 95%;
+// WordPress / Sales / Photoshop removed). Don't add a percent column
+// to the dict; the shape is fixed here so the math stays boring.
 type SkillsDict = {
-  sales: string;
-  webDesigner: string;
-  uxAnalyst: string;
-  wordpress: string;
+  n8n: string;
   aiAgents: string;
-  aiAutomations: string;
-  customerService: string;
-  prospecting: string;
-  digitalMarketing: string;
-  photoshop: string;
+  llmApis: string;
+  make: string;
+  nextReact: string;
+  typescript: string;
+  vercelCloudflare: string;
+  postgresPrisma: string;
+  python: string;
+  dockerInfra: string;
 };
 
 export function SkillsClient({
@@ -31,17 +36,17 @@ export function SkillsClient({
   subtitle: string;
   liveBadge: string;
 }) {
-  const SKILLS = [
-    { label: dict.sales, percent: 90 },
-    { label: dict.webDesigner, percent: 85 },
-    { label: dict.uxAnalyst, percent: 84 },
-    { label: dict.wordpress, percent: 83 },
-    { label: dict.aiAgents, percent: 82 },
-    { label: dict.aiAutomations, percent: 80 },
-    { label: dict.customerService, percent: 80 },
-    { label: dict.prospecting, percent: 75 },
-    { label: dict.digitalMarketing, percent: 70 },
-    { label: dict.photoshop, percent: 85 },
+  const SKILLS: Array<{ key: keyof SkillsDict; percent: number }> = [
+    { key: 'n8n', percent: 95 },
+    { key: 'aiAgents', percent: 92 },
+    { key: 'llmApis', percent: 90 },
+    { key: 'make', percent: 85 },
+    { key: 'nextReact', percent: 88 },
+    { key: 'typescript', percent: 86 },
+    { key: 'vercelCloudflare', percent: 82 },
+    { key: 'postgresPrisma', percent: 80 },
+    { key: 'python', percent: 78 },
+    { key: 'dockerInfra', percent: 76 },
   ];
 
   const [inView, setInView] = useState(false);
@@ -78,8 +83,8 @@ export function SkillsClient({
         <div className="space-y-4">
           {SKILLS.map((s) => (
             <SkillBar
-              key={s.label}
-              label={s.label}
+              key={s.key}
+              label={dict[s.key]}
               percent={s.percent}
               animate={inView}
             />

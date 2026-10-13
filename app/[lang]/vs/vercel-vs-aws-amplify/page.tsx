@@ -221,7 +221,7 @@ export default async function VercelVsAwsAmplifyPage({
             <p className="text-xs uppercase tracking-widest text-text mb-2 font-secondary font-bold">
               {c.eyebrow}
             </p>
-            <h2 className="font-heading text-3xl md:text-4xl">FAQ</h2>
+            <h2 className="font-heading text-3xl md:text-4xl">{dict.compare.faqHeading}</h2>
           </div>
 
           <div className="space-y-3">

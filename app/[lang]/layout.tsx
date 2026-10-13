@@ -1,11 +1,10 @@
 import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+import { SiteFooter } from '@/components/site-footer';
 import { StickyMobileCTA } from '@/components/sticky-mobile-cta';
+import { CookieBanner } from '@/components/cookie-banner';
+import { getCurrentDictionary } from '@/lib/dictionary';
 import { headers } from 'next/headers';
-
-// Personal campaigns where the warm-tone footer applies (hides the B2B
-// "Explore" services column to preserve a personal/cálido tone).
-const WARM_FOOTER_PATHS = ['/cumple-2025', '/invest-in-people-inspire-the-future'];
+import { getLocalizedPath } from '@/lib/i18n';
 
 // Locale-scoped layout. Lives under `app/[lang]/` so it re-renders when
 // the user navigates between `/`, `/es/...`, and `/pt/...`. This is
@@ -21,12 +20,13 @@ export default async function LangLayout({
   children: React.ReactNode;
 }) {
   const h = await headers();
-  const pathname = h.get('x-pathname') ?? '';
-  const footerVariant: 'default' | 'warm' = WARM_FOOTER_PATHS.some(
-    (p) => pathname === p || pathname.endsWith(p)
-  )
-    ? 'warm'
-    : 'default';
+  const locale = h.get('x-locale') ?? 'en';
+
+  // Resolve dictionary server-side and pass only the cookie-banner strings
+  // to the client component — `getCurrentDictionary` uses next/headers
+  // and cannot be imported from a 'use client' module.
+  const dict = await getCurrentDictionary();
+  const bannerDict = dict.legal.cookieBanner;
 
   return (
     <>
@@ -34,8 +34,12 @@ export default async function LangLayout({
       <main id="main" aria-label="Main content" className="flex-1">
         {children}
       </main>
-      <Footer variant={footerVariant} />
+      <SiteFooter />
       <StickyMobileCTA />
+      <CookieBanner
+        t={bannerDict}
+        privacyHref={getLocalizedPath('/privacy', locale as 'en' | 'es' | 'pt')}
+      />
     </>
   );
 }

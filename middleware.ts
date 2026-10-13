@@ -55,6 +55,12 @@ export function middleware(req: NextRequest) {
     });
   }
 
+  // Redirect legacy or nested /brief/web URLs to canonical /brief-web
+  if (pathname === '/brief/web' || pathname === '/es/brief/web' || pathname === '/pt/brief/web') {
+    const target = pathname.replace('/brief/web', '/brief-web');
+    return NextResponse.redirect(new URL(target, req.url), 308);
+  }
+
   const seg = pathname.split('/').filter(Boolean)[0];
   const urlLocale = isLocale(seg) ? seg : null;
 

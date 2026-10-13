@@ -28,6 +28,7 @@ const ROUTES: RouteEntry[] = [
   { path: '/blog',                                      changeFrequency: 'weekly',  priority: 0.8, lastModified: '2026-09-08' },
   { path: '/contact',                                   changeFrequency: 'monthly', priority: 0.7, lastModified: '2026-08-21' },
   { path: '/brief',                                     changeFrequency: 'monthly', priority: 0.6, lastModified: '2026-08-26' },
+  { path: '/brief-web',                                 changeFrequency: 'monthly', priority: 0.7, lastModified: '2026-10-12' },
   { path: '/cumple-2025',                               changeFrequency: 'monthly', priority: 0.5, lastModified: '2026-08-26' },
   { path: '/invest-in-people-inspire-the-future',       changeFrequency: 'monthly', priority: 0.5, lastModified: '2026-08-26' },
   { path: '/privacy',                                   changeFrequency: 'monthly', priority: 0.3, lastModified: '2026-08-21' },

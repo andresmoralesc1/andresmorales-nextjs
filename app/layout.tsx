@@ -1,37 +1,30 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { Inter, Archivo_Black } from 'next/font/google';
 import { headers } from 'next/headers';
 import { LOCALE_HTML_LANG, type Locale } from '@/lib/i18n';
 import { WebMcpRegistrar } from '@/components/WebMcpRegistrar';
+import { ConsentScripts } from '@/components/cookie-banner';
 import './globals.css';
 
-// Exact fonts from the original WordPress site (Astra + Elementor):
-// Roboto (body), Roboto Condensed (nav + accent), Playfair Display (headings serif)
-//
-// Performance notes (July 2026 rewrite):
-// - The font cascade used to load 3 families × 3-7 woff2 files per visit
-//   (~454 KB raw on disk, ~190 KB gzipped after moving on-stack). Lighthouse
-//   flagged them as the critical request chain ceiling (~1,696 ms) because
-//   Playfair Display's two weights (700 + 800) alone cost 84 KB.
-//
-// - We kept the visual identity (serif for h1/h2/h3 + sans for the rest),
-//   trimmed the cascades, and classified Playfair Display as NON-critical:
-//   * preload: false — no <link rel=preload> for these files. Body and
-//     headings render with the fallback faces immediately; Playfair only
-//     swaps in once the woff2 lands, which is fine because none of the
-//     text painted with Playfair is on the LCP path.
-//   * display: 'swap' — fallback text is visible while the font loads.
-//   * Roboto 500 is unused outside of a couple of eyebrows. Drop it.
-//
-// Fonts dropped Jul 2026 (PageSpeed mobile optimization).
-// Roboto / Roboto Condensed / Playfair Display all removed — the woff2
-// cascade was the longest critical-path chain (~1,600 ms) and Lighthouse
-// flagged it consistently. Replaced with system stacks:
-//   - body → system-ui (Segoe UI on Windows, San Francisco on macOS/iOS,
-//     Roboto on Android — visually consistent with the old Roboto on
-//     most devices, zero network cost)
-//   - heading → Georgia (system serif, near-universal)
-//   - secondary/accent → Arial Narrow (system condensed)
+// Fonts for MascotPortfolioHero (Oct 2026 addition).
+// Inter — body / sans fallback. Archivo Black — display headline.
+// Both loaded via next/font so the woff2 sits behind a stable hash, no
+// layout shift, swap fallback. CSS vars are referenced by the
+// component's SANS_STACK / DISPLAY_STACK. Existing site typography
+// (system-ui / Georgia) is unchanged — these vars are opt-in only
+// where `.mph-root` consumes them.
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+const archivoBlack = Archivo_Black({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '400',
+  variable: '--font-archivo-black',
+});
 
 export const metadata: Metadata = {
   // Title parent — each page uses `title: 'Home'` and the layout converts it to
@@ -149,17 +142,19 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // GA4 measurement ID. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env.local
-  // to override the hardcoded default. The hardcoded fallback keeps
-  // analytics firing on every deploy without needing env-var setup.
-  const GA_MEASUREMENT_ID =
-    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XF0Q2FGR95';
-
   // Note: locale-dependent UI lives in `app/[lang]/layout.tsx` so it
   // re-renders when the user switches between `/` ↔ `/es` ↔ `/pt`. The
   // root layout in App Router is shared across all routes and does NOT
   // re-render on segment changes — keeping <Header /> here would freeze
   // its labels on the first-render locale.
+  //
+  // GA4 measurement ID. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env.local
+  // to override the hardcoded default. The gtag.js loader is no longer
+  // emitted unconditionally here — it lives in <ConsentScripts /> which
+  // checks the visitor's stored consent before loading gtag.js. Until
+  // the visitor accepts analytics, NO request is made to
+  // googletagmanager.com (strict GDPR posture, not just consent-mode v2
+  // denied defaults).
   const h = await headers();
   const rawLocale = h.get('x-locale');
   const htmlLang = rawLocale && LOCALE_HTML_LANG[rawLocale as Locale]
@@ -283,7 +278,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang={htmlLang}
-      className={``}
+      className={`${inter.variable} ${archivoBlack.variable}`}
     >
       <head>
         {/* Raw OG/Twitter meta. Next's typed metadata API can't emit
@@ -319,43 +314,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
 
         {/* Google Analytics 4 — opt-in. Set NEXT_PUBLIC_GA_MEASUREMENT_ID
-            in .env.local (e.g. G-XXXXXXXXXX) to load gtag.js. We use
-            Google's official `consent` mode v2 default so the tag fires
-            only after the user grants consent via the cookie banner.
-            Until consent is granted, GA4 receives cookieless pings
-            (no client_id, no storage) which still gives you aggregated
-            traffic numbers without violating GDPR / Colombia's
-            Ley 1581/2012. If the env var is unset, the tag is omitted
+            in .env.local (e.g. G-XXXXXXXXXX) to load gtag.js. The
+            loader is rendered by <ConsentScripts /> which checks the
+            visitor's stored consent before fetching gtag.js. Until
+            consent is granted, no request is made to
+            googletagmanager.com — strict GDPR posture (not just consent
+            mode v2). If the env var is unset, the loader is omitted
             entirely — useful when you're only running Umami. */}
-        {GA_MEASUREMENT_ID && (
-          <>
-            <Script
-              id="ga4-loader"
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="lazyOnload"
-            />
-            <Script
-              id="ga4-init"
-              strategy="lazyOnload"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('consent', 'default', {
-                    ad_storage: 'denied',
-                    analytics_storage: 'denied',
-                    wait_for_update: 500
-                  });
-                  gtag('js', new Date());
-                  gtag('config', '${GA_MEASUREMENT_ID}', {
-                    anonymize_ip: true,
-                    send_page_view: true
-                  });
-                `,
-              }}
-            />
-          </>
-        )}
+        <ConsentScripts />
       </head>
       <body className="flex flex-col min-h-screen">
         {/* a11y: keyboard users can skip past the nav. Hidden until focused.

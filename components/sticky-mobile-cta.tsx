@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { TrackCta } from '@/components/track';
@@ -57,6 +57,22 @@ export function StickyMobileCTA() {
     [pathname],
   );
 
+  // Fade the bar out when the footer enters the viewport so it doesn't
+  // sit on top of the orange ticket / legal row at the bottom of the
+  // page. IntersectionObserver watches the first <footer> in the DOM.
+  const [overFooter, setOverFooter] = useState(false);
+  useEffect(() => {
+    if (hidden) return;
+    const f = document.querySelector('footer');
+    if (!f) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setOverFooter(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    io.observe(f);
+    return () => io.disconnect();
+  }, [hidden]);
+
   // While visible, reserve space at the bottom of <body> so the bar
   // doesn't cover the last lines of page content. globals.css pairs
   // .has-sticky-mobile-cta with the actual padding-bottom rule.
@@ -74,9 +90,12 @@ export function StickyMobileCTA() {
 
   return (
     <div
-      className="sm:hidden fixed inset-x-0 bottom-0 z-[60] border-t border-secondary/15 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+      className={`sm:hidden fixed inset-x-0 bottom-0 z-[60] border-t border-secondary/15 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 transition-opacity duration-200 motion-reduce:transition-none ${
+        overFooter ? 'pointer-events-none opacity-0' : 'opacity-100'
+      }`}
       role="region"
       aria-label={copy.primary}
+      aria-hidden={overFooter}
     >
       <div className="container-page flex items-center gap-2 py-2.5">
         <TrackCta

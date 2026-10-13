@@ -21,3 +21,15 @@ export const BRAND_COLOR_HEX = '#f96e03';
 
 /** Canonical public domain — used by SEO metadata, sitemap, JSON-LD. */
 export const CANONICAL_DOMAIN = 'https://andresmorales.com.co';
+
+/**
+ * Legal entity details — used by the footer (imprint), legal pages, and
+ * transactional emails. Replace per company legal-name / address before
+ * going to production. The defaults here are the placeholder values for
+ * "Andrés Morales — AI Consulting" (one-person LLC operating in Bogotá).
+ */
+export const LEGAL_ENTITY_NAME = 'Andrés Morales — AI Consulting';
+export const LEGAL_ENTITY_OWNER = 'Andrés Morales';
+export const LEGAL_ADDRESS_LINE_1 = 'Bogotá, D.C.';
+export const LEGAL_ADDRESS_COUNTRY = 'Colombia';
+export const LEGAL_EMAIL = CONTACT_EMAIL;
