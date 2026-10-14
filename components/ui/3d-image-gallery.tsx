@@ -403,7 +403,6 @@ export function FloatingCard({
 
 export function CardModal() {
   const { selectedCard, setSelectedCard, favorites, toggleFavorite, goToNextCard, goToPrevCard } = useCard()
-  const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -418,26 +417,6 @@ export function CardModal() {
   if (!selectedCard) return null
 
   const isFav = favorites.has(selectedCard.id)
-
-  const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = (y - centerY) / 18
-    const rotateY = (centerX - x) / 18
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-  }
-
-  const handleMouseEnter = () => {}
-  const handleMouseLeave = () => {
-    if (cardRef.current) {
-      cardRef.current.style.transition = "transform 0.5s ease-out"
-      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)"
-    }
-  }
 
   const handleClose = () => setSelectedCard(null)
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
@@ -464,151 +443,145 @@ export function CardModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 select-none p-4"
+      className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-2xl transition-opacity duration-200 select-none"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
     >
-      {/* Navigation Arrows */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          goToPrevCard()
-        }}
-        aria-label="Obra anterior"
-        className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#f96e03] text-white/90 hover:text-[#1E1810] border border-white/20 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm"
-      >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-      </button>
+      {/* Top Bar: Curatorial context & Actions */}
+      <header className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between border-b border-white/10 bg-black/60 backdrop-blur-md z-30 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold">
+            Serie {selectedCard.collectionLabel}
+          </span>
+          <span className="text-white/40 font-mono text-xs hidden sm:inline">
+            Obra #{selectedCard.id} de 149
+          </span>
+        </div>
 
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          goToNextCard()
-        }}
-        aria-label="Siguiente obra"
-        className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#f96e03] text-white/90 hover:text-[#1E1810] border border-white/20 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm"
-      >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-      </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Favorite Button */}
+          <button
+            type="button"
+            onClick={handleToggleFav}
+            aria-label="Guardar en favoritos"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            <Heart
+              className="h-4 w-4 text-[#f96e03]"
+              strokeWidth={2.2}
+              fill={isFav ? "#f96e03" : "none"}
+            />
+            <span className="hidden md:inline">{isFav ? "Favorito" : "Guardar"}</span>
+          </button>
 
-      <div
-        className="relative max-w-sm sm:max-w-md w-full mx-auto"
-        onClick={(e) => e.stopPropagation()}
+          {/* Download Original HD */}
+          <button
+            type="button"
+            onClick={handleDownload}
+            aria-label="Descargar original"
+            className="p-2 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
+            <span className="hidden sm:inline">Descargar HD</span>
+          </button>
+
+          {/* WhatsApp Inquire */}
+          <a
+            href={`https://wa.me/573161482507?text=${encodeURIComponent(
+              `Hola Andrés, vi tu obra "${selectedCard.title}" (Dibujo #${selectedCard.id}, Serie ${selectedCard.collectionLabel}) en amart y me gustaría consultar su adquisición o detalles.`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Consultar Obra</span>
+            <span className="sm:hidden">Cotizar</span>
+          </a>
+
+          {/* Close Button */}
+          <button
+            onClick={handleClose}
+            aria-label="Cerrar (Esc)"
+            className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-1"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      {/* Main Fullscreen Stage: Completely Static Artwork */}
+      <main
+        className="flex-1 flex items-center justify-center relative p-3 sm:p-6 md:p-8 overflow-hidden"
+        onClick={handleBackdropClick}
       >
-        {/* Desktop Close Button */}
+        {/* Navigation Arrows */}
         <button
           onClick={(e) => {
             e.stopPropagation()
-            handleClose()
+            goToPrevCard()
           }}
-          aria-label="Cerrar modal"
-          className="hidden sm:inline-flex items-center gap-1.5 absolute -top-11 right-0 text-white/70 hover:text-[#f96e03] transition-colors z-20 px-2.5 py-1 cursor-pointer font-mono text-xs rounded-full bg-white/5 hover:bg-white/10"
+          aria-label="Obra anterior (Flecha Izquierda)"
+          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
         >
-          <span>Cerrar</span>
-          <X className="w-4 h-4" />
+          <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
         </button>
 
-        <div style={{ perspective: "1000px" }} className="w-full">
-          <div
-            ref={cardRef}
-            className="relative rounded-2xl bg-[#14110e] border border-white/15 p-4 sm:p-5 transition-all duration-500 ease-out w-full shadow-2xl"
-            style={{
-              transformStyle: "preserve-3d",
-              boxShadow: "0 30px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(249, 110, 3, 0.25)",
-            }}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {/* Mobile In-Card Close Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                handleClose()
-              }}
-              aria-label="Cerrar modal"
-              className="sm:hidden absolute top-3 right-3 p-1.5 rounded-full bg-black/70 text-white/80 hover:text-[#f96e03] border border-white/20 z-30 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            goToNextCard()
+          }}
+          aria-label="Siguiente obra (Flecha Derecha)"
+          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
+        >
+          <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+        </button>
 
-            <div className="relative w-full mb-3 overflow-hidden rounded-xl bg-black" style={{ aspectRatio: "3 / 4" }}>
-              <img
-                loading="eager"
-                className="absolute inset-0 h-full w-full rounded-xl object-contain bg-black/70 transition-transform duration-500 hover:scale-105"
-                alt={selectedCard.alt}
-                src={selectedCard.imageUrl || "/placeholder.svg"}
-              />
-            </div>
+        {/* 100% Static High-Resolution Artwork */}
+        <div
+          className="relative max-h-full max-w-full flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img
+            key={selectedCard.id}
+            src={selectedCard.downloadUrl || selectedCard.imageUrl}
+            alt={selectedCard.alt}
+            loading="eager"
+            draggable={false}
+            className="max-h-[calc(100vh-175px)] sm:max-h-[calc(100vh-190px)] max-w-[92vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none animate-in fade-in duration-200"
+          />
+        </div>
+      </main>
 
-            <div className="text-center mb-3">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#f96e03] px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/25 font-bold mb-1.5 inline-block">
-                Serie {selectedCard.collectionLabel}
-              </span>
-              <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-tight">
-                {selectedCard.title}
-              </h3>
-              {selectedCard.description && (
-                <p className="text-white/80 text-xs sm:text-[13px] font-sans leading-relaxed mt-2 max-w-sm mx-auto">
-                  {selectedCard.description}
-                </p>
-              )}
-              <div className="flex items-center justify-center gap-2 mt-2 text-[10px] font-mono text-white/40">
-                <span>Dibujo #{selectedCard.id} de 149</span>
-                {selectedCard.technique && (
-                  <>
-                    <span>•</span>
-                    <span>{selectedCard.technique}</span>
-                  </>
-                )}
-                <span>•</span>
-                <span>Andrés Morales</span>
-              </div>
-            </div>
+      {/* Bottom Curatorial Caption */}
+      <footer
+        className="px-4 py-3 sm:py-3.5 border-t border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="max-w-3xl mx-auto flex flex-col items-center justify-center">
+          <h2 className="text-white text-base sm:text-xl font-serif font-medium tracking-tight">
+            <span className="text-[#f96e03] font-mono mr-2 text-sm sm:text-base font-bold">
+              #{selectedCard.id}
+            </span>
+            {selectedCard.title}
+          </h2>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  className="inline-flex h-10 flex-1 items-center justify-center rounded-lg text-xs sm:text-sm font-bold text-[#1E1810] outline-none transition duration-300 ease-out bg-[#f96e03] hover:bg-[#ff5100] active:scale-[0.98] shadow-md cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <Download className="h-4 w-4" strokeWidth={2.2} />
-                    <span>Descargar Original</span>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleToggleFav}
-                  aria-label="Guardar en favoritos"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-[#1E1810] outline-none transition duration-300 ease-out bg-[#f96e03] hover:bg-[#ff5100] active:scale-[0.98] shadow-md cursor-pointer"
-                >
-                  <Heart
-                    className="h-4 w-4"
-                    strokeWidth={2.2}
-                    fill={isFav ? "currentColor" : "none"}
-                  />
-                </button>
-              </div>
+          {selectedCard.description && (
+            <p className="text-white/80 text-xs sm:text-sm font-sans leading-relaxed mt-1 max-w-2xl mx-auto">
+              {selectedCard.description}
+            </p>
+          )}
 
-              <a
-                href={`https://wa.me/573161482507?text=${encodeURIComponent(
-                  `Hola Andrés, vi tu obra "${selectedCard.title}" (Dibujo #${selectedCard.id}, Serie ${selectedCard.collectionLabel}) en amart y me gustaría consultar su adquisición o detalles.`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg text-xs font-semibold bg-[#f96e03]/10 hover:bg-[#f96e03]/20 text-[#f96e03] border border-[#f96e03]/30 hover:border-[#f96e03] transition-all cursor-pointer shadow-sm"
-              >
-                <Sparkles className="h-3.5 w-3.5 text-[#f96e03]" />
-                <span>Consultar o Adquirir Esta Obra</span>
-              </a>
-            </div>
+          <div className="flex items-center justify-center gap-2 mt-1 text-[11px] font-mono text-white/45">
+            {selectedCard.technique && <span>{selectedCard.technique}</span>}
+            <span>•</span>
+            <span>Andrés Morales • Bocetos de Piel</span>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   )
 }
