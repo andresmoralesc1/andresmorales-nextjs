@@ -14,6 +14,7 @@ import {
   Maximize2,
   Columns,
   Grid,
+  Shuffle,
 } from "lucide-react"
 import {
   ALL_BOCETOS_CARDS,
@@ -25,15 +26,27 @@ import PolaroidLineCarousel, { type Slide } from "@/components/ui/polaroid-line-
 
 export type ViewMode = "string" | "grid"
 
+/** Fisher-Yates shuffle for true random distribution */
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 export default function PolaroidArtGallery({
   initialCards,
 }: {
   initialCards?: ArtworkCard[]
 }) {
-  const allCards = useMemo(() => {
+  const baseCards = useMemo(() => {
     return initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
   }, [initialCards])
 
+  const [cards, setCards] = useState<ArtworkCard[]>(baseCards)
+  const [shuffleKey, setShuffleKey] = useState(0)
   const [activeCollection, setActiveCollection] = useState<CollectionKey>("all")
   const [selectedCard, setSelectedCard] = useState<ArtworkCard | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>("string")
@@ -41,13 +54,20 @@ export default function PolaroidArtGallery({
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
   const [mounted, setMounted] = useState(false)
 
-  // Load favorites from localStorage
+  // Shuffle artworks on entry and load favorites
   useEffect(() => {
+    const base = initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
+    setCards(shuffleArray(base))
     setMounted(true)
     try {
       const saved = localStorage.getItem("amart_favorites")
       if (saved) setFavorites(new Set(JSON.parse(saved)))
     } catch {}
+  }, [initialCards])
+
+  const reshuffleCards = useCallback(() => {
+    setCards((prev) => shuffleArray(prev))
+    setShuffleKey((k) => k + 1)
   }, [])
 
   const toggleFavorite = useCallback((id: string) => {
@@ -64,7 +84,7 @@ export default function PolaroidArtGallery({
 
   const collectionCounts = useMemo(() => {
     const counts: Record<CollectionKey, number> = {
-      all: allCards.length,
+      all: cards.length,
       yoga: 0,
       shibari: 0,
       "anatomia-botanica": 0,
@@ -72,22 +92,22 @@ export default function PolaroidArtGallery({
       "figura-humana": 0,
       favorites: favorites.size,
     }
-    allCards.forEach((c) => {
+    cards.forEach((c) => {
       if (counts[c.collection] !== undefined) {
         counts[c.collection]++
       }
     })
     return counts
-  }, [allCards, favorites])
+  }, [cards, favorites])
 
   // Filter cards by collection
   const filteredCards = useMemo(() => {
-    let list = allCards
+    let list = cards
     if (activeCollection === "favorites") {
-      const favs = allCards.filter((c) => favorites.has(c.id))
-      list = favs.length > 0 ? favs : allCards
+      const favs = cards.filter((c) => favorites.has(c.id))
+      list = favs.length > 0 ? favs : cards
     } else if (activeCollection !== "all") {
-      list = allCards.filter((c) => c.collection === activeCollection)
+      list = cards.filter((c) => c.collection === activeCollection)
     }
 
     if (!search.trim()) return list
@@ -101,7 +121,7 @@ export default function PolaroidArtGallery({
         (c.technique && c.technique.toLowerCase().includes(q)) ||
         (c.alt && c.alt.toLowerCase().includes(q))
     )
-  }, [allCards, activeCollection, favorites, search])
+  }, [cards, activeCollection, favorites, search])
 
   // Convert cards to Polaroid slides
   const slides: Slide[] = useMemo(() => {
@@ -216,6 +236,17 @@ export default function PolaroidArtGallery({
               </button>
             </div>
 
+            {/* Re-shuffle / Aleatorio Button */}
+            <button
+              type="button"
+              onClick={reshuffleCards}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+              title="Barajar aleatoriamente la colección"
+            >
+              <Shuffle className="w-3.5 h-3.5 text-[#f96e03]" />
+              <span className="hidden sm:inline">Aleatorio</span>
+            </button>
+
             {/* Portfolio Link */}
             <a
               href="https://andresmorales.com.co"
@@ -281,16 +312,17 @@ export default function PolaroidArtGallery({
           /* ======================================================== */
           <div className="relative w-full h-full flex-1 min-h-0">
             <PolaroidLineCarousel
+              key={shuffleKey}
               slides={slides}
               height="100%"
-              cardWidth={270}
-              sag={46}
-              swing={1.1}
+              cardWidth={400}
+              sag={44}
+              swing={1.05}
               string="#9e856e"
               background="transparent"
               ink="#f5eee6"
               onSelect={(slide) => {
-                const found = allCards.find((c) => c.id === slide.id)
+                const found = cards.find((c) => c.id === slide.id)
                 if (found) setSelectedCard(found)
               }}
             />

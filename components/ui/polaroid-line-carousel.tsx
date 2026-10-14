@@ -87,15 +87,15 @@ const PL_CSS = `
 .pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}
 .pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .pl-card{position:absolute;left:0;top:0;width:var(--pl-cw);transform-origin:50% 0;will-change:transform;cursor:pointer}
-.pl-print{margin-top:10px;background:#fcfbf8;padding:8px 8px 0;border-radius:4px;box-shadow:0 3px 6px rgba(0,0,0,.35),0 20px 35px -14px rgba(0,0,0,.65);transition:transform .4s cubic-bezier(.2,.7,.2,1),filter .4s ease,box-shadow .4s ease;border:1px solid rgba(255,255,255,.08)}
+.pl-print{margin-top:10px;background:#fcfbf8;padding:clamp(8px,0.8vw,12px) clamp(8px,0.8vw,12px) 0;border-radius:4px;box-shadow:0 3px 6px rgba(0,0,0,.35),0 20px 35px -14px rgba(0,0,0,.65);transition:transform .4s cubic-bezier(.2,.7,.2,1),filter .4s ease,box-shadow .4s ease;border:1px solid rgba(255,255,255,.08)}
 .pl-card[data-on='0'] .pl-print{transform:scale(.88);filter:saturate(.65) brightness(.88);opacity:.8}
 .pl-card[data-on='1'] .pl-print{transform:scale(1.02);box-shadow:0 6px 12px rgba(0,0,0,.45),0 25px 48px -12px rgba(249,110,3,.25),0 0 20px rgba(249,110,3,.15);border:1px solid rgba(249,110,3,.3)}
 .pl-shot{position:relative;aspect-ratio:3/4;overflow:hidden;background:#181512;border-radius:2px}
 .pl-shot img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;display:block;pointer-events:none}
 .pl-tag{position:absolute;top:6px;left:6px;z-index:2;font:700 9px/1 ui-monospace,monospace;color:#f96e03;background:rgba(12,10,8,.85);padding:2px 5px;border-radius:3px;border:1px solid rgba(249,110,3,.3);letter-spacing:.05em;text-transform:uppercase}
-.pl-note{height:38px;display:flex;align-items:center;justify-content:center;padding:0 6px;font:italic 500 12px/1.2 ui-serif,Georgia,'Times New Roman',serif;color:#1e1810;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pl-peg{position:absolute;left:50%;top:-2px;width:11px;height:26px;margin-left:-5.5px;border-radius:2px;background:linear-gradient(90deg,#b38e5c,#ddbf90 45%,#997345);box-shadow:0 2px 4px rgba(0,0,0,.45);z-index:4}
-.pl-peg::after{content:'';position:absolute;left:4.5px;top:8px;width:2px;height:7px;background:rgba(50,35,15,.6);border-radius:1px}
+.pl-note{height:clamp(38px,2.8vw,44px);display:flex;align-items:center;justify-content:center;padding:0 8px;font:italic 500 clamp(12px,1vw,14px)/1.2 ui-serif,Georgia,'Times New Roman',serif;color:#1e1810;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-peg{position:absolute;left:50%;top:-2px;width:clamp(11px,0.9vw,13px);height:clamp(26px,2vw,30px);margin-left:calc(-1 * clamp(11px,0.9vw,13px) / 2);border-radius:2px;background:linear-gradient(90deg,#b38e5c,#ddbf90 45%,#997345);box-shadow:0 2px 4px rgba(0,0,0,.45);z-index:4}
+.pl-peg::after{content:'';position:absolute;left:5px;top:8px;width:2px;height:7px;background:rgba(50,35,15,.6);border-radius:1px}
 .pl-bar{position:absolute;left:0;right:0;bottom:0;padding:10px clamp(12px,4vw,36px) max(12px,calc(env(safe-area-inset-bottom,0px) + 8px));display:flex;flex-direction:column;gap:8px;cursor:default;z-index:25;pointer-events:none;background:linear-gradient(to top, rgba(12,10,8,0.96) 0%, rgba(12,10,8,0.7) 65%, transparent 100%)}
 .pl-bar-top{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,2vw,20px);pointer-events:auto}
 .pl-cap{flex:1;min-width:0;overflow:hidden}
@@ -121,7 +121,7 @@ const PL_CSS = `
 export default function PolaroidLineCarousel({
   slides = [],
   height = "100svh",
-  cardWidth = 260,
+  cardWidth = 400,
   sag = 42,
   swing = 1,
   autoplay = 0,
@@ -166,12 +166,23 @@ export default function PolaroidLineCarousel({
     if (!root) return
     const ro = new ResizeObserver(() => {
       const r = root.getBoundingClientRect()
-      // Max card height reservation: leave ≥165px for bottom bar + clearance
-      const maxAvailableH = Math.max(160, r.height - 165)
+      const isDesktop = r.width >= 1024
+      const isTablet = r.width >= 640 && r.width < 1024
+      // On desktop leave ~130px for bar; on mobile/tablet leave ~160px
+      const bottomMargin = isDesktop ? 130 : 160
+      const maxAvailableH = Math.max(160, r.height - bottomMargin)
       // Card height is approx cw * 1.33 + 48px, so max cw from height is (maxAvailableH - 48) * 0.72
       const maxCwFromH = Math.max(120, (maxAvailableH - 48) * 0.72)
-      // Responsive card width: compact on mobile, generous on desktop
-      const cw = Math.round(Math.max(130, Math.min(cardWidth, r.width * 0.62, maxCwFromH)))
+      // Responsive card width:
+      // Mobile: capped by r.width * 0.62 (preserving perfect mobile scale)
+      // Tablet: intermediate up to 320px
+      // Desktop: generous exhibition size up to cardWidth (e.g. 400px)
+      const widthCap = isDesktop
+        ? Math.min(cardWidth, 420)
+        : isTablet
+        ? Math.min(cardWidth, r.width * 0.44, 320)
+        : Math.min(cardWidth, r.width * 0.62)
+      const cw = Math.round(Math.max(130, Math.min(widthCap, maxCwFromH)))
       setSize({ w: r.width, h: r.height, cw })
     })
     ro.observe(root)
