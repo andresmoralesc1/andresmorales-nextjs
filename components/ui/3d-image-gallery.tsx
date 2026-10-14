@@ -8,33 +8,38 @@ import React, {
   useState,
   createContext,
   useContext,
+  useCallback,
 } from "react"
 import * as THREE from "three"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Environment, Html, Plane, Sphere } from "@react-three/drei"
-import { Download, Heart, X, Sparkles, ExternalLink } from "lucide-react"
+import {
+  Download,
+  Heart,
+  X,
+  Sparkles,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  LayoutGrid,
+  Search,
+  Maximize2,
+} from "lucide-react"
+import { ALL_BOCETOS_CARDS, type ArtworkCard } from "@/lib/artworks-data"
 
-/**
- * Single-file Stellar Card Gallery — Bocetos de Piel (Andrés Morales)
- * - Context, Starfield, Galaxy, FloatingCard, Modal, and Page in one.
- */
-
-/* =========================
-   Card Context & Types
-   ========================= */
-
-export type Card = {
-  id: string
-  imageUrl: string
-  alt: string
-  title: string
-  downloadUrl?: string
-}
+export type Card = ArtworkCard
 
 type CardContextType = {
   selectedCard: Card | null
   setSelectedCard: (card: Card | null) => void
   cards: Card[]
+  allCards: Card[]
+  activeBatch: string
+  setActiveBatch: (batch: string) => void
+  favorites: Set<string>
+  toggleFavorite: (id: string) => void
+  goToNextCard: () => void
+  goToPrevCard: () => void
 }
 
 const CardContext = createContext<CardContextType | undefined>(undefined)
@@ -45,33 +50,6 @@ export function useCard() {
   return ctx
 }
 
-export const DEFAULT_BOCETOS_CARDS: Card[] = [
-  { id: "1", imageUrl: "/art/bocetos-de-piel/boceto-01.jpg", alt: "Boceto de Piel I", title: "Boceto de Piel I", downloadUrl: "/art/bocetos-de-piel/full/boceto-01.jpg" },
-  { id: "2", imageUrl: "/art/bocetos-de-piel/boceto-02.jpg", alt: "Ecos en Tinta", title: "Ecos en Tinta", downloadUrl: "/art/bocetos-de-piel/full/boceto-02.jpg" },
-  { id: "3", imageUrl: "/art/bocetos-de-piel/boceto-03.jpg", alt: "Anatomía Mística", title: "Anatomía Mística", downloadUrl: "/art/bocetos-de-piel/full/boceto-03.jpg" },
-  { id: "4", imageUrl: "/art/bocetos-de-piel/boceto-04.jpg", alt: "Trazos de Silencio", title: "Trazos de Silencio", downloadUrl: "/art/bocetos-de-piel/full/boceto-04.jpg" },
-  { id: "5", imageUrl: "/art/bocetos-de-piel/boceto-05.jpg", alt: "Metamorfosis", title: "Metamorfosis", downloadUrl: "/art/bocetos-de-piel/full/boceto-05.jpg" },
-  { id: "6", imageUrl: "/art/bocetos-de-piel/boceto-06.jpg", alt: "Espíritu Salvaje", title: "Espíritu Salvaje", downloadUrl: "/art/bocetos-de-piel/full/boceto-06.jpg" },
-  { id: "7", imageUrl: "/art/bocetos-de-piel/boceto-07.jpg", alt: "Líneas de Vida", title: "Líneas de Vida", downloadUrl: "/art/bocetos-de-piel/full/boceto-07.jpg" },
-  { id: "8", imageUrl: "/art/bocetos-de-piel/boceto-08.jpg", alt: "Geometría Sagrada", title: "Geometría Sagrada", downloadUrl: "/art/bocetos-de-piel/full/boceto-08.jpg" },
-  { id: "9", imageUrl: "/art/bocetos-de-piel/boceto-09.jpg", alt: "Fuerza Interior", title: "Fuerza Interior", downloadUrl: "/art/bocetos-de-piel/full/boceto-09.jpg" },
-  { id: "10", imageUrl: "/art/bocetos-de-piel/boceto-10.jpg", alt: "Raíces Orgánicas", title: "Raíces Orgánicas", downloadUrl: "/art/bocetos-de-piel/full/boceto-10.jpg" },
-  { id: "11", imageUrl: "/art/bocetos-de-piel/boceto-11.jpg", alt: "El Vuelo Interior", title: "El Vuelo Interior", downloadUrl: "/art/bocetos-de-piel/full/boceto-11.jpg" },
-  { id: "12", imageUrl: "/art/bocetos-de-piel/boceto-12.jpg", alt: "Sombra & Luz", title: "Sombra & Luz", downloadUrl: "/art/bocetos-de-piel/full/boceto-12.jpg" },
-  { id: "13", imageUrl: "/art/bocetos-de-piel/boceto-13.jpg", alt: "Dualidad", title: "Dualidad", downloadUrl: "/art/bocetos-de-piel/full/boceto-13.jpg" },
-  { id: "14", imageUrl: "/art/bocetos-de-piel/boceto-14.jpg", alt: "El Guardián", title: "El Guardián", downloadUrl: "/art/bocetos-de-piel/full/boceto-14.jpg" },
-  { id: "15", imageUrl: "/art/bocetos-de-piel/boceto-15.jpg", alt: "Renacer", title: "Renacer", downloadUrl: "/art/bocetos-de-piel/full/boceto-15.jpg" },
-  { id: "16", imageUrl: "/art/bocetos-de-piel/boceto-16.jpg", alt: "Vórtice Zen", title: "Vórtice Zen", downloadUrl: "/art/bocetos-de-piel/full/boceto-16.jpg" },
-  { id: "17", imageUrl: "/art/bocetos-de-piel/boceto-17.jpg", alt: "Huellas del Tiempo", title: "Huellas del Tiempo", downloadUrl: "/art/bocetos-de-piel/full/boceto-17.jpg" },
-  { id: "18", imageUrl: "/art/bocetos-de-piel/boceto-18.jpg", alt: "Equilibrio Puro", title: "Equilibrio Puro", downloadUrl: "/art/bocetos-de-piel/full/boceto-18.jpg" },
-  { id: "19", imageUrl: "/art/bocetos-de-piel/boceto-19.jpg", alt: "Piel & Grafito", title: "Piel & Grafito", downloadUrl: "/art/bocetos-de-piel/full/boceto-19.jpg" },
-  { id: "20", imageUrl: "/art/bocetos-de-piel/boceto-20.jpg", alt: "Serpiente Lunar", title: "Serpiente Lunar", downloadUrl: "/art/bocetos-de-piel/full/boceto-20.jpg" },
-  { id: "21", imageUrl: "/art/bocetos-de-piel/boceto-21.jpg", alt: "Tótem Sagrado", title: "Tótem Sagrado", downloadUrl: "/art/bocetos-de-piel/full/boceto-21.jpg" },
-  { id: "22", imageUrl: "/art/bocetos-de-piel/boceto-22.jpg", alt: "Frecuencia Oculta", title: "Frecuencia Oculta", downloadUrl: "/art/bocetos-de-piel/full/boceto-22.jpg" },
-  { id: "23", imageUrl: "/art/bocetos-de-piel/boceto-23.jpg", alt: "Vanguardia Tribal", title: "Vanguardia Tribal", downloadUrl: "/art/bocetos-de-piel/full/boceto-23.jpg" },
-  { id: "24", imageUrl: "/art/bocetos-de-piel/boceto-24.jpg", alt: "Alquimia Corporal", title: "Alquimia Corporal", downloadUrl: "/art/bocetos-de-piel/full/boceto-24.jpg" },
-]
-
 export function CardProvider({
   children,
   initialCards,
@@ -79,11 +57,76 @@ export function CardProvider({
   children: React.ReactNode
   initialCards?: Card[]
 }) {
+  const allCards = useMemo(() => {
+    return initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
+  }, [initialCards])
+
+  const [activeBatch, setActiveBatch] = useState<string>("all")
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
-  const cards = initialCards && initialCards.length > 0 ? initialCards : DEFAULT_BOCETOS_CARDS
+  const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
+
+  // Load favorites from localStorage if available
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("amart_favorites")
+      if (saved) setFavorites(new Set(JSON.parse(saved)))
+    } catch {}
+  }, [])
+
+  const toggleFavorite = useCallback((id: string) => {
+    setFavorites((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      try {
+        localStorage.setItem("amart_favorites", JSON.stringify(Array.from(next)))
+      } catch {}
+      return next
+    })
+  }, [])
+
+  const cards = useMemo(() => {
+    if (activeBatch === "batch1") return allCards.slice(0, 50)
+    if (activeBatch === "batch2") return allCards.slice(50, 100)
+    if (activeBatch === "batch3") return allCards.slice(100)
+    if (activeBatch === "favorites") {
+      const favs = allCards.filter((c) => favorites.has(c.id))
+      return favs.length > 0 ? favs : allCards
+    }
+    return allCards // "all"
+  }, [allCards, activeBatch, favorites])
+
+  const goToNextCard = useCallback(() => {
+    if (!selectedCard) return
+    const currentIndex = cards.findIndex((c) => c.id === selectedCard.id)
+    if (currentIndex === -1) return
+    const nextIndex = (currentIndex + 1) % cards.length
+    setSelectedCard(cards[nextIndex])
+  }, [cards, selectedCard])
+
+  const goToPrevCard = useCallback(() => {
+    if (!selectedCard) return
+    const currentIndex = cards.findIndex((c) => c.id === selectedCard.id)
+    if (currentIndex === -1) return
+    const prevIndex = (currentIndex - 1 + cards.length) % cards.length
+    setSelectedCard(cards[prevIndex])
+  }, [cards, selectedCard])
 
   return (
-    <CardContext.Provider value={{ selectedCard, setSelectedCard, cards }}>
+    <CardContext.Provider
+      value={{
+        selectedCard,
+        setSelectedCard,
+        cards,
+        allCards,
+        activeBatch,
+        setActiveBatch,
+        favorites,
+        toggleFavorite,
+        goToNextCard,
+        goToPrevCard,
+      }}
+    >
       {children}
     </CardContext.Provider>
   )
@@ -108,12 +151,12 @@ export function StarfieldBackground() {
     mountRef.current.appendChild(renderer.domElement)
 
     const starsGeometry = new THREE.BufferGeometry()
-    const starsCount = 10000
+    const starsCount = 12000
     const positions = new Float32Array(starsCount * 3)
     for (let i = 0; i < starsCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 2000
+      positions[i * 3] = (Math.random() - 0.5) * 2400
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 2400
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 2400
     }
     starsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
     const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7, sizeAttenuation: true })
@@ -125,8 +168,8 @@ export function StarfieldBackground() {
     let animationId = 0
     const animate = () => {
       animationId = requestAnimationFrame(animate)
-      stars.rotation.y += 0.0001
-      stars.rotation.x += 0.00005
+      stars.rotation.y += 0.00008
+      stars.rotation.x += 0.00004
       renderer.render(scene, camera)
     }
     animate()
@@ -204,24 +247,24 @@ export function FloatingCard({
 
       <Html
         transform
-        distanceFactor={10}
+        distanceFactor={11}
         position={[0, 0, 0.01]}
         style={{
-          transition: "all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)",
-          transform: hovered ? "scale(1.15)" : "scale(1)",
+          transition: "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease",
+          transform: hovered ? "scale(1.18)" : "scale(1)",
           pointerEvents: "none",
         }}
       >
         <div
-          className="w-40 h-52 rounded-xl overflow-hidden shadow-2xl bg-[#0f1115] p-2.5 select-none transition-all duration-300 backdrop-blur-sm"
+          className="w-36 h-48 rounded-xl overflow-hidden shadow-2xl bg-[#0f1115] p-2 select-none transition-all duration-300 backdrop-blur-sm"
           style={{
             boxShadow: hovered
-              ? "0 25px 50px rgba(49, 184, 198, 0.5), 0 0 35px rgba(49, 184, 198, 0.35)"
-              : "0 15px 30px rgba(0, 0, 0, 0.7)",
-            border: hovered ? "2px solid rgba(49, 184, 198, 0.8)" : "1px solid rgba(255, 255, 255, 0.12)",
+              ? "0 25px 50px rgba(49, 184, 198, 0.6), 0 0 35px rgba(49, 184, 198, 0.4)"
+              : "0 15px 30px rgba(0, 0, 0, 0.75)",
+            border: hovered ? "2px solid rgba(49, 184, 198, 0.85)" : "1px solid rgba(255, 255, 255, 0.12)",
           }}
         >
-          <div className="relative w-full h-[162px] overflow-hidden rounded-lg bg-black/40">
+          <div className="relative w-full h-[150px] overflow-hidden rounded-lg bg-black/50">
             <img
               src={card.imageUrl || "/placeholder.svg"}
               alt={card.alt}
@@ -230,8 +273,8 @@ export function FloatingCard({
               draggable={false}
             />
           </div>
-          <div className="mt-1.5 text-center px-1">
-            <p className="text-white text-[11px] font-medium tracking-wide truncate">{card.title}</p>
+          <div className="mt-1 text-center px-0.5">
+            <p className="text-white text-[10px] font-medium tracking-wide truncate">{card.title}</p>
           </div>
         </div>
       </Html>
@@ -240,23 +283,26 @@ export function FloatingCard({
 }
 
 /* =========================
-   Card Modal
+   Card Modal (High-Res Viewer & Controls)
    ========================= */
 
 export function CardModal() {
-  const { selectedCard, setSelectedCard } = useCard()
-  const [isFavorited, setIsFavorited] = useState(false)
+  const { selectedCard, setSelectedCard, favorites, toggleFavorite, goToNextCard, goToPrevCard } = useCard()
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedCard(null)
+      if (e.key === "ArrowRight") goToNextCard()
+      if (e.key === "ArrowLeft") goToPrevCard()
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [setSelectedCard])
+  }, [setSelectedCard, goToNextCard, goToPrevCard])
 
   if (!selectedCard) return null
+
+  const isFav = favorites.has(selectedCard.id)
 
   const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!cardRef.current) return
@@ -265,8 +311,8 @@ export function CardModal() {
     const y = e.clientY - rect.top
     const centerX = rect.width / 2
     const centerY = rect.height / 2
-    const rotateX = (y - centerY) / 15
-    const rotateY = (centerX - x) / 15
+    const rotateX = (y - centerY) / 18
+    const rotateY = (centerX - x) / 18
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
   }
 
@@ -278,7 +324,6 @@ export function CardModal() {
     }
   }
 
-  const toggleFavorite = () => setIsFavorited((v) => !v)
   const handleClose = () => setSelectedCard(null)
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (e.target === e.currentTarget) handleClose()
@@ -298,16 +343,33 @@ export function CardModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 select-none"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
     >
+      {/* Navigation Arrows */}
+      <button
+        onClick={goToPrevCard}
+        aria-label="Obra anterior"
+        className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-[#31b8c6] text-white/70 hover:text-black border border-white/10 transition-all z-20 cursor-pointer"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+
+      <button
+        onClick={goToNextCard}
+        aria-label="Siguiente obra"
+        className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-[#31b8c6] text-white/70 hover:text-black border border-white/10 transition-all z-20 cursor-pointer"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
       <div className="relative max-w-sm sm:max-w-md w-full mx-4">
         <button
           onClick={handleClose}
           aria-label="Cerrar modal"
-          className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors z-10 p-1"
+          className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors z-10 p-1 cursor-pointer"
         >
           <X className="w-8 h-8" />
         </button>
@@ -315,10 +377,10 @@ export function CardModal() {
         <div style={{ perspective: "1000px" }} className="w-full">
           <div
             ref={cardRef}
-            className="relative cursor-pointer rounded-2xl bg-[#121418] border border-white/10 p-5 transition-all duration-500 ease-out w-full shadow-2xl"
+            className="relative rounded-2xl bg-[#121418] border border-white/10 p-5 transition-all duration-500 ease-out w-full shadow-2xl"
             style={{
               transformStyle: "preserve-3d",
-              boxShadow: "0 30px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(49, 184, 198, 0.15)",
+              boxShadow: "0 30px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(49, 184, 198, 0.2)",
             }}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
@@ -333,11 +395,14 @@ export function CardModal() {
               />
             </div>
 
-            <div className="text-center mb-5">
+            <div className="text-center mb-4">
               <span className="text-[10px] uppercase font-mono tracking-widest text-[#31b8c6] mb-1 inline-block">
                 Andrés Morales • Bocetos de Piel
               </span>
               <h3 className="text-white text-xl font-serif font-medium tracking-tight">{selectedCard.title}</h3>
+              <p className="text-white/40 text-[11px] font-mono mt-0.5">
+                Dibujo #{selectedCard.id} de 149
+              </p>
             </div>
 
             <div className="flex gap-2.5">
@@ -349,12 +414,12 @@ export function CardModal() {
               >
                 <div className="flex items-center gap-2">
                   <Download className="h-4 w-4" strokeWidth={2} />
-                  <span>Descargar Obra</span>
+                  <span>Descargar Obra Original</span>
                 </div>
               </button>
               <button
                 type="button"
-                onClick={toggleFavorite}
+                onClick={() => toggleFavorite(selectedCard.id)}
                 aria-label="Guardar en favoritos"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-black outline-none transition duration-300 ease-out hover:opacity-90 active:scale-[0.98] shadow-md cursor-pointer"
                 style={{ backgroundColor: "#31b8c6" }}
@@ -362,7 +427,7 @@ export function CardModal() {
                 <Heart
                   className="h-4 w-4"
                   strokeWidth={2}
-                  fill={isFavorited ? "currentColor" : "none"}
+                  fill={isFav ? "currentColor" : "none"}
                 />
               </button>
             </div>
@@ -374,13 +439,15 @@ export function CardModal() {
 }
 
 /* =========================
-   Card Galaxy
+   Card Galaxy (149 Works Fibonacci Sphere)
    ========================= */
 
 export function CardGalaxy() {
   const { cards } = useCard()
 
   const cardPositions = useMemo(() => {
+    const numCards = cards.length
+    const goldenRatio = (1 + Math.sqrt(5)) / 2
     const positions: {
       x: number
       y: number
@@ -389,8 +456,6 @@ export function CardGalaxy() {
       rotationY: number
       rotationZ: number
     }[] = []
-    const numCards = cards.length
-    const goldenRatio = (1 + Math.sqrt(5)) / 2
 
     for (let i = 0; i < numCards; i++) {
       const y = 1 - (i / (numCards - 1 || 1)) * 2
@@ -398,7 +463,8 @@ export function CardGalaxy() {
       const theta = (2 * Math.PI * i) / goldenRatio
       const x = Math.cos(theta) * radiusAtY
       const z = Math.sin(theta) * radiusAtY
-      const layerRadius = 12 + (i % 3) * 4
+      // Distribute evenly across 5 concentric orbital shells
+      const layerRadius = 18 + (i % 5) * 5.5
 
       positions.push({
         x: x * layerRadius,
@@ -410,21 +476,27 @@ export function CardGalaxy() {
       })
     }
     return positions
-  }, [cards.length])
+  }, [cards])
 
   return (
     <>
-      <Sphere args={[2, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[3, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#1a1a2e" transparent opacity={0.15} wireframe />
       </Sphere>
-      <Sphere args={[12, 32, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#31b8c6" transparent opacity={0.05} wireframe />
+      <Sphere args={[18, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#31b8c6" transparent opacity={0.035} wireframe />
       </Sphere>
-      <Sphere args={[16, 32, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#31b8c6" transparent opacity={0.03} wireframe />
+      <Sphere args={[24, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#31b8c6" transparent opacity={0.025} wireframe />
       </Sphere>
-      <Sphere args={[20, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[30, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.02} wireframe />
+      </Sphere>
+      <Sphere args={[36, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#31b8c6" transparent opacity={0.015} wireframe />
+      </Sphere>
+      <Sphere args={[42, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#31b8c6" transparent opacity={0.01} wireframe />
       </Sphere>
 
       {cards.map((card, i) => (
@@ -435,11 +507,110 @@ export function CardGalaxy() {
 }
 
 /* =========================
+   Full Collection Grid Catalog (Drawer Modal)
+   ========================= */
+
+function CatalogDrawer({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean
+  onClose: () => void
+}) {
+  const { allCards, setSelectedCard } = useCard()
+  const [search, setSearch] = useState("")
+
+  const filteredCards = useMemo(() => {
+    if (!search.trim()) return allCards
+    const q = search.toLowerCase()
+    return allCards.filter(
+      (c) => c.title.toLowerCase().includes(q) || c.id.includes(q) || (c.alt && c.alt.toLowerCase().includes(q))
+    )
+  }, [allCards, search])
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="w-full max-w-2xl h-full bg-[#0c0e12] border-l border-white/10 flex flex-col p-6 shadow-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between pb-4 border-b border-white/10">
+          <div>
+            <h2 className="text-xl font-serif font-bold text-white">Catálogo Completo</h2>
+            <p className="text-xs font-mono text-[#31b8c6] mt-0.5">
+              149 Bocetos de Piel • Andrés Morales
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Cerrar catálogo"
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Search */}
+        <div className="relative my-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar por número o palabra clave (ej. 42, 105)..."
+            className="w-full pl-9 pr-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs placeholder:text-white/40 focus:outline-none focus:border-[#31b8c6] transition-colors"
+          />
+        </div>
+
+        {/* Artwork Grid */}
+        <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/20">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {filteredCards.map((card) => (
+              <button
+                key={card.id}
+                onClick={() => {
+                  setSelectedCard(card)
+                  onClose()
+                }}
+                className="group relative rounded-lg overflow-hidden bg-black/40 border border-white/10 hover:border-[#31b8c6] transition-all duration-300 text-left cursor-pointer"
+              >
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-black/60">
+                  <img
+                    src={card.imageUrl}
+                    alt={card.alt}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Maximize2 className="w-5 h-5 text-[#31b8c6]" />
+                  </div>
+                </div>
+                <div className="p-2 bg-[#121418]">
+                  <p className="text-[11px] font-medium text-white truncate group-hover:text-[#31b8c6] transition-colors">
+                    {card.title}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="pt-4 border-t border-white/10 text-center text-xs font-mono text-white/40">
+          Mostrando {filteredCards.length} de {allCards.length} dibujos
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* =========================
    Page/Component Export
    ========================= */
 
 export default function StellarCardGallerySingle({ cards }: { cards?: Card[] }) {
   const [mounted, setMounted] = useState(false)
+  const [catalogOpen, setCatalogOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -450,7 +621,7 @@ export default function StellarCardGallerySingle({ cards }: { cards?: Card[] }) 
       <div className="w-full h-screen bg-black flex items-center justify-center text-white">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-[#31b8c6] border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs uppercase font-mono tracking-widest text-[#31b8c6]/80">Cargando Galería Estelar...</p>
+          <p className="text-xs uppercase font-mono tracking-widest text-[#31b8c6]/80">Cargando 149 Bocetos de Piel...</p>
         </div>
       </div>
     )
@@ -458,82 +629,161 @@ export default function StellarCardGallerySingle({ cards }: { cards?: Card[] }) 
 
   return (
     <CardProvider initialCards={cards}>
-      <div className="w-full h-screen relative overflow-hidden bg-black select-none">
-        <StarfieldBackground />
-
-        <Canvas
-          camera={{ position: [0, 0, 16], fov: 60 }}
-          className="absolute inset-0 z-10"
-          onCreated={({ gl }) => {
-            gl.domElement.style.pointerEvents = "auto"
-          }}
-        >
-          <Suspense fallback={null}>
-            <Environment preset="night" />
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={0.7} />
-            <pointLight position={[-10, -10, -10]} intensity={0.4} />
-            <CardGalaxy />
-            <OrbitControls
-              enablePan
-              enableZoom
-              enableRotate
-              minDistance={5}
-              maxDistance={42}
-              autoRotate={true}
-              autoRotateSpeed={0.35}
-              rotateSpeed={0.5}
-              zoomSpeed={1.2}
-              panSpeed={0.8}
-              target={[0, 0, 0]}
-            />
-          </Suspense>
-        </Canvas>
-
-        <CardModal />
-
-        {/* Top Header Overlay */}
-        <header className="absolute top-4 left-4 z-20 text-white pointer-events-auto max-w-sm sm:max-w-md">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#31b8c6] animate-pulse" />
-            <p className="text-[11px] font-mono uppercase tracking-widest text-[#31b8c6]">
-              Andrés Morales • AM Art
-            </p>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-md">
-            Bocetos de Piel
-          </h1>
-          <p className="text-xs text-white/60 mt-0.5 leading-relaxed">
-            Arrastra para rotar • Scroll para zoom • Clic en cualquier obra para abrir detalles
-          </p>
-        </header>
-
-        {/* Top Right Quick Actions */}
-        <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-auto">
-          <a
-            href="https://andresmorales.com.co"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/15 backdrop-blur-md transition-all duration-200"
-          >
-            <span>Portafolio</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-          <a
-            href="https://wa.me/573161482507?text=Hola%20Andr%C3%A9s,%20vi%20tu%20galer%C3%ADa%20Bocetos%20de%20Piel%20en%20amart%20y%20me%20gustar%C3%ADa%20cotizar%20una%20obra"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#31b8c6] hover:bg-[#289fae] text-black shadow-lg transition-all duration-200"
-          >
-            <Sparkles className="w-3 h-3" />
-            <span>Encargar Obra</span>
-          </a>
-        </div>
-
-        {/* Bottom Legend */}
-        <footer className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] font-mono text-white/40 pointer-events-none">
-          <span>24 Obras Seleccionadas</span>
-          <span>© {new Date().getFullYear()} Andrés Morales • Todos los derechos reservados</span>
-        </footer>
-      </div>
+      <GalleryContent catalogOpen={catalogOpen} setCatalogOpen={setCatalogOpen} />
     </CardProvider>
+  )
+}
+
+function GalleryContent({
+  catalogOpen,
+  setCatalogOpen,
+}: {
+  catalogOpen: boolean
+  setCatalogOpen: (v: boolean) => void
+}) {
+  const { allCards, cards, activeBatch, setActiveBatch, favorites } = useCard()
+
+  return (
+    <div className="w-full h-screen relative overflow-hidden bg-black select-none">
+      <StarfieldBackground />
+
+      <Canvas
+        camera={{ position: [0, 0, 36], fov: 60 }}
+        className="absolute inset-0 z-10"
+        onCreated={({ gl }) => {
+          gl.domElement.style.pointerEvents = "auto"
+        }}
+      >
+        <Suspense fallback={null}>
+          <Environment preset="night" />
+          <ambientLight intensity={0.55} />
+          <pointLight position={[15, 15, 15]} intensity={0.8} />
+          <pointLight position={[-15, -15, -15]} intensity={0.5} />
+          <CardGalaxy />
+          <OrbitControls
+            enablePan
+            enableZoom
+            enableRotate
+            minDistance={8}
+            maxDistance={85}
+            autoRotate={true}
+            autoRotateSpeed={0.25}
+            rotateSpeed={0.5}
+            zoomSpeed={1.2}
+            panSpeed={0.8}
+            target={[0, 0, 0]}
+          />
+        </Suspense>
+      </Canvas>
+
+      <CardModal />
+      <CatalogDrawer isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} />
+
+      {/* Top Header Overlay */}
+      <header className="absolute top-4 left-4 z-20 text-white pointer-events-auto max-w-sm sm:max-w-md">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-2 h-2 rounded-full bg-[#31b8c6] animate-pulse" />
+          <p className="text-[11px] font-mono uppercase tracking-widest text-[#31b8c6]">
+            Andrés Morales • AM Art
+          </p>
+        </div>
+        <h1 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-md">
+          Bocetos de Piel
+        </h1>
+        <p className="text-xs text-white/60 mt-0.5 leading-relaxed">
+          Galaxia 3D con las 149 obras originales • Arrastra para rotar • Scroll para zoom • Clic en cualquier obra
+        </p>
+
+        {/* Filter / Constellation Pills */}
+        <div className="flex flex-wrap items-center gap-1.5 mt-3">
+          <button
+            onClick={() => setActiveBatch("all")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeBatch === "all"
+                ? "bg-[#31b8c6] text-black font-semibold shadow-md"
+                : "bg-white/10 hover:bg-white/15 text-white/70"
+            }`}
+          >
+            Todas ({allCards.length})
+          </button>
+          <button
+            onClick={() => setActiveBatch("batch1")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeBatch === "batch1"
+                ? "bg-[#31b8c6] text-black font-semibold shadow-md"
+                : "bg-white/10 hover:bg-white/15 text-white/70"
+            }`}
+          >
+            1–50
+          </button>
+          <button
+            onClick={() => setActiveBatch("batch2")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeBatch === "batch2"
+                ? "bg-[#31b8c6] text-black font-semibold shadow-md"
+                : "bg-white/10 hover:bg-white/15 text-white/70"
+            }`}
+          >
+            51–100
+          </button>
+          <button
+            onClick={() => setActiveBatch("batch3")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeBatch === "batch3"
+                ? "bg-[#31b8c6] text-black font-semibold shadow-md"
+                : "bg-white/10 hover:bg-white/15 text-white/70"
+            }`}
+          >
+            101–149
+          </button>
+          {favorites.size > 0 && (
+            <button
+              onClick={() => setActiveBatch("favorites")}
+              className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                activeBatch === "favorites"
+                  ? "bg-[#31b8c6] text-black font-semibold shadow-md"
+                  : "bg-white/10 hover:bg-white/15 text-white/70"
+              }`}
+            >
+              <Heart className="w-3 h-3 fill-current" />
+              <span>Favoritos ({favorites.size})</span>
+            </button>
+          )}
+        </div>
+      </header>
+
+      {/* Top Right Quick Actions */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-auto">
+        <button
+          onClick={() => setCatalogOpen(true)}
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md transition-all duration-200 shadow-md cursor-pointer"
+        >
+          <LayoutGrid className="w-3.5 h-3.5 text-[#31b8c6]" />
+          <span>Ver Catálogo (149)</span>
+        </button>
+        <a
+          href="https://andresmorales.com.co"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/15 backdrop-blur-md transition-all duration-200"
+        >
+          <span>Portafolio</span>
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://wa.me/573161482507?text=Hola%20Andr%C3%A9s,%20vi%20tu%20galer%C3%ADa%20Bocetos%20de%20Piel%20en%20amart%20y%20me%20gustar%C3%ADa%20cotizar%20una%20obra"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#31b8c6] hover:bg-[#289fae] text-black shadow-lg transition-all duration-200"
+        >
+          <Sparkles className="w-3 h-3" />
+          <span>Encargar Obra</span>
+        </a>
+      </div>
+
+      {/* Bottom Legend */}
+      <footer className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] font-mono text-white/40 pointer-events-none">
+        <span>{cards.length} Obras en esta constelación</span>
+        <span>© {new Date().getFullYear()} Andrés Morales • Bocetos de Piel</span>
+      </footer>
+    </div>
   )
 }

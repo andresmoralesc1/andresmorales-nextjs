@@ -1,0 +1,1504 @@
+// Auto-generated artwork dataset for Bocetos de Piel by Andrés Morales
+export interface ArtworkCard {
+  id: string;
+  title: string;
+  alt: string;
+  imageUrl: string;
+  downloadUrl: string;
+  filename?: string;
+  width?: number;
+  height?: number;
+}
+
+export const ALL_BOCETOS_CARDS: ArtworkCard[] = [
+  {
+    "id": "1",
+    "title": "Boceto de Piel #01",
+    "alt": "Boceto de Piel #01 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-001.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-001.jpg",
+    "filename": "00000IMG_00000_BURST20220206182744949_COVER.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "2",
+    "title": "Boceto de Piel #02",
+    "alt": "Boceto de Piel #02 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-002.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-002.jpg",
+    "filename": "20200827_230116~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "3",
+    "title": "Boceto de Piel #03",
+    "alt": "Boceto de Piel #03 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-003.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-003.jpg",
+    "filename": "20201008_092153.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "4",
+    "title": "Boceto de Piel #04",
+    "alt": "Boceto de Piel #04 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-004.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-004.jpg",
+    "filename": "20201013_215238_1.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "5",
+    "title": "Boceto de Piel #05",
+    "alt": "Boceto de Piel #05 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-005.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-005.jpg",
+    "filename": "20220123_131725_HDR.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "6",
+    "title": "Boceto de Piel #06",
+    "alt": "Boceto de Piel #06 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-006.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-006.jpg",
+    "filename": "20260504_112201.heic",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "7",
+    "title": "Boceto de Piel #07",
+    "alt": "Boceto de Piel #07 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-007.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-007.jpg",
+    "filename": "465251371_1069594644662469_7975920622533933811_n.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "8",
+    "title": "Boceto de Piel #08",
+    "alt": "Boceto de Piel #08 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-008.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-008.jpg",
+    "filename": "728462443_1242770668909867_7656270710131196689_n~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "9",
+    "title": "Boceto de Piel #09",
+    "alt": "Boceto de Piel #09 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-009.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-009.jpg",
+    "filename": "IMG-20200223-WA0014.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "10",
+    "title": "Boceto de Piel #10",
+    "alt": "Boceto de Piel #10 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-010.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-010.jpg",
+    "filename": "IMG-20260714-WA0017~3.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "11",
+    "title": "Boceto de Piel #11",
+    "alt": "Boceto de Piel #11 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-011.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-011.jpg",
+    "filename": "IMG-20260715-WA0001~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "12",
+    "title": "Boceto de Piel #12",
+    "alt": "Boceto de Piel #12 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-012.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-012.jpg",
+    "filename": "IMG_20190415_092426_550.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "13",
+    "title": "Boceto de Piel #13",
+    "alt": "Boceto de Piel #13 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-013.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-013.jpg",
+    "filename": "IMG_20191009_232733.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "14",
+    "title": "Boceto de Piel #14",
+    "alt": "Boceto de Piel #14 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-014.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-014.jpg",
+    "filename": "IMG_20210318_110643_tigr_1.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "15",
+    "title": "Boceto de Piel #15",
+    "alt": "Boceto de Piel #15 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-015.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-015.jpg",
+    "filename": "IMG_20210528_234905_tigr.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "16",
+    "title": "Boceto de Piel #16",
+    "alt": "Boceto de Piel #16 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-016.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-016.jpg",
+    "filename": "IMG_20220208_230920.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "17",
+    "title": "Boceto de Piel #17",
+    "alt": "Boceto de Piel #17 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-017.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-017.jpg",
+    "filename": "IMG_20220208_230951.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "18",
+    "title": "Boceto de Piel #18",
+    "alt": "Boceto de Piel #18 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-018.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-018.jpg",
+    "filename": "IMG_20220208_231007.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "19",
+    "title": "Boceto de Piel #19",
+    "alt": "Boceto de Piel #19 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-019.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-019.jpg",
+    "filename": "IMG_20220208_231022.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "20",
+    "title": "Boceto de Piel #20",
+    "alt": "Boceto de Piel #20 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-020.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-020.jpg",
+    "filename": "IMG_20220220_111754.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "21",
+    "title": "Boceto de Piel #21",
+    "alt": "Boceto de Piel #21 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-021.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-021.jpg",
+    "filename": "IMG_20220220_113242.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "22",
+    "title": "Boceto de Piel #22",
+    "alt": "Boceto de Piel #22 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-022.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-022.jpg",
+    "filename": "IMG_20260714_110929.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "23",
+    "title": "Boceto de Piel #23",
+    "alt": "Boceto de Piel #23 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-023.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-023.jpg",
+    "filename": "IMG_20260714_110946.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "24",
+    "title": "Boceto de Piel #24",
+    "alt": "Boceto de Piel #24 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-024.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-024.jpg",
+    "filename": "IMG_20260714_110957.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "25",
+    "title": "Boceto de Piel #25",
+    "alt": "Boceto de Piel #25 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-025.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-025.jpg",
+    "filename": "IMG_20260714_111016.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "26",
+    "title": "Boceto de Piel #26",
+    "alt": "Boceto de Piel #26 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-026.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-026.jpg",
+    "filename": "IMG_20260714_111031.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "27",
+    "title": "Boceto de Piel #27",
+    "alt": "Boceto de Piel #27 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-027.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-027.jpg",
+    "filename": "IMG_20260714_111042.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "28",
+    "title": "Boceto de Piel #28",
+    "alt": "Boceto de Piel #28 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-028.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-028.jpg",
+    "filename": "IMG_20260714_111058~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "29",
+    "title": "Boceto de Piel #29",
+    "alt": "Boceto de Piel #29 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-029.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-029.jpg",
+    "filename": "IMG_20260714_111122~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "30",
+    "title": "Boceto de Piel #30",
+    "alt": "Boceto de Piel #30 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-030.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-030.jpg",
+    "filename": "IMG_20260714_111141.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "31",
+    "title": "Boceto de Piel #31",
+    "alt": "Boceto de Piel #31 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-031.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-031.jpg",
+    "filename": "IMG_20260714_111157.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "32",
+    "title": "Boceto de Piel #32",
+    "alt": "Boceto de Piel #32 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-032.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-032.jpg",
+    "filename": "IMG_20260714_111213.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "33",
+    "title": "Boceto de Piel #33",
+    "alt": "Boceto de Piel #33 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-033.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-033.jpg",
+    "filename": "IMG_20260714_111316.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "34",
+    "title": "Boceto de Piel #34",
+    "alt": "Boceto de Piel #34 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-034.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-034.jpg",
+    "filename": "IMG_20260714_111332.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "35",
+    "title": "Boceto de Piel #35",
+    "alt": "Boceto de Piel #35 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-035.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-035.jpg",
+    "filename": "IMG_20260714_111348.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "36",
+    "title": "Boceto de Piel #36",
+    "alt": "Boceto de Piel #36 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-036.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-036.jpg",
+    "filename": "IMG_20260714_111403.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "37",
+    "title": "Boceto de Piel #37",
+    "alt": "Boceto de Piel #37 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-037.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-037.jpg",
+    "filename": "IMG_20260714_111418.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "38",
+    "title": "Boceto de Piel #38",
+    "alt": "Boceto de Piel #38 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-038.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-038.jpg",
+    "filename": "IMG_20260714_111430.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "39",
+    "title": "Boceto de Piel #39",
+    "alt": "Boceto de Piel #39 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-039.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-039.jpg",
+    "filename": "IMG_20260714_112019.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "40",
+    "title": "Boceto de Piel #40",
+    "alt": "Boceto de Piel #40 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-040.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-040.jpg",
+    "filename": "IMG_20260714_112038.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "41",
+    "title": "Boceto de Piel #41",
+    "alt": "Boceto de Piel #41 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-041.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-041.jpg",
+    "filename": "IMG_20260714_112057.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "42",
+    "title": "Boceto de Piel #42",
+    "alt": "Boceto de Piel #42 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-042.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-042.jpg",
+    "filename": "IMG_20260714_112118.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "43",
+    "title": "Boceto de Piel #43",
+    "alt": "Boceto de Piel #43 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-043.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-043.jpg",
+    "filename": "IMG_20260714_112139.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "44",
+    "title": "Boceto de Piel #44",
+    "alt": "Boceto de Piel #44 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-044.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-044.jpg",
+    "filename": "IMG_20260714_112200.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "45",
+    "title": "Boceto de Piel #45",
+    "alt": "Boceto de Piel #45 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-045.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-045.jpg",
+    "filename": "IMG_20260714_112216.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "46",
+    "title": "Boceto de Piel #46",
+    "alt": "Boceto de Piel #46 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-046.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-046.jpg",
+    "filename": "IMG_20260714_112232.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "47",
+    "title": "Boceto de Piel #47",
+    "alt": "Boceto de Piel #47 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-047.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-047.jpg",
+    "filename": "IMG_20260714_112402.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "48",
+    "title": "Boceto de Piel #48",
+    "alt": "Boceto de Piel #48 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-048.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-048.jpg",
+    "filename": "IMG_20260714_112411.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "49",
+    "title": "Boceto de Piel #49",
+    "alt": "Boceto de Piel #49 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-049.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-049.jpg",
+    "filename": "IMG_20260714_112504.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "50",
+    "title": "Boceto de Piel #50",
+    "alt": "Boceto de Piel #50 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-050.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-050.jpg",
+    "filename": "IMG_20260714_112527.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "51",
+    "title": "Boceto de Piel #51",
+    "alt": "Boceto de Piel #51 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-051.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-051.jpg",
+    "filename": "IMG_20260714_112542.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "52",
+    "title": "Boceto de Piel #52",
+    "alt": "Boceto de Piel #52 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-052.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-052.jpg",
+    "filename": "IMG_20260714_112548.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "53",
+    "title": "Boceto de Piel #53",
+    "alt": "Boceto de Piel #53 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-053.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-053.jpg",
+    "filename": "IMG_20260714_112606.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "54",
+    "title": "Boceto de Piel #54",
+    "alt": "Boceto de Piel #54 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-054.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-054.jpg",
+    "filename": "IMG_20260714_112627.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "55",
+    "title": "Boceto de Piel #55",
+    "alt": "Boceto de Piel #55 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-055.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-055.jpg",
+    "filename": "IMG_20260714_112647.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "56",
+    "title": "Boceto de Piel #56",
+    "alt": "Boceto de Piel #56 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-056.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-056.jpg",
+    "filename": "IMG_20260714_112700.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "57",
+    "title": "Boceto de Piel #57",
+    "alt": "Boceto de Piel #57 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-057.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-057.jpg",
+    "filename": "IMG_20260714_112716.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "58",
+    "title": "Boceto de Piel #58",
+    "alt": "Boceto de Piel #58 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-058.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-058.jpg",
+    "filename": "IMG_20260714_112731.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "59",
+    "title": "Boceto de Piel #59",
+    "alt": "Boceto de Piel #59 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-059.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-059.jpg",
+    "filename": "IMG_20260714_112751.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "60",
+    "title": "Boceto de Piel #60",
+    "alt": "Boceto de Piel #60 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-060.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-060.jpg",
+    "filename": "IMG_20260714_112807.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "61",
+    "title": "Boceto de Piel #61",
+    "alt": "Boceto de Piel #61 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-061.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-061.jpg",
+    "filename": "IMG_20260714_112840.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "62",
+    "title": "Boceto de Piel #62",
+    "alt": "Boceto de Piel #62 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-062.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-062.jpg",
+    "filename": "IMG_20260714_112908.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "63",
+    "title": "Boceto de Piel #63",
+    "alt": "Boceto de Piel #63 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-063.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-063.jpg",
+    "filename": "IMG_20260714_112921.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "64",
+    "title": "Boceto de Piel #64",
+    "alt": "Boceto de Piel #64 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-064.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-064.jpg",
+    "filename": "IMG_20260714_112936.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "65",
+    "title": "Boceto de Piel #65",
+    "alt": "Boceto de Piel #65 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-065.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-065.jpg",
+    "filename": "IMG_20260714_112948.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "66",
+    "title": "Boceto de Piel #66",
+    "alt": "Boceto de Piel #66 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-066.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-066.jpg",
+    "filename": "IMG_20260714_113000.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "67",
+    "title": "Boceto de Piel #67",
+    "alt": "Boceto de Piel #67 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-067.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-067.jpg",
+    "filename": "IMG_20260714_113012.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "68",
+    "title": "Boceto de Piel #68",
+    "alt": "Boceto de Piel #68 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-068.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-068.jpg",
+    "filename": "IMG_20260714_113025.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "69",
+    "title": "Boceto de Piel #69",
+    "alt": "Boceto de Piel #69 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-069.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-069.jpg",
+    "filename": "IMG_20260714_113042.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "70",
+    "title": "Boceto de Piel #70",
+    "alt": "Boceto de Piel #70 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-070.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-070.jpg",
+    "filename": "IMG_20260714_113057.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "71",
+    "title": "Boceto de Piel #71",
+    "alt": "Boceto de Piel #71 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-071.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-071.jpg",
+    "filename": "IMG_20260714_113113.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "72",
+    "title": "Boceto de Piel #72",
+    "alt": "Boceto de Piel #72 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-072.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-072.jpg",
+    "filename": "IMG_20260714_113128.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "73",
+    "title": "Boceto de Piel #73",
+    "alt": "Boceto de Piel #73 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-073.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-073.jpg",
+    "filename": "IMG_20260714_113737.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "74",
+    "title": "Boceto de Piel #74",
+    "alt": "Boceto de Piel #74 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-074.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-074.jpg",
+    "filename": "IMG_20260714_113742.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "75",
+    "title": "Boceto de Piel #75",
+    "alt": "Boceto de Piel #75 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-075.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-075.jpg",
+    "filename": "IMG_20260714_113746.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "76",
+    "title": "Boceto de Piel #76",
+    "alt": "Boceto de Piel #76 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-076.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-076.jpg",
+    "filename": "IMG_20260714_113812.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "77",
+    "title": "Boceto de Piel #77",
+    "alt": "Boceto de Piel #77 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-077.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-077.jpg",
+    "filename": "IMG_20260714_113822.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "78",
+    "title": "Boceto de Piel #78",
+    "alt": "Boceto de Piel #78 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-078.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-078.jpg",
+    "filename": "IMG_20260714_113830.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "79",
+    "title": "Boceto de Piel #79",
+    "alt": "Boceto de Piel #79 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-079.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-079.jpg",
+    "filename": "IMG_20260714_113839.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "80",
+    "title": "Boceto de Piel #80",
+    "alt": "Boceto de Piel #80 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-080.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-080.jpg",
+    "filename": "IMG_20260714_113906.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "81",
+    "title": "Boceto de Piel #81",
+    "alt": "Boceto de Piel #81 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-081.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-081.jpg",
+    "filename": "IMG_20260714_113915.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "82",
+    "title": "Boceto de Piel #82",
+    "alt": "Boceto de Piel #82 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-082.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-082.jpg",
+    "filename": "IMG_20260714_113933.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "83",
+    "title": "Boceto de Piel #83",
+    "alt": "Boceto de Piel #83 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-083.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-083.jpg",
+    "filename": "IMG_20260714_113942.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "84",
+    "title": "Boceto de Piel #84",
+    "alt": "Boceto de Piel #84 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-084.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-084.jpg",
+    "filename": "IMG_20260714_114007.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "85",
+    "title": "Boceto de Piel #85",
+    "alt": "Boceto de Piel #85 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-085.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-085.jpg",
+    "filename": "IMG_20260714_114020.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "86",
+    "title": "Boceto de Piel #86",
+    "alt": "Boceto de Piel #86 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-086.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-086.jpg",
+    "filename": "IMG_20260714_114037.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "87",
+    "title": "Boceto de Piel #87",
+    "alt": "Boceto de Piel #87 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-087.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-087.jpg",
+    "filename": "IMG_20260714_114051.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "88",
+    "title": "Boceto de Piel #88",
+    "alt": "Boceto de Piel #88 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-088.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-088.jpg",
+    "filename": "IMG_20260714_114107.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "89",
+    "title": "Boceto de Piel #89",
+    "alt": "Boceto de Piel #89 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-089.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-089.jpg",
+    "filename": "IMG_20260714_114119.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "90",
+    "title": "Boceto de Piel #90",
+    "alt": "Boceto de Piel #90 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-090.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-090.jpg",
+    "filename": "IMG_20260714_114134.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "91",
+    "title": "Boceto de Piel #91",
+    "alt": "Boceto de Piel #91 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-091.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-091.jpg",
+    "filename": "IMG_20260714_114147.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "92",
+    "title": "Boceto de Piel #92",
+    "alt": "Boceto de Piel #92 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-092.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-092.jpg",
+    "filename": "IMG_20260714_114204.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "93",
+    "title": "Boceto de Piel #93",
+    "alt": "Boceto de Piel #93 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-093.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-093.jpg",
+    "filename": "IMG_20260714_114220.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "94",
+    "title": "Boceto de Piel #94",
+    "alt": "Boceto de Piel #94 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-094.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-094.jpg",
+    "filename": "IMG_20260714_114232.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "95",
+    "title": "Boceto de Piel #95",
+    "alt": "Boceto de Piel #95 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-095.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-095.jpg",
+    "filename": "IMG_20260714_114246.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "96",
+    "title": "Boceto de Piel #96",
+    "alt": "Boceto de Piel #96 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-096.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-096.jpg",
+    "filename": "IMG_20260714_114302.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "97",
+    "title": "Boceto de Piel #97",
+    "alt": "Boceto de Piel #97 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-097.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-097.jpg",
+    "filename": "IMG_20260714_114312.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "98",
+    "title": "Boceto de Piel #98",
+    "alt": "Boceto de Piel #98 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-098.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-098.jpg",
+    "filename": "IMG_20260714_114324.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "99",
+    "title": "Boceto de Piel #99",
+    "alt": "Boceto de Piel #99 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-099.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-099.jpg",
+    "filename": "IMG_20260714_114341.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "100",
+    "title": "Boceto de Piel #100",
+    "alt": "Boceto de Piel #100 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-100.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-100.jpg",
+    "filename": "IMG_20260714_114351.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "101",
+    "title": "Boceto de Piel #101",
+    "alt": "Boceto de Piel #101 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-101.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-101.jpg",
+    "filename": "IMG_20260714_114402.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "102",
+    "title": "Boceto de Piel #102",
+    "alt": "Boceto de Piel #102 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-102.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-102.jpg",
+    "filename": "IMG_20260714_114413.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "103",
+    "title": "Boceto de Piel #103",
+    "alt": "Boceto de Piel #103 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-103.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-103.jpg",
+    "filename": "IMG_20260714_114447.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "104",
+    "title": "Boceto de Piel #104",
+    "alt": "Boceto de Piel #104 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-104.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-104.jpg",
+    "filename": "IMG_20260714_114456.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "105",
+    "title": "Boceto de Piel #105",
+    "alt": "Boceto de Piel #105 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-105.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-105.jpg",
+    "filename": "IMG_20260714_114504.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "106",
+    "title": "Boceto de Piel #106",
+    "alt": "Boceto de Piel #106 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-106.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-106.jpg",
+    "filename": "IMG_20260714_114516.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "107",
+    "title": "Boceto de Piel #107",
+    "alt": "Boceto de Piel #107 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-107.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-107.jpg",
+    "filename": "IMG_20260714_114524.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "108",
+    "title": "Boceto de Piel #108",
+    "alt": "Boceto de Piel #108 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-108.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-108.jpg",
+    "filename": "IMG_20260714_114531.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "109",
+    "title": "Boceto de Piel #109",
+    "alt": "Boceto de Piel #109 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-109.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-109.jpg",
+    "filename": "IMG_20260714_114543.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "110",
+    "title": "Boceto de Piel #110",
+    "alt": "Boceto de Piel #110 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-110.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-110.jpg",
+    "filename": "IMG_20260714_114554.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "111",
+    "title": "Boceto de Piel #111",
+    "alt": "Boceto de Piel #111 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-111.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-111.jpg",
+    "filename": "IMG_20260714_114607.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "112",
+    "title": "Boceto de Piel #112",
+    "alt": "Boceto de Piel #112 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-112.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-112.jpg",
+    "filename": "IMG_20260714_114617.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "113",
+    "title": "Boceto de Piel #113",
+    "alt": "Boceto de Piel #113 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-113.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-113.jpg",
+    "filename": "IMG_20260714_114632.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "114",
+    "title": "Boceto de Piel #114",
+    "alt": "Boceto de Piel #114 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-114.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-114.jpg",
+    "filename": "IMG_20260714_114718.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "115",
+    "title": "Boceto de Piel #115",
+    "alt": "Boceto de Piel #115 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-115.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-115.jpg",
+    "filename": "IMG_20260714_114734.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "116",
+    "title": "Boceto de Piel #116",
+    "alt": "Boceto de Piel #116 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-116.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-116.jpg",
+    "filename": "IMG_20260714_114751.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "117",
+    "title": "Boceto de Piel #117",
+    "alt": "Boceto de Piel #117 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-117.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-117.jpg",
+    "filename": "IMG_20260714_114806.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "118",
+    "title": "Boceto de Piel #118",
+    "alt": "Boceto de Piel #118 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-118.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-118.jpg",
+    "filename": "IMG_20260714_114821.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "119",
+    "title": "Boceto de Piel #119",
+    "alt": "Boceto de Piel #119 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-119.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-119.jpg",
+    "filename": "IMG_20260714_114838.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "120",
+    "title": "Boceto de Piel #120",
+    "alt": "Boceto de Piel #120 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-120.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-120.jpg",
+    "filename": "IMG_20260714_114851.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "121",
+    "title": "Boceto de Piel #121",
+    "alt": "Boceto de Piel #121 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-121.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-121.jpg",
+    "filename": "IMG_20260714_114905.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "122",
+    "title": "Boceto de Piel #122",
+    "alt": "Boceto de Piel #122 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-122.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-122.jpg",
+    "filename": "IMG_20260714_114918.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "123",
+    "title": "Boceto de Piel #123",
+    "alt": "Boceto de Piel #123 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-123.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-123.jpg",
+    "filename": "IMG_20260714_114926~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "124",
+    "title": "Boceto de Piel #124",
+    "alt": "Boceto de Piel #124 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-124.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-124.jpg",
+    "filename": "IMG_20260714_114937.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "125",
+    "title": "Boceto de Piel #125",
+    "alt": "Boceto de Piel #125 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-125.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-125.jpg",
+    "filename": "IMG_20260714_114956.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "126",
+    "title": "Boceto de Piel #126",
+    "alt": "Boceto de Piel #126 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-126.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-126.jpg",
+    "filename": "IMG_20260714_115012~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "127",
+    "title": "Boceto de Piel #127",
+    "alt": "Boceto de Piel #127 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-127.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-127.jpg",
+    "filename": "WhatsApp Image 2026-05-12 at 1.07.55 PM (1)~2.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "128",
+    "title": "Boceto de Piel #128",
+    "alt": "Boceto de Piel #128 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-128.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-128.jpg",
+    "filename": "WhatsApp Image 2026-05-12 at 1.07.55 PM~2.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "129",
+    "title": "Boceto de Piel #129",
+    "alt": "Boceto de Piel #129 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-129.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-129.jpg",
+    "filename": "WhatsApp Image 2026-06-21 at 9.19.38 PM~2.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "130",
+    "title": "Boceto de Piel #130",
+    "alt": "Boceto de Piel #130 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-130.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-130.jpg",
+    "filename": "WhatsApp Image 2026-08-04 at 9.43.42 PM.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "131",
+    "title": "Boceto de Piel #131",
+    "alt": "Boceto de Piel #131 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-131.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-131.jpg",
+    "filename": "WhatsApp Image 2026-08-12 at 9.33.18 AM.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "132",
+    "title": "Boceto de Piel #132",
+    "alt": "Boceto de Piel #132 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-132.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-132.jpg",
+    "filename": "WhatsApp Image 2026-08-25 at 6.23.00 PM(1).jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "133",
+    "title": "Boceto de Piel #133",
+    "alt": "Boceto de Piel #133 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-133.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-133.jpg",
+    "filename": "WhatsApp Image 2026-08-31 at 10.00.22 AM.jpeg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "134",
+    "title": "Boceto de Piel #134",
+    "alt": "Boceto de Piel #134 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-134.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-134.jpg",
+    "filename": "photo_279@18-06-2018_13-49-29.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "135",
+    "title": "Boceto de Piel #135",
+    "alt": "Boceto de Piel #135 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-135.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-135.jpg",
+    "filename": "photo_280@18-06-2018_13-49-41.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "136",
+    "title": "Boceto de Piel #136",
+    "alt": "Boceto de Piel #136 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-136.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-136.jpg",
+    "filename": "photo_470@07-06-2017_00-55-40.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "137",
+    "title": "Boceto de Piel #137",
+    "alt": "Boceto de Piel #137 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-137.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-137.jpg",
+    "filename": "photo_494@10-08-2018_11-09-08.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "138",
+    "title": "Boceto de Piel #138",
+    "alt": "Boceto de Piel #138 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-138.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-138.jpg",
+    "filename": "photo_495@10-08-2018_11-09-08.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "139",
+    "title": "Boceto de Piel #139",
+    "alt": "Boceto de Piel #139 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-139.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-139.jpg",
+    "filename": "photo_496@10-08-2018_11-09-08.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "140",
+    "title": "Boceto de Piel #140",
+    "alt": "Boceto de Piel #140 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-140.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-140.jpg",
+    "filename": "photo_497@10-08-2018_11-09-08.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "141",
+    "title": "Boceto de Piel #141",
+    "alt": "Boceto de Piel #141 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-141.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-141.jpg",
+    "filename": "photo_500@10-08-2018_11-09-09.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "142",
+    "title": "Boceto de Piel #142",
+    "alt": "Boceto de Piel #142 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-142.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-142.jpg",
+    "filename": "photo_501@10-08-2018_11-09-09.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "143",
+    "title": "Boceto de Piel #143",
+    "alt": "Boceto de Piel #143 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-143.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-143.jpg",
+    "filename": "photo_503@10-08-2018_11-09-09.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "144",
+    "title": "Boceto de Piel #144",
+    "alt": "Boceto de Piel #144 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-144.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-144.jpg",
+    "filename": "photo_630@02-02-2018_09-51-33~2.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "145",
+    "title": "Boceto de Piel #145",
+    "alt": "Boceto de Piel #145 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-145.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-145.jpg",
+    "filename": "photo_665@05-04-2018_16-49-12.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "146",
+    "title": "Boceto de Piel #146",
+    "alt": "Boceto de Piel #146 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-146.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-146.jpg",
+    "filename": "photo_73@10-08-2018_17-12-11.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "147",
+    "title": "Boceto de Piel #147",
+    "alt": "Boceto de Piel #147 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-147.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-147.jpg",
+    "filename": "photo_762@15-08-2018_19-26-04.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "148",
+    "title": "Boceto de Piel #148",
+    "alt": "Boceto de Piel #148 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-148.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-148.jpg",
+    "filename": "photo_77@10-08-2018_17-29-38.jpg",
+    "width": 600,
+    "height": 800
+  },
+  {
+    "id": "149",
+    "title": "Boceto de Piel #149",
+    "alt": "Boceto de Piel #149 \u2014 Obra original de Andr\u00e9s Morales",
+    "imageUrl": "/art/bocetos-de-piel/boceto-149.jpg",
+    "downloadUrl": "/art/bocetos-de-piel/full/boceto-149.jpg",
+    "filename": "photo_79@10-08-2018_17-30-30.jpg",
+    "width": 600,
+    "height": 800
+  }
+];
