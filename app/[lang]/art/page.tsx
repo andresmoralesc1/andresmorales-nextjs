@@ -29,7 +29,7 @@ export async function generateMetadata({
     description: descriptions[safeLang] || descriptions.es,
     locale: safeLang,
     path: safeLang === 'en' ? '/art' : `/${safeLang}/art`,
-    ogImage: '/art/bocetos-de-piel/boceto-001.jpg',
+    ogImage: 'https://andresmorales.com.co/art/bocetos-de-piel/boceto-056.jpg',
   });
 }
 
@@ -54,7 +54,7 @@ export default function ArtGalleryPage() {
       ],
     },
     url: 'https://amart.andresmorales.com.co',
-    image: 'https://andresmorales.com.co/art/bocetos-de-piel/boceto-001.jpg',
+    image: 'https://andresmorales.com.co/art/bocetos-de-piel/boceto-056.jpg',
   };
 
   return (
