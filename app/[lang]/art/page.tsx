@@ -1,7 +1,7 @@
 import { LOCALES, isLocale } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/lib/json-ld';
-import StellarCardGallerySingle from '@/components/ui/3d-image-gallery';
+import PolaroidArtGallery from '@/components/ui/polaroid-art-gallery';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -13,15 +13,15 @@ export async function generateMetadata({
   const safeLang = isLocale(lang) ? lang : 'es';
 
   const titles: Record<string, string> = {
-    es: 'Bocetos de Piel — Galería 3D Estelar | Andrés Morales',
-    en: 'Skin Sketches (Bocetos de Piel) — 3D Stellar Art Gallery | Andrés Morales',
-    pt: 'Esboços de Pele (Bocetos de Piel) — Galeria 3D Estelar | Andrés Morales',
+    es: 'Bocetos de Piel — Galería de Arte | Andrés Morales',
+    en: 'Skin Sketches (Bocetos de Piel) — Art Gallery | Andrés Morales',
+    pt: 'Esboços de Pele (Bocetos de Piel) — Galeria de Arte | Andrés Morales',
   };
 
   const descriptions: Record<string, string> = {
-    es: 'Explora la colección original de obras y bocetos de piel de Andrés Morales en una galaxia tridimensional inmersiva con Three.js.',
-    en: 'Explore the original skin sketches and artwork collection by Andrés Morales in an immersive 3D Three.js galaxy.',
-    pt: 'Explore a coleção original de esboços de pele e obras de arte de Andrés Morales em uma galáxia tridimensional imersiva com Three.js.',
+    es: 'Explora la colección de 149 obras originales de Andrés Morales: series Yoga, Shibari, Anatomía Botánica, Maternidad y Figura Humana.',
+    en: 'Explore the collection of 149 original artworks by Andrés Morales: Yoga, Shibari, Botanical Anatomy, Maternity, and Human Figure series.',
+    pt: 'Explore a coleção de 149 obras de arte originais de Andrés Morales: séries Yoga, Shibari, Anatomia Botânica, Maternidade e Figura Humana.',
   };
 
   return pageMetadata({
@@ -29,7 +29,7 @@ export async function generateMetadata({
     description: descriptions[safeLang] || descriptions.es,
     locale: safeLang,
     path: safeLang === 'en' ? '/art' : `/${safeLang}/art`,
-    ogImage: '/art/bocetos-de-piel/boceto-01.jpg',
+    ogImage: '/art/bocetos-de-piel/boceto-001.jpg',
   });
 }
 
@@ -43,7 +43,7 @@ export default function ArtGalleryPage() {
     '@type': 'ArtGallery',
     name: 'Bocetos de Piel — Andrés Morales Art Gallery',
     description:
-      'Colección artística y bocetos de piel creados por Andrés Morales en una experiencia interactiva 3D.',
+      'Colección artística y bocetos de piel creados por Andrés Morales en una experiencia interactiva.',
     creator: {
       '@type': 'Person',
       name: 'Andrés Morales',
@@ -54,13 +54,13 @@ export default function ArtGalleryPage() {
       ],
     },
     url: 'https://amart.andresmorales.com.co',
-    image: 'https://andresmorales.com.co/art/bocetos-de-piel/boceto-01.jpg',
+    image: 'https://andresmorales.com.co/art/bocetos-de-piel/boceto-001.jpg',
   };
 
   return (
     <>
       <JsonLd data={artGalleryJsonLd} />
-      <StellarCardGallerySingle />
+      <PolaroidArtGallery />
     </>
   );
 }
