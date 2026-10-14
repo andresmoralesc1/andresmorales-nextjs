@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight, Maximize2, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight, Maximize2, Sparkles, MessageSquare } from "lucide-react"
 
 export type LandPalette = "dawn" | "alpine" | "dusk" | "mist"
 
@@ -37,6 +37,8 @@ export type PolaroidLineCarouselProps = {
   ink?: string
   onChange?: (index: number) => void
   onSelect?: (slide: Slide, index: number) => void
+  onOpenNotes?: (slide: Slide) => void
+  notesCounts?: Record<string, number>
   onOrderInquire?: (slide: Slide) => void
   className?: string
   style?: React.CSSProperties
@@ -130,6 +132,8 @@ export default function PolaroidLineCarousel({
   ink = "#f5eee6",
   onChange,
   onSelect,
+  onOpenNotes,
+  notesCounts,
   onOrderInquire,
   className,
   style,
@@ -506,6 +510,25 @@ export default function PolaroidLineCarousel({
               >
                 <Maximize2 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Ampliar</span>
+              </button>
+            )}
+
+            {/* Notes Button */}
+            {currentSlide.id && onOpenNotes && (
+              <button
+                type="button"
+                onClick={() => onOpenNotes(currentSlide)}
+                className="pl-action-btn bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] text-white border border-white/20 backdrop-blur-md flex items-center gap-1.5"
+                aria-label="Ver o dejar notas"
+                title="Libro de notas de visitantes"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Notas</span>
+                {(notesCounts?.[currentSlide.id] || 0) > 0 && (
+                  <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[9px] font-bold rounded-full font-mono">
+                    {notesCounts?.[currentSlide.id]}
+                  </span>
+                )}
               </button>
             )}
 

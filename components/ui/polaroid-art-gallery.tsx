@@ -15,6 +15,7 @@ import {
   Columns,
   Grid,
   Shuffle,
+  MessageSquare,
 } from "lucide-react"
 import {
   ALL_BOCETOS_CARDS,
@@ -23,6 +24,8 @@ import {
   type CollectionKey,
 } from "@/lib/artworks-data"
 import PolaroidLineCarousel, { type Slide } from "@/components/ui/polaroid-line-carousel"
+import ArtNotesModal from "@/components/ui/art-notes-modal"
+import type { ArtNote } from "@/lib/art-notes"
 
 export type ViewMode = "string" | "grid"
 
@@ -54,7 +57,13 @@ export default function PolaroidArtGallery({
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
   const [mounted, setMounted] = useState(false)
 
-  // Shuffle artworks on entry and load favorites
+  // Visitor Art Notes
+  const [notes, setNotes] = useState<ArtNote[]>([])
+  const [notesCounts, setNotesCounts] = useState<Record<string, number>>({})
+  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
+  const [notesModalCard, setNotesModalCard] = useState<ArtworkCard | null>(null)
+
+  // Shuffle artworks on entry and load favorites + notes
   useEffect(() => {
     const base = initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
     setCards(shuffleArray(base))
@@ -63,7 +72,31 @@ export default function PolaroidArtGallery({
       const saved = localStorage.getItem("amart_favorites")
       if (saved) setFavorites(new Set(JSON.parse(saved)))
     } catch {}
+
+    // Fetch notes from server
+    fetch("/api/art-notes")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.notes)) {
+          setNotes(data.notes)
+          if (data.counts) setNotesCounts(data.counts)
+        }
+      })
+      .catch((err) => console.warn("[art-gallery] Could not fetch notes:", err))
   }, [initialCards])
+
+  const handleOpenNotes = useCallback((card?: ArtworkCard | null) => {
+    setNotesModalCard(card || null)
+    setIsNotesModalOpen(true)
+  }, [])
+
+  const handleNoteAdded = useCallback((newNote: ArtNote) => {
+    setNotes((prev) => [newNote, ...prev])
+    setNotesCounts((prev) => ({
+      ...prev,
+      [newNote.artworkId]: (prev[newNote.artworkId] || 0) + 1,
+    }))
+  }, [])
 
   const reshuffleCards = useCallback(() => {
     setCards((prev) => shuffleArray(prev))
@@ -247,6 +280,22 @@ export default function PolaroidArtGallery({
               <span className="hidden sm:inline">Aleatorio</span>
             </button>
 
+            {/* Guestbook / Notes Button */}
+            <button
+              type="button"
+              onClick={() => handleOpenNotes(null)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+              title="Libro de Visitas: ver y dejar notas"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-[#f96e03]" />
+              <span className="hidden sm:inline">Notas</span>
+              {notes.length > 0 && (
+                <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[9px] font-bold rounded-full font-mono">
+                  {notes.length}
+                </span>
+              )}
+            </button>
+
             {/* Portfolio Link */}
             <a
               href="https://andresmorales.com.co"
@@ -325,6 +374,11 @@ export default function PolaroidArtGallery({
                 const found = cards.find((c) => c.id === slide.id)
                 if (found) setSelectedCard(found)
               }}
+              onOpenNotes={(slide) => {
+                const found = cards.find((c) => c.id === slide.id)
+                handleOpenNotes(found || null)
+              }}
+              notesCounts={notesCounts}
             />
           </div>
         ) : (
@@ -419,8 +473,22 @@ export default function PolaroidArtGallery({
           onToggleFav={() => toggleFavorite(selectedCard.id)}
           onNext={goToNextCard}
           onPrev={goToPrevCard}
+          onOpenNotes={() => handleOpenNotes(selectedCard)}
+          notesCount={notesCounts[selectedCard.id] || 0}
         />
       )}
+
+      {/* ======================================================== */}
+      {/* ART NOTES & GUESTBOOK DRAWER MODAL                        */}
+      {/* ======================================================== */}
+      <ArtNotesModal
+        isOpen={isNotesModalOpen}
+        onClose={() => setIsNotesModalOpen(false)}
+        activeCard={notesModalCard}
+        allCards={cards}
+        notes={notes}
+        onNoteAdded={handleNoteAdded}
+      />
     </div>
   )
 }
@@ -436,6 +504,8 @@ function StaticExhibitionModal({
   onToggleFav,
   onNext,
   onPrev,
+  onOpenNotes,
+  notesCount = 0,
 }: {
   selectedCard: ArtworkCard
   isFav: boolean
@@ -443,6 +513,8 @@ function StaticExhibitionModal({
   onToggleFav: () => void
   onNext: () => void
   onPrev: () => void
+  onOpenNotes: () => void
+  notesCount?: number
 }) {
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
@@ -533,6 +605,22 @@ function StaticExhibitionModal({
           >
             <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
             <span className="hidden sm:inline">Descargar HD</span>
+          </button>
+
+          {/* Notes for this Artwork */}
+          <button
+            type="button"
+            onClick={onOpenNotes}
+            aria-label="Ver y dejar notas"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer group"
+          >
+            <MessageSquare className="h-4 w-4 text-[#f96e03] group-hover:text-[#1E1810]" />
+            <span className="hidden md:inline">Notas</span>
+            {notesCount > 0 && (
+              <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[10px] font-bold rounded-full font-mono">
+                {notesCount}
+              </span>
+            )}
           </button>
 
           {/* WhatsApp Inquire */}

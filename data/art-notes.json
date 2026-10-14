@@ -1,0 +1,42 @@
+[
+  {
+    "id": "note-1791992939187-urgoh",
+    "artworkId": "015",
+    "artworkTitle": "Espalda en Torsión",
+    "name": "Test Visitor",
+    "note": "Probando el sistema de notas en vivo",
+    "createdAt": "2026-10-14T15:48:59.187Z"
+  },
+  {
+    "id": "note-seed-3",
+    "artworkId": "108",
+    "artworkTitle": "Vértice de Sombra",
+    "name": "Elena Silva",
+    "note": "Una de mis piezas preferidas de toda la serie. El claroscuro le da una vida impresionante.",
+    "createdAt": "2026-10-13T18:10:00Z"
+  },
+  {
+    "id": "note-seed-2",
+    "artworkId": "042",
+    "artworkTitle": "Loto en Suspensión",
+    "name": "Lucas Gómez",
+    "note": "Increíble cómo logras tanta tensión y belleza anatómica con una sola línea continua. Fascinante.",
+    "createdAt": "2026-10-13T09:45:00Z"
+  },
+  {
+    "id": "note-seed-1",
+    "artworkId": "001",
+    "artworkTitle": "Respiración de Alba",
+    "name": "Valentina M.",
+    "note": "La sutileza de las sombras y la delicadeza del trazo es conmovedora. Transmite una paz infinita.",
+    "createdAt": "2026-10-12T14:20:00Z"
+  },
+  {
+    "id": "note-seed-4",
+    "artworkId": "general",
+    "artworkTitle": "Bocetos de Piel",
+    "name": "Andrés & Visitantes",
+    "note": "Bienvenidos al taller. Gracias por detenerse a mirar y conectar con estas piezas de papel y tinta.",
+    "createdAt": "2026-10-11T12:00:00Z"
+  }
+]
