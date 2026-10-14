@@ -1,7 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight, Maximize2, Sparkles, MessageSquare } from "lucide-react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  Sparkles,
+  MessageSquare,
+  Play,
+  Pause,
+  Share2,
+} from "lucide-react"
 
 export type LandPalette = "dawn" | "alpine" | "dusk" | "mist"
 
@@ -38,6 +47,7 @@ export type PolaroidLineCarouselProps = {
   onChange?: (index: number) => void
   onSelect?: (slide: Slide, index: number) => void
   onOpenNotes?: (slide: Slide) => void
+  onShare?: (slide: Slide) => void
   notesCounts?: Record<string, number>
   onOrderInquire?: (slide: Slide) => void
   className?: string
@@ -133,6 +143,7 @@ export default function PolaroidLineCarousel({
   onChange,
   onSelect,
   onOpenNotes,
+  onShare,
   notesCounts,
   onOrderInquire,
   className,
@@ -141,6 +152,7 @@ export default function PolaroidLineCarousel({
 }: PolaroidLineCarouselProps) {
   const n = slides.length
   const [active, setActive] = React.useState(0)
+  const [isPlaying, setIsPlaying] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const [size, setSize] = React.useState({ w: 1200, h: 800, cw: cardWidth })
   const rootRef = React.useRef<HTMLDivElement | null>(null)
@@ -272,6 +284,7 @@ export default function PolaroidLineCarousel({
       if (near !== activeRef.current) {
         activeRef.current = near
         setActive(near)
+        onChange?.(near)
       }
 
       raf = requestAnimationFrame(frame)
@@ -291,21 +304,24 @@ export default function PolaroidLineCarousel({
       cancelAnimationFrame(raf)
       io.disconnect()
     }
-  }, [size, spacing, n])
+  }, [size, spacing, n, onChange])
 
-  // Optional autoplay
+  // Modo Zen Autoplay
   React.useEffect(() => {
-    if (!autoplay || n < 2) return
+    const shouldPlay = isPlaying || autoplay > 0
+    if (!shouldPlay || n < 2) return
+    const intervalMs = autoplay > 0 ? autoplay : 4500
     const t = window.setInterval(() => {
-      if (document.hidden || drag.current || performance.now() - lastTouch.current < autoplay) return
+      if (document.hidden || drag.current || performance.now() - lastTouch.current < intervalMs) return
       goTo(activeRef.current >= n - 1 ? 0 : activeRef.current + 1)
-    }, autoplay)
+    }, intervalMs)
     return () => window.clearInterval(t)
-  }, [autoplay, n, goTo])
+  }, [isPlaying, autoplay, n, goTo])
 
   // Pointer & Drag handlers with inertia
   const onDown = (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest(".pl-bar")) return
+    if (isPlaying) setIsPlaying(false)
     lastTouch.current = performance.now()
     drag.current = {
       x: e.clientX,
@@ -367,17 +383,20 @@ export default function PolaroidLineCarousel({
         }
       } else {
         // Tap on neighbor card: slide it smoothly to center
+        if (isPlaying) setIsPlaying(false)
         goTo(idx)
       }
     }
   }
 
   const step = (dir: number) => {
+    if (isPlaying) setIsPlaying(false)
     lastTouch.current = performance.now()
     goTo(clamp(activeRef.current + dir, 0, n - 1))
   }
 
   const onScrub = (val: number) => {
+    if (isPlaying) setIsPlaying(false)
     lastTouch.current = performance.now()
     const targetIdx = clamp(val, 0, Math.max(0, n - 1))
     sim.current.target = targetIdx * spacing
@@ -385,6 +404,7 @@ export default function PolaroidLineCarousel({
     sim.current.vel = 0
     activeRef.current = targetIdx
     setActive(targetIdx)
+    onChange?.(targetIdx)
   }
 
   const onKey = (e: React.KeyboardEvent) => {
@@ -510,6 +530,40 @@ export default function PolaroidLineCarousel({
               >
                 <Maximize2 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Ampliar</span>
+              </button>
+            )}
+
+            {/* Modo Zen Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsPlaying((p) => !p)}
+              className={`pl-action-btn border backdrop-blur-md flex items-center gap-1.5 transition-all ${
+                isPlaying
+                  ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-[0_0_12px_rgba(249,110,3,0.6)]"
+                  : "bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] text-white border-white/20"
+              }`}
+              aria-label={isPlaying ? "Pausar Modo Zen" : "Activar Modo Zen"}
+              title={isPlaying ? "Pausar reproducción automática" : "Modo Zen: Reproducción continua"}
+            >
+              {isPlaying ? (
+                <Pause className="w-3.5 h-3.5 fill-current" />
+              ) : (
+                <Play className="w-3.5 h-3.5 fill-current" />
+              )}
+              <span className="hidden sm:inline">{isPlaying ? "Pausa" : "Zen"}</span>
+            </button>
+
+            {/* Share Button */}
+            {currentSlide.id && onShare && (
+              <button
+                type="button"
+                onClick={() => onShare(currentSlide)}
+                className="pl-action-btn bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] text-white border border-white/20 backdrop-blur-md flex items-center gap-1.5"
+                aria-label="Compartir esta obra"
+                title="Copiar enlace directo de esta obra"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Compartir</span>
               </button>
             )}
 

@@ -1,0 +1,1490 @@
+{
+  "1": {
+    "heart": 18,
+    "sparkles": 12,
+    "leaf": 7,
+    "fire": 5
+  },
+  "2": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "3": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "4": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "5": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "6": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "7": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "8": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "9": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "10": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "11": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "12": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "13": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "14": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "15": {
+    "heart": 24,
+    "sparkles": 15,
+    "leaf": 9,
+    "fire": 14
+  },
+  "16": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "17": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "18": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "19": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "20": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "21": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "22": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "23": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "24": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "25": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "26": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "27": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "28": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "29": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "30": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "31": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "32": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "33": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "34": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "35": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "36": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "37": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "38": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "39": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "40": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "41": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "42": {
+    "heart": 32,
+    "sparkles": 21,
+    "leaf": 16,
+    "fire": 8
+  },
+  "43": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "44": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "45": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "46": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "47": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "48": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "49": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "50": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "51": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "52": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "53": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "54": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "55": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "56": {
+    "heart": 45,
+    "sparkles": 28,
+    "leaf": 19,
+    "fire": 11
+  },
+  "57": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "58": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "59": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "60": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "61": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "62": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "63": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "64": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "65": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "66": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "67": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "68": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "69": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "70": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "71": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "72": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "73": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "74": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "75": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "76": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "77": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "78": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "79": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "80": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "81": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "82": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "83": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "84": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "85": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "86": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "87": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "88": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "89": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "90": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "91": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "92": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "93": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "94": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "95": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "96": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "97": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "98": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "99": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "100": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "101": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "102": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "103": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "104": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "105": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "106": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "107": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "108": {
+    "heart": 27,
+    "sparkles": 19,
+    "leaf": 11,
+    "fire": 16
+  },
+  "109": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "110": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "111": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "112": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "113": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "114": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "115": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "116": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "117": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "118": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "119": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "120": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "121": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "122": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "123": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "124": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "125": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "126": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "127": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "128": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "129": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "130": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "131": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "132": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "133": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "134": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "135": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "136": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "137": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "138": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "139": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "140": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "141": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "142": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "143": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "144": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "145": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "146": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "147": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "148": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "149": {
+    "heart": 35,
+    "sparkles": 22,
+    "leaf": 14,
+    "fire": 12
+  },
+  "001": {
+    "heart": 18,
+    "sparkles": 12,
+    "leaf": 7,
+    "fire": 5
+  },
+  "002": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "003": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "004": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "005": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "006": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "007": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "008": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "009": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "010": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "011": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "012": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "013": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "014": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "015": {
+    "heart": 24,
+    "sparkles": 15,
+    "leaf": 9,
+    "fire": 14
+  },
+  "016": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "017": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "018": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "019": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "020": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "021": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "022": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "023": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "024": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "025": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "026": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "027": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "028": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "029": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "030": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "031": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "032": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "033": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "034": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "035": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "036": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "037": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "038": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "039": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "040": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "041": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "042": {
+    "heart": 32,
+    "sparkles": 21,
+    "leaf": 16,
+    "fire": 8
+  },
+  "043": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "044": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "045": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "046": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "047": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "048": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "049": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "050": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "051": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "052": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "053": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "054": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "055": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "056": {
+    "heart": 45,
+    "sparkles": 28,
+    "leaf": 19,
+    "fire": 11
+  },
+  "057": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "058": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "059": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "060": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "061": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "062": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "063": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "064": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "065": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "066": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "067": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "068": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "069": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "070": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "071": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "072": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "073": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "074": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "075": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "076": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "077": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "078": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "079": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "080": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "081": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "082": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "083": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "084": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "085": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "086": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "087": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "088": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "089": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "090": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "091": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "092": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  },
+  "093": {
+    "heart": 1,
+    "sparkles": 2,
+    "leaf": 0,
+    "fire": 1
+  },
+  "094": {
+    "heart": 3,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "095": {
+    "heart": 2,
+    "sparkles": 2,
+    "leaf": 1,
+    "fire": 1
+  },
+  "096": {
+    "heart": 4,
+    "sparkles": 1,
+    "leaf": 1,
+    "fire": 0
+  },
+  "097": {
+    "heart": 2,
+    "sparkles": 3,
+    "leaf": 1,
+    "fire": 2
+  },
+  "098": {
+    "heart": 1,
+    "sparkles": 1,
+    "leaf": 0,
+    "fire": 0
+  },
+  "099": {
+    "heart": 3,
+    "sparkles": 3,
+    "leaf": 0,
+    "fire": 2
+  }
+}

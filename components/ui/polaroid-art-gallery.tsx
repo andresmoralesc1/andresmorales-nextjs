@@ -16,6 +16,7 @@ import {
   Grid,
   Shuffle,
   MessageSquare,
+  Share2,
 } from "lucide-react"
 import {
   ALL_BOCETOS_CARDS,
@@ -26,6 +27,7 @@ import {
 import PolaroidLineCarousel, { type Slide } from "@/components/ui/polaroid-line-carousel"
 import ArtNotesModal from "@/components/ui/art-notes-modal"
 import type { ArtNote } from "@/lib/art-notes"
+import type { ReactionType, ReactionsMap, ArtworkReactions } from "@/lib/art-reactions"
 
 export type ViewMode = "string" | "grid"
 
@@ -56,6 +58,7 @@ export default function PolaroidArtGallery({
   const [search, setSearch] = useState("")
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
   const [mounted, setMounted] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   // Visitor Art Notes
   const [notes, setNotes] = useState<ArtNote[]>([])
@@ -63,14 +66,33 @@ export default function PolaroidArtGallery({
   const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
   const [notesModalCard, setNotesModalCard] = useState<ArtworkCard | null>(null)
 
-  // Shuffle artworks on entry and load favorites + notes
+  // Quick Emoji Reactions
+  const [reactions, setReactions] = useState<ReactionsMap>({})
+
+  // Shuffle artworks on entry and load favorites, notes, reactions, and check deep-link
   useEffect(() => {
     const base = initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
-    setCards(shuffleArray(base))
+    const shuffled = shuffleArray(base)
+    setCards(shuffled)
     setMounted(true)
     try {
       const saved = localStorage.getItem("amart_favorites")
       if (saved) setFavorites(new Set(JSON.parse(saved)))
+    } catch {}
+
+    // Deep link detection: check ?obra=56, ?boceto=56, or ?id=56
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const obraParam = params.get("obra") || params.get("boceto") || params.get("id")
+      if (obraParam) {
+        const clean = obraParam.trim()
+        const target = base.find(
+          (c) => c.id === clean || parseInt(c.id, 10) === parseInt(clean, 10)
+        )
+        if (target) {
+          setSelectedCard(target)
+        }
+      }
     } catch {}
 
     // Fetch notes from server
@@ -83,7 +105,99 @@ export default function PolaroidArtGallery({
         }
       })
       .catch((err) => console.warn("[art-gallery] Could not fetch notes:", err))
+
+    // Fetch reactions from server
+    fetch("/api/art-reactions")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.reactions) {
+          setReactions(data.reactions)
+        }
+      })
+      .catch((err) => console.warn("[art-gallery] Could not fetch reactions:", err))
   }, [initialCards])
+
+  // Synchronize URL with active exhibition card (?obra=56)
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const url = new URL(window.location.href)
+    if (selectedCard) {
+      url.searchParams.set("obra", selectedCard.id)
+      window.history.replaceState({ obra: selectedCard.id }, "", url.toString())
+    } else {
+      if (url.searchParams.has("obra") || url.searchParams.has("boceto") || url.searchParams.has("id")) {
+        url.searchParams.delete("obra")
+        url.searchParams.delete("boceto")
+        url.searchParams.delete("id")
+        window.history.replaceState({}, "", url.pathname + (url.search ? url.search : ""))
+      }
+    }
+  }, [selectedCard])
+
+  // Handle browser back / forward navigation
+  useEffect(() => {
+    const onPopState = () => {
+      const params = new URLSearchParams(window.location.search)
+      const obraParam = params.get("obra") || params.get("boceto") || params.get("id")
+      if (obraParam) {
+        const found = cards.find(
+          (c) => c.id === obraParam || parseInt(c.id, 10) === parseInt(obraParam, 10)
+        )
+        if (found) setSelectedCard(found)
+      } else {
+        setSelectedCard(null)
+      }
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [cards])
+
+  // Share handler: Mobile native sheet or clipboard copy with toast
+  const handleShareArtwork = useCallback(async (card: ArtworkCard | Slide) => {
+    const id = card.id || "1"
+    const shareUrl = `${window.location.origin}${window.location.pathname}?obra=${id}`
+    const title = `${card.title || 'Boceto #' + id} · Andrés Morales`
+    const text = `Mira esta obra "${card.title || 'Boceto'}" de la serie Bocetos de Piel de Andrés Morales.`
+
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({ title, text, url: shareUrl })
+        return
+      } catch {}
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setToastMessage(`¡Enlace copiado! Obra #${id} 🔗`)
+    } catch {
+      setToastMessage(`Enlace directo: ${shareUrl}`)
+    }
+    setTimeout(() => setToastMessage(null), 3200)
+  }, [])
+
+  // Reaction handler: Optimistic live count + server persistence
+  const handleAddReaction = useCallback(async (artworkId: string, type: ReactionType) => {
+    setReactions((prev) => {
+      const current = prev[artworkId] || { heart: 0, sparkles: 0, leaf: 0, fire: 0 }
+      return {
+        ...prev,
+        [artworkId]: {
+          ...current,
+          [type]: (current[type] || 0) + 1,
+        },
+      }
+    })
+
+    try {
+      await fetch("/api/art-reactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ artworkId, reaction: type }),
+      })
+    } catch (err) {
+      console.warn("[art-gallery] Failed to persist reaction:", err)
+    }
+  }, [])
 
   const handleOpenNotes = useCallback((card?: ArtworkCard | null) => {
     setNotesModalCard(card || null)
@@ -378,6 +492,7 @@ export default function PolaroidArtGallery({
                 const found = cards.find((c) => c.id === slide.id)
                 handleOpenNotes(found || null)
               }}
+              onShare={handleShareArtwork}
               notesCounts={notesCounts}
             />
           </div>
@@ -475,6 +590,11 @@ export default function PolaroidArtGallery({
           onPrev={goToPrevCard}
           onOpenNotes={() => handleOpenNotes(selectedCard)}
           notesCount={notesCounts[selectedCard.id] || 0}
+          onShare={handleShareArtwork}
+          reactions={
+            reactions[selectedCard.id] || { heart: 0, sparkles: 0, leaf: 0, fire: 0 }
+          }
+          onReact={(type) => handleAddReaction(selectedCard.id, type)}
         />
       )}
 
@@ -489,6 +609,14 @@ export default function PolaroidArtGallery({
         notes={notes}
         onNoteAdded={handleNoteAdded}
       />
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-[#1E1810] text-[#f96e03] border border-[#f96e03]/60 shadow-[0_8px_30px_rgba(0,0,0,0.9)] backdrop-blur-md text-xs sm:text-sm font-mono font-bold flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 duration-200 pointer-events-none">
+          <span>✨</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </div>
   )
 }
@@ -506,6 +634,9 @@ function StaticExhibitionModal({
   onPrev,
   onOpenNotes,
   notesCount = 0,
+  onShare,
+  reactions,
+  onReact,
 }: {
   selectedCard: ArtworkCard
   isFav: boolean
@@ -515,7 +646,12 @@ function StaticExhibitionModal({
   onPrev: () => void
   onOpenNotes: () => void
   notesCount?: number
+  onShare: (card: ArtworkCard) => void
+  reactions: ArtworkReactions
+  onReact: (type: ReactionType) => void
 }) {
+  const [isFramed, setIsFramed] = useState(false)
+  const [frameStyle, setFrameStyle] = useState<"dark" | "oak">("dark")
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
 
@@ -564,7 +700,11 @@ function StaticExhibitionModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-2xl transition-opacity duration-200 select-none text-white font-sans"
+      className={`fixed inset-0 z-50 flex flex-col transition-colors duration-300 select-none text-white font-sans ${
+        isFramed
+          ? "bg-[#100d0a]/98 backdrop-blur-2xl"
+          : "bg-black/95 backdrop-blur-2xl"
+      }`}
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
@@ -572,7 +712,7 @@ function StaticExhibitionModal({
       {/* Top Bar */}
       <header className="h-14 sm:h-16 px-3 sm:px-6 flex items-center justify-between border-b border-white/10 bg-black/60 backdrop-blur-md z-30 shrink-0">
         <div className="flex items-center gap-2 sm:gap-3">
-          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[140px] sm:max-w-none">
+          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[130px] sm:max-w-none">
             Serie {selectedCard.collectionLabel}
           </span>
           <span className="text-white/40 font-mono text-xs hidden sm:inline">
@@ -580,7 +720,35 @@ function StaticExhibitionModal({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
+          {/* Wall Simulator Frame Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsFramed((f) => !f)}
+            aria-label={isFramed ? "Ver dibujo sin marco" : "Ver simulador en pared"}
+            className={`p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer border ${
+              isFramed
+                ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-[0_0_12px_rgba(249,110,3,0.5)]"
+                : "text-white/85 hover:text-white bg-white/10 hover:bg-white/20 border-white/20"
+            }`}
+            title="Simular enmarcado de galería en escala real (30×40 cm)"
+          >
+            <span className="text-sm">🖼️</span>
+            <span className="hidden md:inline">{isFramed ? "En Pared" : "Ver en Pared"}</span>
+          </button>
+
+          {/* Share Button */}
+          <button
+            type="button"
+            onClick={() => onShare(selectedCard)}
+            aria-label="Compartir enlace directo"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
+            title="Copiar enlace o compartir en redes"
+          >
+            <Share2 className="h-4 w-4" />
+            <span className="hidden md:inline">Compartir</span>
+          </button>
+
           {/* Favorite */}
           <button
             type="button"
@@ -593,7 +761,7 @@ function StaticExhibitionModal({
               strokeWidth={2.2}
               fill={isFav ? "#f96e03" : "none"}
             />
-            <span className="hidden md:inline">{isFav ? "Favorito" : "Guardar"}</span>
+            <span className="hidden lg:inline">{isFav ? "Favorito" : "Guardar"}</span>
           </button>
 
           {/* Download Original HD */}
@@ -601,10 +769,10 @@ function StaticExhibitionModal({
             type="button"
             onClick={handleDownload}
             aria-label="Descargar original"
-            className="p-2 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
-            <span className="hidden sm:inline">Descargar HD</span>
+            <span className="hidden lg:inline">HD</span>
           </button>
 
           {/* Notes for this Artwork */}
@@ -615,7 +783,7 @@ function StaticExhibitionModal({
             className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer group"
           >
             <MessageSquare className="h-4 w-4 text-[#f96e03] group-hover:text-[#1E1810]" />
-            <span className="hidden md:inline">Notas</span>
+            <span className="hidden lg:inline">Notas</span>
             {notesCount > 0 && (
               <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[10px] font-bold rounded-full font-mono">
                 {notesCount}
@@ -631,7 +799,7 @@ function StaticExhibitionModal({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="px-2.5 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer"
+            className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Consultar Obra</span>
@@ -649,13 +817,18 @@ function StaticExhibitionModal({
         </div>
       </header>
 
-      {/* Main Fullscreen Stage: Completely Static Artwork with Swipe */}
+      {/* Main Fullscreen Stage: Pure Artwork or Framed Wall Simulator */}
       <main
         className="flex-1 flex items-center justify-center relative p-2 sm:p-6 md:p-8 overflow-hidden touch-pan-y"
         onClick={handleBackdropClick}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
+        {/* Overhead Museum Gallery Spotlight when Framed */}
+        {isFramed && (
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90vw] max-w-[700px] h-[380px] bg-[radial-gradient(ellipse_at_top,_rgba(255,235,200,0.14)_0%,_transparent_72%)] pointer-events-none" />
+        )}
+
         {/* Navigation Arrows */}
         <button
           onClick={(e) => {
@@ -679,42 +852,140 @@ function StaticExhibitionModal({
           <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
         </button>
 
-        {/* 100% Static High-Resolution Artwork */}
-        <div
-          className="relative max-h-full max-w-full flex items-center justify-center"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <img
-            key={selectedCard.id}
-            src={selectedCard.downloadUrl || selectedCard.imageUrl}
-            alt={selectedCard.alt}
-            loading="eager"
-            draggable={false}
-            className="max-h-[calc(100dvh-170px)] sm:max-h-[calc(100dvh-185px)] max-w-[94vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none animate-in fade-in duration-200"
-          />
-        </div>
+        {/* Artwork Display Container */}
+        {isFramed ? (
+          /* ======================================================== */
+          /* FRAMED GALLERY WALL SIMULATOR (1:1 MUSEUM PROPORTION)    */
+          /* ======================================================== */
+          <div
+            className="relative max-h-full max-w-full flex flex-col items-center justify-center animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Outer Wood Frame */}
+            <div
+              className={`relative p-3 sm:p-5 rounded-[4px] transition-colors duration-200 ${
+                frameStyle === "dark"
+                  ? "bg-[#181512] border-2 border-[#2c2620] shadow-[0_35px_80px_rgba(0,0,0,0.95),_0_10px_25px_rgba(0,0,0,0.8),_inset_0_1px_2px_rgba(255,255,255,0.18)]"
+                  : "bg-[#7c4f2e] border-2 border-[#54331b] shadow-[0_35px_80px_rgba(0,0,0,0.95),_0_10px_25px_rgba(0,0,0,0.8),_inset_0_1px_2px_rgba(255,255,255,0.25)]"
+              }`}
+            >
+              {/* Archival Museum Matboard (Paspartú) */}
+              <div className="p-3.5 sm:p-6 md:p-8 bg-[#f5f2eb] rounded-[2px] shadow-[inset_0_2px_6px_rgba(0,0,0,0.35),_0_0_1px_rgba(0,0,0,0.4)] flex items-center justify-center relative">
+                {/* Subtle glass reflection sheen */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none" />
+                <img
+                  key={selectedCard.id}
+                  src={selectedCard.downloadUrl || selectedCard.imageUrl}
+                  alt={selectedCard.alt}
+                  loading="eager"
+                  draggable={false}
+                  className="max-h-[calc(100dvh-275px)] sm:max-h-[calc(100dvh-295px)] max-w-[76vw] sm:max-w-[62vw] w-auto h-auto object-contain shadow-[0_4px_12px_rgba(0,0,0,0.32)] select-none"
+                />
+              </div>
+            </div>
+
+            {/* Museum Wall Cartela Plaque */}
+            <div className="mt-2.5 px-3.5 py-1.5 rounded-md bg-black/75 border border-white/10 text-center backdrop-blur-md shadow-xl flex flex-col items-center max-w-sm">
+              <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-bold">
+                <span>Escala Real 1:1</span>
+                <span>•</span>
+                <span>Formato 30 × 40 cm</span>
+              </div>
+              <div className="flex items-center gap-2 mt-1 pt-1 border-t border-white/10 text-[10px] font-mono text-white/50">
+                <span>Marco:</span>
+                <button
+                  type="button"
+                  onClick={() => setFrameStyle("dark")}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-all ${
+                    frameStyle === "dark"
+                      ? "bg-[#f96e03] text-[#1E1810] font-bold"
+                      : "bg-white/10 text-white/70 hover:text-white"
+                  }`}
+                >
+                  Negro Galería
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFrameStyle("oak")}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-all ${
+                    frameStyle === "oak"
+                      ? "bg-[#f96e03] text-[#1E1810] font-bold"
+                      : "bg-white/10 text-white/70 hover:text-white"
+                  }`}
+                >
+                  Roble Natural
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* ======================================================== */
+          /* PURE STATIC HIGH-RESOLUTION ARTWORK VIEW                 */
+          /* ======================================================== */
+          <div
+            className="relative max-h-full max-w-full flex items-center justify-center animate-in fade-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              key={selectedCard.id}
+              src={selectedCard.downloadUrl || selectedCard.imageUrl}
+              alt={selectedCard.alt}
+              loading="eager"
+              draggable={false}
+              className="max-h-[calc(100dvh-185px)] sm:max-h-[calc(100dvh-200px)] max-w-[94vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none"
+            />
+          </div>
+        )}
       </main>
 
-      {/* Bottom Curatorial Caption */}
+      {/* Bottom Curatorial Caption & Reactions Bar */}
       <footer
-        className="px-4 py-2.5 sm:py-3.5 border-t border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 text-center pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))]"
+        className="px-4 py-2 sm:py-3 border-t border-white/10 bg-black/80 backdrop-blur-md z-30 shrink-0 text-center pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="max-w-3xl mx-auto flex flex-col items-center justify-center">
-          <h2 className="text-white text-base sm:text-xl font-serif font-medium tracking-tight">
+        <div className="max-w-2xl mx-auto flex flex-col items-center justify-center">
+          <h2 className="text-white text-base sm:text-lg font-serif font-medium tracking-tight">
             <span className="text-[#f96e03] font-mono mr-2 text-sm sm:text-base font-bold">
               #{selectedCard.id}
             </span>
             {selectedCard.title}
           </h2>
 
+          {/* Interactive Emoji Reactions */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 my-1.5">
+            {[
+              { type: "heart" as const, emoji: "❤️", label: "Conmovedor" },
+              { type: "sparkles" as const, emoji: "✨", label: "Brillante" },
+              { type: "leaf" as const, emoji: "🌿", label: "Orgánico" },
+              { type: "fire" as const, emoji: "🔥", label: "Fuerza" },
+            ].map((item) => {
+              const count = reactions[item.type] || 0
+              return (
+                <button
+                  key={item.type}
+                  type="button"
+                  onClick={() => onReact(item.type)}
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-xs font-mono border border-white/15 cursor-pointer hover:border-[#f96e03]/60 group"
+                  title={item.label}
+                >
+                  <span className="text-sm transition-transform group-hover:scale-125 duration-150">
+                    {item.emoji}
+                  </span>
+                  <span className="text-[11px] font-bold text-white/90 font-mono">
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
           {selectedCard.description && (
-            <p className="text-white/80 text-xs sm:text-sm font-sans leading-relaxed mt-1 max-w-2xl mx-auto">
+            <p className="text-white/75 text-xs sm:text-sm font-sans leading-relaxed max-w-xl mx-auto hidden sm:block">
               {selectedCard.description}
             </p>
           )}
 
-          <div className="flex items-center justify-center gap-2 mt-1 text-[11px] font-mono text-white/45">
+          <div className="flex items-center justify-center gap-2 mt-0.5 text-[10px] sm:text-[11px] font-mono text-white/45">
             {selectedCard.technique && <span>{selectedCard.technique}</span>}
             <span>•</span>
             <span>Andrés Morales • Bocetos de Piel</span>
