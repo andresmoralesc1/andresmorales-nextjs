@@ -146,7 +146,7 @@ export default function PolaroidArtGallery({
 
   if (!mounted) {
     return (
-      <div className="w-full h-screen bg-[#0c0a08] flex items-center justify-center text-white">
+      <div className="w-full h-[100dvh] max-h-[100dvh] bg-[#0c0a08] flex items-center justify-center text-white">
         <div className="flex flex-col items-center gap-3">
           <div className="w-9 h-9 border-2 border-[#f96e03] border-t-transparent rounded-full animate-spin" />
           <p className="text-xs uppercase font-mono tracking-widest text-[#f96e03]/90">
@@ -158,7 +158,7 @@ export default function PolaroidArtGallery({
   }
 
   return (
-    <div className="w-full h-screen relative overflow-hidden bg-[#0c0a08] flex flex-col select-none text-white font-sans">
+    <div className="w-full h-[100dvh] max-h-[100dvh] relative overflow-hidden bg-[#0c0a08] flex flex-col select-none text-white font-sans overscroll-none">
       {/* Background Studio Ambient */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
@@ -274,12 +274,12 @@ export default function PolaroidArtGallery({
       </header>
 
       {/* Main Content Area */}
-      <main className="relative flex-1 w-full overflow-hidden z-10 flex flex-col">
+      <main className="relative flex-1 min-h-0 w-full overflow-hidden z-10 flex flex-col">
         {viewMode === "string" ? (
           /* ======================================================== */
           /* MODE A: POLAROID SAGGING STRING CAROUSEL (PHYSICS)       */
           /* ======================================================== */
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full flex-1 min-h-0">
             <PolaroidLineCarousel
               slides={slides}
               height="100%"

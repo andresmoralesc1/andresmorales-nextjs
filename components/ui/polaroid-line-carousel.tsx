@@ -82,38 +82,39 @@ export function pad2(n: number): string {
 // #endregion logic
 
 const PL_CSS = `
-.pl-root{position:relative;width:100%;overflow:hidden;background:var(--pl-bg);color:var(--pl-ink);user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:grab}
+.pl-root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--pl-bg);color:var(--pl-ink);user-select:none;-webkit-user-select:none;touch-action:none;outline:none;cursor:grab}
 .pl-root[data-drag='1']{cursor:grabbing}
 .pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}
 .pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .pl-card{position:absolute;left:0;top:0;width:var(--pl-cw);transform-origin:50% 0;will-change:transform;cursor:pointer}
-.pl-print{margin-top:10px;background:#fcfbf8;padding:9px 9px 0;border-radius:3px;box-shadow:0 3px 6px rgba(0,0,0,.35),0 20px 35px -14px rgba(0,0,0,.65);transition:transform .4s cubic-bezier(.2,.7,.2,1),filter .4s ease,box-shadow .4s ease;border:1px solid rgba(255,255,255,.08)}
+.pl-print{margin-top:10px;background:#fcfbf8;padding:8px 8px 0;border-radius:4px;box-shadow:0 3px 6px rgba(0,0,0,.35),0 20px 35px -14px rgba(0,0,0,.65);transition:transform .4s cubic-bezier(.2,.7,.2,1),filter .4s ease,box-shadow .4s ease;border:1px solid rgba(255,255,255,.08)}
 .pl-card[data-on='0'] .pl-print{transform:scale(.88);filter:saturate(.65) brightness(.88);opacity:.8}
 .pl-card[data-on='1'] .pl-print{transform:scale(1.02);box-shadow:0 6px 12px rgba(0,0,0,.45),0 25px 48px -12px rgba(249,110,3,.25),0 0 20px rgba(249,110,3,.15);border:1px solid rgba(249,110,3,.3)}
 .pl-shot{position:relative;aspect-ratio:3/4;overflow:hidden;background:#181512;border-radius:2px}
 .pl-shot img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;display:block;pointer-events:none}
 .pl-tag{position:absolute;top:6px;left:6px;z-index:2;font:700 9px/1 ui-monospace,monospace;color:#f96e03;background:rgba(12,10,8,.85);padding:2px 5px;border-radius:3px;border:1px solid rgba(249,110,3,.3);letter-spacing:.05em;text-transform:uppercase}
-.pl-note{height:42px;display:flex;align-items:center;justify-content:center;padding:0 6px;font:italic 500 13px/1.2 ui-serif,Georgia,'Times New Roman',serif;color:#1e1810;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pl-peg{position:absolute;left:50%;top:-2px;width:11px;height:28px;margin-left:-5.5px;border-radius:2px;background:linear-gradient(90deg,#b38e5c,#ddbf90 45%,#997345);box-shadow:0 2px 4px rgba(0,0,0,.45);z-index:4}
-.pl-peg::after{content:'';position:absolute;left:4.5px;top:9px;width:2px;height:8px;background:rgba(50,35,15,.6);border-radius:1px}
-.pl-bar{position:absolute;left:clamp(12px,4vw,48px);right:clamp(12px,4vw,48px);bottom:clamp(16px,3vh,32px);display:flex;flex-direction:column;gap:12px;cursor:default;z-index:25}
-.pl-bar-top{display:flex;align-items:center;justify-content:between;gap:clamp(12px,2vw,24px)}
+.pl-note{height:38px;display:flex;align-items:center;justify-content:center;padding:0 6px;font:italic 500 12px/1.2 ui-serif,Georgia,'Times New Roman',serif;color:#1e1810;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-peg{position:absolute;left:50%;top:-2px;width:11px;height:26px;margin-left:-5.5px;border-radius:2px;background:linear-gradient(90deg,#b38e5c,#ddbf90 45%,#997345);box-shadow:0 2px 4px rgba(0,0,0,.45);z-index:4}
+.pl-peg::after{content:'';position:absolute;left:4.5px;top:8px;width:2px;height:7px;background:rgba(50,35,15,.6);border-radius:1px}
+.pl-bar{position:absolute;left:0;right:0;bottom:0;padding:10px clamp(12px,4vw,36px) max(12px,calc(env(safe-area-inset-bottom,0px) + 8px));display:flex;flex-direction:column;gap:8px;cursor:default;z-index:25;pointer-events:none;background:linear-gradient(to top, rgba(12,10,8,0.96) 0%, rgba(12,10,8,0.7) 65%, transparent 100%)}
+.pl-bar-top{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,2vw,20px);pointer-events:auto}
 .pl-cap{flex:1;min-width:0;overflow:hidden}
-.pl-title{font:600 clamp(16px,2vw,22px)/1.2 ui-serif,Georgia,'Times New Roman',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ffffff}
-.pl-sub{margin-top:2px;font:400 12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--pl-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pl-actions{display:flex;align-items:center;gap:8px}
-.pl-count{font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:var(--pl-muted);white-space:nowrap}
-.pl-count b{color:#f96e03;font-weight:600}
-.pl-btn{appearance:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--pl-line);background:rgba(255,255,255,.05);color:inherit;display:grid;place-items:center;cursor:pointer;transition:all .2s ease;backdrop-blur:4px}
+.pl-title{font:600 clamp(15px,2vw,20px)/1.2 ui-serif,Georgia,'Times New Roman',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ffffff}
+.pl-sub{margin-top:2px;font:400 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--pl-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pl-actions{display:flex;align-items:center;gap:8px;pointer-events:auto}
+.pl-count{font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;color:var(--pl-muted);white-space:nowrap}
+.pl-count b{color:#f96e03;font-weight:700}
+.pl-btn{appearance:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--pl-line);background:rgba(255,255,255,.08);color:inherit;display:grid;place-items:center;cursor:pointer;transition:all .2s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);pointer-events:auto}
 .pl-btn:hover{background:#f96e03;color:#1e1810;border-color:#f96e03}
 .pl-btn:focus-visible{outline:2px solid #f96e03;outline-offset:2px}
-.pl-action-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;font-size:12px;font-weight:600;font-family:ui-monospace,monospace;transition:all .2s ease;cursor:pointer}
-.pl-scrubber{display:flex;align-items:center;gap:10px;width:100%;max-width:540px;margin:0 auto}
-.pl-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:rgba(255,255,255,.15);outline:none;cursor:pointer;transition:background .2s}
-.pl-range:hover{background:rgba(255,255,255,.25)}
-.pl-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#f96e03;cursor:pointer;box-shadow:0 0 10px rgba(249,110,3,.6);transition:transform .15s}
-.pl-range::-webkit-slider-thumb:hover{transform:scale(1.25)}
-.pl-range::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#f96e03;border:none;cursor:pointer;box-shadow:0 0 10px rgba(249,110,3,.6)}
+.pl-action-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-size:11px;font-weight:600;font-family:ui-monospace,monospace;transition:all .2s ease;cursor:pointer;pointer-events:auto}
+.pl-scrubber{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin:0 auto;pointer-events:auto;touch-action:pan-x;background:rgba(22,18,14,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.14);border-radius:9999px;padding:6px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,255,255,0.12)}
+.pl-range{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:4px;background:rgba(255,255,255,0.18);outline:none;cursor:pointer;touch-action:pan-x;transition:background .2s}
+.pl-range:hover{background:rgba(255,255,255,0.26)}
+.pl-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#f96e03;border:2px solid #ffffff;cursor:grab;box-shadow:0 0 14px rgba(249,110,3,0.8),0 2px 5px rgba(0,0,0,0.5);transition:transform .15s ease,box-shadow .15s ease}
+.pl-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.25);box-shadow:0 0 20px rgba(249,110,3,1),0 2px 8px rgba(0,0,0,0.6)}
+.pl-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#f96e03;border:2px solid #ffffff;cursor:grab;box-shadow:0 0 14px rgba(249,110,3,0.8),0 2px 5px rgba(0,0,0,0.5);transition:transform .15s ease}
+.pl-range::-moz-range-thumb:active{cursor:grabbing;transform:scale(1.25)}
 .pl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 `
 
@@ -165,8 +166,12 @@ export default function PolaroidLineCarousel({
     if (!root) return
     const ro = new ResizeObserver(() => {
       const r = root.getBoundingClientRect()
-      // Responsive card width: smaller on mobile, generous on desktop
-      const cw = Math.round(Math.max(160, Math.min(cardWidth, r.width * 0.58, r.height * 0.44)))
+      // Max card height reservation: leave ≥165px for bottom bar + clearance
+      const maxAvailableH = Math.max(160, r.height - 165)
+      // Card height is approx cw * 1.33 + 48px, so max cw from height is (maxAvailableH - 48) * 0.72
+      const maxCwFromH = Math.max(120, (maxAvailableH - 48) * 0.72)
+      // Responsive card width: compact on mobile, generous on desktop
+      const cw = Math.round(Math.max(130, Math.min(cardWidth, r.width * 0.62, maxCwFromH)))
       setSize({ w: r.width, h: r.height, cw })
     })
     ro.observe(root)
@@ -200,7 +205,11 @@ export default function PolaroidLineCarousel({
       const dt = Math.min(0.033, (now - prev) / 1000)
       prev = now
       const { w, h, cw } = size
-      const y0 = Math.max(50, h * 0.22)
+      const isMobile = w < 640
+      // Raise string anchor higher so prints occupy upper-mid portion of viewport
+      const y0 = Math.max(26, Math.min(48, h * 0.08))
+      const o = opts.current
+      const currentSag = isMobile ? Math.min(o.sag, 32) : o.sag
       const d = drag.current
       let lineVel: number
 
@@ -212,7 +221,6 @@ export default function PolaroidLineCarousel({
         lineVel = -(S.off - before) / Math.max(dt, 1e-3)
       }
 
-      const o = opts.current
       const g = reduce ? 0 : o.swing
       const near = nearestAt(S.off, spacing, n)
 
@@ -235,7 +243,7 @@ export default function PolaroidLineCarousel({
         S.a[i] = a
         S.w[i] = av
 
-        const y = stringY(x, w, y0, o.sag) - 8
+        const y = stringY(x, w, y0, currentSag) - 8
         el.style.transform = `translate(${(x - cw / 2).toFixed(1)}px,${y.toFixed(1)}px) rotate(${a.toFixed(4)}rad)`
         el.style.zIndex = String(i === near ? n + 2 : n - Math.abs(i - near))
       }
@@ -243,7 +251,7 @@ export default function PolaroidLineCarousel({
       // Update sagging SVG string path
       pathRef.current?.setAttribute(
         "d",
-        `M0 ${y0} Q${w / 2} ${y0 + 2 * o.sag} ${w} ${y0}`
+        `M0 ${y0} Q${w / 2} ${y0 + 2 * currentSag} ${w} ${y0}`
       )
 
       if (near !== activeRef.current) {
@@ -352,6 +360,16 @@ export default function PolaroidLineCarousel({
   const step = (dir: number) => {
     lastTouch.current = performance.now()
     goTo(clamp(activeRef.current + dir, 0, n - 1))
+  }
+
+  const onScrub = (val: number) => {
+    lastTouch.current = performance.now()
+    const targetIdx = clamp(val, 0, Math.max(0, n - 1))
+    sim.current.target = targetIdx * spacing
+    sim.current.off = targetIdx * spacing
+    sim.current.vel = 0
+    activeRef.current = targetIdx
+    setActive(targetIdx)
   }
 
   const onKey = (e: React.KeyboardEvent) => {
@@ -505,17 +523,24 @@ export default function PolaroidLineCarousel({
         {/* Interactive Fast Scrubber (Timeline Slider) */}
         {n > 1 && (
           <div className="pl-scrubber">
-            <span className="text-[10px] font-mono text-white/40">01</span>
+            <span className="text-[11px] font-mono font-bold text-[#f96e03] min-w-[28px] text-right">
+              {pad2(active + 1)}
+            </span>
             <input
               type="range"
               min={0}
               max={n - 1}
               value={active}
-              onChange={(e) => goTo(Number(e.target.value))}
+              onInput={(e) => onScrub(Number((e.target as HTMLInputElement).value))}
+              onChange={(e) => onScrub(Number(e.target.value))}
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               className="pl-range"
               aria-label="Deslizar rápidamente por las obras"
             />
-            <span className="text-[10px] font-mono text-white/40">{pad2(n)}</span>
+            <span className="text-[11px] font-mono text-white/50 min-w-[28px]">
+              {pad2(n)}
+            </span>
           </div>
         )}
       </div>

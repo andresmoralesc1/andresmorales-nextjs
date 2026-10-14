@@ -27,7 +27,7 @@ export default async function LangLayout({
 
   if (isArt) {
     return (
-      <main id="main" aria-label="Main content" className="flex-1 w-full h-screen overflow-hidden bg-black">
+      <main id="main" aria-label="Main content" className="flex-1 w-full h-[100dvh] max-h-[100dvh] overflow-hidden bg-black overscroll-none">
         {children}
       </main>
     );
