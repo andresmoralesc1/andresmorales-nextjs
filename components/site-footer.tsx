@@ -5,20 +5,31 @@ import TicketStubFooter, {
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { getLocalizedPath } from '@/lib/i18n';
 
+function normalizeKey(str: string): string {
+  return str
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 // Map a section/footer label to its localized route. Strings we don't
 // recognize render as plain text (no href) so the user gets feedback
 // that the link is decorative rather than broken.
 const LABEL_TO_ROUTE: Record<string, string> = {
   // Sections (vertical sidebar match for nav)
   overview: '/',
+  'vision general': '/',
   'visión general': '/',
   resumen: '/',
   services: '/services',
   servicios: '/services',
   serviços: '/services',
+  servicos: '/services',
   portfolio: '/portfolio',
   portafolio: '/portfolio',
   portfólio: '/portfolio',
+  portflio: '/portfolio',
   process: '/process',
   proceso: '/process',
   processo: '/process',
@@ -30,31 +41,57 @@ const LABEL_TO_ROUTE: Record<string, string> = {
   contact: '/contact',
   contacto: '/contact',
   contato: '/contact',
-  // Footer link columns
+
+  // Footer link columns — Services
   'ai automation': '/services/ai-automation',
   'automatización ia': '/services/ai-automation',
+  'automatizacion ia': '/services/ai-automation',
   'automação ia': '/services/ai-automation',
+  'automacao ia': '/services/ai-automation',
   'ui/ux design': '/services/ui-ux-design',
   'diseño ui/ux': '/services/ui-ux-design',
+  'diseno ui/ux': '/services/ui-ux-design',
   'design ui/ux': '/services/ui-ux-design',
   'ai-powered web': '/services/web-development',
   'web con ia': '/services/web-development',
   'web com ia': '/services/web-development',
   production: '/work',
   producción: '/work',
+  produccion: '/work',
   produção: '/work',
-  // Demos & Propuestas
+  producao: '/work',
+
+  // Flagship proposals & live demos
+  sneakers: '/sneakers',
+  sneaker: '/sneakers',
+  tênis: '/sneakers',
+  tenis: '/sneakers',
   'e-commerce sneakers': '/sneakers',
   'sneaker e-commerce': '/sneakers',
   'e-commerce tênis': '/sneakers',
+  'e-commerce tenis': '/sneakers',
+
+  joyerías: '/joyerias',
+  joyerias: '/joyerias',
+  joyería: '/joyerias',
+  joyeria: '/joyerias',
+  jewelry: '/joyerias',
+  joalheria: '/joyerias',
   'e-commerce joyerías': '/joyerias',
+  'e-commerce joyerias': '/joyerias',
+  'e-commerce joyería': '/joyerias',
   'e-commerce joyeria': '/joyerias',
   'luxury jewelry e-commerce': '/joyerias',
+  'luxury jewelry': '/joyerias',
   'jewelry e-commerce': '/joyerias',
   'e-commerce joalheria': '/joyerias',
+
+  'brief web': '/brief-web',
+  'web brief': '/brief-web',
   'brief web interactivo': '/brief-web',
   'interactive web brief': '/brief-web',
   'brief web interativo': '/brief-web',
+
   // Resources column links
   blog: '/blog',
   guides: '/guide/ai-automation-latam-2026',
@@ -79,7 +116,9 @@ export async function SiteFooter() {
   const t = dict.playground.ticket;
 
   const linkWithHref = (label: string): StubLink => {
-    const route = LABEL_TO_ROUTE[label.toLowerCase()];
+    const rawKey = label.toLowerCase().trim();
+    const cleanKey = normalizeKey(label);
+    const route = LABEL_TO_ROUTE[cleanKey] || LABEL_TO_ROUTE[rawKey];
     return route ? { label, href: getLocalizedPath(route, locale) } : { label };
   };
 

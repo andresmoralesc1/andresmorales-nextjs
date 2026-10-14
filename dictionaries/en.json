@@ -1583,7 +1583,8 @@
         "Process",
         "About",
         "Brief",
-        "Pricing",
+        "Jewelry",
+        "Sneakers",
         "Contact"
       ],
       "statusLabels": [
@@ -1602,14 +1603,16 @@
             "AI Automation",
             "UI/UX Design",
             "AI-Powered Web",
+            "Luxury Jewelry E-commerce",
+            "Sneaker E-commerce",
             "Production"
           ]
         },
         "demos": {
           "title": "Live Demos",
           "links": [
-            "Sneaker E-commerce",
             "Luxury Jewelry E-commerce",
+            "Sneaker E-commerce",
             "Interactive Web Brief"
           ]
         },

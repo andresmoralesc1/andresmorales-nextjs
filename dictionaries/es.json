@@ -1614,7 +1614,8 @@
         "Proceso",
         "Sobre mí",
         "Brief",
-        "Precios",
+        "Joyerías",
+        "Sneakers",
         "Contacto"
       ],
       "statusLabels": [
@@ -1633,14 +1634,16 @@
             "Automatización IA",
             "Diseño UI/UX",
             "Web con IA",
+            "E-commerce Joyerías",
+            "E-commerce Sneakers",
             "Producción"
           ]
         },
         "demos": {
           "title": "Demos en Vivo",
           "links": [
-            "E-commerce Sneakers",
             "E-commerce Joyerías",
+            "E-commerce Sneakers",
             "Brief Web Interactivo"
           ]
         },

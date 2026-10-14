@@ -1614,7 +1614,8 @@
         "Processo",
         "Sobre",
         "Brief",
-        "Preços",
+        "Joalheria",
+        "Tênis",
         "Contato"
       ],
       "statusLabels": [
@@ -1633,14 +1634,16 @@
             "Automação IA",
             "Design UI/UX",
             "Web com IA",
+            "E-commerce Joalheria",
+            "E-commerce Tênis",
             "Produção"
           ]
         },
         "demos": {
           "title": "Demos ao Vivo",
           "links": [
-            "E-commerce Tênis",
             "E-commerce Joalheria",
+            "E-commerce Tênis",
             "Brief Web Interativo"
           ]
         },
