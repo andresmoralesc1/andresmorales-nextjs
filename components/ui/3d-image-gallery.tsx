@@ -388,7 +388,7 @@ export function FloatingCard({
           <div className="mt-1 text-center px-0.5 pointer-events-none">
             <p className="text-[#F8F5F4] text-[10px] font-medium tracking-wide truncate">
               <span className="text-[#f96e03] font-mono mr-1 font-bold">#{card.id}</span>
-              {card.title.replace(/^Boceto de Piel\s*#?\d*\s*[-—:]*\s*/i, "") || card.title}
+              {card.title}
             </p>
           </div>
         </div>
@@ -546,10 +546,25 @@ export function CardModal() {
               <span className="text-[10px] uppercase font-mono tracking-widest text-[#f96e03] px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/25 font-bold mb-1.5 inline-block">
                 Serie {selectedCard.collectionLabel}
               </span>
-              <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-tight">{selectedCard.title}</h3>
-              <p className="text-white/40 text-[11px] font-mono mt-0.5">
-                Dibujo #{selectedCard.id} de 149 • Andrés Morales
-              </p>
+              <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-tight">
+                {selectedCard.title}
+              </h3>
+              {selectedCard.description && (
+                <p className="text-white/80 text-xs sm:text-[13px] font-sans leading-relaxed mt-2 max-w-sm mx-auto">
+                  {selectedCard.description}
+                </p>
+              )}
+              <div className="flex items-center justify-center gap-2 mt-2 text-[10px] font-mono text-white/40">
+                <span>Dibujo #{selectedCard.id} de 149</span>
+                {selectedCard.technique && (
+                  <>
+                    <span>•</span>
+                    <span>{selectedCard.technique}</span>
+                  </>
+                )}
+                <span>•</span>
+                <span>Andrés Morales</span>
+              </div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -580,7 +595,7 @@ export function CardModal() {
 
               <a
                 href={`https://wa.me/573161482507?text=${encodeURIComponent(
-                  `Hola Andrés, vi tu obra "${selectedCard.title}" (Serie ${selectedCard.collectionLabel}, Dibujo #${selectedCard.id}) en amart y me gustaría consultar adquisición/detalles.`
+                  `Hola Andrés, vi tu obra "${selectedCard.title}" (Dibujo #${selectedCard.id}, Serie ${selectedCard.collectionLabel}) en amart y me gustaría consultar su adquisición o detalles.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -698,6 +713,8 @@ function CatalogDrawer({
         c.title.toLowerCase().includes(q) ||
         c.id.includes(q) ||
         c.collectionLabel.toLowerCase().includes(q) ||
+        (c.description && c.description.toLowerCase().includes(q)) ||
+        (c.technique && c.technique.toLowerCase().includes(q)) ||
         (c.alt && c.alt.toLowerCase().includes(q))
     )
   }, [allCards, activeCollection, search])
@@ -826,11 +843,16 @@ function CatalogDrawer({
                     <Maximize2 className="w-5 h-5 text-[#f96e03]" />
                   </div>
                 </div>
-                <div className="p-2 bg-[#1a1613]">
+                <div className="p-2.5 bg-[#1a1613]">
                   <p className="text-[11px] font-medium text-white truncate group-hover:text-[#f96e03] transition-colors">
-                    <span className="text-[#f96e03] font-mono mr-1">#{card.id}</span>
-                    {card.title.replace(/^Boceto\s*#?\d*\s*[-—:•]*\s*/i, "") || card.title}
+                    <span className="text-[#f96e03] font-mono mr-1 font-bold">#{card.id}</span>
+                    {card.title}
                   </p>
+                  {card.description && (
+                    <p className="text-[10px] text-white/50 line-clamp-1 mt-0.5 font-sans leading-tight">
+                      {card.description}
+                    </p>
+                  )}
                 </div>
               </button>
             ))}
