@@ -61,6 +61,22 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(target, req.url), 308);
   }
 
+  // Handle amart.andresmorales.com.co subdomain -> route directly to 3D Art Gallery
+  const host = req.headers.get('host') ?? '';
+  const isAmArt = host.startsWith('amart.') || host === 'amart.andresmorales.com.co';
+  if (isAmArt) {
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set('x-locale', 'es');
+    requestHeaders.set('x-pathname', '/art');
+    requestHeaders.set('x-is-art', '1');
+    if (pathname.startsWith('/art/') || pathname.startsWith('/_next/')) {
+      return NextResponse.next({ request: { headers: requestHeaders } });
+    }
+    return NextResponse.rewrite(new URL('/es/art', req.url), {
+      request: { headers: requestHeaders },
+    });
+  }
+
   // Redirect legacy /propuesta-ecommerce-tenis to canonical /sneakers
   if (
     pathname === '/propuesta-ecommerce-tenis' ||

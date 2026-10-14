@@ -28,17 +28,18 @@ type Props = {
   /** Threshold del IntersectionObserver (0-1). Default 0.15 = 15% visible. */
   threshold?: number;
   className?: string;
+  [key: string]: any;
 };
 
 export function Reveal({
   children,
-  as: Tag = 'div',
+  as: Component = 'div',
   stagger = false,
   threshold = 0.15,
   className = '',
   ...rest
 }: Props) {
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<any>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -83,6 +84,7 @@ export function Reveal({
   }, [threshold]);
 
   const cls = `${stagger ? 'reveal-stagger' : 'reveal'} ${className}`.trim();
+  const Tag = Component as any;
 
   return (
     <Tag ref={ref} className={cls} {...rest}>

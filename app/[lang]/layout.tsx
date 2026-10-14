@@ -22,6 +22,17 @@ export default async function LangLayout({
   const h = await headers();
   const locale = h.get('x-locale') ?? 'en';
 
+  const pathname = h.get('x-pathname') ?? '';
+  const isArt = pathname === '/art' || pathname.endsWith('/art') || h.get('x-is-art') === '1';
+
+  if (isArt) {
+    return (
+      <main id="main" aria-label="Main content" className="flex-1 w-full h-screen overflow-hidden bg-black">
+        {children}
+      </main>
+    );
+  }
+
   // Resolve dictionary server-side and pass only the cookie-banner strings
   // to the client component — `getCurrentDictionary` uses next/headers
   // and cannot be imported from a 'use client' module.
