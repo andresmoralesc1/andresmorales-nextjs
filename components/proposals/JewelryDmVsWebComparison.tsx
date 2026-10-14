@@ -121,24 +121,24 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
   ];
 
   return (
-    <section className="rounded-3xl bg-primary border-2 border-secondary/15 p-6 sm:p-10 md:p-12 shadow-xl">
+    <section className="rounded-3xl bg-[#12100E]/95 border border-amber-400/25 p-6 sm:p-10 md:p-12 shadow-2xl text-[#FAF7F2]">
       <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-theme-1 text-secondary font-bold shadow-xs mb-3">
-          <Zap className="w-3.5 h-3.5" />
+        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-amber-400/15 text-amber-300 border border-amber-400/30 font-bold shadow-xs mb-3">
+          <Zap className="w-3.5 h-3.5 text-amber-400" />
           {isEs
             ? 'COMPARATIVA DE CONVERSIÓN EN JOYERÍA'
             : isPt
               ? 'COMPARATIVO DE CONVERSÃO EM JOIAS'
               : 'LUXURY CONVERSION COMPARISON'}
         </span>
-        <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black text-secondary tracking-tight">
+        <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black text-[#FAF7F2] tracking-tight">
           {isEs
             ? 'Vender Joyas por DM de Instagram vs Tener tu Boutique en Next.js'
             : isPt
               ? 'Vender Joias por Direct no Instagram vs Sua Boutique em Next.js'
               : 'Selling Jewelry via Instagram DM vs Having Your Next.js Boutique'}
         </h3>
-        <p className="text-xs sm:text-sm text-secondary/75 mt-2 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#E2DDD5]/75 mt-2 leading-relaxed">
           {isEs
             ? 'La alta joyería depende de la confianza y la reputación. Mira cómo cambia la experiencia cuando pasas de responder mensajes manuales a una infraestructura de prestigio.'
             : isPt
@@ -149,11 +149,11 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
         {/* Lado A: Instagram DM */}
-        <div className="rounded-2xl bg-red-50/50 border border-red-200/80 p-6 sm:p-7 flex flex-col justify-between">
+        <div className="rounded-2xl bg-rose-950/20 border border-rose-500/20 p-6 sm:p-7 flex flex-col justify-between text-[#FAF7F2]">
           <div>
-            <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-red-200/60">
-              <XCircle className="w-5 h-5 text-red-600 shrink-0" />
-              <h4 className="font-heading text-lg font-bold text-red-950">
+            <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-rose-500/20">
+              <XCircle className="w-5 h-5 text-rose-400 shrink-0" />
+              <h4 className="font-heading text-lg font-bold text-rose-200">
                 {isEs
                   ? 'Venta Manual por DM de Instagram'
                   : isPt
@@ -165,10 +165,10 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
             <div className="space-y-4">
               {dmPains.map((pain, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <span className="text-red-500 font-bold text-sm mt-0.5">✕</span>
+                  <span className="text-rose-400 font-bold text-sm mt-0.5">✕</span>
                   <div>
-                    <h5 className="text-xs sm:text-[13px] font-bold text-red-950">{pain.title}</h5>
-                    <p className="text-[11px] sm:text-xs text-red-900/80 leading-relaxed mt-0.5">
+                    <h5 className="text-xs sm:text-[13px] font-bold text-rose-100">{pain.title}</h5>
+                    <p className="text-[11px] sm:text-xs text-[#E2DDD5]/70 leading-relaxed mt-0.5">
                       {pain.desc}
                     </p>
                   </div>
@@ -177,19 +177,19 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-red-200/60 text-center">
-            <span className="text-xs font-mono font-bold text-red-800 uppercase">
+          <div className="mt-6 pt-4 border-t border-rose-500/20 text-center">
+            <span className="text-xs font-mono font-bold text-rose-400 uppercase">
               {isEs ? 'Resultado: Hasta 55% de ventas perdidas' : isPt ? 'Resultado: Até 55% de vendas perdidas' : 'Result: Up to 55% lost sales'}
             </span>
           </div>
         </div>
 
         {/* Lado B: Boutique Next.js */}
-        <div className="rounded-2xl bg-emerald-50/50 border-2 border-emerald-400 p-6 sm:p-7 flex flex-col justify-between shadow-md">
+        <div className="rounded-2xl bg-gradient-to-b from-amber-400/10 via-black/40 to-black/40 border-2 border-amber-400/40 p-6 sm:p-7 flex flex-col justify-between shadow-2xl text-[#FAF7F2]">
           <div>
-            <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-emerald-200">
-              <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
-              <h4 className="font-heading text-lg font-bold text-emerald-950">
+            <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-amber-400/20">
+              <CheckCircle className="w-5 h-5 text-amber-400 shrink-0" />
+              <h4 className="font-heading text-lg font-bold text-amber-200">
                 {isEs
                   ? 'Tu Boutique de Alta Joyería en Next.js'
                   : isPt
@@ -201,10 +201,10 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
             <div className="space-y-4">
               {webBenefits.map((benefit, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-black text-sm mt-0.5">✓</span>
+                  <span className="text-amber-400 font-black text-sm mt-0.5">✓</span>
                   <div>
-                    <h5 className="text-xs sm:text-[13px] font-bold text-emerald-950">{benefit.title}</h5>
-                    <p className="text-[11px] sm:text-xs text-emerald-900/80 leading-relaxed mt-0.5">
+                    <h5 className="text-xs sm:text-[13px] font-bold text-white">{benefit.title}</h5>
+                    <p className="text-[11px] sm:text-xs text-[#E2DDD5]/80 leading-relaxed mt-0.5">
                       {benefit.desc}
                     </p>
                   </div>
@@ -213,8 +213,8 @@ export function JewelryDmVsWebComparison({ lang }: JewelryDmVsWebComparisonProps
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-emerald-200 text-center">
-            <span className="text-xs font-mono font-bold text-emerald-800 uppercase">
+          <div className="mt-6 pt-4 border-t border-amber-400/20 text-center">
+            <span className="text-xs font-mono font-bold text-amber-300 uppercase">
               {isEs ? 'Resultado: Ventas de alto ticket 24/7 con prestigio' : isPt ? 'Resultado: Vendas de alto valor 24/7 com prestígio' : 'Result: High-ticket sales 24/7 with authentic prestige'}
             </span>
           </div>

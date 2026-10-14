@@ -124,24 +124,24 @@ export function JewelryLogisticsFaq({ lang = 'es' }: JewelryLogisticsFaqProps) {
   ];
 
   return (
-    <section className="rounded-3xl bg-primary border-2 border-secondary/15 p-6 sm:p-10 md:p-12 shadow-xl">
+    <section className="rounded-3xl bg-[#12100E]/95 border border-amber-400/25 p-6 sm:p-10 md:p-12 shadow-2xl text-[#FAF7F2]">
       <div className="max-w-3xl mx-auto text-center mb-10">
-        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-theme-1 text-secondary font-bold shadow-xs mb-3">
-          <ShieldCheck className="w-3.5 h-3.5" />
+        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-amber-400/15 text-amber-300 border border-amber-400/30 font-bold shadow-xs mb-3">
+          <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
           {isEs
             ? 'SEGURIDAD, LOGÍSTICA & GARANTÍAS // JOYERÍA FINA'
             : isPt
               ? 'SEGURANÇA, LOGÍSTICA & GARANTIAS // JOALHERIA'
               : 'SECURITY, LOGISTICS & GUARANTEES // FINE JEWELRY'}
         </span>
-        <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black text-secondary tracking-tight">
+        <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black text-[#FAF7F2] tracking-tight">
           {isEs
             ? 'Cómo Operan los Envíos Blindados y la Seguridad de Alto Valor'
             : isPt
               ? 'Como Funcionam os Envios Blindados e a Segurança de Alto Valor'
               : 'How Armored Shipping and High-Ticket Security Operate'}
         </h3>
-        <p className="text-xs sm:text-sm text-secondary/75 mt-2 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#E2DDD5]/75 mt-2 leading-relaxed">
           {isEs
             ? 'Resolver la logística y disipar el miedo al fraude es el 80% del éxito en el e-commerce de joyería. Así funciona la infraestructura que implementamos.'
             : isPt
@@ -155,15 +155,15 @@ export function JewelryLogisticsFaq({ lang = 'es' }: JewelryLogisticsFaqProps) {
         {carriers.map((c, idx) => (
           <div
             key={idx}
-            className="p-4 rounded-2xl bg-theme-5 border border-secondary/10 flex flex-col justify-between"
+            className="p-4 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between"
           >
             <div className="flex items-center gap-2 mb-1.5">
-              <ShieldCheck className="w-4 h-4 text-theme-1 shrink-0" />
-              <h4 className="font-heading font-bold text-xs sm:text-[13px] text-secondary">
+              <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
+              <h4 className="font-heading font-bold text-xs sm:text-[13px] text-amber-100">
                 {c.name}
               </h4>
             </div>
-            <p className="text-[11px] text-secondary/70 leading-snug">{c.note}</p>
+            <p className="text-[11px] text-[#E2DDD5]/70 leading-snug">{c.note}</p>
           </div>
         ))}
       </div>
@@ -175,25 +175,27 @@ export function JewelryLogisticsFaq({ lang = 'es' }: JewelryLogisticsFaqProps) {
           return (
             <div
               key={idx}
-              className="rounded-2xl border border-secondary/15 bg-theme-5 overflow-hidden transition-colors"
+              className={`rounded-2xl border transition-all ${
+                isOpen ? 'border-amber-400/40 bg-black/60 shadow-lg' : 'border-white/10 bg-black/40 hover:border-white/20'
+              }`}
             >
               <button
                 type="button"
                 onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
                 className="w-full p-4 sm:p-5 flex items-center justify-between text-left gap-4 cursor-pointer"
               >
-                <span className="font-heading font-bold text-xs sm:text-sm text-secondary">
+                <span className="font-heading font-bold text-xs sm:text-sm text-[#FAF7F2]">
                   {faq.q}
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 text-secondary/60 shrink-0 transition-transform duration-200 ${
-                    isOpen ? 'rotate-180 text-theme-1' : ''
+                  className={`w-4 h-4 text-amber-400 shrink-0 transition-transform duration-200 ${
+                    isOpen ? 'rotate-180 text-amber-300' : ''
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs text-secondary/80 leading-relaxed border-t border-secondary/10 pt-3 font-normal animate-in fade-in duration-200">
+                <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs text-[#E2DDD5]/80 leading-relaxed border-t border-white/10 pt-3 font-normal animate-in fade-in duration-200">
                   <p>{faq.a}</p>
                 </div>
               )}

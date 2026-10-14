@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { track } from '@/lib/analytics';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { getLocalizedPath, type Locale } from '@/lib/i18n';
-import { Volume2, VolumeX, Sparkles, Smartphone, Video as VideoIcon, Gem } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Smartphone, Video as VideoIcon, Gem, Check, ArrowRight } from 'lucide-react';
 import { JewelryRoiCalculator } from '@/components/proposals/JewelryRoiCalculator';
 import { JewelryDmVsWebComparison } from '@/components/proposals/JewelryDmVsWebComparison';
 import { JewelryLogisticsFaq } from '@/components/proposals/JewelryLogisticsFaq';
@@ -110,7 +110,7 @@ export function JewelryProposalSections({
 
   const t = {
     step1Badge: isEs
-      ? '⚡ PASO 1: TU BOUTIQUE DE JOYERÍA EN NEXT.JS // PAGO ÚNICO'
+      ? '⚡ PASO 1: TU BOUTIQUE DE ALTA JOYERÍA EN NEXT.JS // PAGO ÚNICO'
       : isPt
         ? '⚡ PASSO 1: SUA JOALHERIA EM NEXT.JS // PAGAMENTO ÚNICO'
         : '⚡ STEP 1: YOUR NEXT.JS LUXURY BOUTIQUE // ONE-TIME PAYMENT',
@@ -130,7 +130,7 @@ export function JewelryProposalSections({
         ? 'Código 100% de sua propriedade • Entrega em 2 a 3 semanas'
         : '100% Client-Owned Code • Delivery in 2 to 3 weeks',
     hireBaseStore: isEs
-      ? '💬 Contratar Tienda de Joyería ($500.000 COP)'
+      ? '💬 Contratar Boutique de Joyería ($500.000 COP)'
       : isPt
         ? '💬 Contratar Loja de Joias ($500.000 COP)'
         : '💬 Get Your Jewelry Store ($500,000 COP)',
@@ -140,7 +140,7 @@ export function JewelryProposalSections({
         ? '📋 Preencher Briefing de Joias (3 min)'
         : '📋 Complete Jewelry Web Brief (3 min)',
     step2Badge: isEs
-      ? '🚀 PASO 2: ACOMPAÑAMIENTO MENSUAL // RETAINERS'
+      ? '🚀 PASO 2: ACOMPAÑAMIENTO MENSUAL // RETAINERS DE CRECIMIENTO'
       : isPt
         ? '🚀 PASSO 2: ACOMPANHAMENTO MENSAL // RETAINERS'
         : '🚀 STEP 2: MONTHLY GROWTH PLANS // RETAINERS',
@@ -299,54 +299,54 @@ export function JewelryProposalSections({
   };
 
   return (
-    <div className="space-y-16 md:space-y-20">
+    <div className="space-y-16 md:space-y-24">
       {/* ============================================================
           BLOQUE 1: LA OFERTA BASE DIRECTA ($500.000 COP — PAGO ÚNICO)
          ============================================================ */}
       <section id="desarrollo-base" className="scroll-mt-20">
-        <div className="rounded-3xl bg-primary border-2 border-secondary/15 p-6 sm:p-10 md:p-12 shadow-xl relative overflow-hidden">
+        <div className="rounded-3xl bg-[#12100E]/95 border border-amber-400/25 p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden text-[#FAF7F2]">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-            <span className="px-3.5 py-1 rounded-full text-xs font-secondary font-bold tracking-widest uppercase bg-theme-1 text-secondary shadow-2xs">
+            <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-amber-400/15 text-amber-300 border border-amber-400/30 shadow-2xs">
               {t.step1Badge}
             </span>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-300">
-              <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-300 bg-emerald-950/60 px-3 py-1 rounded-lg border border-emerald-500/30">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>{t.lifetimePill}</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-8 pb-8 border-b border-theme-9">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-8 pb-8 border-b border-white/10">
             <div className="lg:col-span-8">
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-secondary tracking-tight mb-3">
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-black text-[#FAF7F2] tracking-tight mb-3">
                 {baseOffer.title}
               </h2>
-              <p className="text-sm sm:text-base text-secondary/80 leading-relaxed max-w-2xl font-normal mb-6">
+              <p className="text-sm sm:text-base text-[#E2DDD5]/80 leading-relaxed max-w-2xl font-normal mb-6">
                 {baseOffer.subtitle}
               </p>
 
               {/* 3 Micro-pills de confianza */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-3 rounded-xl bg-theme-5 border border-secondary/10">
-                  <p className="text-xs font-secondary font-bold text-secondary uppercase mb-0.5">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <p className="text-xs font-mono font-bold text-amber-300 uppercase mb-0.5">
                     🌐 {baseOffer.hostingBadge}
                   </p>
-                  <p className="text-[11px] text-secondary/70 leading-snug">
+                  <p className="text-[11px] text-[#E2DDD5]/70 leading-snug">
                     {baseOffer.hostingDesc}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-theme-5 border border-secondary/10">
-                  <p className="text-xs font-secondary font-bold text-secondary uppercase mb-0.5">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <p className="text-xs font-mono font-bold text-amber-300 uppercase mb-0.5">
                     🔒 {baseOffer.sslBadge}
                   </p>
-                  <p className="text-[11px] text-secondary/70 leading-snug">
+                  <p className="text-[11px] text-[#E2DDD5]/70 leading-snug">
                     {baseOffer.sslDesc}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-theme-5 border border-secondary/10">
-                  <p className="text-xs font-secondary font-bold text-secondary uppercase mb-0.5">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <p className="text-xs font-mono font-bold text-amber-300 uppercase mb-0.5">
                     🏷️ {baseOffer.domainBadge}
                   </p>
-                  <p className="text-[11px] text-secondary/70 leading-snug">
+                  <p className="text-[11px] text-[#E2DDD5]/70 leading-snug">
                     {baseOffer.domainDesc}
                   </p>
                 </div>
@@ -354,14 +354,14 @@ export function JewelryProposalSections({
             </div>
 
             {/* Price Box */}
-            <div className="lg:col-span-4 bg-theme-5 rounded-2xl p-6 sm:p-7 border-2 border-secondary/15 text-center flex flex-col justify-center items-center shadow-xs">
-              <span className="text-xs font-secondary font-bold uppercase tracking-wider text-secondary/70 mb-1">
+            <div className="lg:col-span-4 bg-stone-950 rounded-2xl p-6 sm:p-7 border border-amber-400/30 text-center flex flex-col justify-center items-center shadow-2xl">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#E2DDD5]/70 mb-1">
                 {t.oneTimeInvestment}
               </span>
-              <div className="font-mono text-4xl sm:text-5xl font-black text-secondary tracking-tight mb-1">
+              <div className="font-mono text-4xl sm:text-5xl font-black text-amber-300 tracking-tight mb-1">
                 {currency === 'COP' ? baseOffer.priceCop : baseOffer.priceUsd}
               </div>
-              <p className="text-[11px] font-secondary font-bold text-secondary/60 mb-5">
+              <p className="text-[11px] font-mono text-[#E2DDD5]/60 mb-5">
                 {t.ownershipDelivery}
               </p>
 
@@ -375,7 +375,7 @@ export function JewelryProposalSections({
                     price: baseOffer.priceCop,
                   });
                 }}
-                className="btn-theme w-full py-3.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-full shadow-md hover:shadow-lg text-center"
+                className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 hover:from-amber-300 hover:to-amber-200 text-stone-950 font-secondary font-black text-xs uppercase tracking-widest shadow-xl hover:shadow-amber-400/25 transition-all text-center block cursor-pointer"
               >
                 {baseOffer.cta || t.hireBaseStore}
               </a>
@@ -387,7 +387,7 @@ export function JewelryProposalSections({
                     source: 'base_jewelry_card',
                   });
                 }}
-                className="mt-2.5 inline-flex items-center justify-center gap-1.5 w-full py-2 text-xs font-secondary font-bold text-secondary/75 hover:text-secondary hover:bg-theme-1/10 rounded-full transition-colors text-center"
+                className="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2 text-xs font-mono font-bold text-amber-300/80 hover:text-amber-200 hover:bg-white/5 rounded-full transition-colors text-center"
               >
                 <span>{t.fillBrief}</span>
                 <span aria-hidden="true">→</span>
@@ -396,10 +396,10 @@ export function JewelryProposalSections({
           </div>
 
           {/* Grid compacto de inclusiones */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs sm:text-[13px] text-secondary/85 font-medium">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs sm:text-[13px] text-[#FAF7F2]/90 font-medium">
             {(baseOffer.features || []).slice(0, 6).map((feat, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <span className="text-theme-1 font-black">✓</span>
+                <span className="text-amber-400 font-black">✓</span>
                 <span>{feat}</span>
               </div>
             ))}
@@ -422,25 +422,25 @@ export function JewelryProposalSections({
          ============================================================ */}
       <section id="inversion" className="scroll-mt-20">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="inline-block px-3.5 py-1 rounded-full text-xs font-secondary font-bold tracking-widest uppercase bg-theme-1 text-secondary shadow-2xs mb-3">
+          <span className="inline-block px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-amber-400/15 text-amber-300 border border-amber-400/30 shadow-2xs mb-3">
             {t.step2Badge}
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-secondary tracking-tight mb-2">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-black text-[#FAF7F2] tracking-tight mb-2">
             {pricing.title || t.choosePlan}
           </h2>
-          <p className="text-sm sm:text-base text-secondary/80 leading-relaxed font-normal mb-5">
+          <p className="text-sm sm:text-base text-[#E2DDD5]/80 leading-relaxed font-normal mb-5">
             {pricing.subtitle}
           </p>
 
           {/* Currency Toggle */}
-          <div className="inline-flex rounded-xl bg-theme-5 p-1 border border-secondary/15">
+          <div className="inline-flex rounded-xl bg-black/50 p-1 border border-white/15">
             <button
               type="button"
               onClick={() => setCurrency('COP')}
-              className={`px-3.5 py-1.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-lg transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
                 currency === 'COP'
-                  ? 'bg-secondary text-primary shadow-xs'
-                  : 'text-secondary/70 hover:text-secondary'
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-300 text-stone-950 shadow-xs'
+                  : 'text-[#E2DDD5]/70 hover:text-white'
               }`}
             >
               🇨🇴 COP
@@ -448,10 +448,10 @@ export function JewelryProposalSections({
             <button
               type="button"
               onClick={() => setCurrency('USD')}
-              className={`px-3.5 py-1.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-lg transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
                 currency === 'USD'
-                  ? 'bg-secondary text-primary shadow-xs'
-                  : 'text-secondary/70 hover:text-secondary'
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-300 text-stone-950 shadow-xs'
+                  : 'text-[#E2DDD5]/70 hover:text-white'
               }`}
             >
               🇺🇸 USD
@@ -469,20 +469,20 @@ export function JewelryProposalSections({
                 onClick={() => handleSelectPlan(plan)}
                 className={`relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all cursor-pointer ${
                   plan.popular
-                    ? 'bg-secondary text-primary ring-2 ring-theme-1 shadow-xl lg:-translate-y-1.5'
-                    : 'bg-primary text-secondary border-2 border-secondary/15 shadow-xs hover:border-theme-1/50'
+                    ? 'bg-gradient-to-b from-amber-400/15 via-[#161412] to-[#12100E] text-[#FAF7F2] ring-2 ring-amber-400/80 shadow-[0_0_35px_rgba(245,158,11,0.2)] lg:-translate-y-2'
+                    : 'bg-[#12100E]/90 text-[#FAF7F2] border border-white/10 shadow-xl hover:border-amber-400/30'
                 }`}
               >
                 {/* Popular Badge */}
                 {plan.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-theme-1 text-secondary text-[11px] font-secondary font-bold uppercase tracking-wider px-3.5 py-0.5 rounded-full shadow-md">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 text-[11px] font-secondary font-black uppercase tracking-wider px-4 py-1 rounded-full shadow-lg">
                     {plan.badge}
                   </div>
                 )}
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-heading text-xl font-bold">
+                    <h3 className="font-heading text-xl font-bold text-[#FAF7F2]">
                       {plan.name}
                     </h3>
                     <input
@@ -490,7 +490,7 @@ export function JewelryProposalSections({
                       name="planSelect"
                       checked={isSelected}
                       onChange={() => handleSelectPlan(plan)}
-                      className="accent-theme-1 w-4 h-4 cursor-pointer"
+                      className="accent-amber-400 w-4 h-4 cursor-pointer"
                       aria-label={
                         isEs
                           ? `Seleccionar plan ${plan.name}`
@@ -504,22 +504,22 @@ export function JewelryProposalSections({
                   <p
                     className={`text-xs mb-4 ${
                       plan.popular
-                        ? 'text-primary/75'
-                        : 'text-secondary/70'
+                        ? 'text-amber-200/90'
+                        : 'text-[#E2DDD5]/70'
                     }`}
                   >
                     {plan.tagline}
                   </p>
 
                   {/* Price Tag */}
-                  <div className="mb-5 pb-5 border-b border-theme-9/40">
-                    <div className="font-mono text-3xl font-black tracking-tight mb-0.5">
+                  <div className="mb-5 pb-5 border-b border-white/10">
+                    <div className="font-mono text-3xl font-black text-amber-300 tracking-tight mb-0.5">
                       {currency === 'COP' ? plan.priceCop : plan.priceUsd}
-                      <span className="text-xs font-secondary font-bold tracking-normal uppercase ml-1 opacity-70">
+                      <span className="text-xs font-mono font-bold tracking-normal uppercase ml-1 opacity-70 text-white">
                         {t.perMonth}
                       </span>
                     </div>
-                    <div className={`text-[11px] font-mono ${plan.popular ? 'text-primary/70' : 'text-secondary/70'}`}>
+                    <div className="text-[11px] font-mono text-[#E2DDD5]/70">
                       <span>{t.noCommitment}</span>
                     </div>
                   </div>
@@ -528,12 +528,12 @@ export function JewelryProposalSections({
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feat, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2 text-xs sm:text-[13px] font-medium leading-snug">
-                        <span className="text-theme-1 font-black mt-0.5">✓</span>
+                        <span className="text-amber-400 font-black mt-0.5">✓</span>
                         <span
                           className={
                             plan.popular
-                              ? 'text-primary/90'
-                              : 'text-secondary/85'
+                              ? 'text-white'
+                              : 'text-[#E2DDD5]/85'
                           }
                         >
                           {feat}
@@ -555,10 +555,10 @@ export function JewelryProposalSections({
                       price: currency === 'COP' ? plan.priceCop : plan.priceUsd,
                     });
                   }}
-                  className={`w-full py-3.5 rounded-full text-xs font-secondary font-bold uppercase tracking-wider text-center block transition-all shadow-md ${
+                  className={`w-full py-4 rounded-full text-xs font-secondary font-black uppercase tracking-widest text-center block transition-all shadow-md cursor-pointer ${
                     plan.popular
-                      ? 'bg-theme-1 hover:bg-theme-2 text-secondary'
-                      : 'bg-secondary hover:bg-secondary/90 text-primary'
+                      ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 hover:from-amber-300 hover:to-amber-200 text-stone-950 shadow-xl'
+                      : 'bg-white/10 hover:bg-white/15 text-white border border-amber-400/30'
                   }`}
                 >
                   {pricing.selectPlan || t.selectMonthlyPlan}
@@ -572,16 +572,16 @@ export function JewelryProposalSections({
       {/* ============================================================
           BLOQUE 3: CASO REAL // DEL TALLER A CAMPAÑA PUBLICITARIA DE LUJO
          ============================================================ */}
-      <section className="rounded-3xl bg-secondary text-primary p-6 sm:p-8 md:p-10 shadow-2xl border border-secondary overflow-hidden">
+      <section className="rounded-3xl bg-[#12100E]/95 text-[#FAF7F2] p-6 sm:p-8 md:p-10 shadow-2xl border border-amber-400/25 overflow-hidden">
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-theme-1 text-secondary font-bold shadow-xs mb-3">
-            <span className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-amber-400/15 text-amber-300 border border-amber-400/30 font-bold shadow-xs mb-3">
+            <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
             {t.caseBadge}
           </span>
-          <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black mt-1 text-primary tracking-tight">
+          <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black mt-1 text-[#FAF7F2] tracking-tight">
             {t.caseTitle}
           </h3>
-          <p className="text-xs sm:text-sm md:text-base text-primary/75 mt-2 leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-[#E2DDD5]/75 mt-2 leading-relaxed">
             {t.caseDesc}
           </p>
         </div>
@@ -590,13 +590,13 @@ export function JewelryProposalSections({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch mb-8">
           
           {/* PASO 1: FOTO CON CELULAR */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 flex flex-col justify-between group hover:border-white/20 transition-all">
+          <div className="rounded-2xl bg-black/40 border border-white/10 p-4 sm:p-5 flex flex-col justify-between group hover:border-white/20 transition-all">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-white/10 text-primary/90 flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 text-theme-1" /> {t.step1Tag}
+                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-white/10 text-white/90 flex items-center gap-1.5">
+                  <Smartphone className="w-3.5 h-3.5 text-amber-400" /> {t.step1Tag}
                 </span>
-                <span className="text-[10px] font-mono text-primary/60">{t.step1Original}</span>
+                <span className="text-[10px] font-mono text-[#E2DDD5]/60">{t.step1Original}</span>
               </div>
 
               {/* Image Preview Container */}
@@ -613,28 +613,28 @@ export function JewelryProposalSections({
                 </div>
               </div>
 
-              <h4 className="font-heading text-base sm:text-lg font-bold text-primary mb-1">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-[#FAF7F2] mb-1">
                 {t.step1Heading}
               </h4>
-              <p className="text-xs text-primary/70 leading-relaxed mb-3">
+              <p className="text-xs text-[#E2DDD5]/70 leading-relaxed mb-3">
                 {t.step1Body}
               </p>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-primary/60">
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#E2DDD5]/60">
               <span className="text-emerald-400 font-bold">{t.step1Time}</span>
               <span>{t.step1Cost}</span>
             </div>
           </div>
 
           {/* PASO 2: RENDER DE ESTUDIO IA */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 flex flex-col justify-between group hover:border-white/20 transition-all">
+          <div className="rounded-2xl bg-black/40 border border-amber-400/30 p-4 sm:p-5 flex flex-col justify-between group hover:border-amber-400/50 transition-all shadow-xl">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-theme-1 text-secondary flex items-center gap-1.5 shadow-2xs">
+                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-amber-400 text-stone-950 flex items-center gap-1.5 shadow-2xs">
                   <Sparkles className="w-3.5 h-3.5" /> {t.step2Tag}
                 </span>
-                <span className="text-[10px] font-mono text-theme-1 font-bold">{t.step2Studio}</span>
+                <span className="text-[10px] font-mono text-amber-300 font-bold">{t.step2Studio}</span>
               </div>
 
               {/* Image Preview Container */}
@@ -646,30 +646,30 @@ export function JewelryProposalSections({
                   sizes="(max-width: 1024px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-xs px-2.5 py-1 rounded-md text-[10px] font-mono font-bold text-theme-1 border border-theme-1/30">
+                <div className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-xs px-2.5 py-1 rounded-md text-[10px] font-mono font-bold text-amber-300 border border-amber-400/30">
                   {t.step2Render}
                 </div>
               </div>
 
-              <h4 className="font-heading text-base sm:text-lg font-bold text-primary mb-1">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-[#FAF7F2] mb-1">
                 {t.step2Heading}
               </h4>
-              <p className="text-xs text-primary/70 leading-relaxed mb-3">
+              <p className="text-xs text-[#E2DDD5]/70 leading-relaxed mb-3">
                 {t.step2Body}
               </p>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-primary/60">
-              <span className="text-theme-1 font-bold">{t.step2Res}</span>
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#E2DDD5]/60">
+              <span className="text-amber-300 font-bold">{t.step2Res}</span>
               <span>{t.step2Ready}</span>
             </div>
           </div>
 
           {/* PASO 3: VIDEO CINEMÁTICO GOOGLE VEO */}
-          <div className="rounded-2xl bg-white/5 border-2 border-theme-1/60 p-4 sm:p-5 flex flex-col justify-between group shadow-xl relative overflow-hidden">
+          <div className="rounded-2xl bg-black/40 border-2 border-amber-400/60 p-4 sm:p-5 flex flex-col justify-between group shadow-2xl relative overflow-hidden">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-theme-1 text-secondary flex items-center gap-1.5 shadow-2xs">
+                <span className="text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-md bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 flex items-center gap-1.5 shadow-2xs">
                   <VideoIcon className="w-3.5 h-3.5" /> {t.step3Tag}
                 </span>
                 <span className="text-[10px] font-mono text-emerald-400 font-bold animate-pulse">{t.step3Active}</span>
@@ -692,18 +692,18 @@ export function JewelryProposalSections({
                 <button
                   type="button"
                   onClick={toggleVideoMute}
-                  className="absolute bottom-2.5 right-2.5 z-20 bg-secondary/85 hover:bg-secondary text-primary p-2 rounded-full border border-white/20 shadow-lg backdrop-blur-md transition-transform hover:scale-110 active:scale-95 flex items-center gap-1 text-[10px] font-mono font-bold"
+                  className="absolute bottom-2.5 right-2.5 z-20 bg-stone-950/85 hover:bg-stone-950 text-white p-2 rounded-full border border-white/20 shadow-lg backdrop-blur-md transition-transform hover:scale-110 active:scale-95 flex items-center gap-1 text-[10px] font-mono font-bold cursor-pointer"
                   title={isVideoMuted ? t.audioTitleMuted : t.audioTitleOn}
                 >
                   {isVideoMuted ? (
                     <>
-                      <VolumeX className="w-3.5 h-3.5 text-primary/70" />
+                      <VolumeX className="w-3.5 h-3.5 text-white/70" />
                       <span className="hidden sm:inline">{t.audioMuted}</span>
                     </>
                   ) : (
                     <>
-                      <Volume2 className="w-3.5 h-3.5 text-theme-1 animate-pulse" />
-                      <span className="hidden sm:inline text-theme-1">{t.audioOn}</span>
+                      <Volume2 className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                      <span className="hidden sm:inline text-amber-300">{t.audioOn}</span>
                     </>
                   )}
                 </button>
@@ -713,15 +713,15 @@ export function JewelryProposalSections({
                 </div>
               </div>
 
-              <h4 className="font-heading text-base sm:text-lg font-bold text-primary mb-1">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-[#FAF7F2] mb-1">
                 {t.step3Heading}
               </h4>
-              <p className="text-xs text-primary/70 leading-relaxed mb-3">
+              <p className="text-xs text-[#E2DDD5]/70 leading-relaxed mb-3">
                 {t.step3Body}
               </p>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-primary/60">
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#E2DDD5]/60">
               <span className="text-emerald-400 font-bold">{t.step3Clicks}</span>
               <span>{t.step3Included}</span>
             </div>
@@ -740,34 +740,34 @@ export function JewelryProposalSections({
         </div>
 
         {/* BOTTOM METRICS BAR */}
-        <div className="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-center sm:text-left">
+        <div className="rounded-2xl bg-black/40 border border-white/10 p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-center sm:text-left">
           <div className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-theme-1/15 border border-theme-1/30 flex items-center justify-center text-theme-1 font-bold text-lg shrink-0">
+            <span className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 font-bold text-lg shrink-0">
               💎
             </span>
             <div>
-              <p className="text-xs font-bold text-primary">{t.metric1Title}</p>
-              <p className="text-[11px] text-primary/70">{t.metric1Desc}</p>
+              <p className="text-xs font-bold text-[#FAF7F2]">{t.metric1Title}</p>
+              <p className="text-[11px] text-[#E2DDD5]/70">{t.metric1Desc}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-theme-1/15 border border-theme-1/30 flex items-center justify-center text-theme-1 font-bold text-lg shrink-0">
+            <span className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 font-bold text-lg shrink-0">
               ⚡
             </span>
             <div>
-              <p className="text-xs font-bold text-primary">{t.metric2Title}</p>
-              <p className="text-[11px] text-primary/70">{t.metric2Desc}</p>
+              <p className="text-xs font-bold text-[#FAF7F2]">{t.metric2Title}</p>
+              <p className="text-[11px] text-[#E2DDD5]/70">{t.metric2Desc}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-theme-1/15 border border-theme-1/30 flex items-center justify-center text-theme-1 font-bold text-lg shrink-0">
+            <span className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 font-bold text-lg shrink-0">
               📈
             </span>
             <div>
-              <p className="text-xs font-bold text-primary">{t.metric3Title}</p>
-              <p className="text-[11px] text-primary/70">{t.metric3Desc}</p>
+              <p className="text-xs font-bold text-[#FAF7F2]">{t.metric3Title}</p>
+              <p className="text-[11px] text-[#E2DDD5]/70">{t.metric3Desc}</p>
             </div>
           </div>
         </div>
@@ -776,67 +776,67 @@ export function JewelryProposalSections({
       {/* ============================================================
           BLOQUE 4: PROFUNDIDAD TÉCNICA Y ROADMAP (EXPANDIBLE / ACORDEÓN)
          ============================================================ */}
-      <section className="bg-primary rounded-3xl border border-secondary/15 p-6 sm:p-8 shadow-xs">
+      <section className="bg-[#12100E]/90 rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl text-[#FAF7F2]">
         <button
           type="button"
           onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
           className="w-full flex items-center justify-between text-left group cursor-pointer"
         >
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-full bg-theme-5 text-secondary flex items-center justify-center font-bold text-sm border border-secondary/15">
+            <span className="w-8 h-8 rounded-full bg-white/10 text-amber-300 flex items-center justify-center font-bold text-sm border border-white/15">
               {showTechnicalDetails ? '−' : '+'}
             </span>
             <div>
-              <h3 className="font-heading text-lg sm:text-xl font-bold text-secondary group-hover:text-theme-1 transition-colors">
+              <h3 className="font-heading text-lg sm:text-xl font-bold text-[#FAF7F2] group-hover:text-amber-300 transition-colors">
                 {showTechnicalDetails ? t.toggleDetailsOpen : t.toggleDetailsClosed}
               </h3>
-              <p className="text-xs text-secondary/60">
+              <p className="text-xs text-[#E2DDD5]/60">
                 {showTechnicalDetails ? t.toggleDetailsSubOpen : t.toggleDetailsSubClosed}
               </p>
             </div>
           </div>
-          <span className="text-xs font-secondary font-bold uppercase tracking-wider text-secondary px-3 py-1 rounded-lg bg-theme-5 group-hover:bg-theme-1 group-hover:text-secondary transition-colors hidden sm:inline-block">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300 px-3 py-1 rounded-lg bg-white/5 border border-amber-400/30 group-hover:bg-amber-400 group-hover:text-stone-950 transition-colors hidden sm:inline-block">
             {showTechnicalDetails ? t.toggleCollapseBtn : t.toggleExpandBtn}
           </span>
         </button>
 
         {showTechnicalDetails && (
-          <div className="mt-8 pt-8 border-t border-theme-9 space-y-12 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="mt-8 pt-8 border-t border-white/10 space-y-12 animate-in fade-in slide-in-from-top-4 duration-300">
             {/* Diagnóstico */}
             <div>
-              <span className="text-xs font-mono font-bold uppercase text-theme-1 block mb-2">
+              <span className="text-xs font-mono font-bold uppercase text-amber-300 block mb-2">
                 {diagnostic.badge || (isEs ? '01. DIAGNÓSTICO' : isPt ? '01. DIAGNÓSTICO' : '01. DIAGNOSTIC')}
               </span>
-              <h4 className="font-heading text-xl font-bold text-secondary mb-3">
+              <h4 className="font-heading text-xl font-bold text-[#FAF7F2] mb-3">
                 {diagnostic.title}
               </h4>
-              <p className="text-xs sm:text-sm text-secondary/80 leading-relaxed mb-6">
+              <p className="text-xs sm:text-sm text-[#E2DDD5]/80 leading-relaxed mb-6">
                 {diagnostic.intro}
               </p>
 
               {/* Stats en 4 cajitas compactas */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 {diagnostic.stats.map((s, idx) => (
-                  <div key={idx} className="p-3.5 rounded-xl bg-theme-5 border border-secondary/10">
-                    <p className="font-mono text-2xl font-black text-secondary">{s.value}</p>
-                    <p className="text-[11px] font-bold text-secondary uppercase">{s.label}</p>
+                  <div key={idx} className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                    <p className="font-mono text-2xl font-black text-amber-300">{s.value}</p>
+                    <p className="text-[11px] font-bold text-[#E2DDD5] uppercase mt-1">{s.label}</p>
                   </div>
                 ))}
               </div>
 
               {/* Comparativa compacta */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-theme-5 border border-red-200">
-                  <p className="text-xs font-bold text-red-800 uppercase mb-2">✕ {diagnostic.standard.title}</p>
-                  <ul className="space-y-1.5 text-xs text-secondary/80">
+                <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/25">
+                  <p className="text-xs font-bold text-rose-300 uppercase mb-2">✕ {diagnostic.standard.title}</p>
+                  <ul className="space-y-1.5 text-xs text-[#E2DDD5]/80">
                     {diagnostic.standard.points.slice(0, 3).map((p, i) => (
                       <li key={i}>• {p}</li>
                     ))}
                   </ul>
                 </div>
-                <div className="p-4 rounded-xl bg-theme-5 border-2 border-theme-1">
-                  <p className="text-xs font-bold text-secondary uppercase mb-2">✓ {diagnostic.proposed.title}</p>
-                  <ul className="space-y-1.5 text-xs text-secondary font-medium">
+                <div className="p-4 rounded-xl bg-amber-400/10 border-2 border-amber-400/50">
+                  <p className="text-xs font-bold text-amber-200 uppercase mb-2">✓ {diagnostic.proposed.title}</p>
+                  <ul className="space-y-1.5 text-xs text-white font-medium">
                     {diagnostic.proposed.points.slice(0, 3).map((p, i) => (
                       <li key={i}>• {p}</li>
                     ))}
@@ -847,20 +847,20 @@ export function JewelryProposalSections({
 
             {/* Cronograma en 5 pastillas compactas */}
             <div>
-              <span className="text-xs font-mono font-bold uppercase text-theme-1 block mb-2">
+              <span className="text-xs font-mono font-bold uppercase text-amber-300 block mb-2">
                 {roadmap.badge || (isEs ? '02. CRONOGRAMA DE ENTREGAS' : isPt ? '02. CRONOGRAMA DE ENTREGAS' : '02. DELIVERY ROADMAP')}
               </span>
-              <h4 className="font-heading text-xl font-bold text-secondary mb-4">
+              <h4 className="font-heading text-xl font-bold text-[#FAF7F2] mb-4">
                 {roadmap.title}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {roadmap.weeks.map((w, idx) => (
-                  <div key={idx} className="p-3.5 rounded-xl bg-theme-5 border border-secondary/10">
-                    <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-secondary text-primary inline-block mb-1.5">
+                  <div key={idx} className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                    <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-amber-400 text-stone-950 inline-block mb-1.5">
                       {w.week}
                     </span>
-                    <p className="text-xs font-bold text-secondary mb-1">{w.title}</p>
-                    <p className="text-[11px] text-secondary/70 leading-snug">
+                    <p className="text-xs font-bold text-[#FAF7F2] mb-1">{w.title}</p>
+                    <p className="text-[11px] text-[#E2DDD5]/70 leading-snug">
                       {w.deliverables[0]}
                     </p>
                   </div>
@@ -879,26 +879,26 @@ export function JewelryProposalSections({
       {/* ============================================================
           BLOQUE 5: GARANTÍAS Y CIERRE EJECUTIVO (DIRECTO A LA ACCIÓN)
          ============================================================ */}
-      <section className="rounded-3xl bg-primary border-2 border-secondary/15 p-6 sm:p-10 shadow-lg">
+      <section className="rounded-3xl bg-[#12100E]/95 border border-amber-400/25 p-6 sm:p-10 shadow-2xl text-[#FAF7F2]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {guarantees.items.map((item, idx) => (
-            <div key={idx} className="p-4 rounded-2xl bg-theme-5 border border-secondary/10 flex items-start gap-3">
-              <span className="text-xl text-theme-1">★</span>
+            <div key={idx} className="p-4 rounded-2xl bg-black/40 border border-white/10 flex items-start gap-3">
+              <span className="text-xl text-amber-400">★</span>
               <div>
-                <p className="text-xs font-heading font-bold text-secondary">{item.title}</p>
-                <p className="text-[11px] text-secondary/70 leading-snug mt-0.5">{item.desc}</p>
+                <p className="text-xs font-heading font-bold text-amber-200">{item.title}</p>
+                <p className="text-[11px] text-[#E2DDD5]/70 leading-snug mt-0.5">{item.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* CTA Banner Central */}
-        <div className="bg-secondary text-primary rounded-2xl p-6 sm:p-8 text-center flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="bg-gradient-to-br from-stone-950 via-[#181513] to-stone-950 border border-amber-400/30 text-[#FAF7F2] rounded-2xl p-6 sm:p-8 text-center flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
           <div className="text-left">
-            <h3 className="font-heading text-2xl font-bold text-primary mb-1">
+            <h3 className="font-heading text-2xl font-bold text-white mb-1">
               {cta.title || t.readyToSellTitle}
             </h3>
-            <p className="text-xs sm:text-sm text-primary/75">
+            <p className="text-xs sm:text-sm text-[#E2DDD5]/75">
               {cta.subtitle || t.readyToSellSub}
             </p>
           </div>
@@ -914,7 +914,7 @@ export function JewelryProposalSections({
                   source: 'final_jewelry_cta',
                 });
               }}
-              className="btn-theme w-full sm:w-auto px-7 py-3.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-full shadow-md hover:shadow-lg text-center"
+              className="w-full sm:w-auto px-7 py-3.5 text-xs font-secondary font-black uppercase tracking-widest rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 hover:from-amber-300 hover:to-amber-200 text-stone-950 shadow-xl hover:shadow-amber-400/25 transition-all text-center cursor-pointer"
             >
               {cta.whatsappBtn || t.startWhatsapp}
             </a>
@@ -926,7 +926,7 @@ export function JewelryProposalSections({
                   source: 'final_jewelry_cta_banner',
                 });
               }}
-              className="w-full sm:w-auto px-5 py-3.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-full bg-theme-1 text-secondary hover:bg-theme-1/90 transition-all text-center flex items-center justify-center gap-1.5 shadow-sm"
+              className="w-full sm:w-auto px-5 py-3.5 text-xs font-mono font-bold uppercase tracking-wider rounded-full bg-white/10 hover:bg-white/15 text-white border border-amber-400/30 transition-all text-center flex items-center justify-center gap-1.5 shadow-sm"
             >
               {t.fillBriefBtn}
             </Link>
@@ -940,7 +940,7 @@ export function JewelryProposalSections({
                   source: 'jewelry_proposal_calendar',
                 });
               }}
-              className="w-full sm:w-auto px-5 py-3.5 text-xs font-secondary font-bold uppercase tracking-wider rounded-full border border-primary/30 text-primary hover:bg-primary hover:text-secondary transition-all text-center"
+              className="w-full sm:w-auto px-5 py-3.5 text-xs font-mono font-bold uppercase tracking-wider rounded-full border border-white/20 text-[#FAF7F2] hover:bg-white/10 transition-all text-center"
             >
               {cta.callBtn || t.bookCallBtn}
             </a>
@@ -949,7 +949,7 @@ export function JewelryProposalSections({
               type="button"
               onClick={handlePrint}
               aria-label={cta.printBtn || t.printAria}
-              className="hidden sm:inline-flex p-3 text-xs text-primary/70 hover:text-primary rounded-full hover:bg-white/10 transition-colors cursor-pointer"
+              className="hidden sm:inline-flex p-3 text-xs text-[#E2DDD5]/70 hover:text-white rounded-full hover:bg-white/10 transition-colors cursor-pointer"
             >
               🖨️
             </button>
@@ -960,10 +960,10 @@ export function JewelryProposalSections({
       {/* ============================================================
           STICKY MOBILE CONVERSION BAR (Solo en pantallas móviles)
          ============================================================ */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-secondary/95 backdrop-blur-md p-3 border-t border-secondary sm:hidden flex items-center justify-between shadow-2xl pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-stone-950/95 backdrop-blur-md p-3 border-t border-amber-400/20 sm:hidden flex items-center justify-between shadow-2xl pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
         <div>
-          <span className="text-[10px] text-primary/60 font-mono block">{t.stickyTitle}</span>
-          <span className="text-sm font-mono font-black text-theme-1">
+          <span className="text-[10px] text-[#E2DDD5]/60 font-mono block">{t.stickyTitle}</span>
+          <span className="text-sm font-mono font-black text-amber-300">
             {currency === 'COP' ? baseOffer.priceCop : baseOffer.priceUsd}
           </span>
         </div>
@@ -971,7 +971,7 @@ export function JewelryProposalSections({
           href={getWhatsAppLink()}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-theme px-4 py-2.5 rounded-full text-xs font-secondary font-bold uppercase tracking-wider shadow-md"
+          className="px-4 py-2.5 rounded-full text-xs font-secondary font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 shadow-md"
         >
           {t.stickyApprove}
         </a>
