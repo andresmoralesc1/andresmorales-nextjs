@@ -61,6 +61,17 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(target, req.url), 308);
   }
 
+  // Redirect legacy /propuesta-ecommerce-tenis to canonical /sneakers
+  if (
+    pathname === '/propuesta-ecommerce-tenis' ||
+    pathname === '/es/propuesta-ecommerce-tenis' ||
+    pathname === '/pt/propuesta-ecommerce-tenis' ||
+    pathname === '/en/propuesta-ecommerce-tenis'
+  ) {
+    const target = pathname.replace('/propuesta-ecommerce-tenis', '/sneakers');
+    return NextResponse.redirect(new URL(target, req.url), 308);
+  }
+
   const seg = pathname.split('/').filter(Boolean)[0];
   const urlLocale = isLocale(seg) ? seg : null;
 

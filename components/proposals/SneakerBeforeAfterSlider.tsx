@@ -9,17 +9,38 @@ interface SneakerBeforeAfterSliderProps {
   afterImage?: string;
   beforeLabel?: string;
   afterLabel?: string;
+  lang?: string;
 }
 
 export function SneakerBeforeAfterSlider({
   beforeImage = '/sneakers/ai-pipeline/1-raw-mobile-web.jpg',
   afterImage = '/sneakers/ai-pipeline/2-ai-studio-web.jpg',
-  beforeLabel = 'Foto con Celular en Bodega',
-  afterLabel = 'Estudio Publicitario 4K (IA Nanobanana)',
+  beforeLabel,
+  afterLabel,
+  lang = 'es',
 }: SneakerBeforeAfterSliderProps) {
   const [sliderPosition, setSliderPosition] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const isEs = lang === 'es';
+  const isPt = lang === 'pt';
+
+  const resolvedBeforeLabel =
+    beforeLabel ||
+    (isEs
+      ? 'Foto con Celular en Bodega'
+      : isPt
+        ? 'Foto no Celular'
+        : 'Smartphone Photo in Warehouse');
+
+  const resolvedAfterLabel =
+    afterLabel ||
+    (isEs
+      ? 'Estudio Publicitario 4K (IA Nanobanana)'
+      : isPt
+        ? 'Estúdio Publicitário 4K (IA)'
+        : '4K Commercial Studio (AI Nanobanana)');
 
   const handleMove = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -46,17 +67,27 @@ export function SneakerBeforeAfterSlider({
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-theme-1 animate-pulse" />
             <h4 className="font-heading text-lg sm:text-xl font-bold text-primary">
-              Comparador Interactivo Antes y Después
+              {isEs
+                ? 'Comparador Interactivo Antes y Después'
+                : isPt
+                  ? 'Comparador Interativo Antes e Depois'
+                  : 'Interactive Before & After Comparison'}
             </h4>
           </div>
           <p className="text-xs text-primary/70 mt-0.5">
-            Arrastra el deslizador lateral para ver cómo la Inteligencia Artificial transforma la toma casera.
+            {isEs
+              ? 'Arrastra el deslizador lateral para ver cómo la Inteligencia Artificial transforma la toma casera.'
+              : isPt
+                ? 'Arraste o controle para ver como a Inteligência Artificial transforma a foto caseira.'
+                : 'Drag the slider to see how Generative AI transforms the smartphone photo into studio quality.'}
           </p>
         </div>
 
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-mono text-primary/80 border border-white/15 shrink-0 self-start sm:self-auto">
           <MoveHorizontal className="w-3.5 h-3.5 text-theme-1" />
-          <span>Desliza para comparar</span>
+          <span>
+            {isEs ? 'Desliza para comparar' : isPt ? 'Arraste para comparar' : 'Slide to compare'}
+          </span>
         </div>
       </div>
 
@@ -74,7 +105,7 @@ export function SneakerBeforeAfterSlider({
         <div className="absolute inset-0 w-full h-full">
           <Image
             src={afterImage}
-            alt={afterLabel}
+            alt={resolvedAfterLabel}
             fill
             sizes="(max-width: 1024px) 100vw, 1200px"
             className="object-cover pointer-events-none"
@@ -83,7 +114,7 @@ export function SneakerBeforeAfterSlider({
           {/* Label Right (After) */}
           <div className="absolute top-3 right-3 z-10 bg-black/80 backdrop-blur-xs px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-theme-1 border border-theme-1/40 flex items-center gap-1.5 shadow-md">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>{afterLabel}</span>
+            <span>{resolvedAfterLabel}</span>
           </div>
         </div>
 
@@ -94,7 +125,7 @@ export function SneakerBeforeAfterSlider({
         >
           <Image
             src={beforeImage}
-            alt={beforeLabel}
+            alt={resolvedBeforeLabel}
             fill
             sizes="(max-width: 1024px) 100vw, 1200px"
             className="object-cover"
@@ -103,7 +134,7 @@ export function SneakerBeforeAfterSlider({
           {/* Label Left (Before) */}
           <div className="absolute top-3 left-3 z-10 bg-black/80 backdrop-blur-xs px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-white/90 border border-white/20 flex items-center gap-1.5 shadow-md">
             <Smartphone className="w-3.5 h-3.5 text-theme-1" />
-            <span>{beforeLabel}</span>
+            <span>{resolvedBeforeLabel}</span>
           </div>
         </div>
 
@@ -117,7 +148,7 @@ export function SneakerBeforeAfterSlider({
           </div>
         </div>
 
-        {/* Accessible Range Input (Hidden overlay for keyboard & a11y) */}
+        {/* Accessible Range Input */}
         <input
           type="range"
           min={0}
@@ -125,14 +156,35 @@ export function SneakerBeforeAfterSlider({
           value={sliderPosition}
           onChange={(e) => setSliderPosition(Number(e.target.value))}
           className="absolute inset-0 opacity-0 cursor-ew-resize w-full h-full z-30"
-          aria-label="Deslizador de comparación de imagen antes y después"
+          aria-label={
+            isEs
+              ? 'Deslizador de comparación de imagen antes y después'
+              : isPt
+                ? 'Controle de comparação de imagem antes e depois'
+                : 'Before and after image comparison slider'
+          }
         />
       </div>
 
       <div className="mt-3 flex items-center justify-between text-[11px] font-mono text-primary/60 px-1">
-        <span>⬅ Foto original casera</span>
-        <span className="text-theme-1 font-bold">● Posición: {Math.round(sliderPosition)}%</span>
-        <span>Render publicitario 4K ➡</span>
+        <span>
+          {isEs
+            ? '⬅ Foto original casera'
+            : isPt
+              ? '⬅ Foto original no celular'
+              : '⬅ Raw phone photo'}
+        </span>
+        <span className="text-theme-1 font-bold">
+          ● {isEs ? 'Posición: ' : isPt ? 'Posição: ' : 'Position: '}
+          {Math.round(sliderPosition)}%
+        </span>
+        <span>
+          {isEs
+            ? 'Render publicitario 4K ➡'
+            : isPt
+              ? 'Render publicitário 4K ➡'
+              : '4K ad render ➡'}
+        </span>
       </div>
     </div>
   );

@@ -62,7 +62,9 @@ type AnalyticsEvent =
   | 'proposal_plan_selected'
   | 'proposal_whatsapp_clicked'
   | 'proposal_brief_clicked'
-  | 'proposal_roi_calculated';
+  | 'proposal_roi_calculated'
+  | 'jewelry_added_to_cart'
+  | 'jewelry_proposal_plan_selected';
 
 type Detail = Record<string, string | number | boolean | undefined>;
 

@@ -20,7 +20,7 @@ export async function generateMetadata({
     title: t.metaTitle,
     description: t.metaDescription,
     locale: safeLang,
-    path: safeLang === 'en' ? '/propuesta-ecommerce-tenis' : `/${safeLang}/propuesta-ecommerce-tenis`,
+    path: safeLang === 'en' ? '/sneakers' : `/${safeLang}/sneakers`,
     ogImage: '/sneakers/sneaker-hero-orange.jpg',
   });
 }
@@ -29,11 +29,16 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-export default async function SneakerProposalPage() {
-  const [dict, lang] = await Promise.all([
-    getCurrentDictionary(),
-    getCurrentLocale(),
-  ]);
+export default async function SneakerProposalPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+} = {}) {
+  const resolvedParams = params ? await params : null;
+  const urlLang = resolvedParams?.lang;
+  const currentLocale = await getCurrentLocale();
+  const lang = urlLang && isLocale(urlLang) ? urlLang : currentLocale;
+  const dict = await getDictionary(lang);
   const t = dict.sneakerProposal;
 
   const proposalJsonLd = {
@@ -69,13 +74,25 @@ export default async function SneakerProposalPage() {
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-secondary font-bold tracking-widest uppercase bg-theme-1 text-secondary shadow-xs mb-4">
               <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-              PROPUESTA COMERCIAL // TU E-COMMERCE EN PRODUCCIÓN
+              {lang === 'es'
+                ? 'PROPUESTA COMERCIAL // TU E-COMMERCE EN PRODUCCIÓN'
+                : lang === 'pt'
+                  ? 'PROPOSTA COMERCIAL // SUA LOJA EM PRODUÇÃO'
+                  : 'COMMERCIAL PROPOSAL // YOUR STORE IN PRODUCTION'}
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-secondary tracking-tight mb-4">
-              ¿Listo para que tu marca de tenis venda con esta tecnología?
+              {lang === 'es'
+                ? '¿Listo para que tu marca de tenis venda con esta tecnología?'
+                : lang === 'pt'
+                  ? 'Pronto para sua marca de tênis vender com esta tecnologia?'
+                  : 'Ready to scale your sneaker brand with this technology?'}
             </h2>
             <p className="text-base sm:text-lg text-secondary/80 leading-relaxed font-normal">
-              Acabas de interactuar con la experiencia real que tendrán tus compradores: microinteracciones 3D fluidas, carga móvil en &lt;0.8s y alta conversión. A continuación tienes el desglose de inversión: el desarrollo web base en Next.js y los planes mensuales opcionales de pauta publicitaria e inteligencia artificial.
+              {lang === 'es'
+                ? 'Acabas de interactuar con la experiencia real que tendrán tus compradores: microinteracciones 3D fluidas, carga móvil en <0.8s y alta conversión. A continuación tienes el desglose de inversión: el desarrollo web base en Next.js y los planes mensuales opcionales de pauta publicitaria e inteligencia artificial.'
+                : lang === 'pt'
+                  ? 'Você acabou de interagir com a experiência real que seus clientes terão: microinterações 3D fluidas, carregamento móvel em <0.8s e alta conversão. A seguir veja a proposta de investimento: desenvolvimento em Next.js e planos opcionais de tráfego e inteligência artificial.'
+                  : 'You just interacted with the real experience your shoppers will have: fluid 3D microinteractions, sub-0.8s mobile loading, and high-converting checkouts. Below is the full investment breakdown: base Next.js web development and optional monthly growth plans for ad campaigns and generative AI content.'}
             </p>
           </div>
 

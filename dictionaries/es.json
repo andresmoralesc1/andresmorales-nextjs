@@ -1640,6 +1640,7 @@
           "title": "Demos en Vivo",
           "links": [
             "E-commerce Sneakers",
+            "E-commerce Joyerías",
             "Brief Web Interactivo"
           ]
         },
@@ -1930,10 +1931,10 @@
       "description": "Recreación fiel de la interfaz de usuario: calzado con breakout 3D, selección de variantes en tiempo real, microinteracciones a 60 FPS y carga móvil en milisegundos.",
       "toggleClient": "Experiencia Cliente",
       "toggleTech": "Radiografía Técnica",
-      "navMen": "Men",
-      "navWomen": "Women",
+      "navMen": "Hombre",
+      "navWomen": "Mujer",
       "navDrops": "Drops 🔥",
-      "navSale": "Sale",
+      "navSale": "Ofertas",
       "brandBadge": "EDICIÓN LIMITADA // DROP EXCLUSIVO",
       "sizeLabel": "Selecciona tu talla (US)",
       "sizeGuide": "Guía de tallas (US / EU / CM / Col)",
@@ -2247,6 +2248,357 @@
         "Certificados de seguridad SSL vitalicios para pagos y navegación 100% segura",
         "Optimización 100% responsive para compras por impulso desde Instagram Ads y TikTok",
         "Capacitación en video para administrar tus productos, fotos y pedidos"
+      ],
+      "cta": "Contratar Desarrollo Web ($500.000 COP)"
+    }
+  },
+  "jewelryProposal": {
+    "metaTitle": "Propuesta E-commerce de Joyería Fina & Gemas | Andrés Morales",
+    "metaDescription": "Propuesta técnica y comercial de comercio electrónico de alto rendimiento para marcas de alta joyería, diamantes y esmeraldas colombianas. Arquitectura Next.js 15, visor macro 4K, medidor de tallas de anillos y pasarelas seguras.",
+    "badge": "Propuesta Comercial Exclusiva // Alta Joyería 2026",
+    "clientTitle": "E-commerce de Alta Joyería, Diamantes & Gemas Preciosas",
+    "clientSubtitle": "Experiencia interactiva de lujo, arquitectura Next.js ultra-rápida (<0.8s), visor de brillo de gemas en macro 4K, calibrador digital de tallas de anillo, selector de metales y logística blindada asegurada.",
+    "metaAuthor": "Andrés Morales — Senior Fullstack & Arquitecto Web",
+    "metaDelivery": "5 Semanas (Metodología Ágil)",
+    "metaStack": "Next.js 15 App Router • TypeScript • Tailwind CSS • Automatizaciones n8n • Cloudflare Edge",
+    "heroShowcase": {
+      "badge": "DEMO EN VIVO // EXPERIENCIA DE ALTA JOYERÍA",
+      "title": "Experiencia Propuesta para tu Joyería (Interactiva)",
+      "description": "Prueba real de la experiencia que tendrán tus clientes: Brillo y destello de diamantes en macro 4K, cambio de metal en tiempo real (Oro Amarillo 18k, Oro Blanco 18k, Oro Rosa, Platino), medidor de anillos y pasarelas de pago seguras.",
+      "toggleClient": "Vista del Cliente",
+      "toggleTech": "Anatomía Técnica",
+      "navRings": "Anillos",
+      "navNecklaces": "Collares",
+      "navEmeralds": "Esmeraldas 💎",
+      "navBracelets": "Pulseras",
+      "navHighJewelry": "Alta Joyería",
+      "brandBadge": "ALTA JOYERÍA // GEMAS CERTIFICADAS",
+      "sizeLabel": "Selecciona tu talla de anillo (US)",
+      "sizeGuide": "Guía de tallas de anillo (Circunferencia y Diámetro mm)",
+      "metalLabel": "Metal precioso",
+      "metalGold": "Oro Amarillo 18k",
+      "metalWhite": "Oro Blanco 18k",
+      "metalRose": "Oro Rosa 18k",
+      "metalPlatinum": "Platino 950",
+      "addToCart": "Añadir al cofre de compra",
+      "addedToCart": "¡Añadido al cofre!",
+      "cartBadge": "Cofre",
+      "stockStatus": "En Bóveda — Despacho asegurado en 24h",
+      "shippingNote": "Envío 100% asegurado con transportadora de valores • Empaque ciego de alta seguridad • Certificado GIA incluido",
+      "altTitle": "Otras creaciones emblemáticas",
+      "quickSwitch": "Ver pieza",
+      "models": [
+        {
+          "id": "diamond-ring",
+          "name": "Anillo Solitario Royale 1.5ct",
+          "edition": "Colección Alta Joyería // Oro Blanco 18k",
+          "desc": "Diamante natural corte brillante redondo (Color F, Claridad VVS1, Certificado GIA) engastado en 6 uñas de platino con aro en oro blanco de 18k pulido espejo.",
+          "priceCop": "$8.950.000 COP",
+          "priceUsd": "$2,250 USD",
+          "rating": "5.0",
+          "reviews": 48,
+          "badge": "PIEZA FIRMA // GIA",
+          "metal": "Oro Blanco 18k",
+          "carats": "1.50 ct",
+          "clarity": "VVS1",
+          "cut": "Brilliant Ideal",
+          "image": "/jewelry/diamond-solitaire-ring.png",
+          "thumb": "/jewelry/diamond-solitaire-ring.png"
+        },
+        {
+          "id": "emerald-necklace",
+          "name": "Gargantilla Esmeralda Muzo Imperial",
+          "edition": "Esmeraldas Colombianas Origen Muzo // Oro Amarillo 18k",
+          "desc": "Esmeralda colombiana natural lágrima de 2.2ct verde vívido intenso con certificación gemológica, rodeada por halo de 18 micro-diamantes naturales sobre oro amarillo de 18 quilates.",
+          "priceCop": "$12.400.000 COP",
+          "priceUsd": "$3,100 USD",
+          "rating": "4.9",
+          "reviews": 36,
+          "badge": "ORIGEN MUZO // EDICIÓN ÚNICA",
+          "metal": "Oro Amarillo 18k",
+          "carats": "2.20 ct + 0.35 ct diamantes",
+          "clarity": "Gema Natural Fina",
+          "cut": "Pear / Lágrima",
+          "image": "/jewelry/colombian-emerald-necklace.png",
+          "thumb": "/jewelry/colombian-emerald-necklace.png"
+        },
+        {
+          "id": "tennis-bracelet",
+          "name": "Pulsera Tennis Diamantes Signature",
+          "edition": "Eternity Tennis // Oro Blanco 18k",
+          "desc": "55 diamantes naturales corte brillante redondo que suman 4.0 quilates en engaste continuo de 4 uñas con doble broche de seguridad invisible.",
+          "priceCop": "$15.800.000 COP",
+          "priceUsd": "$3,950 USD",
+          "rating": "5.0",
+          "reviews": 29,
+          "badge": "MÁXIMO BRILLO // 4.0 CT",
+          "metal": "Oro Blanco 18k",
+          "carats": "4.00 ct Total",
+          "clarity": "VS1",
+          "cut": "Round Brilliant",
+          "image": "/jewelry/diamond-tennis-bracelet.png",
+          "thumb": "/jewelry/diamond-tennis-bracelet.png"
+        }
+      ]
+    },
+    "diagnostic": {
+      "badge": "01. DIAGNÓSTICO & CONVERSIÓN DE LUJO",
+      "title": "Por Qué las Joyerías Tradicionales Pierden Hasta el 55% de sus Ventas Online",
+      "intro": "Comprar alta joyería por internet exige una confianza absoluta. Los compradores dudan cuando las fotos comprimidas apagan el brillo de los diamantes, los certificados no se pueden verificar al instante o no saben con certeza su talla de dedo. Next.js ofrece carga sub-segundo, nitidez macro en 4K y certeza en cada clic.",
+      "stats": [
+        {
+          "value": "78%",
+          "label": "Tráfico móvil de lujo",
+          "desc": "Compradores navegando desde Instagram Stories y TikTok sin paciencia para tiendas lentas."
+        },
+        {
+          "value": "<0.8s",
+          "label": "Tiempo de carga objetivo",
+          "desc": "Evita que clientes de alto poder adquisitivo abandonen la tienda antes de apreciar la pieza."
+        },
+        {
+          "value": "52%",
+          "label": "Abandono en anillos",
+          "desc": "Causado por miedo a equivocarse en la talla del dedo o costos de ajuste posterior."
+        },
+        {
+          "value": "68%",
+          "label": "Verificación de certificados",
+          "desc": "Compradores de alto ticket exigen ver certificados GIA descargables antes de pagar."
+        }
+      ],
+      "comparisonTitle": "Comparativa Técnica: Plantilla Tradicional vs Arquitectura Headless de Lujo",
+      "comparisonSubtitle": "La diferencia concreta entre una plantilla genérica lenta y una ingeniería digital a medida para alta joyería.",
+      "standard": {
+        "title": "Joyería Tradicional (Plantillas Shopify / WooCommerce)",
+        "badge": "Cuellos de botella comunes",
+        "points": [
+          "Fotografías comprimidas donde el destello del diamante y el pulido del oro lucen planos y opacos.",
+          "Checkouts genéricos que transmiten desconfianza al pagar compras superiores a $2.000.000 COP.",
+          "Sin medidor interactivo de dedos, generando incertidumbre y cancelaciones.",
+          "Cotizaciones manuales lentas por WhatsApp que enfrían la intención de compra del cliente.",
+          "Carga pesada (4.2s a 6.0s) que desperdicia el presupuesto de pauta en Meta y Google."
+        ]
+      },
+      "proposed": {
+        "title": "Arquitectura Headless Next.js (Esta Propuesta)",
+        "badge": "Ventaja competitiva de prestigio",
+        "points": [
+          "Carga instantánea en <0.8s con imágenes AVIF en ultra-alta resolución destacando el brillo real.",
+          "Pasarelas seguras con cifrado bancario (Wompi, tarjetas de alto cupo, PSE y Addi a cuotas).",
+          "Matriz interactiva de tallas de anillo con calibrador visual milimétrico (US, Col, mm de diámetro).",
+          "Conserjería VIP automatizada por WhatsApp: confirmación de pedido y tracking de seguridad.",
+          "Código 100% tuyo: sin comisiones sobre ventas ni mensualidades fijas de plataforma."
+        ]
+      }
+    },
+    "features": {
+      "badge": "02. PILARES DE LA SOLUCIÓN",
+      "title": "6 Capacidades Especializadas para una Joyería Líder",
+      "subtitle": "Diseñadas para elevar el prestigio de marca, proteger los márgenes de alto ticket y convertir coleccionistas exigentes.",
+      "list": [
+        {
+          "icon": "💎",
+          "title": "Macro Zoom 4K & Selector de Metales",
+          "desc": "Galería ultra-nítida y conmutador en vivo entre Oro Amarillo 18k, Oro Blanco, Oro Rosa y Platino sin recargar la página.",
+          "highlight": "Captura el auténtico destello óptico y fuego de los diamantes y esmeraldas."
+        },
+        {
+          "icon": "💍",
+          "title": "Calibrador Digital de Tallas de Anillo",
+          "desc": "Guía interactiva que convierte circunferencia en milímetros, diámetro interno y tallas estándar colombianas y de EE. UU.",
+          "highlight": "Reduce las solicitudes de ajuste de talla en más del 70%."
+        },
+        {
+          "icon": "📜",
+          "title": "Hub Digital de Certificados GIA & Gemológicos",
+          "desc": "Visor integrado en la ficha de producto con descarga directa del certificado en PDF (Quilates, Color, Claridad y Corte).",
+          "highlight": "Genera confianza inmediata para compras de alto valor online."
+        },
+        {
+          "icon": "🛡️",
+          "title": "Despachos Blindados Asegurados & Empaque Discreto",
+          "desc": "Integración con transportadoras de valores (Coordinadora / Servientrega Valores / DHL) con guía asegurada y empaque ciego antirrobo.",
+          "highlight": "Tranquilidad total para tu comprador y protección para tu inventario."
+        },
+        {
+          "icon": "💳",
+          "title": "Pasarelas de Alto Monto (Wompi, Tarjetas, Addi, Transferencia)",
+          "desc": "Checkout fluido preparado para transacciones de alto cupo con tarjetas de crédito, PSE y financiación con Addi.",
+          "highlight": "Maximiza la tasa de aprobación de pedidos de alto ticket."
+        },
+        {
+          "icon": "📈",
+          "title": "SEO Estructurado de Alta Gama & Google Shopping",
+          "desc": "Etiquetas Schema.org Product, Material y Gemstone para que tus anillos y esmeraldas aparezcan en Google con quilates y precio exacto.",
+          "highlight": "Captura compradores decididos que buscan anillos de compromiso."
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "03. CRONOGRAMA DE ENTREGAS",
+      "title": "Plan de Entrega en 5 Semanas",
+      "subtitle": "Hitos de entrega progresivos con versiones de prueba funcionales en tu celular desde el primer sprint.",
+      "weeks": [
+        {
+          "week": "Semana 1",
+          "title": "Estrategia de Marca, Dirección de Arte & Taxonomía de Gemas",
+          "deliverables": [
+            "Definición de metales preciosos (Oro 18k, Platino), gemas, certificados y guía de tallas",
+            "Diseño UI/UX de alta fidelidad en Figma con estética de ultra-lujo (benchmark Cartier/Vogue)",
+            "Configuración del repositorio en GitHub, pipeline de despliegue y componentes base en Next.js"
+          ]
+        },
+        {
+          "week": "Semana 2",
+          "title": "Frontend Macro 4K Interactivo & Selector de Metales",
+          "deliverables": [
+            "Desarrollo del Hero interactivo de lujo con cambio de acabado en tiempo real",
+            "Catálogo con filtros por categoría (Anillos, Collares, Esmeraldas, Pulseras) y metal",
+            "Página de producto con zoom macro 4K, visor de certificado y modal de calibrador de tallas"
+          ]
+        },
+        {
+          "week": "Semana 3",
+          "title": "Pasarelas de Pago & Logística de Valores",
+          "deliverables": [
+            "Integración de pasarelas de pago (Wompi, tarjetas de crédito, PSE, transferencias)",
+            "Integración de Addi (pago a cuotas sin tarjeta de crédito)",
+            "Lógica de envíos asegurados con transportadoras de valores y empaques ciegos"
+          ]
+        },
+        {
+          "week": "Semana 4",
+          "title": "Automatizaciones n8n & Conserjería VIP de WhatsApp",
+          "deliverables": [
+            "Confirmación automática de compras y despacho de guías de seguridad por WhatsApp",
+            "Flujo de atención rápida para piezas personalizadas sobre pedido",
+            "Pruebas de estrés y optimización de Core Web Vitals (>90 puntos en PageSpeed)"
+          ]
+        },
+        {
+          "week": "Semana 5",
+          "title": "Carga de Catálogo, Pruebas Finales & Lanzamiento",
+          "deliverables": [
+            "Acompañamiento en la carga inicial de piezas, fotos en alta resolución y certificados",
+            "Pruebas reales de compra de punta a punta con pasarelas de pago activas",
+            "Conexión del dominio oficial, certificados SSL y puesta en marcha para ventas"
+          ]
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "04. PLANES MENSUALES // RETAINERS",
+      "title": "Acompañamiento en Crecimiento, Pauta & Contenido de Lujo con IA",
+      "subtitle": "Una boutique de alta joyería sin visitas no factura. Nos aseguramos de que recibas clientes interesados a diario con pauta publicitaria en Meta/TikTok y comerciales de cine generados con IA (Nanobanana, Veo 2 y Veo 3).",
+      "selectPlan": "Elegir este Plan Mensual",
+      "timelineLabel": "Condiciones:",
+      "plans": [
+        {
+          "id": "tier1",
+          "name": "Tier 1 — Starter Luxury Growth",
+          "tagline": "Para validar pauta en joyas, mantener la tienda activa y publicar creativos mensuales con IA.",
+          "priceCop": "$119,998 COP",
+          "priceUsd": "$30 USD",
+          "timeline": "Mensual (Cancela cuando quieras)",
+          "popular": false,
+          "features": [
+            "Gestión de Meta Ads (Facebook e Instagram): 1 campaña optimizada para audiencias de lujo",
+            "Creación de Contenido con IA (Nanobanana): 4 creativos publicitarios macro hiperrealistas al mes",
+            "Mantenimiento técnico continuo, monitoreo de servidor 99.9% y respaldos automáticos",
+            "Actualización mensual del catálogo (hasta 5 nuevas piezas o ajustes de precio al mes)",
+            "Configuración del Píxel de Meta y Conversion API (CAPI) para compras de alto ticket",
+            "Reporte mensual transparente de rendimiento publicitario y métricas de ventas"
+          ]
+        },
+        {
+          "id": "tier2",
+          "name": "Tier 2 — Scale & High-Jewelry Pro",
+          "badge": "RECOMENDADO // MÁS POPULAR",
+          "tagline": "Acelera tus ventas con comerciales de video generados con Google Veo 2 y manejo de redes sociales.",
+          "priceCop": "$249,998 COP",
+          "priceUsd": "$63 USD",
+          "timeline": "Mensual (Cancela cuando quieras)",
+          "popular": true,
+          "features": [
+            "Gestión avanzada de Meta Ads: Segmentación de alto poder adquisitivo (anillos de compromiso, regalos)",
+            "Producción de Video Ads con Google Veo 2: 4 videos cinematográficos con destellos ópticos y movimientos de cámara macro",
+            "Creación visual con Nanobanana: 8 fotos editoriales adicionales estilo revista Vogue/Cartier",
+            "Manejo de Redes Sociales: 3 publicaciones/reels semanales en Instagram con copywriting persuasivo",
+            "Automatización de Conserjería WhatsApp: Respuestas inmediatas para tallas y cotizaciones sobre pedido",
+            "Gestión continua del catálogo (hasta 15 nuevas joyas o ajustes de precio al mes)",
+            "Reporte quincenal de ROAS (Retorno de Inversión en Pauta) y optimización de presupuesto"
+          ]
+        },
+        {
+          "id": "tier3",
+          "name": "Tier 3 — Dominance Flagship",
+          "tagline": "Agencia digital completa: Pauta Multicanal (Meta + TikTok + Google), comerciales con Veo 3 y n8n.",
+          "priceCop": "$499,998 COP",
+          "priceUsd": "$125 USD",
+          "timeline": "Mensual (Cancela cuando quieras)",
+          "popular": false,
+          "features": [
+            "Pauta Multicanal Completa: Meta Ads (Instagram/FB) + TikTok Ads + Google Shopping orgánico",
+            "Producción High-End con Google Veo 3: 8 videos cinematográficos 4K hiperrealistas (tomas macro de gemas, reflejos de luz y cámara lenta nivel comercial de Tiffany/Cartier)",
+            "Pack mensual completo de creativos publicitarios con Nanobanana y edición profesional",
+            "Manejo Integral de Redes Sociales: Parrilla de contenidos completa con historias para lanzamientos",
+            "Automatizaciones avanzadas n8n: Recuperación de carritos de alto ticket por WhatsApp y guías aseguradas",
+            "Optimización continua de conversión (CRO): Pruebas en el checkout y campañas para fechas especiales",
+            "Soporte prioritario 24/7 directo por WhatsApp con Andrés Morales + reunión quincenal de estrategia"
+          ]
+        }
+      ]
+    },
+    "guarantees": {
+      "badge": "05. NUESTRO COMPROMISO",
+      "title": "3 Garantías Contractuales para tu Tranquilidad",
+      "items": [
+        {
+          "title": "Garantía de Rendimiento (>90 en Google PageSpeed)",
+          "desc": "Garantizamos por contrato un puntaje superior a 90 puntos en PageSpeed móvil. Si no se alcanza, realizamos las optimizaciones necesarias sin costo extra hasta cumplirlo."
+        },
+        {
+          "title": "Garantía de Cero Caídas en Fechas Especiales",
+          "desc": "La infraestructura serverless en Edge soporta avalanchas de compradores en el Día de la Madre, Amor y Amistad y Navidad sin ralentizarse."
+        },
+        {
+          "title": "100% Propiedad del Código y Datos",
+          "desc": "Todo el código fuente, cuentas de pasarelas, bases de datos y dominios son de tu entera propiedad desde el día uno. Sin ataduras comerciales ni comisiones por ventas."
+        }
+      ]
+    },
+    "cta": {
+      "title": "¿Listo para Construir el E-commerce de Joyería Definitivo?",
+      "subtitle": "Conversemos sobre tu visión, aclaremos dudas técnicas o comerciales y definamos la fecha de inicio del proyecto.",
+      "whatsappBtn": "Hablar de esta propuesta por WhatsApp",
+      "callBtn": "Agendar videollamada de Kickoff (20 min)",
+      "printBtn": "Guardar o imprimir propuesta (PDF)"
+    },
+    "baseOffer": {
+      "badge": "03. DESARROLLO WEB // PAGO ÚNICO",
+      "title": "Tu Tienda E-commerce de Joyería en Next.js (Última Tecnología)",
+      "subtitle": "Un e-commerce ultra-rápido (<0.8s), visualmente deslumbrante con brillo macro 4K, calibrador de tallas y listo para vender desde el primer día.",
+      "priceCop": "$500.000 COP",
+      "priceUsd": "$125 USD",
+      "tagline": "Inversión única de desarrollo. Sin comisiones sobre tus ventas ni mensualidades obligatorias de plataforma.",
+      "timeline": "2 a 3 semanas",
+      "hostingBadge": "Hosting Vitalicio en Edge",
+      "hostingDesc": "Alojado en Cloudflare/Vercel Edge Serverless. Cero costos mensuales de servidor para ti.",
+      "sslBadge": "Certificados SSL de por vida",
+      "sslDesc": "Encriptación bancaria y candado de seguridad permanente incluido sin costo extra.",
+      "domainBadge": "Dominio a Cargo del Cliente",
+      "domainDesc": "Te asesoramos para registrar tu propio dominio (.com / .co) a tu nombre por solo ~$45.000 COP/año.",
+      "features": [
+        "Desarrollo completo en Next.js 15 (arquitectura de última generación con carga móvil en <0.8s)",
+        "Hero interactivo de lujo con brillo de gemas en macro 4K y selector de metales preciosos",
+        "Catálogo de productos con filtros instantáneos por categoría (Anillos, Collares, Esmeraldas, Pulseras) y metal",
+        "Matriz interactiva de tallas de anillo (US / Col / mm de diámetro) para reducir cambios de talla",
+        "Pasarelas de pago colombianas e internacionales: Wompi, tarjetas de crédito, PSE y Addi a cuotas",
+        "Hosting vitalicio en la nube Edge: ¡Ahorras entre $100.000 y $300.000 COP al mes en servidores!",
+        "Certificados de seguridad SSL vitalicios para pagos y navegación 100% segura",
+        "Visor de certificados GIA y gemológicos integrado en la ficha de producto",
+        "Capacitación en video para administrar tus piezas, certificados y pedidos"
       ],
       "cta": "Contratar Desarrollo Web ($500.000 COP)"
     }

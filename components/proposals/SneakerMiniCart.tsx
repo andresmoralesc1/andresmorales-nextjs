@@ -16,9 +16,7 @@ import {
   Minus,
   RotateCcw,
   CreditCard,
-  Smartphone,
   Lock,
-  ExternalLink,
 } from 'lucide-react';
 import { track } from '@/lib/analytics';
 import { getLocalizedPath, type Locale } from '@/lib/i18n';
@@ -57,7 +55,9 @@ export function SneakerMiniCart({
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState<boolean>(false);
 
-  // Parse numeric price from COP string (e.g. '$689.900 COP' -> 689900)
+  const isEs = lang === 'es';
+  const isPt = lang === 'pt';
+
   const unitPrice =
     parseInt(model.priceCop.replace(/[^0-9]/g, ''), 10) || 689900;
   const subtotal = unitPrice * quantity;
@@ -73,12 +73,16 @@ export function SneakerMiniCart({
 
   const colSize = US_TO_COL_SIZES[size] || size;
   const briefLink = getLocalizedPath(
-    '/brief?type=web',
+    '/brief-web',
     (['en', 'es', 'pt'].includes(lang) ? lang : 'es') as Locale
   );
 
   const getWhatsAppMessage = () => {
-    const text = `Hola Andrés, acabo de probar el mini-cart interactivo con checkout de Addi/Nequi en la propuesta de la tienda de tenis. Me encantó la experiencia. Quiero cotizar la tienda en Next.js por $500.000 COP.`;
+    const text = isEs
+      ? `Hola Andrés, acabo de probar el mini-cart interactivo con checkout de Addi/Nequi en la propuesta de la tienda de tenis. Me encantó la experiencia. Quiero cotizar la tienda en Next.js por $500.000 COP.`
+      : isPt
+        ? `Olá Andrés, acabei de testar o mini-cart interativo na proposta da loja de tênis. Gostei muito da experiência. Quero cotar a loja Next.js por $500.000 COP.`
+        : `Hi Andrés, I just tried the interactive mini-cart checkout demo on the sneaker store proposal. I loved the flow. I want to build a Next.js store for $500,000 COP (~$125 USD).`;
     return `https://wa.me/573161482507?text=${encodeURIComponent(text)}`;
   };
 
@@ -139,11 +143,17 @@ export function SneakerMiniCart({
                 </div>
                 <div>
                   <h3 className="font-heading text-lg font-bold leading-tight">
-                    Bolsa de Compra
+                    {isEs ? 'Bolsa de Compra' : isPt ? 'Sacola de Compras' : 'Shopping Bag'}
                   </h3>
                   <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-800 font-bold">
                     <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-                    <span>Demo en Vivo de Checkout</span>
+                    <span>
+                      {isEs
+                        ? 'Demo en Vivo de Checkout'
+                        : isPt
+                          ? 'Demo ao Vivo de Checkout'
+                          : 'Live Checkout Demo'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -151,7 +161,7 @@ export function SneakerMiniCart({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Cerrar carrito"
+                aria-label={isEs ? 'Cerrar carrito' : isPt ? 'Fechar carrinho' : 'Close cart'}
                 className="w-9 h-9 rounded-full bg-theme-5 hover:bg-theme-9 border border-secondary/15 flex items-center justify-center transition-colors text-secondary"
               >
                 <X className="w-4 h-4" />
@@ -162,9 +172,15 @@ export function SneakerMiniCart({
             <div className="px-4 py-2.5 bg-emerald-50 border-b border-emerald-200 text-emerald-950 flex items-center justify-between text-xs font-mono">
               <span className="flex items-center gap-1.5 font-bold">
                 <Truck className="w-4 h-4 text-emerald-700" />
-                ¡Envío Nacional Gratis Asegurado! 🇨🇴
+                {isEs
+                  ? '¡Envío Nacional Gratis Asegurado! 🇨🇴'
+                  : isPt
+                    ? 'Frete Grátis com Seguro! 🇨🇴'
+                    : 'Free Insured Nationwide Shipping! 🇨🇴'}
               </span>
-              <span className="text-[11px] font-bold text-emerald-800">100% Cubierto</span>
+              <span className="text-[11px] font-bold text-emerald-800">
+                {isEs ? '100% Cubierto' : isPt ? '100% Coberto' : '100% Covered'}
+              </span>
             </div>
 
             {/* 3. Main Scrollable Content */}
@@ -193,7 +209,7 @@ export function SneakerMiniCart({
                       </p>
 
                       <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary text-[10px] font-mono font-bold text-secondary border border-secondary/15 mb-2">
-                        <span>Talla US {size}</span>
+                        <span>{isEs ? 'Talla US' : isPt ? 'Tamanho US' : 'Size US'} {size}</span>
                         <span className="text-secondary/40">•</span>
                         <span>Col {colSize}</span>
                       </div>
@@ -210,7 +226,7 @@ export function SneakerMiniCart({
                             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                             disabled={quantity <= 1}
                             className="w-6 h-6 flex items-center justify-center text-secondary/70 hover:text-secondary disabled:opacity-30 transition-colors"
-                            aria-label="Disminuir cantidad"
+                            aria-label={isEs ? 'Disminuir cantidad' : isPt ? 'Diminuir quantidade' : 'Decrease quantity'}
                           >
                             <Minus className="w-3 h-3" />
                           </button>
@@ -222,7 +238,7 @@ export function SneakerMiniCart({
                             onClick={() => setQuantity((q) => Math.min(5, q + 1))}
                             disabled={quantity >= 5}
                             className="w-6 h-6 flex items-center justify-center text-secondary/70 hover:text-secondary disabled:opacity-30 transition-colors"
-                            aria-label="Aumentar cantidad"
+                            aria-label={isEs ? 'Aumentar cantidad' : isPt ? 'Aumentar quantidade' : 'Increase quantity'}
                           >
                             <Plus className="w-3 h-3" />
                           </button>
@@ -236,10 +252,14 @@ export function SneakerMiniCart({
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-secondary font-bold uppercase tracking-wider text-secondary/80 flex items-center gap-1.5">
                         <CreditCard className="w-3.5 h-3.5 text-theme-1" />
-                        Método de Pago Preferido:
+                        {isEs
+                          ? 'Método de Pago Preferido:'
+                          : isPt
+                            ? 'Método de Pagamento Preferido:'
+                            : 'Preferred Payment Method:'}
                       </label>
                       <span className="text-[10px] font-mono text-theme-1 font-bold">
-                        Checkout Colombiano
+                        {isEs ? 'Checkout Colombiano' : isPt ? 'Checkout LATAM' : 'LATAM Checkouts'}
                       </span>
                     </div>
 
@@ -260,14 +280,22 @@ export function SneakerMiniCart({
                           <div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-secondary">
-                                Addi (3 Cuotas sin Interés)
+                                {isEs
+                                  ? 'Addi (3 Cuotas sin Interés)'
+                                  : isPt
+                                    ? 'Addi (3 Parcelas sem Juros)'
+                                    : 'Addi (3 Interest-Free Installments)'}
                               </span>
                               <span className="text-[9px] font-mono font-bold bg-blue-600 text-white px-1.5 py-0.2 rounded-full">
-                                Más Usado
+                                {isEs ? 'Más Usado' : isPt ? 'Mais Usado' : 'Popular'}
                               </span>
                             </div>
                             <p className="text-[11px] font-mono text-blue-900 font-semibold mt-0.5">
-                              3 cuotas de {formatCop(addiInstallment)} sin papeleos
+                              {isEs
+                                ? `3 cuotas de ${formatCop(addiInstallment)} sin papeleos`
+                                : isPt
+                                  ? `3 parcelas de ${formatCop(addiInstallment)} sem burocracia`
+                                  : `3 installments of ${formatCop(addiInstallment)} with zero paperwork`}
                             </p>
                           </div>
                         </div>
@@ -295,10 +323,18 @@ export function SneakerMiniCart({
                           </div>
                           <div>
                             <span className="text-xs font-bold text-secondary block">
-                              Nequi Push Directo
+                              {isEs
+                                ? 'Nequi Push Directo'
+                                : isPt
+                                  ? 'Nequi / Carteira Digital'
+                                  : 'Nequi Direct Mobile Push'}
                             </span>
                             <p className="text-[11px] text-secondary/70">
-                              Notificación directa a la app del cliente (0 errores)
+                              {isEs
+                                ? 'Notificación directa a la app del cliente (0 errores)'
+                                : isPt
+                                  ? 'Notificação instantânea no celular do cliente'
+                                  : 'Direct push notification to shopper app (0 errors)'}
                             </p>
                           </div>
                         </div>
@@ -326,10 +362,18 @@ export function SneakerMiniCart({
                           </div>
                           <div>
                             <span className="text-xs font-bold text-secondary block">
-                              Wompi (Bancolombia, QR y PSE)
+                              {isEs
+                                ? 'Wompi (Bancolombia, QR y PSE)'
+                                : isPt
+                                  ? 'Wompi (Cartões e Contas)'
+                                  : 'Wompi (Credit Cards, QR & Bank Transfers)'}
                             </span>
                             <p className="text-[11px] text-secondary/70">
-                              Tarjetas y transferencias bancarias en caliente
+                              {isEs
+                                ? 'Tarjetas y transferencias bancarias en caliente'
+                                : isPt
+                                  ? 'Cartões de crédito e débito bancário instantâneo'
+                                  : 'Credit cards & instant digital account transfers'}
                             </p>
                           </div>
                         </div>
@@ -357,10 +401,18 @@ export function SneakerMiniCart({
                           </div>
                           <div>
                             <span className="text-xs font-bold text-secondary block">
-                              Pago Contra Entrega
+                              {isEs
+                                ? 'Pago Contra Entrega'
+                                : isPt
+                                  ? 'Pagamento na Entrega'
+                                  : 'Cash on Delivery (COD)'}
                             </span>
                             <p className="text-[11px] text-secondary/70">
-                              El cliente paga en efectivo al recibir en su puerta
+                              {isEs
+                                ? 'El cliente paga en efectivo al recibir en su puerta'
+                                : isPt
+                                  ? 'O cliente paga em dinheiro ao receber o pedido'
+                                  : 'Shopper pays cash upon home delivery arrival'}
                             </p>
                           </div>
                         </div>
@@ -378,15 +430,27 @@ export function SneakerMiniCart({
                   {/* Summary Breakdown */}
                   <div className="rounded-xl bg-theme-5 p-3.5 border border-secondary/10 space-y-2 text-xs">
                     <div className="flex justify-between text-secondary/70">
-                      <span>Subtotal ({quantity} {quantity === 1 ? 'par' : 'pares'}):</span>
+                      <span>
+                        {isEs
+                          ? `Subtotal (${quantity} ${quantity === 1 ? 'par' : 'pares'}):`
+                          : isPt
+                            ? `Subtotal (${quantity} ${quantity === 1 ? 'par' : 'pares'}):`
+                            : `Subtotal (${quantity} ${quantity === 1 ? 'pair' : 'pairs'}):`}
+                      </span>
                       <span className="font-mono font-bold text-secondary">{formatCop(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-emerald-700">
-                      <span>Envío nacional:</span>
-                      <span className="font-mono font-bold">GRATIS ($0 COP)</span>
+                      <span>
+                        {isEs ? 'Envío nacional:' : isPt ? 'Envio nacional:' : 'Nationwide shipping:'}
+                      </span>
+                      <span className="font-mono font-bold">
+                        {isEs ? 'GRATIS ($0 COP)' : isPt ? 'GRÁTIS ($0)' : 'FREE ($0)'}
+                      </span>
                     </div>
                     <div className="pt-2 border-t border-secondary/15 flex justify-between text-sm font-bold text-secondary">
-                      <span>Total a pagar:</span>
+                      <span>
+                        {isEs ? 'Total a pagar:' : isPt ? 'Total a pagar:' : 'Total due:'}
+                      </span>
                       <span className="font-mono text-base font-black text-theme-1">
                         {formatCop(subtotal)}
                       </span>
@@ -397,7 +461,18 @@ export function SneakerMiniCart({
                   <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-3 text-xs text-secondary/90 flex gap-2.5 items-start">
                     <Sparkles className="w-4 h-4 text-theme-1 shrink-0 mt-0.5" />
                     <p className="leading-relaxed text-[11px]">
-                      <strong>Para dueños de tiendas:</strong> Addi permite que prospectos que no tienen $600.000 COP hoy compren en 3 cuotas. Tú recibes el 100% de tu dinero de contado y Addi asume el riesgo de cobro.
+                      <strong>
+                        {isEs
+                          ? 'Para dueños de tiendas:'
+                          : isPt
+                            ? 'Para lojistas:'
+                            : 'For store owners:'}
+                      </strong>{' '}
+                      {isEs
+                        ? 'Addi permite que prospectos que no tienen $600.000 COP hoy compren en 3 cuotas. Tú recibes el 100% de tu dinero de contado y Addi asume el riesgo de cobro.'
+                        : isPt
+                          ? 'O parcelamento permite que clientes que não têm o valor à vista comprem sem atrito. Você recebe 100% à vista e o gateway assume o risco.'
+                          : 'Installment gateways allow shoppers without upfront cash to convert in 3 installments. You receive 100% upfront and the platform takes the collection risk.'}
                     </p>
                   </div>
                 </>
@@ -414,36 +489,52 @@ export function SneakerMiniCart({
 
                   <div>
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
-                      ● Compra Simulada Exitosa
+                      ● {isEs ? 'Compra Simulada Exitosa' : isPt ? 'Compra Simulada com Sucesso' : 'Test Checkout Completed'}
                     </span>
                     <h4 className="font-heading text-xl font-bold text-secondary mt-2">
-                      ¡Orden #KL-9482 Aprobada!
+                      {isEs ? '¡Orden #KL-9482 Aprobada!' : isPt ? 'Pedido #KL-9482 Aprovado!' : 'Order #KL-9482 Approved!'}
                     </h4>
                     <p className="text-xs text-secondary/70 mt-1 max-w-xs mx-auto">
-                      Así de rápido y sin intermediarios tus clientes compran desde su celular en menos de 40 segundos.
+                      {isEs
+                        ? 'Así de rápido y sin intermediarios tus clientes compran desde su celular en menos de 40 segundos.'
+                        : isPt
+                          ? 'É assim que seus clientes compram pelo celular em menos de 40 segundos sem fricção.'
+                          : 'This is how smoothly your shoppers convert from their smartphone in under 40 seconds.'}
                     </p>
                   </div>
 
                   {/* Order Details Receipt Box */}
                   <div className="rounded-2xl bg-theme-5 border-2 border-dashed border-secondary/20 p-4 text-left text-xs font-mono space-y-2">
                     <div className="flex justify-between pb-2 border-b border-secondary/10">
-                      <span className="text-secondary/60">Producto:</span>
+                      <span className="text-secondary/60">
+                        {isEs ? 'Producto:' : isPt ? 'Produto:' : 'Product:'}
+                      </span>
                       <span className="font-bold text-secondary">{model.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-secondary/60">Talla & Cantidad:</span>
-                      <span className="font-bold text-secondary">US {size} ({quantity} par)</span>
+                      <span className="text-secondary/60">
+                        {isEs ? 'Talla & Cantidad:' : isPt ? 'Tamanho & Quantidade:' : 'Size & Quantity:'}
+                      </span>
+                      <span className="font-bold text-secondary">
+                        US {size} ({quantity} {quantity === 1 ? (isEs ? 'par' : isPt ? 'par' : 'pair') : (isEs ? 'pares' : isPt ? 'pares' : 'pairs')})
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-secondary/60">Pasarela:</span>
+                      <span className="text-secondary/60">
+                        {isEs ? 'Pasarela:' : isPt ? 'Gateway:' : 'Gateway:'}
+                      </span>
                       <span className="font-bold text-theme-1 uppercase">{paymentMethod}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-secondary/60">Guía Automática:</span>
+                      <span className="text-secondary/60">
+                        {isEs ? 'Guía Automática:' : isPt ? 'Rastreio Automático:' : 'Carrier Tracking:'}
+                      </span>
                       <span className="font-bold text-emerald-700">Coordinadora #98421087</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-secondary/10 text-sm">
-                      <span className="font-bold">Total Facturado:</span>
+                      <span className="font-bold">
+                        {isEs ? 'Total Facturado:' : isPt ? 'Total Faturado:' : 'Total Cleared:'}
+                      </span>
                       <span className="font-black text-secondary">{formatCop(subtotal)}</span>
                     </div>
                   </div>
@@ -452,10 +543,22 @@ export function SneakerMiniCart({
                   <div className="p-4 rounded-2xl bg-secondary text-primary text-left space-y-2 shadow-lg">
                     <div className="flex items-center gap-2 text-theme-1 text-xs font-bold uppercase tracking-wider">
                       <Lock className="w-4 h-4" />
-                      <span>Cero Fricción en Ventas</span>
+                      <span>{isEs ? 'Cero Fricción en Ventas' : isPt ? 'Zero Fricção nas Vendas' : 'Zero Sales Friction'}</span>
                     </div>
                     <p className="text-xs text-primary/85 leading-relaxed">
-                      El stock de la talla <strong>US {size}</strong> se redujo automáticamente en la base de datos, el cliente recibió su confirmación por WhatsApp y la transportadora generó la etiqueta. <strong>Sin que nadie tuviera que responder un chat manual.</strong>
+                      {isEs ? (
+                        <>
+                          El stock de la talla <strong>US {size}</strong> se redujo automáticamente en la base de datos, el cliente recibió su confirmación y la transportadora generó la etiqueta. <strong>Sin que nadie tuviera que responder un chat manual.</strong>
+                        </>
+                      ) : isPt ? (
+                        <>
+                          O estoque do tamanho <strong>US {size}</strong> foi reduzido automaticamente, o cliente recebeu confirmação e a transportadora gerou a etiqueta. <strong>Sem ninguém precisar responder no chat manual.</strong>
+                        </>
+                      ) : (
+                        <>
+                          Inventory for size <strong>US {size}</strong> was automatically decremented in the database, the shopper received confirmation, and the carrier generated the tracking label. <strong>Without anyone having to answer a manual chat.</strong>
+                        </>
+                      )}
                     </p>
                   </div>
 
@@ -472,7 +575,13 @@ export function SneakerMiniCart({
                       }}
                       className="btn-theme w-full py-3.5 rounded-full text-xs font-secondary font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                     >
-                      <span>💬 Quiero esta tienda para mi marca</span>
+                      <span>
+                        {isEs
+                          ? '💬 Quiero esta tienda para mi marca'
+                          : isPt
+                            ? '💬 Quero essa loja para minha marca'
+                            : '💬 I Want This Store for My Brand'}
+                      </span>
                       <ArrowRight className="w-4 h-4" />
                     </a>
 
@@ -485,17 +594,29 @@ export function SneakerMiniCart({
                       }}
                       className="w-full py-2.5 rounded-full text-xs font-secondary font-bold text-secondary/80 hover:text-secondary hover:bg-theme-1/10 transition-colors text-center flex items-center justify-center gap-1.5"
                     >
-                      <span>📋 Configurar en Brief Web (3 min)</span>
+                      <span>
+                        {isEs
+                          ? '📋 Configurar en Brief Web (3 min)'
+                          : isPt
+                            ? '📋 Configurar no Brief Web (3 min)'
+                            : '📋 Configure in Web Brief (3 min)'}
+                      </span>
                       <span aria-hidden="true">→</span>
                     </Link>
 
                     <button
                       type="button"
                       onClick={handleResetSimulation}
-                      className="text-[11px] font-mono text-secondary/60 hover:text-secondary underline flex items-center justify-center gap-1 mx-auto mt-2"
+                      className="text-[11px] font-mono text-secondary/60 hover:text-secondary underline flex items-center justify-center gap-1 mx-auto mt-2 cursor-pointer"
                     >
                       <RotateCcw className="w-3 h-3" />
-                      <span>Volver a probar el simulador</span>
+                      <span>
+                        {isEs
+                          ? 'Volver a probar el simulador'
+                          : isPt
+                            ? 'Testar o simulador novamente'
+                            : 'Try simulation again'}
+                      </span>
                     </button>
                   </div>
                 </motion.div>
@@ -509,16 +630,28 @@ export function SneakerMiniCart({
                   type="button"
                   onClick={handleSimulateCheckout}
                   disabled={isProcessing}
-                  className="btn-theme w-full py-4 rounded-full text-xs font-secondary font-bold uppercase tracking-wider shadow-lg hover:shadow-xl text-center flex items-center justify-center gap-2 active:scale-98 transition-all disabled:opacity-75"
+                  className="btn-theme w-full py-4 rounded-full text-xs font-secondary font-bold uppercase tracking-wider shadow-lg hover:shadow-xl text-center flex items-center justify-center gap-2 active:scale-98 transition-all disabled:opacity-75 cursor-pointer"
                 >
                   {isProcessing ? (
                     <div className="flex items-center gap-2">
                       <span className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
-                      <span>Procesando pasarela en vivo...</span>
+                      <span>
+                        {isEs
+                          ? 'Procesando pasarela en vivo...'
+                          : isPt
+                            ? 'Processando gateway ao vivo...'
+                            : 'Processing live gateway...'}
+                      </span>
                     </div>
                   ) : (
                     <>
-                      <span>🚀 Probar Compra en 1-Clic</span>
+                      <span>
+                        {isEs
+                          ? '🚀 Probar Compra en 1-Clic'
+                          : isPt
+                            ? '🚀 Simular Compra em 1-Clique'
+                            : '🚀 Simulate 1-Click Purchase'}
+                      </span>
                       <span className="text-[10px] font-mono opacity-80">
                         ({formatCop(subtotal)})
                       </span>
@@ -528,7 +661,13 @@ export function SneakerMiniCart({
 
                 <p className="text-[10px] font-mono text-center text-secondary/60 flex items-center justify-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Simulación de pasarela SSL 256-bit sin cobro real</span>
+                  <span>
+                    {isEs
+                      ? 'Simulación de pasarela SSL 256-bit sin cobro real'
+                      : isPt
+                        ? 'Simulação de gateway SSL 256-bit sem cobrança real'
+                        : '256-bit SSL gateway demo simulation with zero real charges'}
+                  </span>
                 </p>
               </div>
             )}

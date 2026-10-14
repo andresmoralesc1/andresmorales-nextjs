@@ -1609,6 +1609,7 @@
           "title": "Live Demos",
           "links": [
             "Sneaker E-commerce",
+            "Luxury Jewelry E-commerce",
             "Interactive Web Brief"
           ]
         },
@@ -2218,6 +2219,357 @@
         "Personalized video training so you can manage your inventory, drops, and orders effortlessly"
       ],
       "cta": "Get Your Web Store for $500,000 COP"
+    }
+  },
+  "jewelryProposal": {
+    "metaTitle": "Luxury Jewelry & Fine Gems E-commerce Proposal | Andrés Morales",
+    "metaDescription": "High-performance commercial and technical proposal for a fine jewelry, diamond, and Colombian emerald online boutique. Next.js 15, interactive 4K macro viewer, ring sizing engine, and secured insured checkout.",
+    "badge": "Exclusive Commercial Proposal // Fine Jewelry 2026",
+    "clientTitle": "High-End Fine Jewelry & Gemstones E-commerce",
+    "clientSubtitle": "Cult interactive luxury UX, ultra-fast Next.js architecture (<0.8s), 4K macro gem brilliance viewer, dynamic ring sizing matrix, metal customizer, and armored insured logistics.",
+    "metaAuthor": "Andrés Morales — Senior Fullstack & Web Architect",
+    "metaDelivery": "5 Weeks (Agile Methodology)",
+    "metaStack": "Next.js 15 App Router • TypeScript • Tailwind CSS • n8n Automations • Cloudflare Edge",
+    "heroShowcase": {
+      "badge": "LIVE DEMO // LUXURY HIGH-JEWELRY EXPERIENCE",
+      "title": "Proposed Jewelry Experience (Interactive)",
+      "description": "Faithful preview of the client experience: Macro diamond brilliance, real-time metal switching (18k Yellow Gold, 18k White Gold, Rose Gold, Platinum), virtual ring sizer, and armored insured checkout.",
+      "toggleClient": "Client View",
+      "toggleTech": "Technical Anatomy",
+      "navRings": "Rings",
+      "navNecklaces": "Necklaces",
+      "navEmeralds": "Emeralds 💎",
+      "navBracelets": "Bracelets",
+      "navHighJewelry": "High Jewelry",
+      "brandBadge": "FINE JEWELRY // CERTIFIED GEMS",
+      "sizeLabel": "Select your ring size (US)",
+      "sizeGuide": "Ring sizing guide (Circumference & Diameter mm)",
+      "metalLabel": "Precious metal",
+      "metalGold": "18k Yellow Gold",
+      "metalWhite": "18k White Gold",
+      "metalRose": "18k Rose Gold",
+      "metalPlatinum": "950 Platinum",
+      "addToCart": "Add to bespoke bag",
+      "addedToCart": "Added to bespoke bag!",
+      "cartBadge": "Bespoke Bag",
+      "stockStatus": "In Vault — Insured courier dispatch within 24h",
+      "shippingNote": "100% Insured armored courier transit • Discreet tamper-proof packaging • GIA certificate included",
+      "altTitle": "Other iconic creations",
+      "quickSwitch": "View piece",
+      "models": [
+        {
+          "id": "diamond-ring",
+          "name": "Royale Solitaire Diamond Ring 1.5ct",
+          "edition": "High Jewelry Collection // 18k White Gold",
+          "desc": "Natural round brilliant cut diamond (F Color, VVS1 Clarity, GIA Certified) set in 6 platinum prongs with a mirror-polished 18k white gold band.",
+          "priceCop": "$8.950.000 COP",
+          "priceUsd": "$2,250 USD",
+          "rating": "5.0",
+          "reviews": 48,
+          "badge": "SIGNATURE PIECE // GIA",
+          "metal": "18k White Gold",
+          "carats": "1.50 ct",
+          "clarity": "VVS1",
+          "cut": "Brilliant Ideal",
+          "image": "/jewelry/diamond-solitaire-ring.png",
+          "thumb": "/jewelry/diamond-solitaire-ring.png"
+        },
+        {
+          "id": "emerald-necklace",
+          "name": "Muzo Imperial Emerald Pendant",
+          "edition": "Colombian Muzo Origin // 18k Yellow Gold",
+          "desc": "Natural 2.2ct Colombian teardrop emerald with vivid green saturation and gemological certification, surrounded by a halo of 18 micro-pavé natural diamonds in 18k yellow gold.",
+          "priceCop": "$12.400.000 COP",
+          "priceUsd": "$3,100 USD",
+          "rating": "4.9",
+          "reviews": 36,
+          "badge": "MUZO ORIGIN // UNIQUE PIECE",
+          "metal": "18k Yellow Gold",
+          "carats": "2.20 ct + 0.35 ct diamonds",
+          "clarity": "Natural Fine Gem",
+          "cut": "Pear / Teardrop",
+          "image": "/jewelry/colombian-emerald-necklace.png",
+          "thumb": "/jewelry/colombian-emerald-necklace.png"
+        },
+        {
+          "id": "tennis-bracelet",
+          "name": "Signature Diamond Tennis Bracelet",
+          "edition": "Eternity Tennis // 18k White Gold",
+          "desc": "55 natural round brilliant cut diamonds totaling 4.0 carats in a continuous 4-prong setting with double concealed security clasp.",
+          "priceCop": "$15.800.000 COP",
+          "priceUsd": "$3,950 USD",
+          "rating": "5.0",
+          "reviews": 29,
+          "badge": "MAX BRILLIANCE // 4.0 CT",
+          "metal": "18k White Gold",
+          "carats": "4.00 ct Total",
+          "clarity": "VS1",
+          "cut": "Round Brilliant",
+          "image": "/jewelry/diamond-tennis-bracelet.png",
+          "thumb": "/jewelry/diamond-tennis-bracelet.png"
+        }
+      ]
+    },
+    "diagnostic": {
+      "badge": "01. DIAGNOSTIC & LUXURY CONVERSION",
+      "title": "Why Traditional Jewelry Stores Lose Up to 55% of Online Sales",
+      "intro": "Buying fine jewelry online requires supreme trust. Shoppers hesitate when diamond luster looks dull on compressed images, certificates are hard to verify, or ring sizes are confusing. Next.js delivers micro-second loading, 4K macro brilliance, and confidence at every tap.",
+      "stats": [
+        {
+          "value": "78%",
+          "label": "Mobile luxury traffic",
+          "desc": "Shoppers browsing from Instagram Stories and TikTok with zero patience for slow stores."
+        },
+        {
+          "value": "<0.8s",
+          "label": "Target load time",
+          "desc": "Prevents high-net-worth buyers from bouncing before admiring piece details."
+        },
+        {
+          "value": "52%",
+          "label": "Ring cart abandonment",
+          "desc": "Caused by confusing finger size conversions or fear of costly ring adjustments."
+        },
+        {
+          "value": "68%",
+          "label": "Certificate verification",
+          "desc": "High-ticket shoppers require immediate downloadable GIA/gemological proof before paying."
+        }
+      ],
+      "comparisonTitle": "Technical Comparison: Generic Template vs Headless Luxury Architecture",
+      "comparisonSubtitle": "The concrete difference between a slow off-the-shelf theme and bespoke high-jewelry digital engineering.",
+      "standard": {
+        "title": "Conventional Jewelry Site (Stock Shopify / WooCommerce)",
+        "badge": "Conversion bottlenecks",
+        "points": [
+          "Compressed blurry images where diamond refraction and gold luster look flat and cheap.",
+          "Generic checkouts that feel insecure for transactions exceeding $2,000,000 COP.",
+          "Lack of interactive ring finger calibrator, causing hesitation and high return rates.",
+          "Complex manual WhatsApp quoting with slow response times causing lost sales.",
+          "Slow loading (4.2s - 6.0s) causing high bounce rates on mobile ad campaigns."
+        ]
+      },
+      "proposed": {
+        "title": "Next.js Headless Luxury (This Proposal)",
+        "badge": "Unmatched prestige advantage",
+        "points": [
+          "Sub-0.8s load times with lossless AVIF rendering highlighting diamond scintillation.",
+          "Bank-grade encrypted checkout supporting Wompi, high-limit credit cards, PSE, and Addi.",
+          "Interactive digital ring size conversion matrix (US, UK, Colombia, mm diameter).",
+          "Automated WhatsApp VIP Concierge: instant order confirmation and tracking dispatch.",
+          "100% client-owned code: zero platform commissions and zero monthly hosting fees."
+        ]
+      }
+    },
+    "features": {
+      "badge": "02. SOLUTION PILLARS",
+      "title": "6 Specialized Capabilities for a Leading Fine Jewelry Brand",
+      "subtitle": "Engineered to elevate brand perception, protect high-ticket margins, and convert discerning collectors.",
+      "list": [
+        {
+          "icon": "💎",
+          "title": "4K Macro Brilliance & Metal Customizer",
+          "desc": "Ultra-sharp image gallery and live color switcher between 18k Yellow Gold, White Gold, Rose Gold, and Platinum without reloading.",
+          "highlight": "Captures the authentic scintillation and fire of diamonds and emeralds."
+        },
+        {
+          "icon": "💍",
+          "title": "Virtual Ring Sizer & Fit Matrix",
+          "desc": "Interactive ring finger guide converting circumference (mm), diameter, and standard US/EU/Col sizes with visual guidance.",
+          "highlight": "Reduces finger resizing requests by more than 70%."
+        },
+        {
+          "icon": "📜",
+          "title": "GIA & Gemological Digital Certificate Hub",
+          "desc": "Dedicated certificate viewer with downloadable high-res PDF authentication cards (Carat, Color, Clarity, Cut).",
+          "highlight": "Builds unshakeable consumer trust for high-ticket online purchases."
+        },
+        {
+          "icon": "🛡️",
+          "title": "Secure Armored Shipping & Tamper-Proof Tracking",
+          "desc": "Full courier insurance workflow (Coordinadora / Servientrega Valores / DHL Express) with discreet blind packaging alerts via WhatsApp.",
+          "highlight": "Peace of mind for both the buyer and your fulfillment insurance."
+        },
+        {
+          "icon": "💳",
+          "title": "High-Ticket Gateways (Wompi, Cards, Addi, Wire)",
+          "desc": "Optimized checkout accepting local credit cards, bank wire transfer validation, and 0% installment plans via Addi.",
+          "highlight": "Maximizes checkout approvals for high-value purchases."
+        },
+        {
+          "icon": "📈",
+          "title": "Structured SEO & Google Shopping Rich Snippets",
+          "desc": "Deep Schema.org Product, Material, and Certificate metadata so Google Shopping displays exact karat, diamond grade, and live stock.",
+          "highlight": "Captures affluent searchers ready to invest in engagement rings."
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "03. IMPLEMENTATION ROADMAP",
+      "title": "5-Week Delivery Plan",
+      "subtitle": "Phased delivery milestones with testable staging builds on your phone starting from sprint one.",
+      "weeks": [
+        {
+          "week": "Week 1",
+          "title": "Brand Strategy, Luxury Art Direction & Gem Taxonomy",
+          "deliverables": [
+            "Definition of precious metal types (18k Gold, Platinum), gem specs, and ring size taxonomy",
+            "High-fidelity UI/UX design in Figma with ultra-luxury aesthetic (Vogue/Cartier benchmark)",
+            "GitHub repository setup, CI/CD pipeline, and Next.js design system component tokens"
+          ]
+        },
+        {
+          "week": "Week 2",
+          "title": "Interactive 4K Macro Frontend & Sizing Engine",
+          "deliverables": [
+            "Interactive luxury hero with live metal finish switcher and diamond light reflections",
+            "Faceted catalog view filtering by category, metal, gemstone type, and price bracket",
+            "Product detail page with 4K macro zoom, digital certificate viewer, and ring sizer modal"
+          ]
+        },
+        {
+          "week": "Week 3",
+          "title": "Payment Gateways & Armored Logistics Workflow",
+          "deliverables": [
+            "Payment gateway integration (Wompi, credit cards, bank transfer validation, PSE)",
+            "Addi integration for buy-now-pay-later installment plans without credit cards",
+            "Armored courier calculation logic with insured coverage policies and discreet packaging"
+          ]
+        },
+        {
+          "week": "Week 4",
+          "title": "n8n Automations & WhatsApp VIP Concierge",
+          "deliverables": [
+            "Automated order confirmation and insured courier tracking dispatch over WhatsApp",
+            "VIP concierge routing for custom bespoke jewelry quotes and ring sizing assistance",
+            "Performance stress testing and Core Web Vitals optimization (>90 PageSpeed score)"
+          ]
+        },
+        {
+          "week": "Week 5",
+          "title": "Catalog Seeding, End-to-End QA & Launch",
+          "deliverables": [
+            "Assistance with initial inventory seeding, high-res gem imagery, and certificate PDFs",
+            "Full live-transaction checkout testing in production with verified bank rails",
+            "Production domain cutover, SSL provisioning, and campaign launch readiness"
+          ]
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "04. MONTHLY GROWTH PLANS // RETAINERS",
+      "title": "Growth Advisory, Ads & Luxury AI Content Production",
+      "subtitle": "A luxury jewelry boutique without traffic generates zero revenue. We ensure daily inquiries and high-ticket sales through targeted Meta/TikTok campaigns and cinematic generative commercials produced with Google Veo 2, Veo 3, and Nanobanana.",
+      "selectPlan": "Choose this monthly plan",
+      "timelineLabel": "Terms:",
+      "plans": [
+        {
+          "id": "tier1",
+          "name": "Tier 1 — Starter Luxury Growth",
+          "tagline": "To validate ads, maintain boutique uptime, and publish regular AI-generated jewelry creative assets.",
+          "priceCop": "$119,998 COP",
+          "priceUsd": "$30 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": false,
+          "features": [
+            "Meta Ads Management (Facebook & Instagram): 1 optimized high-intent luxury audience campaign",
+            "AI Content Creation (Nanobanana): 4 photorealistic macro jewelry ad creatives per month",
+            "Continuous technical maintenance, 99.9% uptime server monitoring, and secure backups",
+            "Monthly catalog updates (up to 5 new jewelry pieces or price updates per month)",
+            "Meta Pixel and Conversion API (CAPI) high-ticket tracking configuration",
+            "Monthly transparent ad performance and sales analytics report"
+          ]
+        },
+        {
+          "id": "tier2",
+          "name": "Tier 2 — Scale & High-Jewelry Pro",
+          "badge": "RECOMMENDED // MOST POPULAR",
+          "tagline": "Accelerate sales with cinematic Video Ads generated by Veo 2 and social media management.",
+          "priceCop": "$249,998 COP",
+          "priceUsd": "$63 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": true,
+          "features": [
+            "Advanced Meta Ads: High-net-worth audience targeting (engagement rings, luxury gifts, anniversaries)",
+            "Video Ads Production with Google Veo 2: 4 cinematic motion jewelry videos with diamond light sparkles and macro sweeps",
+            "Visual Content Creation with Nanobanana: 8 additional editorial stills for stories, reels, and feeds",
+            "Social Media Management: 3 weekly posts/reels on Instagram with persuasive luxury copywriting",
+            "WhatsApp VIP Concierge Automation: Instant replies for ring sizing and custom bespoke quotes",
+            "Ongoing catalog management (up to 15 new jewelry items or price adjustments per month)",
+            "Bi-weekly ROAS performance report and budget optimization"
+          ]
+        },
+        {
+          "id": "tier3",
+          "name": "Tier 3 — Dominance Flagship",
+          "tagline": "Full-service digital agency: Multichannel Ads (Meta + TikTok + Google), commercial production with Veo 3, and n8n.",
+          "priceCop": "$499,998 COP",
+          "priceUsd": "$125 USD",
+          "timeline": "Monthly (Cancel anytime)",
+          "popular": false,
+          "features": [
+            "Full Multichannel Ads: Meta Ads (Instagram/FB) + TikTok Ads + Organic Google Shopping integration",
+            "High-End Commercial Production with Google Veo 3: 8 cinematic 4K hyperrealistic jewelry videos (macro sparkles, slow-motion light reflections matching Cartier/Tiffany campaigns)",
+            "Comprehensive monthly advertising creative suite with Nanobanana and pro color grading",
+            "Full Social Media Management: Complete content calendar with daily story coverage for high-ticket drops",
+            "Advanced n8n Automations: Automatic 30-min WhatsApp abandoned cart recovery and armored courier tracking",
+            "Ongoing Conversion Rate Optimization (CRO): A/B testing checkout flows and seasonal gift promotions",
+            "24/7 Priority VIP support over WhatsApp with Andrés Morales + Bi-weekly 1-on-1 strategy sessions"
+          ]
+        }
+      ]
+    },
+    "guarantees": {
+      "badge": "05. OUR COMMITMENT",
+      "title": "3 Contractual Guarantees for Total Peace of Mind",
+      "items": [
+        {
+          "title": "Performance Guarantee (>90 on Google PageSpeed)",
+          "desc": "We contractually commit to a 90+ score on Google PageSpeed Mobile. If unmet, we optimize at zero additional charge until verified."
+        },
+        {
+          "title": "Zero Downtime During Peak Seasons",
+          "desc": "Serverless edge infrastructure absorbs traffic spikes during Mother's Day, Valentine's Day, and Christmas campaigns effortlessly."
+        },
+        {
+          "title": "100% Ownership of Code and Data",
+          "desc": "All codebase, accounts, domain records, and customer databases belong entirely to you from day one. Zero lock-in and zero platform commissions."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Build the Ultimate Luxury Jewelry E-commerce?",
+      "subtitle": "Let us align on your brand vision, clarify technical questions, and lock in the kickoff date.",
+      "whatsappBtn": "Discuss this proposal on WhatsApp",
+      "callBtn": "Book 20-min Kickoff Video Call",
+      "printBtn": "Save or print proposal (PDF)"
+    },
+    "baseOffer": {
+      "badge": "03. WEB DEVELOPMENT // ONE-TIME PAYMENT",
+      "title": "Your Next.js Luxury Jewelry Boutique (Latest Tech Stack)",
+      "subtitle": "An ultra-fast luxury e-commerce (<0.8s), visually mesmerizing with 4K macro gem brilliance, ring sizing tools, and ready to convert high-ticket sales from day one.",
+      "priceCop": "$500,000 COP",
+      "priceUsd": "$125 USD",
+      "tagline": "One-time development investment. Zero sales commissions, zero mandatory platform subscriptions.",
+      "timeline": "2 to 3 weeks",
+      "hostingBadge": "Lifetime Edge Hosting",
+      "hostingDesc": "Hosted on Cloudflare/Vercel Edge Serverless. Zero monthly server hosting bills for you.",
+      "sslBadge": "Lifetime SSL Certificates",
+      "sslDesc": "Bank-grade encryption and perpetual security padlock included at no extra charge.",
+      "domainBadge": "Domain Provided by Client",
+      "domainDesc": "We guide you step-by-step to register your domain (.com / .co) in your own name for ~$12 USD/yr.",
+      "features": [
+        "Built entirely on Next.js 15 (cutting-edge architecture with sub-0.8s mobile loading)",
+        "Luxury interactive hero with 4K macro gem brilliance and live precious metal switcher",
+        "Faceted product catalog with live filtering by category (Rings, Necklaces, Emeralds, Bracelets) and metal",
+        "Dynamic interactive ring sizing matrix (US / EU / Col / mm) to minimize size adjustments",
+        "Colombian & LATAM payment gateways: Wompi, credit cards, bank transfers, and Addi (0% installments)",
+        "Lifetime Edge cloud hosting: Save between $30 to $80 USD/mo compared to traditional servers!",
+        "Lifetime SSL security certificates for 100% protected checkout and browsing",
+        "GIA & gemological certificate viewer integrated into product detail pages",
+        "Personalized video training so you can manage your inventory, drops, and orders effortlessly"
+      ],
+      "cta": "Get Your Jewelry Store for $500,000 COP"
     }
   },
   "briefHub": {

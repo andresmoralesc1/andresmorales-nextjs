@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import {
@@ -62,55 +62,269 @@ interface SneakerVisualConfig {
   telemetry: FeatureMetric[];
 }
 
-const MODEL_CONFIGS: Record<string, SneakerVisualConfig> = {
-  aj1: {
-    gradient: 'from-orange-500/25 via-amber-500/10 to-transparent',
-    glow: 'bg-[#f96e03]',
-    ring: 'border-orange-500/40',
-    accentHex: '#f96e03',
-    telemetry: [
-      { id: 'm1', label: 'Amortiguación Air-Sole Encapsulada', value: 94, icon: Zap, detail: 'Cámara presurizada a 25 PSI', zone: 'cushion' },
-      { id: 'm2', label: 'Tracción Suela Pivot Baloncesto', value: 98, icon: ShieldCheck, detail: 'Caucho vulcanizado de alta fricción', zone: 'traction' },
-      { id: 'm3', label: 'Cuero Flor Curtido & Resistencia', value: 96, icon: Sparkles, detail: 'Paneles de piel de primera flor OG', zone: 'upper' },
-      { id: 'm4', label: 'Hype Index & Demanda Coleccionista', value: 99, icon: Flame, detail: 'Edición de culto internacional', zone: 'hype' },
-    ],
-  },
-  aj12: {
-    gradient: 'from-red-600/25 via-rose-600/10 to-transparent',
-    glow: 'bg-red-600',
-    ring: 'border-red-500/40',
-    accentHex: '#dc2626',
-    telemetry: [
-      { id: 'm1', label: 'Zoom Air Longitud Completa', value: 97, icon: Zap, detail: 'Retorno elástico instantáneo', zone: 'cushion' },
-      { id: 'm2', label: 'Placa de Torsión Fibra de Carbono', value: 99, icon: Activity, detail: 'Rigidez y estabilidad estructural', zone: 'traction' },
-      { id: 'm3', label: 'Tracción Espina de Pescado Radial', value: 95, icon: ShieldCheck, detail: 'Suela con surcos de agarre dinámico', zone: 'traction' },
-      { id: 'm4', label: 'Hype Index & Prestigio Histórico', value: 96, icon: Flame, detail: 'Diseño legendario Tinker Hatfield', zone: 'hype' },
-    ],
-  },
-  am90: {
-    gradient: 'from-zinc-700/25 via-zinc-800/10 to-transparent',
-    glow: 'bg-zinc-800',
-    ring: 'border-zinc-600/40',
-    accentHex: '#1E1810',
-    telemetry: [
-      { id: 'm1', label: 'Unidad Max Air Visible en Talón', value: 93, icon: Zap, detail: 'Ventana de aire presurizada expuesta', zone: 'cushion' },
-      { id: 'm2', label: 'Suela Waffle con Surcos Flexibles', value: 94, icon: ShieldCheck, detail: 'Herencia de running para asfalto', zone: 'traction' },
-      { id: 'm3', label: 'Capas TPU Reforzadas Antidesgaste', value: 98, icon: Sparkles, detail: 'Estructura plástica de alta resistencia', zone: 'upper' },
-      { id: 'm4', label: 'Hype Index & Versatilidad Street', value: 95, icon: Flame, detail: 'Ícono clásico urbano 24/7', zone: 'hype' },
-    ],
-  },
-};
+function getModelConfigs(lang: string): Record<string, SneakerVisualConfig> {
+  const isEs = lang === 'es';
+  const isPt = lang === 'pt';
 
-const SIZE_STOCK_DATA: Record<string, { stock: string; urgent: boolean }> = {
-  '7.5': { stock: '3 pares disponibles', urgent: false },
-  '8.0': { stock: '4 pares en bodega', urgent: false },
-  '8.5': { stock: '¡Último par disponible!', urgent: true },
-  '9.0': { stock: '2 pares restantes', urgent: false },
-  '9.5': { stock: 'Talla más popular (3 pares)', urgent: false },
-  '10.0': { stock: '¡Último par disponible!', urgent: true },
-  '10.5': { stock: '3 pares disponibles', urgent: false },
-  '11.0': { stock: '2 pares restantes', urgent: false },
-};
+  return {
+    aj1: {
+      gradient: 'from-orange-500/25 via-amber-500/10 to-transparent',
+      glow: 'bg-[#f96e03]',
+      ring: 'border-orange-500/40',
+      accentHex: '#f96e03',
+      telemetry: [
+        {
+          id: 'm1',
+          label: isEs
+            ? 'Amortiguación Air-Sole Encapsulada'
+            : isPt
+              ? 'Amortecimento Air-Sole Encapsulado'
+              : 'Encapsulated Air-Sole Cushioning',
+          value: 94,
+          icon: Zap,
+          detail: isEs
+            ? 'Cámara presurizada a 25 PSI'
+            : isPt
+              ? 'Câmara pressurizada a 25 PSI'
+              : '25 PSI pressurized air unit',
+          zone: 'cushion',
+        },
+        {
+          id: 'm2',
+          label: isEs
+            ? 'Tracción Suela Pivot Baloncesto'
+            : isPt
+              ? 'Tração Pivot de Basquete'
+              : 'Basketball Pivot Traction Outsole',
+          value: 98,
+          icon: ShieldCheck,
+          detail: isEs
+            ? 'Caucho vulcanizado de alta fricción'
+            : isPt
+              ? 'Borracha vulcanizada de alta fricção'
+              : 'High-abrasion vulcanized rubber',
+          zone: 'traction',
+        },
+        {
+          id: 'm3',
+          label: isEs
+            ? 'Cuero Flor Curtido & Resistencia'
+            : isPt
+              ? 'Couro Premium Tratado'
+              : 'Full-Grain Leather Durability',
+          value: 96,
+          icon: Sparkles,
+          detail: isEs
+            ? 'Paneles de piel de primera flor OG'
+            : isPt
+              ? 'Painéis de couro OG'
+              : 'OG full-grain leather paneling',
+          zone: 'upper',
+        },
+        {
+          id: 'm4',
+          label: isEs
+            ? 'Hype Index & Demanda Coleccionista'
+            : isPt
+              ? 'Hype Index & Demanda de Colecionador'
+              : 'Hype Index & Collector Demand',
+          value: 99,
+          icon: Flame,
+          detail: isEs
+            ? 'Edición de culto internacional'
+            : isPt
+              ? 'Edição cult internacional'
+              : 'International cult status edition',
+          zone: 'hype',
+        },
+      ],
+    },
+    aj12: {
+      gradient: 'from-red-600/25 via-rose-600/10 to-transparent',
+      glow: 'bg-red-600',
+      ring: 'border-red-500/40',
+      accentHex: '#dc2626',
+      telemetry: [
+        {
+          id: 'm1',
+          label: isEs
+            ? 'Zoom Air Longitud Completa'
+            : isPt
+              ? 'Zoom Air Extensão Completa'
+              : 'Full-Length Zoom Air',
+          value: 97,
+          icon: Zap,
+          detail: isEs
+            ? 'Retorno elástico instantáneo'
+            : isPt
+              ? 'Retorno elástico instantâneo'
+              : 'Instant explosive responsiveness',
+          zone: 'cushion',
+        },
+        {
+          id: 'm2',
+          label: isEs
+            ? 'Placa de Torsión Fibra de Carbono'
+            : isPt
+              ? 'Placa de Torção Fibra de Carbono'
+              : 'Carbon Fiber Shank Plate',
+          value: 99,
+          icon: Activity,
+          detail: isEs
+            ? 'Rigidez y estabilidad estructural'
+            : isPt
+              ? 'Rigidez e estabilidade estrutural'
+              : 'Structural rigidity and stability',
+          zone: 'traction',
+        },
+        {
+          id: 'm3',
+          label: isEs
+            ? 'Tracción Espina de Pescado Radial'
+            : isPt
+              ? 'Tração Espinha de Peixe'
+              : 'Modified Herringbone Traction',
+          value: 95,
+          icon: ShieldCheck,
+          detail: isEs
+            ? 'Suela con surcos de agarre dinámico'
+            : isPt
+              ? 'Ranhuras de aderência dinâmica'
+              : 'Dynamic multi-surface grip pods',
+          zone: 'traction',
+        },
+        {
+          id: 'm4',
+          label: isEs
+            ? 'Hype Index & Prestigio Histórico'
+            : isPt
+              ? 'Hype Index & Prestígio Histórico'
+              : 'Hype Index & Historic Legacy',
+          value: 96,
+          icon: Flame,
+          detail: isEs
+            ? 'Diseño legendario Tinker Hatfield'
+            : isPt
+              ? 'Design lendário Tinker Hatfield'
+              : 'Legendary Tinker Hatfield design',
+          zone: 'hype',
+        },
+      ],
+    },
+    am90: {
+      gradient: 'from-zinc-700/25 via-zinc-800/10 to-transparent',
+      glow: 'bg-zinc-800',
+      ring: 'border-zinc-600/40',
+      accentHex: '#1E1810',
+      telemetry: [
+        {
+          id: 'm1',
+          label: isEs
+            ? 'Unidad Max Air Visible en Talón'
+            : isPt
+              ? 'Unidade Max Air Visível no Calcanhar'
+              : 'Visible Max Air Heel Unit',
+          value: 93,
+          icon: Zap,
+          detail: isEs
+            ? 'Ventana de aire presurizada expuesta'
+            : isPt
+              ? 'Câmara de ar exposta'
+              : 'Exposed pressurized air window',
+          zone: 'cushion',
+        },
+        {
+          id: 'm2',
+          label: isEs
+            ? 'Suela Waffle con Surcos Flexibles'
+            : isPt
+              ? 'Sola Waffle com Sulcos Flexíveis'
+              : 'Waffle Outsole with Flex Grooves',
+          value: 94,
+          icon: ShieldCheck,
+          detail: isEs
+            ? 'Herencia de running para asfalto'
+            : isPt
+              ? 'Herança de corrida para asfalto'
+              : 'Heritage street running traction',
+          zone: 'traction',
+        },
+        {
+          id: 'm3',
+          label: isEs
+            ? 'Capas TPU Reforzadas Antidesgaste'
+            : isPt
+              ? 'Camadas TPU Reforçadas'
+              : 'Reinforced TPU Eyestays & Overlays',
+          value: 98,
+          icon: Sparkles,
+          detail: isEs
+            ? 'Estructura plástica de alta resistencia'
+            : isPt
+              ? 'Estrutura plástica de alta resistência'
+              : 'High-durability molded accents',
+          zone: 'upper',
+        },
+        {
+          id: 'm4',
+          label: isEs
+            ? 'Hype Index & Versatilidad Street'
+            : isPt
+              ? 'Hype Index & Versatilidade Street'
+              : 'Hype Index & Streetwear Versatility',
+          value: 95,
+          icon: Flame,
+          detail: isEs
+            ? 'Ícono clásico urbano 24/7'
+            : isPt
+              ? 'Ícone clássico urbano 24/7'
+              : 'Classic daily urban staple',
+          zone: 'hype',
+        },
+      ],
+    },
+  };
+}
+
+function getSizeStockData(lang: string): Record<string, { stock: string; urgent: boolean }> {
+  const isEs = lang === 'es';
+  const isPt = lang === 'pt';
+
+  return {
+    '7.5': {
+      stock: isEs ? '3 pares disponibles' : isPt ? '3 pares disponíveis' : '3 pairs available',
+      urgent: false,
+    },
+    '8.0': {
+      stock: isEs ? '4 pares en bodega' : isPt ? '4 pares em estoque' : '4 pairs in warehouse',
+      urgent: false,
+    },
+    '8.5': {
+      stock: isEs ? '¡Último par disponible!' : isPt ? 'Último par disponível!' : 'Last pair available!',
+      urgent: true,
+    },
+    '9.0': {
+      stock: isEs ? '2 pares restantes' : isPt ? '2 pares restantes' : '2 pairs remaining',
+      urgent: false,
+    },
+    '9.5': {
+      stock: isEs ? 'Talla más popular (3 pares)' : isPt ? 'Tamanho mais popular (3 pares)' : 'Most popular size (3 pairs)',
+      urgent: false,
+    },
+    '10.0': {
+      stock: isEs ? '¡Último par disponible!' : isPt ? 'Último par disponível!' : 'Last pair available!',
+      urgent: true,
+    },
+    '10.5': {
+      stock: isEs ? '3 pares disponibles' : isPt ? '3 pares disponíveis' : '3 pairs available',
+      urgent: false,
+    },
+    '11.0': {
+      stock: isEs ? '2 pares restantes' : isPt ? '2 pares restantes' : '2 pairs remaining',
+      urgent: false,
+    },
+  };
+}
 
 const SNEAKER_ANIMATIONS: { image: Variants } = {
   image: {
@@ -217,10 +431,19 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
   const [isHoveringSneaker, setIsHoveringSneaker] = useState(false);
   const sneakerVisualRef = useRef<HTMLDivElement>(null);
 
+  const isEs = lang === 'es';
+  const isPt = lang === 'pt';
+
+  const modelConfigs = useMemo(() => getModelConfigs(lang), [lang]);
+  const sizeStockData = useMemo(() => getSizeStockData(lang), [lang]);
+
   const activeModel = t.models[selectedModelIndex] || t.models[0];
-  const config = MODEL_CONFIGS[activeModel.id] || MODEL_CONFIGS.aj1;
+  const config = modelConfigs[activeModel.id] || modelConfigs.aj1;
   const sizes = ['7.5', '8.0', '8.5', '9.0', '9.5', '10.0', '10.5', '11.0'];
-  const activeStock = SIZE_STOCK_DATA[selectedSize] || { stock: 'En stock', urgent: false };
+  const activeStock = sizeStockData[selectedSize] || {
+    stock: isEs ? 'En stock' : isPt ? 'Em estoque' : 'In stock',
+    urgent: false,
+  };
 
   const handleSelectModel = (index: number) => {
     setSelectedModelIndex(index);
@@ -275,7 +498,12 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
     setCartCount((prev) => prev + 1);
     setCartBounce(true);
     setIsMiniCartOpen(true);
-    setToastMessage(`✓ ${activeModel.name} (Talla US ${selectedSize}) añadido a tu carrito`);
+    const addedText = isEs
+      ? `✓ ${activeModel.name} (Talla US ${selectedSize}) añadido a tu carrito`
+      : isPt
+        ? `✓ ${activeModel.name} (Tamanho US ${selectedSize}) adicionado ao carrinho`
+        : `✓ ${activeModel.name} (Size US ${selectedSize}) added to cart`;
+    setToastMessage(addedText);
     track('proposal_hero_interacted', {
       action: 'add_to_cart',
       model_id: activeModel.id,
@@ -304,21 +532,34 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
           <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
             <span className="h-2 w-2 rounded-full bg-theme-1 animate-pulse shrink-0" />
             <span className="font-bold tracking-wider text-theme-1 uppercase text-[11px] sm:text-xs">
-              DROP EN VIVO
+              {isEs ? 'DROP EN VIVO' : isPt ? 'DROP AO VIVO' : 'LIVE DROP'}
             </span>
             <span className="text-primary/40 hidden sm:inline">•</span>
             <span className="text-primary/80 hidden sm:inline text-xs">
-              Envíos gratis a toda Colombia por compras superiores a $200.000 COP
+              {isEs
+                ? 'Envíos gratis a toda Colombia por compras superiores a $200.000 COP'
+                : isPt
+                  ? 'Frete grátis em compras acima de $50 USD'
+                  : 'Free nationwide shipping on orders over $50 USD'}
             </span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px] shrink-0 font-medium">
             <span className="inline-flex items-center gap-1.5 text-emerald-400">
-              <Check className="w-3.5 h-3.5" /> Pago contra entrega & Addi
+              <Check className="w-3.5 h-3.5" />
+              {isEs
+                ? 'Pago contra entrega & Addi'
+                : isPt
+                  ? 'Pagamento na entrega & parcelamento'
+                  : 'Cash on delivery & installments'}
             </span>
             <span className="text-primary/30 hidden md:inline">|</span>
             <span className="text-primary/70 hidden md:inline">
-              Autenticidad 100% garantizada
+              {isEs
+                ? 'Autenticidad 100% garantizada'
+                : isPt
+                  ? 'Autenticidade 100% garantida'
+                  : '100% authenticity guaranteed'}
             </span>
           </div>
         </div>
@@ -405,14 +646,14 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
               onClick={handleAddToCart}
               animate={cartBounce ? { scale: [1, 1.25, 0.95, 1.05, 1], rotate: [-8, 8, -4, 0] } : {}}
               transition={{ duration: 0.5 }}
-              aria-label="Carrito de compras"
+              aria-label={isEs ? 'Carrito de compras' : isPt ? 'Carrinho de compras' : 'Shopping cart'}
               className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-secondary text-primary hover:bg-secondary/90 transition-all shadow-md group hover:scale-105 active:scale-95"
             >
               <ShoppingBag className="w-4 h-4 text-theme-1 group-hover:scale-110 transition-transform" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs font-mono font-bold text-primary">{cartCount}</span>
                 <span className="text-[11px] font-secondary uppercase tracking-wider text-primary/70 hidden sm:inline">
-                  Pares
+                  {isEs ? 'Pares' : isPt ? 'Pares' : 'Pairs'}
                 </span>
               </div>
             </motion.button>
@@ -506,7 +747,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
               <div className="flex flex-wrap gap-2 max-w-md mb-2">
                 {sizes.map((size) => {
                   const isSelected = selectedSize === size;
-                  const isUrgent = SIZE_STOCK_DATA[size]?.urgent;
+                  const isUrgent = sizeStockData[size]?.urgent;
                   return (
                     <motion.button
                       key={size}
@@ -532,7 +773,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
               {/* Live Stock Indicator for Selected Size */}
               <div className="flex items-center gap-2 text-[11px] font-mono text-secondary/70">
                 <span className={`w-1.5 h-1.5 rounded-full ${activeStock.urgent ? 'bg-rose-500 animate-pulse' : 'bg-emerald-600'}`} />
-                <span>Talla US {selectedSize}:</span>
+                <span>{isEs ? 'Talla US' : isPt ? 'Tamanho US' : 'Size US'} {selectedSize}:</span>
                 <span className={`font-bold ${activeStock.urgent ? 'text-rose-600' : 'text-secondary'}`}>
                   {activeStock.stock}
                 </span>
@@ -734,10 +975,14 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                           {activeHotspot === 'cushion' && (
                             <div className="absolute bottom-9 left-0 sm:left-1/2 sm:-translate-x-1/2 w-44 sm:w-48 bg-secondary text-primary p-2.5 rounded-xl shadow-xl text-left border border-primary/20 z-40 animate-in fade-in zoom-in-95 duration-150">
                               <p className="text-[11px] font-bold font-secondary uppercase text-theme-1 mb-0.5">
-                                Cámara Air-Sole
+                                {isEs ? 'Cámara Air-Sole' : isPt ? 'Câmara Air-Sole' : 'Air-Sole Unit'}
                               </p>
                               <p className="text-[10px] text-primary/80 leading-tight">
-                                Cápsula presurizada a 25 PSI para absorber impactos y reducir fatiga articular.
+                                {isEs
+                                  ? 'Cápsula presurizada a 25 PSI para absorber impactos y reducir fatiga articular.'
+                                  : isPt
+                                    ? 'Cápsula pressurizada a 25 PSI para absorver impactos e fadiga articular.'
+                                    : 'Pressurized 25 PSI air capsule to absorb impacts and protect joints.'}
                               </p>
                             </div>
                           )}
@@ -757,7 +1002,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                             }}
                             whileHover={{ scale: 1.25 }}
                             whileTap={{ scale: 0.9 }}
-                            aria-label="Inspeccionar cuero flor curtido"
+                            aria-label={isEs ? 'Inspeccionar cuero flor curtido' : isPt ? 'Inspecionar couro' : 'Inspect leather upper'}
                             className={`w-7 h-7 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[11px] sm:text-[10px] font-bold shadow-lg transition-colors ${
                               hoveredMetric === 'm3' || activeHotspot === 'upper'
                                 ? 'bg-theme-1 text-secondary ring-4 ring-theme-1/30 scale-110'
@@ -769,10 +1014,14 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                           {activeHotspot === 'upper' && (
                             <div className="absolute top-9 right-0 sm:left-1/2 sm:-translate-x-1/2 w-44 sm:w-48 bg-secondary text-primary p-2.5 rounded-xl shadow-xl text-left border border-primary/20 z-40 animate-in fade-in zoom-in-95 duration-150">
                               <p className="text-[11px] font-bold font-secondary uppercase text-theme-1 mb-0.5">
-                                Cuero Flor Curtido
+                                {isEs ? 'Cuero Flor Curtido' : isPt ? 'Couro Premium' : 'Full-Grain Leather'}
                               </p>
                               <p className="text-[10px] text-primary/80 leading-tight">
-                                Capa de 1.4mm curtida al calor con micro-perforaciones para máxima ventilación.
+                                {isEs
+                                  ? 'Capa de 1.4mm curtida al calor con micro-perforaciones para máxima ventilación.'
+                                  : isPt
+                                    ? 'Camada de 1.4mm tratada termicamente com microperfurações para respirabilidade.'
+                                    : 'Heat-treated 1.4mm leather layer with micro-perforations for airflow.'}
                               </p>
                             </div>
                           )}
@@ -792,7 +1041,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                             }}
                             whileHover={{ scale: 1.25 }}
                             whileTap={{ scale: 0.9 }}
-                            aria-label="Inspeccionar tracción pivot"
+                            aria-label={isEs ? 'Inspeccionar tracción pivot' : isPt ? 'Inspecionar tração' : 'Inspect traction outsole'}
                             className={`w-7 h-7 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[11px] sm:text-[10px] font-bold shadow-lg transition-colors ${
                               hoveredMetric === 'm2' || activeHotspot === 'traction'
                                 ? 'bg-theme-1 text-secondary ring-4 ring-theme-1/30 scale-110'
@@ -804,10 +1053,14 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                           {activeHotspot === 'traction' && (
                             <div className="absolute bottom-9 right-0 sm:left-1/2 sm:-translate-x-1/2 w-44 sm:w-48 bg-secondary text-primary p-2.5 rounded-xl shadow-xl text-left border border-primary/20 z-40 animate-in fade-in zoom-in-95 duration-150">
                               <p className="text-[11px] font-bold font-secondary uppercase text-theme-1 mb-0.5">
-                                Tracción Pivot
+                                {isEs ? 'Tracción Pivot' : isPt ? 'Tração Pivot' : 'Pivot Traction Outsole'}
                               </p>
                               <p className="text-[10px] text-primary/80 leading-tight">
-                                Dibujo concéntrico de goma vulcanizada con 98% de coeficiente de fricción.
+                                {isEs
+                                  ? 'Dibujo concéntrico de goma vulcanizada con 98% de coeficiente de fricción.'
+                                  : isPt
+                                    ? 'Padrão concêntrico de borracha vulcanizada com alta aderência.'
+                                    : 'Concentric vulcanized rubber pattern engineered for high friction grip.'}
                               </p>
                             </div>
                           )}
@@ -829,7 +1082,13 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap z-20">
                 <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider font-mono font-bold text-secondary bg-primary/95 px-4 py-1.5 rounded-full border border-secondary/15 shadow-md backdrop-blur-md">
                   <span className={`h-2 w-2 rounded-full ${config.glow} animate-pulse`} />
-                  <span>NFC CHIP VERIFIED // AUTÉNTICO</span>
+                  <span>
+                    {isEs
+                      ? 'NFC CHIP VERIFIED // AUTÉNTICO'
+                      : isPt
+                        ? 'NFC CHIP VERIFIED // AUTÊNTICO'
+                        : 'NFC CHIP VERIFIED // AUTHENTIC'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -874,7 +1133,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-theme-1" />
                   <span className="text-xs font-secondary font-bold uppercase tracking-wider text-secondary">
-                    Telemetría & Anatomía
+                    {isEs ? 'Telemetría & Anatomía' : isPt ? 'Telemetria & Anatomia' : 'Telemetry & Anatomy'}
                   </span>
                 </div>
                 
@@ -882,11 +1141,15 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                 <button
                   type="button"
                   onClick={triggerLaserScan}
-                  className="flex items-center gap-1 text-[10px] font-mono font-bold text-theme-1 hover:text-theme-2 bg-theme-1/10 hover:bg-theme-1/20 px-2 py-1 rounded-full transition-colors"
-                  title="Re-escanear telemetría de la silueta"
+                  className="flex items-center gap-1 text-[10px] font-mono font-bold text-theme-1 hover:text-theme-2 bg-theme-1/10 hover:bg-theme-1/20 px-2 py-1 rounded-full transition-colors cursor-pointer"
+                  title={isEs ? 'Re-escanear telemetría de la silueta' : isPt ? 'Re-escanear telemetria' : 'Rescan silhouette telemetry'}
                 >
                   <Scan className={`w-3 h-3 ${isScanning ? 'animate-spin' : ''}`} />
-                  <span>{isScanning ? 'Escaneando...' : 'Escanear'}</span>
+                  <span>
+                    {isScanning
+                      ? (isEs ? 'Escaneando...' : isPt ? 'Escaneando...' : 'Scanning...')
+                      : (isEs ? 'Escanear' : isPt ? 'Escanear' : 'Scan')}
+                  </span>
                 </button>
               </div>
 
@@ -932,7 +1195,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                         <span>{metric.detail}</span>
                         {isHovered && (
                           <span className="text-theme-1 font-bold animate-in fade-in duration-150">
-                            Inspeccionar ↗
+                            {isEs ? 'Inspeccionar ↗' : isPt ? 'Inspecionar ↗' : 'Inspect ↗'}
                           </span>
                         )}
                       </div>
@@ -944,7 +1207,8 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
               {/* Tech Spec Footer Note */}
               <div className="pt-3 border-t border-secondary/10 flex items-center justify-between text-[11px] text-secondary/80">
                 <span className="flex items-center gap-1 font-medium">
-                  <Lock className="w-3.5 h-3.5 text-emerald-600" /> Certificado OG
+                  <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                  {isEs ? 'Certificado OG' : isPt ? 'Certificado OG' : 'OG Certified'}
                 </span>
                 <span className="font-mono text-[10px] text-secondary/60">
                   Stock ID: #{activeModel.id.toUpperCase()}-COL
@@ -970,7 +1234,7 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                 onClick={() => handleSelectModel(idx)}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
-                className={`relative px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 sm:gap-3 text-xs font-secondary font-bold uppercase tracking-wider transition-all focus:outline-hidden ${
+                className={`relative px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 sm:gap-3 text-xs font-secondary font-bold uppercase tracking-wider transition-all focus:outline-hidden cursor-pointer ${
                   isActive ? 'text-primary' : 'text-primary/70 hover:text-white'
                 }`}
               >
@@ -1022,7 +1286,13 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
             </div>
             <div>
               <p className="text-xs font-bold text-primary">{toastMessage}</p>
-              <p className="text-[11px] text-primary/70">Stock reservado por 15 minutos en tu sesión</p>
+              <p className="text-[11px] text-primary/70">
+                {isEs
+                  ? 'Stock reservado por 15 minutos en tu sesión'
+                  : isPt
+                    ? 'Estoque reservado por 15 minutos na sessão'
+                    : 'Stock reserved for 15 minutes in your session'}
+              </p>
             </div>
           </div>
           {/* Animated shrinking progress line */}
@@ -1042,33 +1312,45 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
             <div className="flex items-center justify-between pb-4 border-b border-secondary/10 mb-4">
               <div>
                 <h3 className="font-heading text-xl sm:text-2xl font-bold text-secondary">
-                  Guía Oficial de Tallas de Calzado
+                  {isEs
+                    ? 'Guía Oficial de Tallas de Calzado'
+                    : isPt
+                      ? 'Guia Oficial de Tamanhos de Calçados'
+                      : 'Official Footwear Sizing Guide'}
                 </h3>
                 <span className="text-xs font-mono text-secondary/60">
-                  Equivalencias US / EU / Colombia / Centímetros
+                  {isEs
+                    ? 'Equivalencias US / EU / Colombia / Centímetros'
+                    : isPt
+                      ? 'Equivalências US / EU / Brasil / Centímetros'
+                      : 'Conversions US / EU / Local / Centimeters'}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setShowSizeModal(false)}
-                className="w-9 h-9 rounded-full bg-theme-5 hover:bg-theme-9 text-secondary flex items-center justify-center text-sm font-bold border border-secondary/15 transition-colors"
+                className="w-9 h-9 rounded-full bg-theme-5 hover:bg-theme-9 text-secondary flex items-center justify-center text-sm font-bold border border-secondary/15 transition-colors cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             <p className="text-xs text-secondary/80 mb-4 leading-relaxed">
-              Esta matriz interactiva se integra en tu e-commerce para que el cliente compruebe su talla exacta en centímetros y seleccione su equivalente nacional, eliminando hasta el 80% de devoluciones por error de horma.
+              {isEs
+                ? 'Esta matriz interactiva se integra en tu e-commerce para que el cliente compruebe su talla exacta en centímetros y seleccione su equivalente nacional, eliminando hasta el 80% de devoluciones por error de horma.'
+                : isPt
+                  ? 'Esta tabela interativa permite que o cliente verifique seu tamanho exato em centímetros, eliminando até 80% das devoluções por erro de numeração.'
+                  : 'This interactive size matrix enables shoppers to check their exact foot length in centimeters and select their local equivalent, cutting returns by up to 80%.'}
             </p>
 
             <div className="overflow-x-auto rounded-2xl border border-secondary/15 mb-6">
               <table className="w-full text-xs text-left">
                 <thead className="bg-theme-5 text-secondary font-mono font-bold border-b border-secondary/15">
                   <tr>
-                    <th className="p-3">US (Men)</th>
+                    <th className="p-3">{isEs ? 'US (Hombre)' : isPt ? 'US (Masc)' : 'US (Men)'}</th>
                     <th className="p-3">EU</th>
-                    <th className="p-3">Col (Nacional)</th>
-                    <th className="p-3">Longitud (CM)</th>
+                    <th className="p-3">{isEs ? 'Col (Nacional)' : isPt ? 'BR (Brasil)' : 'Local (Col)'}</th>
+                    <th className="p-3">{isEs ? 'Longitud (CM)' : isPt ? 'Comprimento (CM)' : 'Length (CM)'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-secondary/10 text-secondary font-mono">
@@ -1097,7 +1379,9 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
                     <td className="p-3">27.0 cm</td>
                   </tr>
                   <tr className="bg-theme-1/25 font-bold">
-                    <td className="p-3 text-secondary">9.5 (Más vendido)</td>
+                    <td className="p-3 text-secondary">
+                      {isEs ? '9.5 (Más vendido)' : isPt ? '9.5 (Mais vendido)' : '9.5 (Best seller)'}
+                    </td>
                     <td className="p-3">43.0</td>
                     <td className="p-3">41.0</td>
                     <td className="p-3">27.5 cm</td>
@@ -1126,14 +1410,19 @@ export function SneakerHeroShowcase({ t, lang = 'es' }: SneakerHeroShowcaseProps
 
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono text-emerald-700 font-bold flex items-center gap-1.5">
-                <Check className="w-4 h-4" /> Recomendación: Ajuste fiel a la talla (True to Size)
+                <Check className="w-4 h-4" />
+                {isEs
+                  ? 'Recomendación: Ajuste fiel a la talla (True to Size)'
+                  : isPt
+                    ? 'Recomendação: Ajuste fiel ao tamanho (True to Size)'
+                    : 'Recommendation: Fits True to Size (TTS)'}
               </span>
               <button
                 type="button"
                 onClick={() => setShowSizeModal(false)}
-                className="btn-theme text-xs px-6 py-2.5 rounded-full"
+                className="btn-theme text-xs px-6 py-2.5 rounded-full cursor-pointer"
               >
-                Cerrar guía
+                {isEs ? 'Cerrar guía' : isPt ? 'Fechar guia' : 'Close guide'}
               </button>
             </div>
           </div>
