@@ -25,7 +25,12 @@ import {
   Search,
   Maximize2,
 } from "lucide-react"
-import { ALL_BOCETOS_CARDS, type ArtworkCard } from "@/lib/artworks-data"
+import {
+  ALL_BOCETOS_CARDS,
+  COLLECTIONS_CONFIG,
+  type ArtworkCard,
+  type CollectionKey,
+} from "@/lib/artworks-data"
 
 export type Card = ArtworkCard
 
@@ -36,8 +41,9 @@ type CardContextType = {
   setHoveredCardId: (id: string | null) => void
   cards: Card[]
   allCards: Card[]
-  activeBatch: string
-  setActiveBatch: (batch: string) => void
+  activeCollection: CollectionKey
+  setActiveCollection: (c: CollectionKey) => void
+  collectionCounts: Record<CollectionKey, number>
   favorites: Set<string>
   toggleFavorite: (id: string) => void
   goToNextCard: () => void
@@ -63,7 +69,7 @@ export function CardProvider({
     return initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
   }, [initialCards])
 
-  const [activeBatch, setActiveBatch] = useState<string>("all")
+  const [activeCollection, setActiveCollection] = useState<CollectionKey>("all")
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
@@ -88,16 +94,32 @@ export function CardProvider({
     })
   }, [])
 
+  const collectionCounts = useMemo(() => {
+    const counts: Record<CollectionKey, number> = {
+      all: allCards.length,
+      yoga: 0,
+      shibari: 0,
+      "anatomia-botanica": 0,
+      pregnant: 0,
+      "figura-humana": 0,
+      favorites: favorites.size,
+    }
+    allCards.forEach((c) => {
+      if (counts[c.collection] !== undefined) {
+        counts[c.collection]++
+      }
+    })
+    return counts
+  }, [allCards, favorites])
+
   const cards = useMemo(() => {
-    if (activeBatch === "batch1") return allCards.slice(0, 50)
-    if (activeBatch === "batch2") return allCards.slice(50, 100)
-    if (activeBatch === "batch3") return allCards.slice(100)
-    if (activeBatch === "favorites") {
+    if (activeCollection === "all") return allCards
+    if (activeCollection === "favorites") {
       const favs = allCards.filter((c) => favorites.has(c.id))
       return favs.length > 0 ? favs : allCards
     }
-    return allCards // "all"
-  }, [allCards, activeBatch, favorites])
+    return allCards.filter((c) => c.collection === activeCollection)
+  }, [allCards, activeCollection, favorites])
 
   const goToNextCard = useCallback(() => {
     if (!selectedCard) return
@@ -124,8 +146,9 @@ export function CardProvider({
         setHoveredCardId,
         cards,
         allCards,
-        activeBatch,
-        setActiveBatch,
+        activeCollection,
+        setActiveCollection,
+        collectionCounts,
         favorites,
         toggleFavorite,
         goToNextCard,
@@ -520,12 +543,12 @@ export function CardModal() {
             </div>
 
             <div className="text-center mb-3">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#f96e03] mb-0.5 inline-block font-semibold">
-                Andrés Morales • Bocetos de Piel
+              <span className="text-[10px] uppercase font-mono tracking-widest text-[#f96e03] px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/25 font-bold mb-1.5 inline-block">
+                Serie {selectedCard.collectionLabel}
               </span>
               <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-tight">{selectedCard.title}</h3>
               <p className="text-white/40 text-[11px] font-mono mt-0.5">
-                Dibujo #{selectedCard.id} de 149
+                Dibujo #{selectedCard.id} de 149 • Andrés Morales
               </p>
             </div>
 
@@ -557,7 +580,7 @@ export function CardModal() {
 
               <a
                 href={`https://wa.me/573161482507?text=${encodeURIComponent(
-                  `Hola Andrés, vi la obra "${selectedCard.title}" (Dibujo #${selectedCard.id} de Bocetos de Piel) en amart y me gustaría consultar adquisición/detalles.`
+                  `Hola Andrés, vi tu obra "${selectedCard.title}" (Serie ${selectedCard.collectionLabel}, Dibujo #${selectedCard.id}) en amart y me gustaría consultar adquisición/detalles.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -594,8 +617,8 @@ export function CardGalaxy() {
       rotationZ: number
     }[] = []
 
-    // Base radius dynamically adapts so 50-card batches and 149 full collection both stay spacious and clean
-    const baseRadius = numCards <= 50 ? 21 : 26
+    // Base radius dynamically adapts so collections with 5-13 cards, 68 cards, or all 149 cards look beautifully proportioned
+    const baseRadius = numCards <= 15 ? 17 : numCards <= 70 ? 22 : 27
 
     for (let i = 0; i < numCards; i++) {
       const y = 1 - (i / (numCards - 1 || 1)) * 2
@@ -604,7 +627,7 @@ export function CardGalaxy() {
       const x = Math.cos(theta) * radiusAtY
       const z = Math.sin(theta) * radiusAtY
       // Subtle depth variation (±1.5 units) for organic depth without overlapping
-      const layerRadius = baseRadius + ((i % 3) - 1) * 1.5
+      const layerRadius = baseRadius + (numCards > 20 ? ((i % 3) - 1) * 1.5 : 0)
 
       positions.push({
         x: x * layerRadius,
@@ -618,12 +641,13 @@ export function CardGalaxy() {
     return positions
   }, [cards])
 
-  const ringRadius = cards.length <= 50 ? 22 : 27.5
+  const coreRadius = cards.length <= 15 ? 10 : cards.length <= 70 ? 15 : 19
+  const ringRadius = cards.length <= 15 ? 18 : cards.length <= 70 ? 23 : 28.5
 
   return (
     <>
       {/* Soft atmospheric core: veils far-side cards so foreground artworks stand out with crystal clarity */}
-      <Sphere raycast={() => null} args={[cards.length <= 50 ? 15 : 19, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[coreRadius, 32, 32]} position={[0, 0, 0]}>
         <meshBasicMaterial color="#0b0907" transparent opacity={0.72} depthWrite={false} />
       </Sphere>
 
@@ -655,16 +679,28 @@ function CatalogDrawer({
   isOpen: boolean
   onClose: () => void
 }) {
-  const { allCards, setSelectedCard } = useCard()
+  const { allCards, setSelectedCard, activeCollection, setActiveCollection, collectionCounts } = useCard()
   const [search, setSearch] = useState("")
 
   const filteredCards = useMemo(() => {
-    if (!search.trim()) return allCards
+    let list = allCards
+    if (activeCollection !== "all") {
+      if (activeCollection === "favorites") {
+        // ...
+      } else {
+        list = list.filter((c) => c.collection === activeCollection)
+      }
+    }
+    if (!search.trim()) return list
     const q = search.toLowerCase()
-    return allCards.filter(
-      (c) => c.title.toLowerCase().includes(q) || c.id.includes(q) || (c.alt && c.alt.toLowerCase().includes(q))
+    return list.filter(
+      (c) =>
+        c.title.toLowerCase().includes(q) ||
+        c.id.includes(q) ||
+        c.collectionLabel.toLowerCase().includes(q) ||
+        (c.alt && c.alt.toLowerCase().includes(q))
     )
-  }, [allCards, search])
+  }, [allCards, activeCollection, search])
 
   if (!isOpen) return null
 
@@ -674,9 +710,9 @@ function CatalogDrawer({
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-white/10">
           <div>
-            <h2 className="text-xl font-serif font-bold text-white">Catálogo Completo</h2>
+            <h2 className="text-xl font-serif font-bold text-white">Catálogo de Obras</h2>
             <p className="text-xs font-mono text-[#f96e03] mt-0.5 font-semibold">
-              149 Bocetos de Piel • Andrés Morales
+              Bocetos de Piel • Andrés Morales
             </p>
           </div>
           <button
@@ -688,14 +724,78 @@ function CatalogDrawer({
           </button>
         </div>
 
+        {/* Collection Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5 mt-4">
+          <button
+            onClick={() => setActiveCollection("all")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "all"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            Todas ({collectionCounts.all})
+          </button>
+          <button
+            onClick={() => setActiveCollection("yoga")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "yoga"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            🧘 Yoga ({collectionCounts.yoga})
+          </button>
+          <button
+            onClick={() => setActiveCollection("shibari")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "shibari"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            🪢 Shibari ({collectionCounts.shibari})
+          </button>
+          <button
+            onClick={() => setActiveCollection("anatomia-botanica")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "anatomia-botanica"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            🌿 Botánica ({collectionCounts["anatomia-botanica"]})
+          </button>
+          <button
+            onClick={() => setActiveCollection("pregnant")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "pregnant"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            🤰 Pregnant ({collectionCounts.pregnant})
+          </button>
+          <button
+            onClick={() => setActiveCollection("figura-humana")}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+              activeCollection === "figura-humana"
+                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
+                : "bg-white/5 hover:bg-white/10 text-white/70 border border-white/10"
+            }`}
+          >
+            Figura Humana ({collectionCounts["figura-humana"]})
+          </button>
+        </div>
+
         {/* Search */}
-        <div className="relative my-4">
+        <div className="relative my-3">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por número o palabra clave (ej. 42, 105)..."
+            placeholder="Buscar por número o palabra clave (ej. 108, shibari, loto)..."
             className="w-full pl-9 pr-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs placeholder:text-white/40 focus:outline-none focus:border-[#f96e03] focus:ring-1 focus:ring-[#f96e03]/30 transition-colors"
           />
         </div>
@@ -719,6 +819,9 @@ function CatalogDrawer({
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
+                  <div className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-sm border border-white/10 text-[9px] font-mono text-[#f96e03] font-semibold">
+                    {card.collectionLabel}
+                  </div>
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <Maximize2 className="w-5 h-5 text-[#f96e03]" />
                   </div>
@@ -726,7 +829,7 @@ function CatalogDrawer({
                 <div className="p-2 bg-[#1a1613]">
                   <p className="text-[11px] font-medium text-white truncate group-hover:text-[#f96e03] transition-colors">
                     <span className="text-[#f96e03] font-mono mr-1">#{card.id}</span>
-                    {card.title.replace(/^Boceto de Piel\s*#?\d*\s*[-—:]*\s*/i, "") || card.title}
+                    {card.title.replace(/^Boceto\s*#?\d*\s*[-—:•]*\s*/i, "") || card.title}
                   </p>
                 </div>
               </button>
@@ -782,7 +885,25 @@ function GalleryContent({
   catalogOpen: boolean
   setCatalogOpen: (v: boolean) => void
 }) {
-  const { allCards, cards, activeBatch, setActiveBatch, favorites, selectedCard, hoveredCardId } = useCard()
+  const {
+    allCards,
+    cards,
+    activeCollection,
+    setActiveCollection,
+    collectionCounts,
+    favorites,
+    selectedCard,
+    hoveredCardId,
+  } = useCard()
+
+  const collectionList: Array<{ id: CollectionKey; label: string }> = [
+    { id: "all", label: `Todas (${collectionCounts.all})` },
+    { id: "yoga", label: `Yoga (${collectionCounts.yoga})` },
+    { id: "shibari", label: `Shibari (${collectionCounts.shibari})` },
+    { id: "anatomia-botanica", label: `Anatomía Botánica (${collectionCounts["anatomia-botanica"]})` },
+    { id: "pregnant", label: `Pregnant (${collectionCounts.pregnant})` },
+    { id: "figura-humana", label: `Figura Humana (${collectionCounts["figura-humana"]})` },
+  ]
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-[#0c0a08] select-none">
@@ -821,7 +942,7 @@ function GalleryContent({
       <CatalogDrawer isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} />
 
       {/* Top Header Overlay */}
-      <header className="absolute top-4 left-4 z-20 text-white pointer-events-auto max-w-sm sm:max-w-md">
+      <header className="absolute top-4 left-4 z-20 text-white pointer-events-auto max-w-sm sm:max-w-xl">
         <div className="flex items-center gap-2 mb-1">
           <span className="w-2 h-2 rounded-full bg-[#f96e03] shadow-[0_0_8px_#f96e03] animate-pulse" />
           <p className="text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-semibold">
@@ -832,56 +953,32 @@ function GalleryContent({
           Bocetos de Piel
         </h1>
         <p className="text-xs text-white/65 mt-0.5 leading-relaxed">
-          149 Obras originales en galaxia 3D • Arrastra para rotar • Clic en cualquier obra
+          {COLLECTIONS_CONFIG[activeCollection]?.name || "Bocetos de Piel"} • {cards.length} {cards.length === 1 ? "obra" : "obras"} • Arrastra para orbitar • Clic para ampliar
         </p>
 
         {/* Filter / Constellation Pills */}
         <div className="flex flex-wrap items-center gap-1.5 mt-3">
-          <button
-            onClick={() => setActiveBatch("all")}
-            className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
-              activeBatch === "all"
-                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
-            }`}
-          >
-            Todas ({allCards.length})
-          </button>
-          <button
-            onClick={() => setActiveBatch("batch1")}
-            className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
-              activeBatch === "batch1"
-                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
-            }`}
-          >
-            1–50
-          </button>
-          <button
-            onClick={() => setActiveBatch("batch2")}
-            className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
-              activeBatch === "batch2"
-                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
-            }`}
-          >
-            51–100
-          </button>
-          <button
-            onClick={() => setActiveBatch("batch3")}
-            className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
-              activeBatch === "batch3"
-                ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
-            }`}
-          >
-            101–149
-          </button>
+          {collectionList.map((col) => {
+            const isActive = activeCollection === col.id
+            return (
+              <button
+                key={col.id}
+                onClick={() => setActiveCollection(col.id)}
+                className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer whitespace-nowrap ${
+                  isActive
+                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
+                    : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
+                }`}
+              >
+                {col.label}
+              </button>
+            )
+          })}
           {favorites.size > 0 && (
             <button
-              onClick={() => setActiveBatch("favorites")}
-              className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 ${
-                activeBatch === "favorites"
+              onClick={() => setActiveCollection("favorites")}
+              className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                activeCollection === "favorites"
                   ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
                   : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
               }`}
@@ -900,7 +997,7 @@ function GalleryContent({
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-[#f96e03]/50 backdrop-blur-md transition-all duration-200 shadow-md cursor-pointer"
         >
           <LayoutGrid className="w-3.5 h-3.5 text-[#f96e03]" />
-          <span>Ver Catálogo (149)</span>
+          <span>Ver Catálogo ({allCards.length})</span>
         </button>
         <a
           href="https://andresmorales.com.co"
@@ -922,7 +1019,9 @@ function GalleryContent({
 
       {/* Bottom Legend */}
       <footer className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] font-mono text-white/40 pointer-events-none">
-        <span>{cards.length} Obras en esta constelación</span>
+        <span>
+          {cards.length} {cards.length === 1 ? "Obra" : "Obras"} en constelación • {COLLECTIONS_CONFIG[activeCollection]?.name || "Bocetos de Piel"}
+        </span>
         <span>© {new Date().getFullYear()} Andrés Morales • Bocetos de Piel</span>
       </footer>
     </div>
