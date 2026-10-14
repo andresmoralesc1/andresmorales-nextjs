@@ -170,15 +170,16 @@ export function StarfieldBackground() {
   useEffect(() => {
     if (!mountRef.current) return
 
+    const isMobile = window.innerWidth < 768
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
     renderer.setClearColor(0x000000, 0)
     mountRef.current.appendChild(renderer.domElement)
 
-    const starsCount = 10000
+    const starsCount = isMobile ? 3500 : 9000
     const positions = new Float32Array(starsCount * 3)
     const colors = new Float32Array(starsCount * 3)
 
@@ -270,6 +271,7 @@ export function FloatingCard({
   const meshRef = useRef<THREE.Mesh>(null)
   const groupRef = useRef<THREE.Group>(null)
   const [hovered, setHovered] = useState(false)
+  const isDragging = useRef(false)
   const pointerDownPos = useRef<{ x: number; y: number; time: number } | null>(null)
   const { setSelectedCard, setHoveredCardId } = useCard()
 
@@ -282,7 +284,9 @@ export function FloatingCard({
   // Three.js 3D plane fallback click
   const handlePlaneClick = (e: any) => {
     e.stopPropagation()
-    setSelectedCard(card)
+    if (!isDragging.current) {
+      setSelectedCard(card)
+    }
   }
   const handlePlanePointerOver = (e: any) => {
     e.stopPropagation()
@@ -299,7 +303,17 @@ export function FloatingCard({
 
   // DOM direct click & touch handlers (guaranteed to trigger even if R3F delta suppresses clicks)
   const handleCardPointerDown = (e: React.PointerEvent) => {
+    isDragging.current = false
     pointerDownPos.current = { x: e.clientX, y: e.clientY, time: Date.now() }
+  }
+
+  const handleCardPointerMove = (e: React.PointerEvent) => {
+    if (!pointerDownPos.current) return
+    const dx = Math.abs(e.clientX - pointerDownPos.current.x)
+    const dy = Math.abs(e.clientY - pointerDownPos.current.y)
+    if (dx > 8 || dy > 8) {
+      isDragging.current = true
+    }
   }
 
   const handleCardPointerUp = (e: React.PointerEvent) => {
@@ -308,8 +322,8 @@ export function FloatingCard({
     const dy = Math.abs(e.clientY - pointerDownPos.current.y)
     const dt = Date.now() - pointerDownPos.current.time
     pointerDownPos.current = null
-    // If movement < 12px and duration < 500ms, it is a deliberate tap/click
-    if (dx < 12 && dy < 12 && dt < 500) {
+    // If movement < 10px and duration < 450ms, it is a deliberate tap/click
+    if (dx < 10 && dy < 10 && dt < 450 && !isDragging.current) {
       e.stopPropagation()
       setSelectedCard(card)
     }
@@ -317,7 +331,9 @@ export function FloatingCard({
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    setSelectedCard(card)
+    if (!isDragging.current) {
+      setSelectedCard(card)
+    }
   }
 
   const handleCardKeyDown = (e: React.KeyboardEvent) => {
@@ -356,6 +372,7 @@ export function FloatingCard({
           tabIndex={0}
           onClick={handleCardClick}
           onPointerDown={handleCardPointerDown}
+          onPointerMove={handleCardPointerMove}
           onPointerUp={handleCardPointerUp}
           onKeyDown={handleCardKeyDown}
           onPointerEnter={() => {
@@ -403,6 +420,8 @@ export function FloatingCard({
 
 export function CardModal() {
   const { selectedCard, setSelectedCard, favorites, toggleFavorite, goToNextCard, goToPrevCard } = useCard()
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -421,6 +440,27 @@ export function CardModal() {
   const handleClose = () => setSelectedCard(null)
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (e.target === e.currentTarget) handleClose()
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current
+    touchStartX.current = null
+    touchStartY.current = null
+    // Detect horizontal swipe if deltaX is dominant and over 40px
+    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
+      if (deltaX > 0) {
+        goToPrevCard()
+      } else {
+        goToNextCard()
+      }
+    }
   }
 
   const handleDownload = (e: React.MouseEvent) => {
@@ -449,9 +489,9 @@ export function CardModal() {
       aria-modal="true"
     >
       {/* Top Bar: Curatorial context & Actions */}
-      <header className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between border-b border-white/10 bg-black/60 backdrop-blur-md z-30 shrink-0">
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold">
+      <header className="h-14 sm:h-16 px-3 sm:px-6 flex items-center justify-between border-b border-white/10 bg-black/60 backdrop-blur-md z-30 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[140px] sm:max-w-none">
             Serie {selectedCard.collectionLabel}
           </span>
           <span className="text-white/40 font-mono text-xs hidden sm:inline">
@@ -459,7 +499,7 @@ export function CardModal() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Favorite Button */}
           <button
             type="button"
@@ -494,7 +534,7 @@ export function CardModal() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1.5 cursor-pointer"
+            className="px-2.5 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Consultar Obra</span>
@@ -505,17 +545,19 @@ export function CardModal() {
           <button
             onClick={handleClose}
             aria-label="Cerrar (Esc)"
-            className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-1"
+            className="p-1.5 sm:p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-0.5 sm:ml-1"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
       </header>
 
-      {/* Main Fullscreen Stage: Completely Static Artwork */}
+      {/* Main Fullscreen Stage: Completely Static Artwork with Swipe */}
       <main
-        className="flex-1 flex items-center justify-center relative p-3 sm:p-6 md:p-8 overflow-hidden"
+        className="flex-1 flex items-center justify-center relative p-2 sm:p-6 md:p-8 overflow-hidden touch-pan-y"
         onClick={handleBackdropClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Navigation Arrows */}
         <button
@@ -524,9 +566,9 @@ export function CardModal() {
             goToPrevCard()
           }}
           aria-label="Obra anterior (Flecha Izquierda)"
-          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
+          className="absolute left-1.5 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
         >
-          <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
+          <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
         </button>
 
         <button
@@ -535,9 +577,9 @@ export function CardModal() {
             goToNextCard()
           }}
           aria-label="Siguiente obra (Flecha Derecha)"
-          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
+          className="absolute right-1.5 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
         >
-          <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+          <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
         </button>
 
         {/* 100% Static High-Resolution Artwork */}
@@ -551,14 +593,14 @@ export function CardModal() {
             alt={selectedCard.alt}
             loading="eager"
             draggable={false}
-            className="max-h-[calc(100vh-175px)] sm:max-h-[calc(100vh-190px)] max-w-[92vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none animate-in fade-in duration-200"
+            className="max-h-[calc(100dvh-170px)] sm:max-h-[calc(100dvh-185px)] max-w-[94vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none animate-in fade-in duration-200"
           />
         </div>
       </main>
 
       {/* Bottom Curatorial Caption */}
       <footer
-        className="px-4 py-3 sm:py-3.5 border-t border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 text-center"
+        className="px-4 py-2.5 sm:py-3.5 border-t border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 text-center pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="max-w-3xl mx-auto flex flex-col items-center justify-center">
@@ -891,6 +933,14 @@ function GalleryContent({
     hoveredCardId,
   } = useCard()
 
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   const collectionList: Array<{ id: CollectionKey; label: string }> = [
     { id: "all", label: `Todas (${collectionCounts.all})` },
     { id: "yoga", label: `Yoga (${collectionCounts.yoga})` },
@@ -905,7 +955,7 @@ function GalleryContent({
       <StarfieldBackground />
 
       <Canvas
-        camera={{ position: [0, 0, 42], fov: 55 }}
+        camera={{ position: [0, 0, isMobile ? 54 : 42], fov: 55 }}
         className="absolute inset-0 z-10"
         onCreated={({ gl }) => {
           gl.domElement.style.pointerEvents = "auto"
@@ -922,10 +972,10 @@ function GalleryContent({
             enableZoom
             enableRotate
             minDistance={18}
-            maxDistance={72}
+            maxDistance={75}
             autoRotate={!selectedCard && !catalogOpen && !hoveredCardId}
             autoRotateSpeed={0.22}
-            rotateSpeed={0.5}
+            rotateSpeed={isMobile ? 0.7 : 0.5}
             zoomSpeed={1.2}
             panSpeed={0.8}
             target={[0, 0, 0]}
@@ -936,30 +986,64 @@ function GalleryContent({
       <CardModal />
       <CatalogDrawer isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} />
 
-      {/* Top Header Overlay */}
-      <header className="absolute top-4 left-4 z-20 text-white pointer-events-auto max-w-sm sm:max-w-xl">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-2 h-2 rounded-full bg-[#f96e03] shadow-[0_0_8px_#f96e03] animate-pulse" />
-          <p className="text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-semibold">
-            Andrés Morales • AM Art
-          </p>
-        </div>
-        <h1 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-md">
-          Bocetos de Piel
-        </h1>
-        <p className="text-xs text-white/65 mt-0.5 leading-relaxed">
-          {COLLECTIONS_CONFIG[activeCollection]?.name || "Bocetos de Piel"} • {cards.length} {cards.length === 1 ? "obra" : "obras"} • Arrastra para orbitar • Clic para ampliar
-        </p>
+      {/* Top Header & Actions Bar (Unified Responsive Container) */}
+      <header className="absolute top-0 left-0 right-0 z-20 p-3 sm:p-5 pointer-events-none">
+        <div className="flex items-start justify-between gap-2 sm:gap-4">
+          {/* Brand & Collection Title */}
+          <div className="pointer-events-auto max-w-[62%] sm:max-w-md">
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-[#f96e03] shadow-[0_0_8px_#f96e03] animate-pulse shrink-0" />
+              <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-semibold truncate">
+                Andrés Morales • AM Art
+              </p>
+            </div>
+            <h1 className="text-lg sm:text-2xl font-serif font-bold text-white tracking-tight drop-shadow-md leading-tight">
+              Bocetos de Piel
+            </h1>
+            <p className="text-[11px] sm:text-xs text-white/65 mt-0.5 leading-tight truncate sm:leading-relaxed">
+              {COLLECTIONS_CONFIG[activeCollection]?.name || "Bocetos de Piel"} • {cards.length} {cards.length === 1 ? "obra" : "obras"}
+            </p>
+          </div>
 
-        {/* Filter / Constellation Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 mt-3">
+          {/* Quick Actions (Right) */}
+          <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
+            <button
+              onClick={() => setCatalogOpen(true)}
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-[#f96e03]/50 backdrop-blur-md transition-all duration-200 shadow-md cursor-pointer"
+            >
+              <LayoutGrid className="w-3.5 h-3.5 text-[#f96e03]" />
+              <span className="hidden sm:inline">Ver Catálogo ({allCards.length})</span>
+              <span className="sm:hidden font-bold">Catálogo</span>
+            </button>
+            <a
+              href="https://andresmorales.com.co"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all duration-200"
+            >
+              <span>Portafolio</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href="https://wa.me/573161482507?text=Hola%20Andr%C3%A9s,%20vi%20tu%20galer%C3%ADa%20Bocetos%20de%20Piel%20en%20amart%20y%20me%20gustar%C3%ADa%20cotizar%20una%20obra"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_4px_16px_rgba(249,110,3,0.35)] transition-all duration-200"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Encargar Obra</span>
+              <span className="sm:hidden">Encargar</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Filter / Constellation Pills: Horizontal scroll carousel on mobile */}
+        <div className="flex items-center gap-1.5 mt-2.5 overflow-x-auto no-scrollbar py-1 pointer-events-auto sm:flex-wrap">
           {collectionList.map((col) => {
             const isActive = activeCollection === col.id
             return (
               <button
                 key={col.id}
                 onClick={() => setActiveCollection(col.id)}
-                className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
                     : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
@@ -972,7 +1056,7 @@ function GalleryContent({
           {favorites.size > 0 && (
             <button
               onClick={() => setActiveCollection("favorites")}
-              className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+              className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeCollection === "favorites"
                   ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
                   : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
@@ -985,39 +1069,12 @@ function GalleryContent({
         </div>
       </header>
 
-      {/* Top Right Quick Actions */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-auto">
-        <button
-          onClick={() => setCatalogOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-[#f96e03]/50 backdrop-blur-md transition-all duration-200 shadow-md cursor-pointer"
-        >
-          <LayoutGrid className="w-3.5 h-3.5 text-[#f96e03]" />
-          <span>Ver Catálogo ({allCards.length})</span>
-        </button>
-        <a
-          href="https://andresmorales.com.co"
-          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all duration-200"
-        >
-          <span>Portafolio</span>
-          <ExternalLink className="w-3 h-3" />
-        </a>
-        <a
-          href="https://wa.me/573161482507?text=Hola%20Andr%C3%A9s,%20vi%20tu%20galer%C3%ADa%20Bocetos%20de%20Piel%20en%20amart%20y%20me%20gustar%C3%ADa%20cotizar%20una%20obra"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_4px_16px_rgba(249,110,3,0.35)] transition-all duration-200"
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Encargar Obra</span>
-        </a>
-      </div>
-
       {/* Bottom Legend */}
-      <footer className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] font-mono text-white/40 pointer-events-none">
+      <footer className="absolute bottom-2.5 sm:bottom-4 left-3 right-3 sm:left-4 sm:right-4 z-20 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-[11px] font-mono text-white/40 pointer-events-none gap-0.5 pb-[env(safe-area-inset-bottom,0px)]">
         <span>
           {cards.length} {cards.length === 1 ? "Obra" : "Obras"} en constelación • {COLLECTIONS_CONFIG[activeCollection]?.name || "Bocetos de Piel"}
         </span>
-        <span>© {new Date().getFullYear()} Andrés Morales • Bocetos de Piel</span>
+        <span className="hidden sm:inline">© {new Date().getFullYear()} Andrés Morales • Bocetos de Piel</span>
       </footer>
     </div>
   )
