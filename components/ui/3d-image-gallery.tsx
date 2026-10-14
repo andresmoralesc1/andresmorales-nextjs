@@ -32,6 +32,8 @@ export type Card = ArtworkCard
 type CardContextType = {
   selectedCard: Card | null
   setSelectedCard: (card: Card | null) => void
+  hoveredCardId: string | null
+  setHoveredCardId: (id: string | null) => void
   cards: Card[]
   allCards: Card[]
   activeBatch: string
@@ -63,6 +65,7 @@ export function CardProvider({
 
   const [activeBatch, setActiveBatch] = useState<string>("all")
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set())
 
   // Load favorites from localStorage if available
@@ -117,6 +120,8 @@ export function CardProvider({
       value={{
         selectedCard,
         setSelectedCard,
+        hoveredCardId,
+        setHoveredCardId,
         cards,
         allCards,
         activeBatch,
@@ -210,7 +215,8 @@ export function FloatingCard({
   const meshRef = useRef<THREE.Mesh>(null)
   const groupRef = useRef<THREE.Group>(null)
   const [hovered, setHovered] = useState(false)
-  const { setSelectedCard } = useCard()
+  const pointerDownPos = useRef<{ x: number; y: number; time: number } | null>(null)
+  const { setSelectedCard, setHoveredCardId } = useCard()
 
   useFrame(({ camera }) => {
     if (groupRef.current) {
@@ -218,53 +224,104 @@ export function FloatingCard({
     }
   })
 
-  const handleClick = (e: any) => {
+  // Three.js 3D plane fallback click
+  const handlePlaneClick = (e: any) => {
     e.stopPropagation()
     setSelectedCard(card)
   }
-  const handlePointerOver = (e: any) => {
+  const handlePlanePointerOver = (e: any) => {
     e.stopPropagation()
     setHovered(true)
+    setHoveredCardId(card.id)
     document.body.style.cursor = "pointer"
   }
-  const handlePointerOut = (e: any) => {
+  const handlePlanePointerOut = (e: any) => {
     e.stopPropagation()
     setHovered(false)
+    setHoveredCardId(null)
     document.body.style.cursor = "auto"
+  }
+
+  // DOM direct click & touch handlers (guaranteed to trigger even if R3F delta suppresses clicks)
+  const handleCardPointerDown = (e: React.PointerEvent) => {
+    pointerDownPos.current = { x: e.clientX, y: e.clientY, time: Date.now() }
+  }
+
+  const handleCardPointerUp = (e: React.PointerEvent) => {
+    if (!pointerDownPos.current) return
+    const dx = Math.abs(e.clientX - pointerDownPos.current.x)
+    const dy = Math.abs(e.clientY - pointerDownPos.current.y)
+    const dt = Date.now() - pointerDownPos.current.time
+    pointerDownPos.current = null
+    // If movement < 12px and duration < 500ms, it is a deliberate tap/click
+    if (dx < 12 && dy < 12 && dt < 500) {
+      e.stopPropagation()
+      setSelectedCard(card)
+    }
+  }
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setSelectedCard(card)
+  }
+
+  const handleCardKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      e.stopPropagation()
+      setSelectedCard(card)
+    }
   }
 
   return (
     <group ref={groupRef} position={[position.x, position.y, position.z]}>
+      {/* 3D Invisible Hit Plane for raycasting fallback */}
       <Plane
         ref={meshRef}
-        args={[4.5, 6]}
-        onClick={handleClick}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
+        args={[4.8, 6.4]}
+        onClick={handlePlaneClick}
+        onPointerOver={handlePlanePointerOver}
+        onPointerOut={handlePlanePointerOut}
       >
-        <meshBasicMaterial transparent opacity={0} />
+        <meshBasicMaterial transparent opacity={0} side={THREE.DoubleSide} depthWrite={false} />
       </Plane>
 
       <Html
         transform
         distanceFactor={11}
         position={[0, 0, 0.01]}
+        pointerEvents="none"
         style={{
           transition: "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease",
           transform: hovered ? "scale(1.18)" : "scale(1)",
-          pointerEvents: "none",
         }}
       >
         <div
-          className="w-36 h-48 rounded-xl overflow-hidden shadow-2xl bg-[#0f1115] p-2 select-none transition-all duration-300 backdrop-blur-sm"
+          role="button"
+          tabIndex={0}
+          onClick={handleCardClick}
+          onPointerDown={handleCardPointerDown}
+          onPointerUp={handleCardPointerUp}
+          onKeyDown={handleCardKeyDown}
+          onPointerEnter={() => {
+            setHovered(true)
+            setHoveredCardId(card.id)
+          }}
+          onPointerLeave={() => {
+            setHovered(false)
+            setHoveredCardId(null)
+          }}
+          className="w-36 h-48 rounded-xl overflow-hidden shadow-2xl bg-[#0f1115] p-2 select-none transition-all duration-300 backdrop-blur-sm pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#31b8c6]"
           style={{
+            pointerEvents: "auto",
+            touchAction: "manipulation",
             boxShadow: hovered
-              ? "0 25px 50px rgba(49, 184, 198, 0.6), 0 0 35px rgba(49, 184, 198, 0.4)"
+              ? "0 25px 50px rgba(49, 184, 198, 0.65), 0 0 35px rgba(49, 184, 198, 0.45)"
               : "0 15px 30px rgba(0, 0, 0, 0.75)",
-            border: hovered ? "2px solid rgba(49, 184, 198, 0.85)" : "1px solid rgba(255, 255, 255, 0.12)",
+            border: hovered ? "2px solid rgba(49, 184, 198, 0.9)" : "1px solid rgba(255, 255, 255, 0.12)",
           }}
         >
-          <div className="relative w-full h-[150px] overflow-hidden rounded-lg bg-black/50">
+          <div className="relative w-full h-[150px] overflow-hidden rounded-lg bg-black/60 pointer-events-none">
             <img
               src={card.imageUrl || "/placeholder.svg"}
               alt={card.alt}
@@ -273,7 +330,7 @@ export function FloatingCard({
               draggable={false}
             />
           </div>
-          <div className="mt-1 text-center px-0.5">
+          <div className="mt-1 text-center px-0.5 pointer-events-none">
             <p className="text-white text-[10px] font-medium tracking-wide truncate">{card.title}</p>
           </div>
         </div>
@@ -329,7 +386,8 @@ export function CardModal() {
     if (e.target === e.currentTarget) handleClose()
   }
 
-  const handleDownload = () => {
+  const handleDownload = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!selectedCard) return
     const fileUrl = selectedCard.downloadUrl || selectedCard.imageUrl
     const link = document.createElement("a")
@@ -341,95 +399,141 @@ export function CardModal() {
     document.body.removeChild(link)
   }
 
+  const handleToggleFav = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleFavorite(selectedCard.id)
+  }
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 select-none p-4"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
     >
       {/* Navigation Arrows */}
       <button
-        onClick={goToPrevCard}
+        onClick={(e) => {
+          e.stopPropagation()
+          goToPrevCard()
+        }}
         aria-label="Obra anterior"
-        className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-[#31b8c6] text-white/70 hover:text-black border border-white/10 transition-all z-20 cursor-pointer"
+        className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#31b8c6] text-white/80 hover:text-black border border-white/20 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       <button
-        onClick={goToNextCard}
+        onClick={(e) => {
+          e.stopPropagation()
+          goToNextCard()
+        }}
         aria-label="Siguiente obra"
-        className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-[#31b8c6] text-white/70 hover:text-black border border-white/10 transition-all z-20 cursor-pointer"
+        className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#31b8c6] text-white/80 hover:text-black border border-white/20 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
-      <div className="relative max-w-sm sm:max-w-md w-full mx-4">
+      <div
+        className="relative max-w-sm sm:max-w-md w-full mx-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Desktop Close Button */}
         <button
-          onClick={handleClose}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleClose()
+          }}
           aria-label="Cerrar modal"
-          className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors z-10 p-1 cursor-pointer"
+          className="hidden sm:inline-flex items-center gap-1.5 absolute -top-11 right-0 text-white/70 hover:text-white transition-colors z-20 px-2 py-1 cursor-pointer font-mono text-xs rounded-full bg-white/5 hover:bg-white/10"
         >
-          <X className="w-8 h-8" />
+          <span>Cerrar</span>
+          <X className="w-4 h-4" />
         </button>
 
         <div style={{ perspective: "1000px" }} className="w-full">
           <div
             ref={cardRef}
-            className="relative rounded-2xl bg-[#121418] border border-white/10 p-5 transition-all duration-500 ease-out w-full shadow-2xl"
+            className="relative rounded-2xl bg-[#121418] border border-white/10 p-4 sm:p-5 transition-all duration-500 ease-out w-full shadow-2xl"
             style={{
               transformStyle: "preserve-3d",
-              boxShadow: "0 30px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(49, 184, 198, 0.2)",
+              boxShadow: "0 30px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(49, 184, 198, 0.25)",
             }}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="relative w-full mb-4 overflow-hidden rounded-xl bg-black" style={{ aspectRatio: "3 / 4" }}>
+            {/* Mobile In-Card Close Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleClose()
+              }}
+              aria-label="Cerrar modal"
+              className="sm:hidden absolute top-3 right-3 p-1.5 rounded-full bg-black/70 text-white/80 hover:text-white border border-white/20 z-30 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="relative w-full mb-3 overflow-hidden rounded-xl bg-black" style={{ aspectRatio: "3 / 4" }}>
               <img
                 loading="eager"
-                className="absolute inset-0 h-full w-full rounded-xl object-cover transition-transform duration-500 hover:scale-105"
+                className="absolute inset-0 h-full w-full rounded-xl object-contain bg-black/60 transition-transform duration-500 hover:scale-105"
                 alt={selectedCard.alt}
                 src={selectedCard.imageUrl || "/placeholder.svg"}
               />
             </div>
 
-            <div className="text-center mb-4">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#31b8c6] mb-1 inline-block">
+            <div className="text-center mb-3">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-[#31b8c6] mb-0.5 inline-block">
                 Andrés Morales • Bocetos de Piel
               </span>
-              <h3 className="text-white text-xl font-serif font-medium tracking-tight">{selectedCard.title}</h3>
+              <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-tight">{selectedCard.title}</h3>
               <p className="text-white/40 text-[11px] font-mono mt-0.5">
                 Dibujo #{selectedCard.id} de 149
               </p>
             </div>
 
-            <div className="flex gap-2.5">
-              <button
-                type="button"
-                onClick={handleDownload}
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-lg text-sm font-semibold text-black outline-none transition duration-300 ease-out hover:opacity-90 active:scale-[0.98] shadow-md cursor-pointer"
-                style={{ backgroundColor: "#31b8c6" }}
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  className="inline-flex h-10 flex-1 items-center justify-center rounded-lg text-xs sm:text-sm font-semibold text-black outline-none transition duration-300 ease-out hover:opacity-90 active:scale-[0.98] shadow-md cursor-pointer"
+                  style={{ backgroundColor: "#31b8c6" }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Download className="h-4 w-4" strokeWidth={2} />
+                    <span>Descargar Original</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleToggleFav}
+                  aria-label="Guardar en favoritos"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-black outline-none transition duration-300 ease-out hover:opacity-90 active:scale-[0.98] shadow-md cursor-pointer"
+                  style={{ backgroundColor: "#31b8c6" }}
+                >
+                  <Heart
+                    className="h-4 w-4"
+                    strokeWidth={2}
+                    fill={isFav ? "currentColor" : "none"}
+                  />
+                </button>
+              </div>
+
+              <a
+                href={`https://wa.me/573161482507?text=${encodeURIComponent(
+                  `Hola Andrés, vi la obra "${selectedCard.title}" (Dibujo #${selectedCard.id} de Bocetos de Piel) en amart y me gustaría consultar adquisición/detalles.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/15 text-white/90 border border-white/15 transition-all cursor-pointer shadow-sm"
               >
-                <div className="flex items-center gap-2">
-                  <Download className="h-4 w-4" strokeWidth={2} />
-                  <span>Descargar Obra Original</span>
-                </div>
-              </button>
-              <button
-                type="button"
-                onClick={() => toggleFavorite(selectedCard.id)}
-                aria-label="Guardar en favoritos"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-black outline-none transition duration-300 ease-out hover:opacity-90 active:scale-[0.98] shadow-md cursor-pointer"
-                style={{ backgroundColor: "#31b8c6" }}
-              >
-                <Heart
-                  className="h-4 w-4"
-                  strokeWidth={2}
-                  fill={isFav ? "currentColor" : "none"}
-                />
-              </button>
+                <Sparkles className="h-3.5 w-3.5 text-[#31b8c6]" />
+                <span>Consultar o Adquirir Esta Obra</span>
+              </a>
             </div>
           </div>
         </div>
@@ -480,22 +584,22 @@ export function CardGalaxy() {
 
   return (
     <>
-      <Sphere args={[3, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[3, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#1a1a2e" transparent opacity={0.15} wireframe />
       </Sphere>
-      <Sphere args={[18, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[18, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.035} wireframe />
       </Sphere>
-      <Sphere args={[24, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[24, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.025} wireframe />
       </Sphere>
-      <Sphere args={[30, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[30, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.02} wireframe />
       </Sphere>
-      <Sphere args={[36, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[36, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.015} wireframe />
       </Sphere>
-      <Sphere args={[42, 32, 32]} position={[0, 0, 0]}>
+      <Sphere raycast={() => null} args={[42, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.01} wireframe />
       </Sphere>
 
@@ -641,7 +745,7 @@ function GalleryContent({
   catalogOpen: boolean
   setCatalogOpen: (v: boolean) => void
 }) {
-  const { allCards, cards, activeBatch, setActiveBatch, favorites } = useCard()
+  const { allCards, cards, activeBatch, setActiveBatch, favorites, selectedCard, hoveredCardId } = useCard()
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-black select-none">
@@ -666,7 +770,7 @@ function GalleryContent({
             enableRotate
             minDistance={8}
             maxDistance={85}
-            autoRotate={true}
+            autoRotate={!selectedCard && !catalogOpen && !hoveredCardId}
             autoRotateSpeed={0.25}
             rotateSpeed={0.5}
             zoomSpeed={1.2}
