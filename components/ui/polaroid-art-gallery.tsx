@@ -410,13 +410,17 @@ export default function PolaroidArtGallery({
               )}
             </button>
 
-            {/* Portfolio Link */}
+            {/* Portfolio Link / Exit Gallery */}
             <a
               href="https://andresmorales.com.co"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all"
+              aria-label="Volver al portafolio principal de Andrés Morales"
+              title="Volver al portafolio"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all shrink-0 cursor-pointer"
             >
-              <span>Portafolio</span>
-              <ExternalLink className="w-3 h-3" />
+              <X className="w-3.5 h-3.5 text-[#f96e03] sm:hidden" />
+              <span className="hidden sm:inline">Portafolio</span>
+              <span className="sm:hidden font-medium">Salir</span>
+              <ExternalLink className="w-3 h-3 hidden sm:inline" />
             </a>
 
             {/* Inquire CTA */}
@@ -679,6 +683,9 @@ function StaticExhibitionModal({
     if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
       if (deltaX > 0) onPrev()
       else onNext()
+    } else if (deltaY > 70 && Math.abs(deltaY) > Math.abs(deltaX) * 1.5) {
+      // Intuitive swipe down to close on mobile
+      onClose()
     }
   }
 
@@ -710,109 +717,123 @@ function StaticExhibitionModal({
       aria-modal="true"
     >
       {/* Top Bar */}
-      <header className="h-14 sm:h-16 px-3 sm:px-6 flex items-center justify-between border-b border-white/10 bg-black/60 backdrop-blur-md z-30 shrink-0">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[130px] sm:max-w-none">
+      <header className="h-14 sm:h-16 px-2.5 sm:px-6 flex items-center justify-between gap-1.5 sm:gap-3 border-b border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 select-none">
+        {/* Left: Artwork Series & Number Badge */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink min-w-0">
+          <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[105px] xs:max-w-[145px] sm:max-w-none shrink-0">
             Serie {selectedCard.collectionLabel}
           </span>
-          <span className="text-white/40 font-mono text-xs hidden sm:inline">
-            Obra #{selectedCard.id} de 149
+          <span className="text-white/60 font-mono text-xs font-semibold shrink-0">
+            #{selectedCard.id}
+            <span className="text-white/40 font-normal hidden sm:inline"> de 149</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Wall Simulator Frame Toggle */}
+        {/* Right: Actions List + Pinned Close Button */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink min-w-0 justify-end">
+          {/* Action buttons (scrollable horizontally if screen is very narrow) */}
+          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-0.5 min-w-0 shrink">
+            {/* Wall Simulator Frame Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsFramed((f) => !f)}
+              aria-label={isFramed ? "Ver dibujo sin marco" : "Ver simulador en pared"}
+              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer border shrink-0 ${
+                isFramed
+                  ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-[0_0_12px_rgba(249,110,3,0.5)]"
+                  : "text-white/85 hover:text-white bg-white/10 hover:bg-white/20 border-white/20"
+              }`}
+              title="Simular enmarcado de galería en escala real (30×40 cm)"
+            >
+              <span className="text-sm">🖼️</span>
+              <span className="hidden md:inline">{isFramed ? "En Pared" : "Ver en Pared"}</span>
+            </button>
+
+            {/* Share Button */}
+            <button
+              type="button"
+              onClick={() => onShare(selectedCard)}
+              aria-label="Compartir enlace directo"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+              title="Copiar enlace o compartir en redes"
+            >
+              <Share2 className="h-4 w-4" />
+              <span className="hidden md:inline">Compartir</span>
+            </button>
+
+            {/* Favorite */}
+            <button
+              type="button"
+              onClick={onToggleFav}
+              aria-label="Guardar en favoritos"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              title="Guardar en favoritos"
+            >
+              <Heart
+                className="h-4 w-4 text-[#f96e03]"
+                strokeWidth={2.2}
+                fill={isFav ? "#f96e03" : "none"}
+              />
+              <span className="hidden lg:inline">{isFav ? "Favorito" : "Guardar"}</span>
+            </button>
+
+            {/* Download Original HD */}
+            <button
+              type="button"
+              onClick={handleDownload}
+              aria-label="Descargar original"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+              title="Descargar HD"
+            >
+              <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
+              <span className="hidden lg:inline">HD</span>
+            </button>
+
+            {/* Notes for this Artwork */}
+            <button
+              type="button"
+              onClick={onOpenNotes}
+              aria-label="Ver y dejar notas"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer group shrink-0"
+              title="Libro de notas de visitantes"
+            >
+              <MessageSquare className="h-4 w-4 text-[#f96e03] group-hover:text-[#1E1810]" />
+              <span className="hidden lg:inline">Notas</span>
+              {notesCount > 0 && (
+                <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[10px] font-bold rounded-full font-mono">
+                  {notesCount}
+                </span>
+              )}
+            </button>
+
+            {/* WhatsApp Inquire */}
+            <a
+              href={`https://wa.me/573161482507?text=${encodeURIComponent(
+                `Hola Andrés, vi tu obra "${selectedCard.title}" (Dibujo #${selectedCard.id}, Serie ${selectedCard.collectionLabel}) en amart y me gustaría consultar su adquisición o detalles.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer shrink-0"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Consultar Obra</span>
+              <span className="sm:hidden">Cotizar</span>
+            </a>
+          </div>
+
+          {/* Visual Divider */}
+          <div className="w-[1px] h-6 bg-white/20 shrink-0 mx-0.5" />
+
+          {/* Close Button — ALWAYS VISIBLE, SHRINK-0, PINNED TO RIGHT */}
           <button
             type="button"
-            onClick={() => setIsFramed((f) => !f)}
-            aria-label={isFramed ? "Ver dibujo sin marco" : "Ver simulador en pared"}
-            className={`p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer border ${
-              isFramed
-                ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-[0_0_12px_rgba(249,110,3,0.5)]"
-                : "text-white/85 hover:text-white bg-white/10 hover:bg-white/20 border-white/20"
-            }`}
-            title="Simular enmarcado de galería en escala real (30×40 cm)"
-          >
-            <span className="text-sm">🖼️</span>
-            <span className="hidden md:inline">{isFramed ? "En Pared" : "Ver en Pared"}</span>
-          </button>
-
-          {/* Share Button */}
-          <button
-            type="button"
-            onClick={() => onShare(selectedCard)}
-            aria-label="Compartir enlace directo"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
-            title="Copiar enlace o compartir en redes"
-          >
-            <Share2 className="h-4 w-4" />
-            <span className="hidden md:inline">Compartir</span>
-          </button>
-
-          {/* Favorite */}
-          <button
-            type="button"
-            onClick={onToggleFav}
-            aria-label="Guardar en favoritos"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer"
-          >
-            <Heart
-              className="h-4 w-4 text-[#f96e03]"
-              strokeWidth={2.2}
-              fill={isFav ? "#f96e03" : "none"}
-            />
-            <span className="hidden lg:inline">{isFav ? "Favorito" : "Guardar"}</span>
-          </button>
-
-          {/* Download Original HD */}
-          <button
-            type="button"
-            onClick={handleDownload}
-            aria-label="Descargar original"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
-          >
-            <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
-            <span className="hidden lg:inline">HD</span>
-          </button>
-
-          {/* Notes for this Artwork */}
-          <button
-            type="button"
-            onClick={onOpenNotes}
-            aria-label="Ver y dejar notas"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer group"
-          >
-            <MessageSquare className="h-4 w-4 text-[#f96e03] group-hover:text-[#1E1810]" />
-            <span className="hidden lg:inline">Notas</span>
-            {notesCount > 0 && (
-              <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[10px] font-bold rounded-full font-mono">
-                {notesCount}
-              </span>
-            )}
-          </button>
-
-          {/* WhatsApp Inquire */}
-          <a
-            href={`https://wa.me/573161482507?text=${encodeURIComponent(
-              `Hola Andrés, vi tu obra "${selectedCard.title}" (Dibujo #${selectedCard.id}, Serie ${selectedCard.collectionLabel}) en amart y me gustaría consultar su adquisición o detalles.`
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Consultar Obra</span>
-            <span className="sm:hidden">Cotizar</span>
-          </a>
-
-          {/* Close */}
-          <button
             onClick={onClose}
             aria-label="Cerrar (Esc)"
-            className="p-1.5 sm:p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-0.5 sm:ml-1"
+            title="Cerrar (Esc)"
+            className="p-1.5 sm:p-2 rounded-full text-white bg-white/15 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/25 hover:border-[#f96e03] transition-all cursor-pointer shrink-0 shadow-md active:scale-95"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </div>
       </header>

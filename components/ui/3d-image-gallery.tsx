@@ -545,9 +545,9 @@ export function CardModal() {
           <button
             onClick={handleClose}
             aria-label="Cerrar (Esc)"
-            className="p-1.5 sm:p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-0.5 sm:ml-1"
+            className="p-1.5 sm:p-2 rounded-full text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-colors cursor-pointer shrink-0 ml-1 active:scale-95"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </div>
       </header>
