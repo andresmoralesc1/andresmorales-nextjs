@@ -8,10 +8,11 @@ import { ParticlesBackground } from '@/components/particles-background';
 import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, serviceSchema, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/json-ld';
-import { getCurrentDictionary } from '@/lib/dictionary';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { headers } from 'next/headers';
+import { getServiceFaqs } from '@/data/service-faqs';
 
 export async function generateMetadata({
   params,
@@ -25,7 +26,8 @@ export async function generateMetadata({
     title: dict.metadata.aiTitle,
     description: dict.metadata.aiDescription,
     locale: safeLang,
-    path: safeLang === 'en' ? '/services/ai-automation' : `/${safeLang}/services/ai-automation`,
+    path: '/services/ai-automation',
+    type: 'website',
   });
 }
 
@@ -33,16 +35,33 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-export default async function AiautomationPage() {
+export default async function AiautomationPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+}) {
   const h = await headers();
-  // Resolve the locale from the request header that the middleware sets
-  // (`x-locale`). Fall back to 'en' for the bare-host landing. Used here
-  // for the visible breadcrumb and the inLanguage on the FAQPage schema.
-  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
+  const headerLang = h.get('x-locale');
+  const resolvedParams = params ? await params : undefined;
+  const rawLang = resolvedParams?.lang || headerLang || (await getCurrentLocale());
+  const safeLang = isLocale(rawLang) ? rawLang : 'en';
 
   const dict = await getCurrentDictionary();
   const s = dict.servicesAi;
   const c = dict.common;
+  const faqs = getServiceFaqs('ai-automation', safeLang);
+
+  const homeLabel = c?.breadcrumbHome || (safeLang === 'es' ? 'Inicio' : safeLang === 'pt' ? 'Início' : 'Home');
+  const servicesLabel = dict.nav?.services || c?.breadcrumbServices || (safeLang === 'es' ? 'Servicios' : safeLang === 'pt' ? 'Serviços' : 'Services');
+  const currentBreadcrumb = s.breadcrumbCurrent || 'AI Automation';
+
+  const faqHeading = safeLang === 'es' ? 'Preguntas frecuentes' : safeLang === 'pt' ? 'Perguntas frequentes' : 'Frequently asked questions';
+  const faqIntro = safeLang === 'es'
+    ? 'Preguntas clave sobre tiempos de implementación, privacidad de datos empresariales, agentes y costos.'
+    : safeLang === 'pt'
+    ? 'Principais dúvidas sobre tempo de entrega, privacidade de dados corporativos, agentes e investimentos.'
+    : 'Common questions about timelines, data privacy, AI agents, and integration costs.';
+
   const CAPABILITIES = [
     { title: s.cap1Title, desc: s.cap1Desc },
     { title: s.cap2Title, desc: s.cap2Desc },
@@ -69,86 +88,40 @@ export default async function AiautomationPage() {
     s.stack8,
   ];
 
-  // FAQ items shown both as visible <details> blocks on the page AND in
-  // the FAQPage JSON-LD schema below. Google's rich-results guideline
-  // requires the Q&A to be present in the page's HTML — not just in the
-  // schema — so the visible <details> is the source of truth and the
-  // schema mirrors it. Don't ship the schema without the visible
-  // questions or Google will reject the rich result.
-  //
-  // The strings are hardcoded in English because (a) the questions are
-  // commonly searched in English globally regardless of locale and
-  // (b) the dictionary system doesn't yet carry FAQ strings per locale.
-  // The visible <details> is what users read; the schema matches it.
-  const FAQS = [
-    {
-      question: 'How long does an AI automation project take?',
-      answer:
-        'A typical engagement runs 2 to 6 weeks from kickoff to first flow in production. Workflow audits ship in 1 week. The first automation in production usually lands by week 3.',
-    },
-    {
-      question: 'What does an AI automation engagement cost?',
-      answer:
-        'Projects start at $2,000 USD for a single workflow and scale to $50,000+ for multi-agent systems with custom integrations. Pricing is fixed per workflow after the audit so there are no surprise bills.',
-    },
-    {
-      question: 'Do I need to replace my existing tools?',
-      answer:
-        'No. Automations layer on top of the tools you already use — HubSpot, Pipedrive, Airtable, Notion, Google Sheets, WooCommerce, Shopify, Telegram, WhatsApp, Slack. n8n and Make connect them via APIs and webhooks without requiring a migration.',
-    },
-    {
-      question: 'Where does my data live?',
-      answer:
-        'Your data stays where it already is. I use self-hosted models (Ollama, vLLM) when privacy or cost demands it, and third-party APIs (OpenAI, Anthropic) when speed to ship matters more. The choice is yours per workflow.',
-    },
-    {
-      question: 'What happens after the automation ships?',
-      answer:
-        'Every flow has a dashboard, every error has an alert, every retry has a story. I monitor what real traffic teaches and iterate. Most clients keep a small monthly retainer for ongoing improvements.',
-    },
-    {
-      question: 'Do you build AI agents and chatbots?',
-      answer:
-        'Yes. Custom AI agents for support, lead qualification, and internal knowledge. Versioned prompts, human-in-the-loop handoffs, and source-grounded answers so the agent does not hallucinate about your business.',
-    },
-  ];
-
-  // ISO 639-1 / BCP-47 tag for the FAQPage inLanguage. The visible
-  // strings are English so we declare 'en' here regardless of which
-  // locale rendered the page; users in /es/ and /pt/ still see the
-  // Spanish/Portuguese UI around the FAQ section.
-  const FAQ_LANG = 'en';
-
   return (
     <>
       <JsonLd
         data={serviceSchema({
-          name: 'AI Automation Consulting',
-          description:
-            'AI-powered automations, chatbots and digital agents that save hours every week. Built on real workflow analysis, not hype.',
-          path: '/services/ai-automation',
+          name: dict.metadata.aiH1 || s.heroTitle,
+          description: dict.metadata.aiDescription,
+          path: getLocalizedPath('/services/ai-automation', safeLang),
           serviceType: 'AI Automation Consulting',
-          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES', 'BR'],
           priceRange: '$$',
         })}
       />
       <JsonLd
         data={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'Services', path: '/services' },
-          { name: 'AI Automation', path: '/services/ai-automation' },
+          { name: homeLabel, path: getLocalizedPath('/', safeLang) },
+          { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+          { name: currentBreadcrumb, path: getLocalizedPath('/services/ai-automation', safeLang) },
         ])}
       />
       <JsonLd
         data={howToSchema({
-          name: 'How I ship an AI automation engagement',
-          description:
-            'A five-step rhythm I follow on every AI automation project, from the first discovery call to a flow running in production.',
+          name: s.approachTitle || 'How I ship an AI automation engagement',
+          description: s.approachSubtitle || 'A five-step rhythm from discovery to production.',
           totalTime: 'P21D',
           steps: APPROACH.map((a) => ({ name: a.title, text: a.desc })),
         })}
       />
-      <JsonLd data={faqSchema(FAQS, FAQ_LANG)} />
+      <JsonLd
+        data={faqSchema(
+          faqs,
+          safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US'
+        )}
+      />
+
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-ai" variant="soft" />
@@ -170,7 +143,7 @@ export default async function AiautomationPage() {
               alt={s.heroImageAlt}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              quality={80}
+              quality={85}
               priority
               className="object-cover object-center"
             />
@@ -178,15 +151,13 @@ export default async function AiautomationPage() {
         </div>
       </section>
 
-      {/* Breadcrumb — visible trail under the hero. Pairs with the
-          breadcrumbSchema() JSON-LD above; the trail MUST agree or
-          Google will reject the rich-result breadcrumbs. */}
+      {/* Breadcrumb — visible trail under the hero */}
       <div className="container-page pt-4">
         <Breadcrumbs
-          lang={lang}
+          lang={safeLang}
           items={[
-            { name: c.breadcrumbServices, path: '/services' },
-            { name: s.breadcrumbCurrent, current: true },
+            { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+            { name: currentBreadcrumb, current: true },
           ]}
         />
       </div>
@@ -196,19 +167,19 @@ export default async function AiautomationPage() {
         <div className="container-page py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">6×</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">12×</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat1}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">14+</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">40+</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat2}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">200h+</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">10h+</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat3}
               </p>
@@ -219,7 +190,7 @@ export default async function AiautomationPage() {
           <div className="bg-background rounded-2xl overflow-hidden border border-theme-9 grid md:grid-cols-2 items-center">
             <div className="aspect-[4/3] md:aspect-auto md:h-full bg-theme-9 relative">
               <Image
-                src={wpImage('/wp-content/uploads/2025/09/Untitled-design-1-poster.jpg')}
+                src="/sites/temptum_home.png"
                 alt={s.caseImageAlt}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -228,7 +199,7 @@ export default async function AiautomationPage() {
             </div>
             <div className="p-8 md:p-10">
               <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
-                {c.featuredCaseBadge}
+                Featured case
               </p>
               <h3 className="font-heading text-2xl md:text-3xl mb-3 text-secondary">
                 {s.caseTitle}
@@ -237,12 +208,74 @@ export default async function AiautomationPage() {
                 {s.caseDesc}
               </p>
               <Link
-                href="/portfolio"
+                href={getLocalizedPath('/work/temptum', safeLang)}
                 className="inline-flex items-center gap-1 text-sm font-secondary font-bold text-secondary uppercase tracking-wider hover:gap-2 hover:text-accent transition-all"
               >
                 {s.caseCta}
               </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Additional Real-World Automation Cases */}
+        <div className="container-page pb-12">
+          <h3 className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-6">
+            {safeLang === 'es' ? 'Otros Casos Reales de Automatización en Producción' : safeLang === 'pt' ? 'Outros Casos Reais de Automação em Produção' : 'More Real-World Automation Case Studies'}
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link
+              href={getLocalizedPath('/work/impresos-americana', safeLang)}
+              className="group p-6 rounded-2xl bg-background border border-theme-9 hover:border-theme-1 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] uppercase font-secondary font-bold text-accent tracking-wider block mb-2">Three.js + n8n B2B</span>
+                <h4 className="font-heading text-lg text-secondary group-hover:text-accent transition-colors mb-2">
+                  Impresos Americana
+                </h4>
+                <p className="text-text text-sm line-clamp-3">
+                  {safeLang === 'es' ? 'Cotizador 3D paramétrico para empaques con generación de planos dieline y CRM n8n.' : safeLang === 'pt' ? 'Cotador 3D paramétrico para embalagens com geração de dieline e CRM n8n.' : 'Parametric 3D packaging visualizer with instant dieline export and n8n CRM pipelines.'}
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-secondary font-bold text-theme-1 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                {safeLang === 'es' ? 'Ver caso' : safeLang === 'pt' ? 'Ver caso' : 'Read case'} →
+              </span>
+            </Link>
+
+            <Link
+              href={getLocalizedPath('/work/embryoglass', safeLang)}
+              className="group p-6 rounded-2xl bg-background border border-theme-9 hover:border-theme-1 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] uppercase font-secondary font-bold text-accent tracking-wider block mb-2">HealthTech + CRM</span>
+                <h4 className="font-heading text-lg text-secondary group-hover:text-accent transition-colors mb-2">
+                  EmbryoGlass IVF
+                </h4>
+                <p className="text-text text-sm line-clamp-3">
+                  {safeLang === 'es' ? 'Plataforma clínica para tratamientos de reproducción asistida con tracking de pacientes y n8n.' : safeLang === 'pt' ? 'Plataforma clínica para reprodução assistida com acompanhamento de pacientes e n8n.' : 'Assisted reproduction clinical platform with patient tracking workflows and automated onboarding.'}
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-secondary font-bold text-theme-1 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                {safeLang === 'es' ? 'Ver caso' : safeLang === 'pt' ? 'Ver caso' : 'Read case'} →
+              </span>
+            </Link>
+
+            <Link
+              href={getLocalizedPath('/work/que-nivel-maribel', safeLang)}
+              className="group p-6 rounded-2xl bg-background border border-theme-9 hover:border-theme-1 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] uppercase font-secondary font-bold text-accent tracking-wider block mb-2">Ticketing + CRM</span>
+                <h4 className="font-heading text-lg text-secondary group-hover:text-accent transition-colors mb-2">
+                  ¡Qué Nivel, Maribel!
+                </h4>
+                <p className="text-text text-sm line-clamp-3">
+                  {safeLang === 'es' ? 'Plataforma cultural de boletería propia con 0% comisiones y pipeline de audiencias.' : safeLang === 'pt' ? 'Plataforma cultural de ingressos próprios com 0% comissão e pipeline de público.' : 'Direct ticketing cultural engine with zero commission fees and audience marketing pipelines.'}
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-secondary font-bold text-theme-1 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                {safeLang === 'es' ? 'Ver caso' : safeLang === 'pt' ? 'Ver caso' : 'Read case'} →
+              </span>
+            </Link>
           </div>
         </div>
       </section>
@@ -253,7 +286,7 @@ export default async function AiautomationPage() {
           <h2 className="font-heading text-3xl md:text-4xl mb-8">
             {s.capabilitiesTitle}
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {CAPABILITIES.map((cap) => (
               <div
                 key={cap.title}
@@ -280,21 +313,21 @@ export default async function AiautomationPage() {
               {s.approachSubtitle}
             </p>
           </div>
-          <ol className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
-            {APPROACH.map((p) => (
-              <li key={p.n} className="relative">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+            {APPROACH.map((pItem) => (
+              <div key={pItem.n} className="relative">
                 <div className="text-accent font-heading text-4xl md:text-5xl mb-3 leading-none">
-                  {p.n}
+                  {pItem.n}
                 </div>
                 <h3 className="font-heading text-lg md:text-xl mb-2 text-secondary">
-                  {p.title}
+                  {pItem.title}
                 </h3>
                 <p className="text-text leading-relaxed text-sm md:text-base">
-                  {p.desc}
+                  {pItem.desc}
                 </p>
-              </li>
+              </div>
             ))}
-          </ol>
+          </div>
           <div className="pt-12 flex flex-wrap items-center gap-3">
             <a
               href={CALENDAR_BOOKING_URL}
@@ -305,7 +338,7 @@ export default async function AiautomationPage() {
               {s.ctaCall}
             </a>
             <a
-              href={getLocalizedPath('/brief?type=automation', lang)}
+              href={getLocalizedPath('/brief?type=ai', safeLang)}
               className="inline-flex items-center justify-center px-8 py-4 rounded-md font-secondary font-bold uppercase tracking-wide text-sm border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors"
             >
               {s.ctaBrief}
@@ -314,28 +347,23 @@ export default async function AiautomationPage() {
         </Reveal>
       </section>
 
-      {/* FAQ — visible Q&A mirrors the FAQPage schema above. Required
-          for Google rich-results eligibility: the JSON-LD must agree
-          with on-page content. Using <details> rather than a custom
-          accordion keeps the Q&A in the HTML even when JS is off
-          (Google's renderer is conservative about JS-only content). */}
+      {/* Localized FAQ Section */}
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-3">
-            Frequently asked questions
+            {faqHeading}
           </h2>
           <p className="text-text leading-relaxed mb-8">
-            Common questions about timelines, pricing, data, and what
-            happens after the automation ships.
+            {faqIntro}
           </p>
           <div className="space-y-3">
-            {FAQS.map((faq, idx) => (
+            {faqs.map((faqItem, idx) => (
               <details
                 key={idx}
                 className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
               >
                 <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
-                  <span>{faq.question}</span>
+                  <span>{faqItem.question}</span>
                   <span
                     aria-hidden="true"
                     className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
@@ -343,7 +371,7 @@ export default async function AiautomationPage() {
                     +
                   </span>
                 </summary>
-                <p className="mt-3 text-text leading-relaxed">{faq.answer}</p>
+                <p className="mt-3 text-text leading-relaxed">{faqItem.answer}</p>
               </details>
             ))}
           </div>
@@ -369,11 +397,11 @@ export default async function AiautomationPage() {
         </Reveal>
       </section>
 
-      {/* Next service */}
+      {/* Next service navigation */}
       <section className="section bg-background pt-0">
         <div className="container-page">
           <Link
-            href="/services/ui-ux-design"
+            href={getLocalizedPath('/services/ui-ux-design', safeLang)}
             className="group flex items-center justify-between gap-6 p-6 md:p-8 rounded-2xl bg-primary border border-theme-9 hover:border-theme-1 hover:shadow-xl transition-all"
           >
             <div>

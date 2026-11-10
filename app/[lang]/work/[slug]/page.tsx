@@ -6,8 +6,9 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
 import { LOCALES, isLocale, getDictionary, type Locale } from '@/lib/i18n';
 import { CASE_STUDIES, getCaseStudyBySlug, type CaseStudy } from '@/data/case-studies';
-import { JsonLd, faqSchema } from '@/lib/json-ld';
+import { JsonLd, faqSchema, breadcrumbSchema } from '@/lib/json-ld';
 import { Reveal } from '@/components/reveal';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 /**
  * Inline SVG icon registry for case-study icons.
@@ -192,14 +193,31 @@ export default async function CaseStudyPage({
   const lblStack = safeLang === 'en' ? 'Built with' : safeLang === 'es' ? 'Construido con' : 'Construído com';
   const lblCTA = safeLang === 'en' ? 'Need a similar project?' : safeLang === 'es' ? '¿Necesitas un proyecto similar?' : 'Precisa de um projeto similar?';
 
+  const homeLabel = safeLang === 'es' ? 'Inicio' : safeLang === 'pt' ? 'Início' : 'Home';
+  const portfolioLabel = safeLang === 'es' ? 'Portafolio' : safeLang === 'pt' ? 'Portfólio' : 'Portfolio';
+  const prefix = safeLang === 'en' ? '' : `/${safeLang}`;
+
+  const breadcrumbItems = [
+    { name: portfolioLabel, path: '/portfolio' },
+    { name: title, current: true },
+  ];
+
+  const breadcrumbLdItems = [
+    { name: homeLabel, path: prefix || '/' },
+    { name: portfolioLabel, path: `${prefix}/portfolio` },
+    { name: title, path: `${prefix}/work/${cs.slug}` },
+  ];
+
   return (
     <>
       <JsonLd data={caseStudySchema(cs, safeLang)} />
+      <JsonLd data={breadcrumbSchema(breadcrumbLdItems)} />
       <JsonLd data={faqSchema(workFaqs(cs, safeLang), FAQ_LANG[safeLang])} />
 
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <div className="container-page relative z-10 max-w-5xl">
+          <Breadcrumbs items={breadcrumbItems} lang={safeLang} homeLabel={homeLabel} />
           <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold flex items-center gap-2">
             <Icon name={cs.industryIcon} size={14} />
             {cs.industry[safeLang]} · {cs.region}
@@ -385,6 +403,30 @@ export default async function CaseStudyPage({
               </span>
             ))}
           </Reveal>
+        </div>
+      </section>
+
+      {/* Contextual Service Internal Link (SEO Link Equity) */}
+      <section className="bg-theme-5 border-y border-theme-9 py-8">
+        <div className="container-page max-w-5xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-1">
+              {safeLang === 'es' ? 'Especialidad & Servicio Relacionado' : safeLang === 'pt' ? 'Especialidade & Serviço Relacionado' : 'Related Expertise & Service'}
+            </p>
+            <p className="text-sm md:text-base text-secondary font-medium">
+              {safeLang === 'es'
+                ? '¿Quieres implementar una arquitectura escalable o pipelines de automatización con IA en tu negocio?'
+                : safeLang === 'pt'
+                ? 'Deseja implementar uma arquitetura escalável ou automações com IA no seu negócio?'
+                : 'Need to implement high-performance web architecture or custom AI automation pipelines for your company?'}
+            </p>
+          </div>
+          <Link
+            href={`/${safeLang === 'en' ? '' : `${safeLang}/`}services/ai-automation`}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary border border-theme-9 hover:border-theme-1 text-xs font-secondary font-bold uppercase tracking-wider text-secondary hover:text-accent transition-all shrink-0 shadow-sm"
+          >
+            {safeLang === 'es' ? 'Ver Servicios de Automatización IA' : safeLang === 'pt' ? 'Ver Serviços de Automação IA' : 'Explore AI Automation Services'} →
+          </Link>
         </div>
       </section>
 

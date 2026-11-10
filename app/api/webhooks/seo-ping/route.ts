@@ -46,7 +46,7 @@ async function handlePing(req: NextRequest) {
 
   const keyPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(process.cwd(), 'google-service-account.json');
 
-  if (!fs.existsSync(keyPath)) {
+  if (!fs.existsSync(/*turbopackIgnore: true*/ keyPath)) {
     return NextResponse.json(
       { error: 'Service account credentials not found on server' },
       { status: 500 }
@@ -54,7 +54,7 @@ async function handlePing(req: NextRequest) {
   }
 
   try {
-    const serviceAccount = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+    const serviceAccount = JSON.parse(fs.readFileSync(/*turbopackIgnore: true*/ keyPath, 'utf8'));
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
