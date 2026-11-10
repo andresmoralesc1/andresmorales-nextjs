@@ -102,22 +102,34 @@ export async function generateMetadata({
     locale: safeLang,
     path,
     type: 'article',
+    ogImage: cs.heroImage,
   });
 }
 
 function caseStudySchema(cs: CaseStudy, lang: Locale) {
+  const caseUrl = `https://andresmorales.com.co${lang === 'en' ? '' : `/${lang}`}/work/${cs.slug}`;
+  const fullImageUrl = cs.heroImage.startsWith('http')
+    ? cs.heroImage
+    : `https://andresmorales.com.co${cs.heroImage}`;
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
+    '@type': 'TechArticle',
+    headline: cs.title[lang],
     name: cs.title[lang],
     description: cs.summary[lang],
-    url: `https://andresmorales.com.co${lang === 'en' ? '' : `/${lang}`}/work/${cs.slug}`,
+    image: fullImageUrl,
+    url: caseUrl,
     inLanguage: lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
     genre: cs.industry[lang],
     keywords: cs.stack.join(', '),
     creator: { '@id': 'https://andresmorales.com.co/#person' },
+    author: { '@id': 'https://andresmorales.com.co/#person' },
+    publisher: { '@id': 'https://andresmorales.com.co/#person' },
     provider: { '@id': 'https://andresmorales.com.co/#person' },
     dateCreated: cs.timeline,
+    datePublished: `${cs.timeline}-01-01`,
+    mainEntityOfPage: caseUrl,
   };
 }
 

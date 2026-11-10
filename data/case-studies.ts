@@ -692,11 +692,11 @@ export const CASE_STUDIES: CaseStudy[] = [
 
   // ── proj4 (was proj13 — swapped in FEATURED_PROJECTS) ── Temptum —
   // corporate site for an AI consulting firm. Single-page Next.js on Vercel
-  // with a Brevo-backed briefing form. Live at temptum-ai.vercel.app.
+  // with a Brevo-backed briefing form. Live at temptum.io.
   {
     slug: 'temptum',
     projectKey: 'proj4',
-    liveUrl: 'https://temptum-ai.vercel.app/',
+    liveUrl: 'https://temptum.io/',
     heroImage: '/work/temptum/hero.png',
     timeline: '2026 — present',
     industry: {
@@ -1349,14 +1349,13 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
   },
 
-  // ── proj10 ── Gato Colectivo — same SaaS as Barriotech, different
-  // tenant-themed subdomain. gato.andresmorales.com.co runs the same
-  // codebase with custom tenant theming. (See proj1 / Barriotech case
-  // study for the full architecture.)
+  // ── proj10 ── Gato Colectivo — same SaaS as Barriotech, custom domain.
+  // gatocolectivo.com runs the same codebase with custom tenant theming.
+  // (See proj1 / Barriotech case study for the full architecture.)
   {
     slug: 'gato-colectivo',
     projectKey: 'proj10',
-    liveUrl: 'https://gato.andresmorales.com.co/',
+    liveUrl: 'https://gatocolectivo.com/',
     heroImage: '/work/gato/hero.png',
     timeline: '2025',
     industry: {
@@ -1376,9 +1375,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       pt: 'Um segundo tenant na mesma plataforma Barriotech, com tema com sua própria identidade — mesma arquitetura, mesmo mapa Leaflet, mesma integração Wompi, apenas uma camada visual diferente. A plataforma suporta tematização multi-tenant a partir de um único deploy, então adicionar um novo tenant é uma mudança de config, não uma mudança de código.',
     },
     problem: {
-      en: 'See proj1 / Barriotech case study — same architecture, same tech, same platform. The only difference is the tenant theme (logo, color palette, copy voice) and the subdomain (gato.andresmorales.com.co vs barriotech.com.co). Adding a new tenant should not require a new deployment.',
-      es: 'Ver case study de proj1 / Barriotech — misma arquitectura, mismo stack, misma plataforma. La única diferencia es el tema del tenant (logo, paleta de color, voz del copy) y el subdominio (gato.andresmorales.com.co vs barriotech.com.co). Agregar un nuevo tenant no debería requerir un nuevo deploy.',
-      pt: 'Ver case study do proj1 / Barriotech — mesma arquitetura, mesmo stack, mesma plataforma. A única diferença é o tema do tenant (logo, paleta de cores, voz do copy) e o subdomínio (gato.andresmorales.com.co vs barriotech.com.co). Adicionar um novo tenant não deveria exigir um novo deploy.',
+      en: 'See proj1 / Barriotech case study — same architecture, same tech, same platform. The only difference is the tenant theme (logo, color palette, copy voice) and the domain (gatocolectivo.com vs barriotech.com.co). Adding a new tenant should not require a new deployment.',
+      es: 'Ver case study de proj1 / Barriotech — misma arquitectura, mismo stack, misma plataforma. La única diferencia es el tema del tenant (logo, paleta de color, voz del copy) y el dominio (gatocolectivo.com vs barriotech.com.co). Agregar un nuevo tenant no debería requerir un nuevo deploy.',
+      pt: 'Ver case study do proj1 / Barriotech — mesma arquitetura, mesmo stack, mesma plataforma. A única diferença é o tema do tenant (logo, paleta de cores, voz do copy) e o domínio (gatocolectivo.com vs barriotech.com.co). Adicionar um novo tenant não deveria exigir um novo deploy.',
     },
     solution: {
       en: 'Multi-tenant theming from one deployment. The Next.js app reads the tenant from the subdomain (middleware extracts it from the Host header), looks up the tenant config in the DB, and applies the theme at render time. Adding a new tenant is: (1) add a row to the tenants table with the subdomain, theme tokens, and copy, (2) point the DNS to the same deployment, (3) ship. No new code, no new deploy. The same Leaflet map, the same Wompi integration, the same admin panel — just a different visual layer per tenant.',
@@ -1620,6 +1619,322 @@ export const CASE_STUDIES: CaseStudy[] = [
         en: 'Contact — form wired to a calendar, no "let\'s schedule a call" CTA.',
         es: 'Contacto — formulario conectado a un calendario, sin CTA de "agendemos una llamada".',
         pt: 'Contato — formulário conectado a um calendário, sem CTA de "vamos agendar uma call".',
+      }, aspect: 'wide' },
+    ],
+  },
+
+  // ── proj14 ── Impresos Americana S.A.S. (B2B 3D Configurator)
+  {
+    slug: 'impresos-americana',
+    projectKey: 'proj14',
+    liveUrl: 'https://impresos-americana.vercel.app',
+    heroImage: '/work/impresos-americana/hero.png',
+    timeline: '2026',
+    industry: {
+      en: 'Large-Format Print & POP',
+      es: 'Gran Formato & Material POP',
+      pt: 'Grandes Formatos & POP',
+    },
+    region: 'Cali, Colombia',
+    title: {
+      en: 'Impresos Americana — B2B Commercial Platform & 3D POP Configurator',
+      es: 'Impresos Americana — Plataforma Comercial B2B y Cotizador 3D de Material POP',
+      pt: 'Impresos Americana — Plataforma Comercial B2B e Cotizador 3D de POP',
+    },
+    summary: {
+      en: 'B2B print e-commerce platform featuring real-time 3D product preview, automatic substrate and ink yield calculations, and instant commercial quotation.',
+      es: 'Plataforma e-commerce B2B con previsualización 3D en tiempo real, cálculo automatizado de sustratos y tintas UV, y cotización comercial instantánea.',
+      pt: 'Plataforma B2B com visualização 3D em tempo real, cálculo automatizado de substratos e tintas UV, e orçamentos comerciais instantâneos.',
+    },
+    problem: {
+      en: 'In industrial lithography and POP retail displays, commercial quotation took 24-48 hours due to manual calculations of sheet dimensions, substrate yields (microcorrugated, acrylic, vinyls), and finishing costs. Corporate buyers struggled to approve display units without photorealistic 3D visualization prior to manufacturing.',
+      es: 'En la industria litográfica y de exhibidores POP, la cotización tardaba entre 24 y 48 horas por cálculos manuales de dimensiones de pliego, mermas de sustratos (microcorrugado, acrílico, vinilos) y acabados. Los compradores corporativos requerían aprobar muebles comerciales pero carecían de visualización 3D fidedigna previa a la producción.',
+      pt: 'Na indústria gráfica e de displays POP, o orçamento demorava de 24 a 48 horas por cálculos manuais de substratos (microondulado, acrílico, vinil) e acabamentos. Compradores corporativos precisavam aprovar peças sem visualização 3D fidedigna antes da produção.',
+    },
+    solution: {
+      en: 'Engineered a modern B2B platform on Next.js featuring a real-time interactive 3D configurator. Buyers select floor or counter display templates, inspect textures and structural rigidity in 3D, and generate formal quotes with DIAN electronic invoicing within 3 minutes.',
+      es: 'Se diseñó una plataforma B2B sobre Next.js con cotizador 3D interactivo en tiempo real. Los clientes eligen exhibidores de piso o mostrador, inspeccionan texturas y rigidez en 3D, y generan cotizaciones formales con soporte tributario DIAN en menos de 3 minutos.',
+      pt: 'Desenvolveu-se uma plataforma B2B sobre Next.js com cotizador 3D interativo em tempo real. Clientes escolhem displays de chão ou balcão, inspecionam texturas em 3D e geram orçamentos formais em menos de 3 minutos.',
+    },
+    scope: {
+      en: [
+        'Real-time parametric 3D configurator for retail floor and counter displays',
+        'Automated substrate yield calculation (UV flatbed, corrugated, vinyl)',
+        'Instant B2B pricing engine based on production tier and batch volume',
+        'One-click commercial proforma and DIAN invoice workflow',
+        'Direct WhatsApp and sales executive dispatch pipeline',
+      ],
+      es: [
+        'Cotizador 3D paramétrico para exhibidores de piso y mostrador',
+        'Cálculo automático de rendimiento de sustratos (cama plana UV, microcorrugado, vinilos)',
+        'Motor de precios B2B en tiempo real por volumen y escala de tiraje',
+        'Generación en un clic de proforma comercial y orden de producción DIAN',
+        'Enrutamiento directo a asesores comerciales vía WhatsApp',
+      ],
+      pt: [
+        'Cotizador 3D paramétrico para displays de chão e balcão',
+        'Cálculo automático de rendimento de substratos (mesa plana UV, papelão, vinil)',
+        'Motor de preços B2B em tempo real por volume de tiragem',
+        'Geração em um clique de propostas comerciais e ordem de produção',
+        'Encaminhamento direto para consultores de vendas via WhatsApp',
+      ],
+    },
+    results: [
+      { icon: 'Clock', label: { en: 'Quote time', es: 'Tiempo cotización', pt: 'Tempo orçamento' }, value: { en: '24h → 3m', es: '24h → 3m', pt: '24h → 3m' } },
+      { icon: 'Box', label: { en: 'Capacity', es: 'Capacidad UV', pt: 'Capacidade UV' }, value: { en: '25k m²/mo', es: '25.000 m²/mes', pt: '25.000 m²/mês' } },
+      { icon: 'Sparkles', label: { en: '3D Preview', es: 'Muestra 3D', pt: 'Amostra 3D' }, value: { en: '100% Real', es: '100% Real', pt: '100% Real' } },
+      { icon: 'TrendingUp', label: { en: 'Lead conversion', es: 'Conversión leads', pt: 'Conversão' }, value: { en: '+38%', es: '+38%', pt: '+38%' } },
+    ],
+    stack: ['Next.js', 'Three.js', 'Canvas 3D', 'Tailwind CSS', 'TypeScript'],
+    industryIcon: 'Box',
+    quickFacts: [
+      { icon: 'Calendar', label: { en: 'Launched', es: 'Lanzamiento', pt: 'Lançamento' }, value: '2026' },
+      { icon: 'Globe', label: { en: 'Coverage', es: 'Cobertura', pt: 'Cobertura' }, value: 'Colombia' },
+      { icon: 'Cpu', label: { en: 'Technology', es: 'Tecnología', pt: 'Tecnologia' }, value: 'Next.js + 3D' },
+      { icon: 'CheckCircle', label: { en: 'Status', es: 'Estado', pt: 'Status' }, value: 'Production' },
+    ],
+    screenshots: [
+      { src: '/work/impresos-americana/hero.png', caption: {
+        en: 'Commercial portal — 3D display configurator and production capacity showcase.',
+        es: 'Portal comercial — cotizador 3D de exhibidores y capacidad instalada de planta.',
+        pt: 'Portal comercial — cotizador 3D de displays e capacidade instalada.',
+      }, aspect: 'wide' },
+    ],
+  },
+
+  // ── proj15 ── EmbryoGlass · IVF Clinical Suite
+  {
+    slug: 'embryoglass',
+    projectKey: 'proj15',
+    liveUrl: 'https://github.com/andresmoralesc1/embryo-glass-dashboard',
+    heroImage: '/work/embryoglass/hero.png',
+    timeline: '2026',
+    industry: {
+      en: 'Clinical Embryology & IVF',
+      es: 'Embriología Clínica & FIV',
+      pt: 'Embriologia Clínica & FIV',
+    },
+    region: 'LATAM',
+    title: {
+      en: 'EmbryoGlass — Clinical Embryology & IVF Intelligence Suite',
+      es: 'EmbryoGlass — Suite Clínica de Embriología & Fecundación In Vitro',
+      pt: 'EmbryoGlass — Suite Clínica de Embriologia & Fertilização In Vitro',
+    },
+    summary: {
+      en: 'Advanced biomedical clinical dashboard for assisted reproduction laboratories, time-lapse morphokinetics, Gardner embryo grading, and ESHRE/REDLARA compliance.',
+      es: 'Plataforma biomédica avanzada para laboratorios de reproducción asistida, morfocinética time-lapse, calificación celular Gardner y auditoría médica ESHRE/REDLARA.',
+      pt: 'Plataforma biomédica avançada para laboratórios de reprodução assistida, morfocinética time-lapse, classificação Gardner e auditoria médica ESHRE/REDLARA.',
+    },
+    problem: {
+      en: 'IVF laboratories handle sensitive patient data scattered across incubators, microscopes, and non-auditable paperwork. Embryologists and reproductive endocrinologists required absolute clinical traceability from follicular puncture through blastulation to embryo transfer.',
+      es: 'Los laboratorios de FIV manejan datos sensibles dispersos entre microscopios time-lapse, incubadoras y planillas no auditables. Los embriólogos y ginecólogos necesitaban trazabilidad clínica absoluta desde la punción folicular hasta la transferencia o vitrificación.',
+      pt: 'Laboratórios de FIV operam com dados sensíveis dispersos entre microscópios e registros físicos. Embriologistas necessitavam de rastreabilidade clínica absoluta desde a punção folicular até a transferência embrionária.',
+    },
+    solution: {
+      en: 'Architected an elegant biomedical intelligence suite in White Liquid Glassmorphism adhering to Vienna ESHRE and REDLARA standards. Provides real-time metrics on 2PN fertilization, Gardner embryo quality classification (ICM/TE), and quarterly reproductive performance.',
+      es: 'Se construyó una suite clínica en White Liquid Glassmorphism bajo estándares de Viena ESHRE y REDLARA. Supervisa en tiempo real fecundación normal (2PN), calidad embrionaria Gardner (MCI/trofoectodermo) y rendimiento trimestral del laboratorio.',
+      pt: 'Desenvolveu-se uma suite clínica em White Liquid Glassmorphism conforme diretrizes ESHRE e REDLARA, monitorando fertilização 2PN, qualidade embrionária Gardner e taxas de sucesso trimestrais.',
+    },
+    scope: {
+      en: [
+        'White Liquid Glassmorphism clinical UI with subtle GSAP microinteractions',
+        'Gardner morphological grading matrix (blastocyst expansion, ICM, trophectoderm)',
+        'Full cycle traceability from oocyte retrieval through vitrification / transfer',
+        'Quarterly KPI monitoring (2PN fertilization rate, blastulation, FET survival)',
+        '100% anonymized patient data compliant with international medical privacy standards',
+      ],
+      es: [
+        'Interfaz clínica en White Liquid Glassmorphism con microinteracciones fluidas GSAP',
+        'Matriz de calificación morfológica Gardner (expansión, masa celular interna, trofoectodermo)',
+        'Trazabilidad completa de ciclo desde punción folicular hasta transferencia o vitrificación',
+        'Monitoreo de KPIs de consenso de Viena (tasa 2PN, blastulación, sobrevida FET)',
+        'Anonimización absoluta de pacientes bajo estrictos estándares de privacidad médica',
+      ],
+      pt: [
+        'Interface clínica em White Liquid Glassmorphism com microinterações GSAP',
+        'Matriz de pontuação morfológica Gardner para blastocistos',
+        'Rastreabilidade completa de ciclos desde punção até criopreservação ou transferência',
+        'Monitoramento de KPIs internacionais de consenso de Viena',
+        'Anonimização total de dados de pacientes em conformidade médica',
+      ],
+    },
+    results: [
+      { icon: 'Activity', label: { en: '2PN Fertilization', es: 'Fecundación 2PN', pt: 'Fertilização 2PN' }, value: { en: '87.7%', es: '87.7%', pt: '87.7%' } },
+      { icon: 'ShieldCheck', label: { en: 'Standards', es: 'Estándar', pt: 'Padrão' }, value: { en: 'ESHRE', es: 'ESHRE', pt: 'ESHRE' } },
+      { icon: 'FileText', label: { en: 'Digital audit', es: 'Auditoría', pt: 'Auditoria' }, value: { en: '100% Paperless', es: '100% Digital', pt: '100% Digital' } },
+      { icon: 'CheckCircle', label: { en: 'Quarterly cycles', es: 'Ciclos / trim', pt: 'Ciclos / trim' }, value: { en: '46', es: '46', pt: '46' } },
+    ],
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'GSAP', 'Tailwind CSS'],
+    industryIcon: 'Activity',
+    quickFacts: [
+      { icon: 'Calendar', label: { en: 'Clinical Version', es: 'Versión Clínica', pt: 'Versão Clínica' }, value: '2026' },
+      { icon: 'Globe', label: { en: 'Consensus', es: 'Consenso', pt: 'Consenso' }, value: 'ESHRE / Viena' },
+      { icon: 'Shield', label: { en: 'Privacy', es: 'Privacidad', pt: 'Privacidade' }, value: 'Anonymized' },
+      { icon: 'Cpu', label: { en: 'Framework', es: 'Framework', pt: 'Framework' }, value: 'Next.js 16' },
+    ],
+    screenshots: [
+      { src: '/work/embryoglass/hero.png', caption: {
+        en: 'Clinical overview — laboratory performance, 2PN rates, and Vienna Consensus KPIs.',
+        es: 'Resumen clínico general — rendimiento del laboratorio y metas de consenso de Viena.',
+        pt: 'Visão geral clínica — desempenho do laboratório e metas de consenso de Viena.',
+      }, aspect: 'wide' },
+    ],
+  },
+
+  // ── proj16 ── ¡Qué Nivel, Maribel! (Media, Events & Private CRM)
+  {
+    slug: 'que-nivel-maribel',
+    projectKey: 'proj16',
+    liveUrl: 'https://quenivelmaribel.com',
+    heroImage: '/work/quenivel/hero.png',
+    timeline: '2026',
+    industry: {
+      en: 'Cultural Media & Entertainment',
+      es: 'Medios Culturales & Eventos',
+      pt: 'Mídia & Entretenimento',
+    },
+    region: 'Cali, Colombia',
+    title: {
+      en: '¡Qué Nivel, Maribel! — Cultural Editorial Platform, Ticketing & Private CRM',
+      es: '¡Qué Nivel, Maribel! — Plataforma Editorial Cultural, Ticketing y CRM Privado',
+      pt: '¡Qué Nivel, Maribel! — Plataforma Editorial Cultural, Ingressos e CRM Privado',
+    },
+    summary: {
+      en: 'Editorial media platform and cultural experience club featuring interactive attendee registry, branded guest pass generation, and integrated sponsor CRM.',
+      es: 'Plataforma editorial cultural y club de experiencias con registro interactivo por altura (+1.70m), emisión de pases de acceso y CRM propio para gestión de asistentes y patrocinadores.',
+      pt: 'Plataforma editorial cultural e clube de experiências com registro interativo, emissão de credenciais exclusivas e CRM próprio para público e patrocinadores.',
+    },
+    problem: {
+      en: 'Cultural nightlife collectives in Cali relied on third-party ticketing platforms that charged 15-20% commissions and retained attendee contact data. The brand needed a bold editorial home with interactive identity gating and a proprietary attendee database for future convocations.',
+      es: 'Los colectivos culturales de entretenimiento en Cali dependían de boleteras externas que cobran hasta 20% en comisiones y se quedan con la data de los asistentes. La marca requería un hogar editorial propio con estética audaz, registro interactivo y control absoluto de su comunidad.',
+      pt: 'Coletivos culturais em Cali dependiam de ticketerias de terceiros que cobram altas taxas e retêm os dados do público. A marca precisava de um ambiente editorial próprio com controle total de sua audiência.',
+    },
+    solution: {
+      en: 'Created an unapologetic, high-contrast editorial web platform on Next.js 15 + Prisma. Features height-based interactive registry (+1.70m manifesto), instant digital pass generation, and an automated PostgreSQL CRM dispatching WhatsApp confirmation passes.',
+      es: 'Se desarrolló una plataforma web editorial de alto impacto sobre Next.js 15 y Prisma. Incluye registro interactivo con manifiesto cultural, generación de pases digitales con código único y CRM propio en PostgreSQL sincronizado con WhatsApp.',
+      pt: 'Desenvolveu-se uma plataforma web editorial de alto impacto em Next.js 15 e Prisma, com registro interativo, emissão de pases digitais e CRM próprio integrado ao WhatsApp.',
+    },
+    scope: {
+      en: [
+        'Bold editorial web layout with custom electric blue typography and microanimations',
+        'Interactive height verification and digital access pass generation',
+        'Proprietary attendee CRM on Prisma + PostgreSQL (zero ticketing commissions)',
+        'Automated WhatsApp guest list confirmation and sponsor dispatch',
+        '100% mobile-optimized registration flow with <1s completion time',
+      ],
+      es: [
+        'Diseño web editorial de alto contraste con azul eléctrico y tipografía de impacto',
+        'Wizard interactivo de registro y generación de pases digitales únicos',
+        'CRM propietario en Prisma + PostgreSQL (0% comisiones a boleteras intermediarias)',
+        'Confirmación y despacho automatizado de accesos vía WhatsApp',
+        'Flujo de registro mobile-first completable en menos de 1 minuto',
+      ],
+      pt: [
+        'Layout editorial de alto contraste com tipografia impactante',
+        'Wizard interativo de registro e emissão de credenciais digitais',
+        'CRM proprietário em Prisma + PostgreSQL (0% de comissões para terceiros)',
+        'Despacho automatizado de ingressos e confirmações via WhatsApp',
+        'Fluxo de registro mobile-first concluído em menos de 1 minuto',
+      ],
+    },
+    results: [
+      { icon: 'DollarSign', label: { en: 'Ticket fee', es: 'Comisión boletera', pt: 'Taxa ingressos' }, value: { en: '0%', es: '0%', pt: '0%' } },
+      { icon: 'Users', label: { en: 'Data ownership', es: 'Data propia', pt: 'Dados próprios' }, value: { en: '100%', es: '100%', pt: '100%' } },
+      { icon: 'TrendingUp', label: { en: 'Attendance rate', es: 'Asistencia real', pt: 'Comparecimento' }, value: { en: '92%', es: '92%', pt: '92%' } },
+      { icon: 'Zap', label: { en: 'Registration speed', es: 'Velocidad', pt: 'Velocidade' }, value: { en: '<45s', es: '<45s', pt: '<45s' } },
+    ],
+    stack: ['Next.js 15', 'Prisma ORM', 'PostgreSQL', 'Tailwind CSS', 'TypeScript'],
+    industryIcon: 'Sparkles',
+    quickFacts: [
+      { icon: 'Calendar', label: { en: 'Event Date', es: 'Fecha Evento', pt: 'Data Evento' }, value: '2026' },
+      { icon: 'Globe', label: { en: 'City', es: 'Ciudad', pt: 'Cidade' }, value: 'Cali, CO' },
+      { icon: 'Users', label: { en: 'Community', es: 'Comunidad', pt: 'Comunidade' }, value: '+1.70m' },
+      { icon: 'Database', label: { en: 'Database', es: 'Base de datos', pt: 'Banco de dados' }, value: 'PostgreSQL' },
+    ],
+    screenshots: [
+      { src: '/work/quenivel/hero.png', caption: {
+        en: 'Editorial landing — bold blue manifesto, height pass gating, and event registration.',
+        es: 'Landing editorial — manifiesto azul eléctrico, acceso por estatura y registro de pases.',
+        pt: 'Landing editorial — manifesto cultural, acesso e registro de ingressos.',
+      }, aspect: 'wide' },
+    ],
+  },
+
+  // ── proj17 ── Liz Candelo (Literary Showcase & Poetic Archive)
+  {
+    slug: 'liz-candelo',
+    projectKey: 'proj17',
+    liveUrl: 'https://liz-candelo-poeta.vercel.app',
+    heroImage: '/work/liz-candelo/hero.png',
+    timeline: '2026',
+    industry: {
+      en: 'Literature & Cultural Archive',
+      es: 'Literatura & Archivo Cultural',
+      pt: 'Literatura & Arquivo Cultural',
+    },
+    region: 'Pacífico Colombiano',
+    title: {
+      en: 'Liz Candelo — Poetic Showcase & Afro-Colombian Literary Archive',
+      es: 'Liz Candelo — Vitrina Poética y Archivo Literario del Pacífico Colombiano',
+      pt: 'Liz Candelo — Vitrine Poética e Arquivo Literário do Pacífico Colombiano',
+    },
+    summary: {
+      en: 'Minimalist editorial portfolio and cultural archive for Afro-Colombian poet and researcher Liz Candelo Grueso, featuring poetry collections and press chronicle.',
+      es: 'Portafolio editorial minimalista y archivo digital para la poeta e investigadora cultural afrocolombiana Liz Candelo Grueso, con catálogo de obra y cobertura de prensa.',
+      pt: 'Portfólio editorial minimalista e arquivo digital para a poeta e pesquisadora afro-colombiana Liz Candelo Grueso.',
+    },
+    problem: {
+      en: 'Afro-Colombian oral tradition and Pacific poetry frequently lack digital spaces that honor the dignity of ancestral memory. The author needed an uncluttered digital archive for her publications, FILBo book-fair chronicles, and El Espectador press reviews, free from social media noise.',
+      es: 'La poesía del Pacífico colombiano a menudo carece de espacios digitales que honren la dignidad de la memoria ancestral. La autora necesitaba un archivo digital limpio para su poemario ("La casa más grande del mundo"), crónicas de FILBo y reseñas de prensa sin el ruido de las redes sociales.',
+      pt: 'A poesia do Pacífico colombiano frequentemente carece de espaços digitais que honrem a memória ancestral. A autora precisava de um arquivo digital límpido para divulgar suas obras e participações na Feira do Livro.',
+    },
+    solution: {
+      en: 'Crafted a warm, contemplative literary archive on Next.js with terracotta and Pacific sunlight palettes. Integrates an immersive poem reader, biographical photographic timeline, and direct editorial booking channels.',
+      es: 'Se concibió un archivo literario cálido y pausado sobre Next.js con tonos terracota y sol del Pacífico. Integra un visor inmersivo de poemas, línea de tiempo fotográfica biográfica y canal directo de contratación editorial.',
+      pt: 'Criou-se um arquivo literário intimista em Next.js com tons terrosos do Pacífico. Inclui leitor imersivo de poemas, galeria fotográfica biográfica e canal direto para convites e palestras.',
+    },
+    scope: {
+      en: [
+        'Editorial serif typographic system engineered for long-form poetic reading',
+        'Bilingual poetry catalog with chaptered navigation and audio reading notes',
+        'Press chronicle archive (FILBo, El Espectador, regional literary anthologies)',
+        'High-resolution portrait gallery of literary engagements across Colombia',
+        'Direct contact routing for international keynote talks, festivals, and workshops',
+      ],
+      es: [
+        'Sistema tipográfico serif editorial optimizado para lectura poética pausada',
+        'Catálogo de poemas con navegación por capítulos y notas críticas',
+        'Archivo de prensa y reconocimientos (FILBo, El Espectador, antologías)',
+        'Galería fotográfica en alta resolución de recitales y encuentros en Colombia',
+        'Canal directo de contacto para conferencias internacionales y talleres',
+      ],
+      pt: [
+        'Sistema tipográfico editorial refinado para leitura poética',
+        'Catálogo completo de poemas com navegação intuitiva',
+        'Arquivo de reportagens e coberturas de imprensa internacional',
+        'Galeria de imagens em alta definição de encontros literários',
+        'Canal direto para palestras, festivais e oficinas culturais',
+      ],
+    },
+    results: [
+      { icon: 'BookOpen', label: { en: 'Poems digitized', es: 'Poemas en línea', pt: 'Poemas online' }, value: { en: '100%', es: '100%', pt: '100%' } },
+      { icon: 'Clock', label: { en: 'Avg read time', es: 'Tiempo lectura', pt: 'Tempo leitura' }, value: { en: '3.8 min', es: '3.8 min', pt: '3.8 min' } },
+      { icon: 'Globe', label: { en: 'Cultural region', es: 'Región cultural', pt: 'Região cultural' }, value: { en: 'Pacífico CO', es: 'Pacífico CO', pt: 'Pacífico CO' } },
+      { icon: 'Heart', label: { en: 'Platform fee', es: 'Intermediarios', pt: 'Intermediários' }, value: { en: '0%', es: '0%', pt: '0%' } },
+    ],
+    stack: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Vercel'],
+    industryIcon: 'BookOpen',
+    quickFacts: [
+      { icon: 'Calendar', label: { en: 'Anthology', es: 'Antología', pt: 'Antologia' }, value: '2019-2026' },
+      { icon: 'Globe', label: { en: 'Territory', es: 'Territorio', pt: 'Território' }, value: 'Buenaventura' },
+      { icon: 'Feather', label: { en: 'Genre', es: 'Género', pt: 'Gênero' }, value: 'Poesía / Ensayo' },
+      { icon: 'Award', label: { en: 'Recognition', es: 'Reconocimiento', pt: 'Reconhecimento' }, value: 'FILBo / MinCultura' },
+    ],
+    screenshots: [
+      { src: '/work/liz-candelo/hero.png', caption: {
+        en: 'Literary portal — editorial biography, Pacific poetic manifesto, and works.',
+        es: 'Portal literario — biografía editorial, manifiesto poético del Pacífico y obra.',
+        pt: 'Portal literário — biografia editorial, manifesto poético e catálogo.',
       }, aspect: 'wide' },
     ],
   },
