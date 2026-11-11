@@ -6,6 +6,7 @@ import { getDictionary, DEFAULT_LOCALE, LOCALES, type Locale } from '@/lib/i18n'
 import { getPost, listPosts, postMtime, type BlogLocale, listAllPostSlugs, listSlugsByLocale } from '@/lib/blog';
 import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
+import { JsonLd, articleSchema, breadcrumbSchema } from '@/lib/json-ld';
 import styles from './blog-prose.module.css';
 
 const CONTENT_DIR = join(process.cwd(), 'content', 'blog');
@@ -172,8 +173,32 @@ export default async function BlogPostPage({
     );
   const related = scored.slice(0, 3).map((s) => s.post);
 
+  const siteUrl = 'https://andresmorales.com.co';
+  const postUrl = lang === 'en' ? `${siteUrl}/blog/${slug}` : `${siteUrl}/${lang}/blog/${slug}`;
+  const homeLabel = lang === 'es' ? 'Inicio' : lang === 'pt' ? 'Início' : 'Home';
+  const blogLabel = lang === 'es' ? 'Notas & Blog' : lang === 'pt' ? 'Notas & Blog' : 'Notes & Blog';
+
+  const breadcrumbLdItems = [
+    { name: homeLabel, path: lang === 'en' ? '/' : `/${lang}` },
+    { name: blogLabel, path: lang === 'en' ? '/blog' : `/${lang}/blog` },
+    { name: post.title, path: lang === 'en' ? `/blog/${slug}` : `/${lang}/blog/${slug}` },
+  ];
+
+  const articleLd = articleSchema({
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: mtime ? mtime.toISOString().split('T')[0] : undefined,
+    author: post.author,
+    url: postUrl,
+    image: post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${siteUrl}${post.coverImage}`) : undefined,
+  });
+
   return (
-    <main className="container-page py-16 min-h-[60vh] max-w-3xl">
+    <>
+      <JsonLd data={articleLd} />
+      <JsonLd data={breadcrumbSchema(breadcrumbLdItems)} />
+      <main className="container-page py-16 min-h-[60vh] max-w-3xl">
       <p className="text-xs uppercase tracking-widest text-secondary font-bold mb-3">
         <TrackLink
           href={`/${lang}/blog`}
@@ -311,5 +336,6 @@ export default async function BlogPostPage({
         </section>
       ) : null}
     </main>
+    </>
   );
 }

@@ -61,17 +61,39 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(target, req.url), 308);
   }
 
-  // Handle amart.andresmorales.com.co subdomain -> route directly to 3D Art Gallery
+  // Handle amart.andresmorales.com.co subdomain -> route directly to 3D Art Gallery or dedicated AmArt Admin
   const host = req.headers.get('host') ?? '';
+
+  // 308 Canonical Redirect: consolidate www.andresmorales.com.co -> andresmorales.com.co
+  // Google Search Console showed split impressions (20 on www vs 79 on apex). Consolidating merges PageRank.
+  if (host === 'www.andresmorales.com.co') {
+    const url = req.nextUrl.clone();
+    url.host = 'andresmorales.com.co';
+    url.port = '';
+    url.protocol = 'https:';
+    return NextResponse.redirect(url, 308);
+  }
   const isAmArt = host.startsWith('amart.') || host === 'amart.andresmorales.com.co';
   if (isAmArt) {
+    if (pathname === '/admin/login' || pathname === '/admin/login/') {
+      return NextResponse.rewrite(new URL('/amart/login', req.url));
+    }
+    if (pathname === '/admin' || pathname === '/admin/' || pathname.startsWith('/admin/')) {
+      return NextResponse.rewrite(new URL('/amart/admin', req.url));
+    }
+    if (
+      pathname.startsWith('/api/amart') ||
+      pathname.startsWith('/api/admin/art') ||
+      pathname.startsWith('/api/art-') ||
+      pathname.startsWith('/art/') ||
+      pathname.startsWith('/_next/')
+    ) {
+      return NextResponse.next();
+    }
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set('x-locale', 'es');
     requestHeaders.set('x-pathname', '/art');
     requestHeaders.set('x-is-art', '1');
-    if (pathname.startsWith('/art/') || pathname.startsWith('/_next/')) {
-      return NextResponse.next({ request: { headers: requestHeaders } });
-    }
     return NextResponse.rewrite(new URL('/es/art', req.url), {
       request: { headers: requestHeaders },
     });

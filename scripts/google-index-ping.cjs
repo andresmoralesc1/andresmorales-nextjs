@@ -54,6 +54,11 @@ const CORE_PRIORITY_URLS = [
   `${SITE_URL}/work/kambelleh`,
   `${SITE_URL}/work/temptum`,
   `${SITE_URL}/work/superllantas`,
+  // High-Opportunity Blog Posts with Active Search Impressions in GSC
+  `${SITE_URL}/es/blog/agente-ia-whatsapp-colombia`,
+  `${SITE_URL}/es/blog/consultor-automatizacion-ia-colombia`,
+  `${SITE_URL}/en/blog/hire-ai-automation-consultant`,
+  `${SITE_URL}/pt/blog/n8n-vs-make-brasil`,
 ];
 
 // Helper to send HTTPS POST requests

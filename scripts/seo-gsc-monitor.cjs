@@ -98,15 +98,15 @@ async function fetchGSCData() {
     const targetSite = siteList.find(s => s.siteUrl.includes('andresmorales.com.co')) || siteList[0];
     const today = new Date();
     const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
-    const thirtyDaysAgo = new Date(today.getTime() - 33 * 24 * 60 * 60 * 1000);
+    const sixtyDaysAgo = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
 
     const queryRes = await searchconsole.searchanalytics.query({
       siteUrl: targetSite.siteUrl,
       requestBody: {
-        startDate: thirtyDaysAgo.toISOString().split('T')[0],
+        startDate: sixtyDaysAgo.toISOString().split('T')[0],
         endDate: threeDaysAgo.toISOString().split('T')[0],
         dimensions: ['query', 'page'],
-        rowLimit: 50,
+        rowLimit: 100,
       },
     });
 
@@ -139,22 +139,29 @@ async function run() {
     reportLines.push(`📈 *Datos en Vivo de Google Search Console:*`);
     reportLines.push(`• Total consultas analizadas: ${gsc.rows.length}`);
 
-    // Filter striking distance (position 4 to 15)
-    const striking = gsc.rows.filter(r => r.position >= 4 && r.position <= 15).slice(0, 5);
+    // Filter striking distance (position 4 to 20), sorted by impressions descending
+    const striking = gsc.rows
+      .filter(r => r.position >= 4 && r.position <= 20)
+      .sort((a, b) => b.impressions - a.impressions)
+      .slice(0, 6);
+
     if (striking.length > 0) {
       reportLines.push(``);
-      reportLines.push(`🎯 *Oportunidades Inmediatas (Striking Distance - Posición 4 a 15):*`);
+      reportLines.push(`🎯 *Oportunidades Inmediatas (Striking Distance - Posición 4 a 20):*`);
       striking.forEach((r, idx) => {
-        reportLines.push(`${idx + 1}. \`${r.keys[0]}\` — *Pos:* ${r.position.toFixed(1)} | *Impr:* ${r.impressions} | *Clicks:* ${r.clicks}`);
+        const pagePath = r.keys[1].replace('https://andresmorales.com.co', '').replace('https://www.andresmorales.com.co', '') || '/';
+        reportLines.push(`${idx + 1}. \`${r.keys[0]}\`\n   • Pos: *${r.position.toFixed(1)}* | Impresiones: *${r.impressions}* | Clicks: *${r.clicks}*\n   • URL: \`${pagePath}\``);
       });
     }
 
-    const topClicks = [...gsc.rows].sort((a, b) => b.clicks - a.clicks).slice(0, 3);
-    reportLines.push(``);
-    reportLines.push(`🏆 *Top Consultas por Tráfico:*`);
-    topClicks.forEach((r, idx) => {
-      reportLines.push(`${idx + 1}. \`${r.keys[0]}\` — ${r.clicks} clicks (${(r.ctr * 100).toFixed(1)}% CTR)`);
-    });
+    const topClicks = [...gsc.rows].filter(r => r.clicks > 0).sort((a, b) => b.clicks - a.clicks).slice(0, 4);
+    if (topClicks.length > 0) {
+      reportLines.push(``);
+      reportLines.push(`🏆 *Top Consultas con Clics Registrados:*`);
+      topClicks.forEach((r, idx) => {
+        reportLines.push(`${idx + 1}. \`${r.keys[0]}\` — ${r.clicks} clicks (${(r.ctr * 100).toFixed(1)}% CTR) | Pos: ${r.position.toFixed(1)}`);
+      });
+    }
   } else if (gsc.status === 'API_DISABLED') {
     reportLines.push(`⚠️ *Google Search Console API pendiente por activar en GCP:*`);
     reportLines.push(`Para ver métricas en tiempo real de clics e impresiones, activa la API con 1 clic aquí:`);
