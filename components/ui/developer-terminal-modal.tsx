@@ -82,12 +82,42 @@ export function DeveloperTerminalModal() {
           <div className="space-y-1 text-xs">
             <p className="text-zinc-300 font-bold mb-1">Available commands:</p>
             <p><span className="text-theme-1 font-bold">projects</span> — List recent production platforms</p>
+            <p><span className="text-theme-1 font-bold">devops</span> — Live Linux VPS hardening & security stack</p>
+            <p><span className="text-theme-1 font-bold">infra</span> — Network topology, Caddy HTTP/3 & systemd services</p>
             <p><span className="text-theme-1 font-bold">automation</span> — Inspect n8n and AI agent pipelines</p>
             <p><span className="text-theme-1 font-bold">skills</span> — Full technical stack & architecture</p>
             <p><span className="text-theme-1 font-bold">contact</span> — Instant booking, email and telegram</p>
             <p><span className="text-theme-1 font-bold">whoami</span> — Identity & background summary</p>
             <p><span className="text-theme-1 font-bold">clear</span> — Clear the terminal history</p>
             <p><span className="text-theme-1 font-bold">exit</span> — Close the developer console</p>
+          </div>
+        );
+        break;
+
+      case 'devops':
+      case 'security':
+        output = (
+          <div className="space-y-1 text-xs">
+            <p className="text-emerald-400 font-bold">Linux VPS Security & Hardening Matrix:</p>
+            <p>• <span className="text-white font-bold">Firewall (UFW):</span> Active (Ingress 22/80/443/mail only; strict drop on non-standard ports)</p>
+            <p>• <span className="text-white font-bold">Intrusion Prevention:</span> Fail2ban active with automated jail escalation on brute-force</p>
+            <p>• <span className="text-white font-bold">Edge TLS:</span> Automated Let&apos;s Encrypt wildcard renewal + strict modern TLS 1.3 ciphers</p>
+            <p>• <span className="text-white font-bold">Backups:</span> Automated encrypted PostgreSQL snapshots synced offsite to private Telegram vault</p>
+            <p>• <span className="text-white font-bold">Host Isolation:</span> Sandboxed systemd units running under unprivileged service users</p>
+            <p className="text-zinc-400 text-[11px] mt-1">Zero downtime continuous integration via autonomous local engine.</p>
+          </div>
+        );
+        break;
+
+      case 'infra':
+        output = (
+          <div className="space-y-1 text-xs">
+            <p className="text-cyan-400 font-bold">Infrastructure & Reverse Proxy Topology:</p>
+            <p>• <span className="text-white font-bold">Reverse Proxy:</span> Caddy v2 with native HTTP/3 (QUIC), Brotli compression, and WAF rules</p>
+            <p>• <span className="text-white font-bold">App Server:</span> Next.js 16 (App Router) managed via systemd unit on dedicated loopback port</p>
+            <p>• <span className="text-white font-bold">Database:</span> PostgreSQL with pooled connection limits & point-in-time recovery</p>
+            <p>• <span className="text-white font-bold">Automation Hub:</span> Self-hosted n8n engine with encrypted webhook routing</p>
+            <p>• <span className="text-white font-bold">DNS & Edge:</span> Cloudflare proxy with DDoS protection and DNSSEC validation</p>
           </div>
         );
         break;
