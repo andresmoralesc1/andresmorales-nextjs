@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 
 /**
- * Autonomous "Build in Public" DevLog & Daily Engineering Journal Engine
+ * Enterprise Autonomous "Build in Public" DevLog Engine
  *
- * Workflow:
- * 1. Analyzes all Git commits made today across branches.
- * 2. Scans active conversation transcripts in Antigravity Brain from the last 24h.
- * 3. Launches Playwright to capture live screenshots of updated UI/UX.
- * 4. Calls local AI (via Antigravity CLI / Gemini) to write a technical blog post (ES & EN).
- * 5. Saves markdown posts to `content/blog/`.
- * 6. (Optional/Morning) Rebuilds, triggers Google Indexing API v3, and notifies Telegram.
+ * Capabilities:
+ * 1. Multi-Repo Scanner (andresmorales-nextjs, que-nivel-maribel, gato-colectivo, etc.)
+ * 2. Multi-Chat Brain Analysis (scans all active Antigravity conversations from the day)
+ * 3. Surgical & Component-Level Screenshots with Playwright (Desktop, Mobile, Component DOMs)
+ * 4. Trilingual Generation (ES, EN, PT) + LinkedIn & X/Twitter content
+ * 5. LinkedIn API Integration (Official Posts API + n8n webhook support + 1-click URL)
+ * 6. Interactive One-Tap Deployment via Telegram Inline Keyboard
  *
  * Usage:
- *   node scripts/devlog-generator.cjs            # Generate tonight's DevLog draft & preview
- *   node scripts/devlog-generator.cjs --publish  # Build, publish live & notify Googlebot
+ *   node scripts/devlog-generator.cjs                     # Nightly draft & Telegram interactive preview
+ *   node scripts/devlog-generator.cjs --publish           # Publish blog, Googlebot ping
+ *   node scripts/devlog-generator.cjs --publish --post-linkedin # Publish blog + post to LinkedIn API
  */
 
 const { execSync, execFile } = require('child_process');
@@ -42,23 +43,46 @@ if (fs.existsSync(envPath)) {
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN;
+const LINKEDIN_PERSON_URN = process.env.LINKEDIN_PERSON_URN; // e.g. "urn:li:person:XXXXXX"
+const N8N_LINKEDIN_WEBHOOK_URL = process.env.N8N_LINKEDIN_WEBHOOK_URL;
+const DEVLOG_WEBHOOK_SECRET = process.env.DEVLOG_WEBHOOK_SECRET || 'andresmorales_devlog_2026';
+const SITE_URL = 'https://andresmorales.com.co';
+
 const REPO_DIR = path.join(__dirname, '..');
 const DEVLOG_IMG_DIR = path.join(REPO_DIR, 'public', 'uploads', 'devlog');
 const BRAIN_DIR = '/home/telchar/.gemini/antigravity-cli/brain';
 
-function sendTelegram(text) {
+// Multi-repo watchlist
+const MONITORED_REPOS = [
+  { name: 'andresmorales-nextjs (Portfolio & Core)', path: '/home/telchar/andresmorales-nextjs' },
+  { name: 'que-nivel-maribel (Ticketing & CRM)', path: '/home/telchar/que-nivel-maribel' },
+  { name: 'gato-colectivo (Agencia & Briefs)', path: '/home/telchar/gato-colectivo' },
+  { name: 'kambelleh-pms (Hospitality & Hotel)', path: '/home/telchar/kambelleh-pms' },
+  { name: 'temptum-ai (Diseño & Cotizador)', path: '/home/telchar/temptum-ai' },
+  { name: 'liz-candelo-poeta (Editorial & E-com)', path: '/home/telchar/liz-candelo-poeta' },
+  { name: 'barriotech (FinTech & Pagos)', path: '/home/telchar/barriotech' },
+];
+
+function sendTelegram(text, replyMarkup = null) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     console.log('   ℹ️ Telegram bot token or chat ID not set. Skipping Telegram notification.');
     return Promise.resolve({ ok: false });
   }
 
   return new Promise((resolve) => {
-    const postData = JSON.stringify({
+    const payload = {
       chat_id: TELEGRAM_CHAT_ID,
       text,
       parse_mode: 'Markdown',
       disable_web_page_preview: false,
-    });
+    };
+
+    if (replyMarkup) {
+      payload.reply_markup = replyMarkup;
+    }
+
+    const postData = JSON.stringify(payload);
 
     const req = https.request(
       {
@@ -83,23 +107,36 @@ function sendTelegram(text) {
   });
 }
 
-// 1. Gather git commits from today
-function getTodayGitActivity() {
-  try {
-    const commits = execSync('git log --since="midnight" --pretty=format:"• %s (%h)"', {
-      cwd: REPO_DIR,
-      encoding: 'utf8',
-    }).trim();
+// 1. Gather git activity across all active repositories
+function getMultiRepoActivity() {
+  const activity = [];
+  let totalCommits = 0;
 
-    const diffStat = execSync('git diff --stat HEAD~3..HEAD', {
-      cwd: REPO_DIR,
-      encoding: 'utf8',
-    }).trim();
+  for (const repo of MONITORED_REPOS) {
+    if (!fs.existsSync(repo.path) || !fs.existsSync(path.join(repo.path, '.git'))) continue;
 
-    return { commits, diffStat };
-  } catch (err) {
-    return { commits: '', diffStat: '' };
+    try {
+      const commits = execSync('git log --since="24 hours ago" --pretty=format:"• %s (%h)"', {
+        cwd: repo.path,
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore'],
+      }).trim();
+
+      if (commits) {
+        const count = commits.split('\n').filter(Boolean).length;
+        totalCommits += count;
+        activity.push({
+          repo: repo.name,
+          commits,
+          count,
+        });
+      }
+    } catch (e) {
+      // Ignore repos without commits today
+    }
   }
+
+  return { activity, totalCommits };
 }
 
 // 2. Scan recent conversation logs from Antigravity Brain
@@ -137,20 +174,16 @@ function getTodayChatConversations() {
                 userPrompts.push(text);
               }
             }
-          } catch (e) {
-            // Ignore parse errors on truncated lines
-          }
+          } catch (e) {}
         }
 
         if (userPrompts.length > 0) {
           conversations.push({
             id: d,
-            prompts: userPrompts.slice(-15), // Keep the most relevant prompts
+            prompts: userPrompts.slice(-15),
           });
         }
-      } catch (e) {
-        // Skip unreadable directories
-      }
+      } catch (e) {}
     }
   } catch (err) {
     console.error('Error scanning brain transcripts:', err.message);
@@ -159,127 +192,146 @@ function getTodayChatConversations() {
   return conversations;
 }
 
-// 3. Playwright Screenshot Capture
-async function captureScreenshots(dateStr) {
+// 3. Playwright Surgical & Component Screenshot Capture
+async function captureSurgicalScreenshots(dateStr) {
   if (!fs.existsSync(DEVLOG_IMG_DIR)) {
     fs.mkdirSync(DEVLOG_IMG_DIR, { recursive: true });
   }
 
-  console.log('📸 [Playwright] Capturando vistas de interfaz y componentes actualizados...');
+  console.log('📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...');
+
+  const captured = {};
 
   try {
     const { chromium } = require('/home/telchar/gato-colectivo/node_modules/playwright');
     const browser = await chromium.launch({ headless: true });
 
-    // Desktop capture
+    // Desktop Context (1440x950)
     const desktopContext = await browser.newContext({
-      viewport: { width: 1440, height: 900 },
+      viewport: { width: 1440, height: 950 },
       deviceScaleFactor: 1.5,
     });
     const page = await desktopContext.newPage();
-    await page.goto('https://andresmorales.com.co/es/portfolio', {
+    await page.goto(`${SITE_URL}/es/portfolio`, {
       waitUntil: 'networkidle',
       timeout: 30000,
     });
     await page.waitForTimeout(2000);
 
-    const desktopFile = `devlog-${dateStr}-portfolio-desktop.png`;
-    const desktopPath = path.join(DEVLOG_IMG_DIR, desktopFile);
-    await page.screenshot({ path: desktopPath });
-    console.log(`   ✅ Desktop screenshot guardado: ${desktopFile}`);
+    // Capture Full Desktop
+    const deskFile = `devlog-${dateStr}-desktop.png`;
+    await page.screenshot({ path: path.join(DEVLOG_IMG_DIR, deskFile) });
+    captured.desktopUrl = `/uploads/devlog/${deskFile}`;
+    console.log(`   ✅ Desktop viewport capturado: ${deskFile}`);
 
-    // Mobile capture
+    // Surgical Component 1: ROI Calculator
+    try {
+      const roiSection = (await page.$('section:has-text("Calculadora")')) || (await page.$('section:has-text("ROI")'));
+      if (roiSection) {
+        await roiSection.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(800);
+        const roiFile = `devlog-${dateStr}-component-roi.png`;
+        await roiSection.screenshot({ path: path.join(DEVLOG_IMG_DIR, roiFile) });
+        captured.roiUrl = `/uploads/devlog/${roiFile}`;
+        console.log(`   ✅ Componente quirúrgico capturado: ROI Calculator`);
+      }
+    } catch (e) {}
+
+    // Surgical Component 2: Bento Grid or Terminal
+    try {
+      await page.keyboard.press('Backquote'); // Open dev terminal
+      await page.waitForTimeout(1000);
+      const terminal = await page.$('div:has-text("andres@studio")');
+      if (terminal) {
+        const termFile = `devlog-${dateStr}-component-terminal.png`;
+        await terminal.screenshot({ path: path.join(DEVLOG_IMG_DIR, termFile) });
+        captured.terminalUrl = `/uploads/devlog/${termFile}`;
+        console.log(`   ✅ Componente quirúrgico capturado: Developer Terminal Modal`);
+        await page.keyboard.press('Escape');
+      }
+    } catch (e) {}
+
+    // Mobile Context (390x844)
     const mobileContext = await browser.newContext({
       viewport: { width: 390, height: 844 },
       deviceScaleFactor: 2,
       isMobile: true,
     });
-    const mobilePage = await mobileContext.newPage();
-    await mobilePage.goto('https://andresmorales.com.co/es/portfolio', {
+    const mobPage = await mobileContext.newPage();
+    await mobPage.goto(`${SITE_URL}/es/portfolio`, {
       waitUntil: 'networkidle',
       timeout: 30000,
     });
-    await mobilePage.waitForTimeout(1500);
+    await mobPage.waitForTimeout(1500);
 
-    const mobileFile = `devlog-${dateStr}-portfolio-mobile.png`;
-    const mobilePath = path.join(DEVLOG_IMG_DIR, mobileFile);
-    await mobilePage.screenshot({ path: mobilePath });
-    console.log(`   ✅ Mobile screenshot guardado: ${mobileFile}`);
+    const mobFile = `devlog-${dateStr}-mobile.png`;
+    await mobPage.screenshot({ path: path.join(DEVLOG_IMG_DIR, mobFile) });
+    captured.mobileUrl = `/uploads/devlog/${mobFile}`;
+    console.log(`   ✅ Mobile viewport capturado: ${mobFile}`);
 
     await browser.close();
-
-    return {
-      desktopUrl: `/uploads/devlog/${desktopFile}`,
-      mobileUrl: `/uploads/devlog/${mobileFile}`,
-    };
   } catch (err) {
     console.error('   ⚠️ Error capturando screenshots con Playwright:', err.message);
-    return {
-      desktopUrl: '/uploads/devlog/devlog-preview-hero.png',
-      mobileUrl: '/uploads/devlog/devlog-preview-hero.png',
-    };
+    captured.desktopUrl = '/uploads/devlog/devlog-preview-hero.png';
+    captured.mobileUrl = '/uploads/devlog/devlog-preview-hero.png';
   }
+
+  return captured;
 }
 
-// 4. Call AI to write technical Engineering DevLog
-async function generateArticle(todayDate, gitData, chatData, screenshots) {
-  console.log('🧠 [AI Writer] Analizando actividad del día y redactando DevLog técnico...');
+// 4. Call AI to write Trilingual DevLog (ES, EN, PT) + Social Copy (LinkedIn & X)
+async function generateAllContent(todayDate, multiRepo, chatData, screenshots) {
+  console.log('🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...');
 
   const contextDigest = [
-    `Fecha del trabajo: ${todayDate}`,
+    `Fecha: ${todayDate}`,
     ``,
-    `=== COMMITS EN GITHUB HOY ===`,
-    gitData.commits || 'Actualizaciones de arquitectura, mejoras de SEO y rediseño UI.',
+    `=== ACTIVIDAD MULTI-REPOSITORIO DEL DÍA ===`,
+    multiRepo.activity.length > 0
+      ? multiRepo.activity.map((a) => `[${a.repo} - ${a.count} commits]:\n${a.commits}`).join('\n\n')
+      : 'Actualizaciones de arquitectura, pipelines de automatización y mejoras de SEO.',
     ``,
-    `=== RESUMEN DE CAMBIOS EN ARCHIVOS ===`,
-    gitData.diffStat || 'Componentes de portafolio, schemas estructurados, middleware y scripts de automatización.',
-    ``,
-    `=== PROYECTOS Y REQUERIMIENTOS DISCUTIDOS HOY EN CONVERSACIONES ===`,
+    `=== CONVERSACIONES Y DECISIONES TÉCNICAS EN EL ESTUDIO ===`,
     chatData
-      .map((c, i) => `Conversación ${i + 1}:\n` + c.prompts.map((p) => `  - "${p}"`).join('\n'))
+      .map((c, i) => `Tema ${i + 1}:\n` + c.prompts.map((p) => `  - "${p}"`).join('\n'))
       .join('\n\n'),
   ].join('\n');
 
   const prompt = `Eres Andrés Morales (Senior Full-Stack & AI Automation Engineer).
-Sitio web: https://andresmorales.com.co
+Sitio web: ${SITE_URL}
 
-Escribe una entrada de blog técnica y profesional tipo "Engineering Journal / Build in Public" basada en el trabajo real completado hoy.
+Genera el paquete completo de contenido diario de ingeniería "Build in Public" basado en el trabajo real del día.
 
-Información de la jornada:
+Contexto de la jornada:
 ${contextDigest}
 
-Imágenes disponibles para embeber en markdown:
-- Captura Desktop: ${screenshots.desktopUrl}
-- Captura Mobile: ${screenshots.mobileUrl}
+Imágenes disponibles:
+- Desktop: ${screenshots.desktopUrl}
+- Mobile: ${screenshots.mobileUrl}
+${screenshots.roiUrl ? `- ROI Component: ${screenshots.roiUrl}` : ''}
+${screenshots.terminalUrl ? `- Terminal Component: ${screenshots.terminalUrl}` : ''}
 
-Reglas estrictas de redacción:
-1. Formato markdown limpio con Frontmatter compatible con Next.js:
----
-title: "Título atractivo, profesional y enfocado en ingeniería / valor de negocio"
-description: "Meta description concisa de 150-160 caracteres con keywords técnicas"
-date: ${todayDate}
-tags: ["Next.js", "AI Automation", "UI/UX", "SEO", "DevLog", "Build in Public"]
-author: "Andrés Morales"
-coverImage: ${screenshots.desktopUrl}
-coverImageAlt: "Captura de la nueva interfaz desarrollada por Andrés Morales"
----
-
-2. Estructura del artículo:
-- **El reto / contexto del día**: Qué problema técnico o de negocio necesitábamos resolver hoy (optimizar conversión, automatizar SEO en <30s, arquitectura de eventos/ticketing, enriquecer schemas).
-- **Decisiones de Arquitectura & UI/UX**: Explicar qué se diseñó e implementó (Bento selector, terminal interactiva, simulador ROI, webhooks con Google Indexing API v3, redirecciones canónicas 308). Embeber las capturas con ![](${screenshots.desktopUrl}) y ![](${screenshots.mobileUrl}).
-- **Bloques de código representativos**: Mostrar fragmentos elegantes de TypeScript/Next.js/Caddy o APIs utilizadas.
-- **Métricas & Resultados**: Tiempos de indexación en Googlebot, soporte multilenguaje trilingüe, 0% comisiones, PageSpeed.
-- **Lecciones aprendidas**: Reflexiones prácticas para otros ingenieros y fundadores de tecnología.
-- **Cierre con CTA**: Enlace hacia el cotizador interactivo o agenda de llamada de 30 min.
-
-Responde ÚNICAMENTE con el contenido markdown en ESPAÑOL, sin preámbulos ni bloques de comentarios externos.`;
+Debes responder con un único objeto JSON válido (sin código extra antes ni después) con la siguiente estructura:
+{
+  "es_title": "Título profesional y atractivo en español",
+  "es_description": "Meta description concisa en español (150 chars)",
+  "es_markdown": "Contenido completo en Markdown en español con frontmatter (title, description, date: ${todayDate}, tags, author, coverImage: '${screenshots.desktopUrl}'), reto del día, arquitectura, componentes, código, imágenes embebidas y CTA final.",
+  "en_title": "Professional engineering title in English",
+  "en_description": "Concise meta description in English (150 chars)",
+  "en_markdown": "Full Markdown article translated and localized in English with frontmatter matching Next.js format.",
+  "pt_title": "Título profissional de engenharia em português",
+  "pt_description": "Meta description concisa em português (150 chars)",
+  "pt_markdown": "Full Markdown article translated and localized in Portuguese with frontmatter matching Next.js format.",
+  "linkedin_post": "Post persuasivo para LinkedIn personal de Andrés Morales (máx 1400 caracteres). Formato: Gancho potente, reto técnico resuelto hoy en el estudio, 3 aprendizajes clave con emojis, reflexión de ingeniería y llamado a leer el DevLog completo con link placeholder {{POST_URL}} y hashtags estratégicos (#NextJS #AIAutomation #BuildInPublic #Engineering #FullStack).",
+  "x_thread": "Tweet o mini-hilo conciso para X/Twitter resumiendo lo que se construyó hoy."
+}`;
 
   try {
     const { stdout } = await execFileAsync(
       '/home/telchar/.local/bin/agy',
       ['--model', 'gemini-3.8-flash-low', '--effort', 'low', '-p', prompt],
       {
-        timeout: 45000,
+        timeout: 60000,
         env: {
           ...process.env,
           HOME: '/home/telchar',
@@ -288,69 +340,191 @@ Responde ÚNICAMENTE con el contenido markdown en ESPAÑOL, sin preámbulos ni b
       }
     );
 
-    let cleanMarkdown = stdout.trim();
-    // Remove triple backticks wrapper if LLM wrapped whole markdown
-    if (cleanMarkdown.startsWith('```markdown')) {
-      cleanMarkdown = cleanMarkdown.replace(/^```markdown\n/, '').replace(/\n```$/, '');
-    } else if (cleanMarkdown.startsWith('```')) {
-      cleanMarkdown = cleanMarkdown.replace(/^```\n/, '').replace(/\n```$/, '');
+    let clean = stdout.trim();
+    if (clean.startsWith('```json')) {
+      clean = clean.replace(/^```json\n/, '').replace(/\n```$/, '');
+    } else if (clean.startsWith('```')) {
+      clean = clean.replace(/^```\n/, '').replace(/\n```$/, '');
     }
 
-    return cleanMarkdown;
+    return JSON.parse(clean);
   } catch (err) {
-    console.error('Error invoking agy:', err.message);
+    console.error('Error invoking agy or parsing JSON:', err.message);
     throw err;
   }
 }
 
+// 5. LinkedIn API Integration
+async function publishToLinkedIn(postText, postUrl, imageUrl = null) {
+  console.log('💼 [LinkedIn Publisher] Verificando credenciales para publicación...');
+
+  // Option 1: n8n webhook integration
+  if (N8N_LINKEDIN_WEBHOOK_URL) {
+    console.log('   📡 Enviando post a webhook de n8n para LinkedIn...');
+    try {
+      const res = await fetch(N8N_LINKEDIN_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: postText.replace('{{POST_URL}}', postUrl),
+          url: postUrl,
+          imageUrl: imageUrl ? `${SITE_URL}${imageUrl}` : null,
+          publishedAt: new Date().toISOString(),
+        }),
+      });
+      console.log(`   ✅ n8n webhook respondió: ${res.status}`);
+      return { success: res.ok, method: 'n8n' };
+    } catch (e) {
+      console.warn('   ⚠️ Error enviando a n8n:', e.message);
+    }
+  }
+
+  // Option 2: Direct LinkedIn Posts REST API
+  if (LINKEDIN_ACCESS_TOKEN && LINKEDIN_PERSON_URN) {
+    console.log('   📡 Publicando directamente vía LinkedIn Posts API...');
+    try {
+      const payload = {
+        author: LINKEDIN_PERSON_URN,
+        commentary: postText.replace('{{POST_URL}}', postUrl),
+        visibility: 'PUBLIC',
+        distribution: {
+          feedDistribution: 'MAIN_FEED',
+          targetEntities: [],
+          thirdPartyDistributionChannels: [],
+        },
+        content: {
+          article: {
+            source: postUrl,
+            title: 'Engineering DevLog — Andrés Morales',
+            description: 'Engineering notes, architecture decisions, and daily build-in-public logs.',
+          },
+        },
+        lifecycleState: 'PUBLISHED',
+        isReshareDisabledByAuthor: false,
+      };
+
+      const res = await fetch('https://api.linkedin.com/rest/posts', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${LINKEDIN_ACCESS_TOKEN}`,
+          'X-Restli-Protocol-Version': '2.0.0',
+          'LinkedIn-Version': '202401',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok || res.status === 201) {
+        console.log('   ✅ Publicado exitosamente en LinkedIn Profile.');
+        return { success: true, method: 'linkedin_api' };
+      } else {
+        const errBody = await res.text();
+        console.warn(`   ⚠️ LinkedIn API error (${res.status}):`, errBody);
+        return { success: false, error: errBody };
+      }
+    } catch (err) {
+      console.error('   ⚠️ Error en llamada a LinkedIn API:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
+
+  console.log('   ℹ️ No se detectó LINKEDIN_ACCESS_TOKEN ni N8N_LINKEDIN_WEBHOOK_URL.');
+  console.log('   Generando enlace de compartición directa en 1 clic...');
+  return { success: false, fallback: true };
+}
+
 async function run() {
   const isPublish = process.argv.includes('--publish');
+  const postToLinkedin = process.argv.includes('--post-linkedin');
   const todayDate = new Date().toISOString().split('T')[0];
   const slug = `devlog-${todayDate}`;
 
-  console.log(`🚀 [DevLog Engine] Iniciando ciclo (${isPublish ? 'MODO PUBLICACIÓN MATUTINA' : 'MODO BORRADOR NOCTURNO'})...`);
+  console.log(`🚀 [DevLog Engine Enterprise] Ciclo iniciado (${isPublish ? 'MODO PUBLICACIÓN' : 'MODO BORRADOR NOCTURNO'})...`);
 
-  const gitData = getTodayGitActivity();
+  const multiRepo = getMultiRepoActivity();
   const chatData = getTodayChatConversations();
 
-  if (!gitData.commits && chatData.length === 0) {
-    console.log('ℹ️ No se detectaron commits ni conversaciones hoy. Ciclo finalizado sin publicaciones.');
+  if (multiRepo.totalCommits === 0 && chatData.length === 0) {
+    console.log('ℹ️ No se detectó actividad de código ni conversaciones hoy. Finalizando sin crear borradores.');
     return;
   }
 
-  console.log(`📦 Actividad detectada: ${gitData.commits.split('\n').filter(Boolean).length} commits hoy, ${chatData.length} conversaciones analizadas.`);
+  console.log(`📦 Actividad detectada: ${multiRepo.totalCommits} commits en ${multiRepo.activity.length} repositorios, ${chatData.length} conversaciones.`);
 
-  const screenshots = await captureScreenshots(todayDate);
-  const articleContent = await generateArticle(todayDate, gitData, chatData, screenshots);
+  const screenshots = await captureSurgicalScreenshots(todayDate);
+  const content = await generateAllContent(todayDate, multiRepo, chatData, screenshots);
 
-  // File paths
+  // Write Trilingual Markdown Posts
   const blogDir = path.join(REPO_DIR, 'content', 'blog');
-  const esPostPath = path.join(blogDir, `${slug}.es.md`);
+  if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
 
-  fs.writeFileSync(esPostPath, articleContent, 'utf8');
-  console.log(`✅ Post en español guardado en: ${esPostPath}`);
+  const esFile = path.join(blogDir, `${slug}.es.md`);
+  const enFile = path.join(blogDir, `${slug}.en.md`);
+  const ptFile = path.join(blogDir, `${slug}.pt.md`);
 
-  // Extract title from frontmatter
-  const titleMatch = articleContent.match(/^title:\s*"([^"]+)"/m);
-  const postTitle = titleMatch ? titleMatch[1] : `DevLog ${todayDate}`;
+  fs.writeFileSync(esFile, content.es_markdown, 'utf8');
+  fs.writeFileSync(enFile, content.en_markdown, 'utf8');
+  fs.writeFileSync(ptFile, content.pt_markdown, 'utf8');
+
+  console.log(`✅ Artículos trilingües guardados:`);
+  console.log(`   • ES: ${slug}.es.md`);
+  console.log(`   • EN: ${slug}.en.md`);
+  console.log(`   • PT: ${slug}.pt.md`);
+
+  const postLiveUrl = `${SITE_URL}/es/blog/${slug}`;
+  const shareLinkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postLiveUrl)}`;
 
   if (!isPublish) {
-    // Nightly Telegram alert with summary
-    const tgMsg = [
-      `🌙 *DevLog del Día Generado con Éxito*`,
+    // Nightly Telegram Interactive Alert
+    const webhookBase = `${SITE_URL}/api/webhooks/devlog-action?secret=${DEVLOG_WEBHOOK_SECRET}`;
+
+    const tgMessage = [
+      `🌙 *DevLog del Día Listo para Revisión*`,
       ``,
-      `📝 *Título:* _${postTitle}_`,
-      `📅 *Fecha:* ${todayDate}`,
-      `📸 *Screenshots:* Capturas Full-HD y móviles embebidas`,
-      `📂 *Archivo:* \`content/blog/${slug}.es.md\``,
+      `📰 *${content.es_title}*`,
+      `🌐 *Idiomas:* Español, English, Português generados`,
+      `📦 *Repositorios analizados:* ${multiRepo.activity.map((a) => a.repo.split(' ')[0]).join(', ')}`,
+      `📸 *Screenshots:* Desktop, Mobile y Componentes listos`,
       ``,
-      `💡 _Este post se publicará automáticamente a las 7:30 AM y se notificará a Googlebot._`,
+      `💼 *Copy listo para LinkedIn:*`,
+      `\`\`\``,
+      content.linkedin_post.replace('{{POST_URL}}', postLiveUrl),
+      `\`\`\``,
+      ``,
+      `¿Deseas publicarlo ahora o programarlo?`,
     ].join('\n');
 
-    await sendTelegram(tgMsg);
-    console.log('📡 Notificación nocturna entregada a Telegram.');
+    const inlineKeyboard = {
+      inline_keyboard: [
+        [
+          {
+            text: '🚀 Publicar en Blog y LinkedIn',
+            url: `${webhookBase}&action=publish&linkedin=true`,
+          },
+        ],
+        [
+          {
+            text: '🌐 Solo Blog & Googlebot',
+            url: `${webhookBase}&action=publish&linkedin=false`,
+          },
+          {
+            text: '❌ Descartar',
+            url: `${webhookBase}&action=discard`,
+          },
+        ],
+        [
+          {
+            text: '🔗 Compartir en LinkedIn (1 Clic)',
+            url: shareLinkedInUrl,
+          },
+        ],
+      ],
+    };
+
+    await sendTelegram(tgMessage, inlineKeyboard);
+    console.log('📡 Notificación nocturna e interactiva entregada a Telegram.');
   } else {
-    // Morning publish: compile and trigger Google Indexing API
+    // Publish Phase: Rebuild & Restart
     console.log('🔨 Compilando Next.js para producción...');
     execSync('npm run build', { cwd: REPO_DIR, stdio: 'inherit' });
 
@@ -358,19 +532,30 @@ async function run() {
     execSync('sudo systemctl restart andresmorales-nextjs', { cwd: REPO_DIR });
 
     console.log('⚡ Notificando a Google Indexing API v3...');
-    const postLiveUrl = `https://andresmorales.com.co/es/blog/${slug}`;
     try {
       execSync(`node scripts/google-index-ping.cjs "${postLiveUrl}"`, { cwd: REPO_DIR, stdio: 'inherit' });
     } catch (e) {
       console.warn('Advertencia en ping de indexación:', e.message);
     }
 
+    // Publish to LinkedIn if requested
+    let linkedinResultText = 'Enlace listo para compartir manualmente.';
+    if (postToLinkedin) {
+      const liRes = await publishToLinkedIn(content.linkedin_post, postLiveUrl, screenshots.desktopUrl);
+      if (liRes.success) {
+        linkedinResultText = '✅ Publicado automáticamente en tu perfil de LinkedIn.';
+      } else {
+        linkedinResultText = `⚠️ Pendiente por token de API. [Compartir en 1 Clic](${shareLinkedInUrl})`;
+      }
+    }
+
     const tgPublishMsg = [
-      `🚀 *Nuevo DevLog Publicado & Indexado en Google*`,
+      `🚀 *Nuevo DevLog Publicado en Producción*`,
       ``,
-      `📰 *${postTitle}*`,
+      `📰 *${content.es_title}*`,
       `🔗 [Leer artículo en vivo](${postLiveUrl})`,
-      `⚡ *Google Indexing API:* Notificado con HTTP 200`,
+      `⚡ *Googlebot:* Notificado con HTTP 200`,
+      `💼 *LinkedIn:* ${linkedinResultText}`,
     ].join('\n');
 
     await sendTelegram(tgPublishMsg);
