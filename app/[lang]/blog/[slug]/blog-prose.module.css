@@ -1,7 +1,7 @@
-/* High-end typography & UI styles for DevLogs & Articles */
+/* High-end typography & UI styles for DevLogs & Articles aligned with Site Theme */
 
 .prose {
-  color: #d4d4d8;
+  color: #2e261e;
   max-width: 68ch;
   font-size: 1.0625rem;
   line-height: 1.8;
@@ -11,26 +11,26 @@
 .prose > p {
   margin-top: 1.4em;
   margin-bottom: 1.4em;
-  color: #a1a1aa;
+  color: #443c34;
 }
 
 .prose > h2 {
-  font-family: var(--font-heading, system-ui, sans-serif);
+  font-family: var(--font-heading, Georgia, serif);
   font-weight: 800;
-  color: #ffffff;
+  color: #1e1810;
   font-size: 1.75rem;
   line-height: 1.25;
   margin-top: 2.5em;
   margin-bottom: 0.8em;
   letter-spacing: -0.025em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 2px solid #e7dfd8;
   padding-bottom: 0.4em;
 }
 
 .prose > h3 {
-  font-family: var(--font-heading, system-ui, sans-serif);
+  font-family: var(--font-heading, Georgia, serif);
   font-weight: 700;
-  color: #f4f4f5;
+  color: #1e1810;
   font-size: 1.35rem;
   line-height: 1.35;
   margin-top: 2em;
@@ -40,7 +40,7 @@
 
 .prose > h4 {
   font-weight: 600;
-  color: #e4e4e7;
+  color: #2e261e;
   font-size: 1.125rem;
   margin-top: 1.6em;
   margin-bottom: 0.5em;
@@ -51,7 +51,7 @@
   margin-top: 1.4em;
   margin-bottom: 1.4em;
   padding-left: 1.5em;
-  color: #a1a1aa;
+  color: #443c34;
 }
 
 .prose > ul {
@@ -69,7 +69,7 @@
 }
 
 .prose > a {
-  color: var(--accent, #f96e03);
+  color: #f96e03;
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 600;
@@ -81,29 +81,30 @@
 }
 
 .prose > blockquote {
-  border-left: 3px solid var(--accent, #f96e03);
+  border-left: 4px solid #f96e03;
   padding-left: 1.25em;
   font-style: italic;
   margin: 1.8em 0;
-  color: #d4d4d8;
-  background: rgba(249, 110, 3, 0.03);
+  color: #3d342c;
+  background: rgba(249, 110, 3, 0.06);
   border-radius: 0 0.5rem 0.5rem 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
 }
 
 .prose :not(pre) > code {
-  background: rgba(255, 255, 255, 0.08);
-  color: #38bdf8;
+  background: #ede6df;
+  color: #b94200;
   padding: 0.15em 0.45em;
   border-radius: 0.375rem;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #dfd5cc;
+  font-weight: 600;
 }
 
 .prose > pre {
-  background: #0d0d12;
+  background: #141419;
   color: #f4f4f5;
   padding: 1.25em 1.5em;
   border-radius: 0.75rem;
@@ -112,6 +113,7 @@
   font-size: 0.875rem;
   line-height: 1.7;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .prose > pre > code {
@@ -123,12 +125,12 @@
 
 .prose > strong {
   font-weight: 700;
-  color: #ffffff;
+  color: #1e1810;
 }
 
 .prose > hr {
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #e7dfd8;
   margin: 3em 0;
 }
 
@@ -137,6 +139,6 @@
   height: auto;
   border-radius: 0.75rem;
   margin: 2.2em 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  border: 1px solid #dfd5cc;
+  box-shadow: 0 15px 35px -10px rgba(30, 24, 16, 0.12);
 }

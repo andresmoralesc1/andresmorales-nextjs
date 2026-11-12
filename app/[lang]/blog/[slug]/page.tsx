@@ -243,29 +243,29 @@ export default async function BlogPostPage({
           </figure>
         )}
         <Reveal className="mb-10">
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-[1.15] tracking-tight">
+          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-secondary mb-6 leading-[1.15] tracking-tight">
             {post.title}
           </h1>
 
           {/* Author & Metadata Card */}
-          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 mb-8 backdrop-blur-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-[#eee7df]/60 border border-[#dfd5cc] mb-8 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-accent to-theme-1 p-[2px]">
-                <div className="w-full h-full rounded-full bg-zinc-900 flex items-center justify-center text-xs font-bold text-white">
+                <div className="w-full h-full rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-white">
                   AM
                 </div>
               </div>
               <div>
-                <p className="text-sm font-bold text-zinc-200 leading-none">
+                <p className="text-sm font-bold text-secondary leading-none">
                   {post.author}
                 </p>
-                <p className="text-[11px] text-zinc-400 font-mono mt-0.5">
+                <p className="text-[11px] text-theme-4 font-mono mt-0.5">
                   AI & Full-Stack Systems Architect
                 </p>
               </div>
             </div>
 
-            <div className="text-right flex items-center gap-3 text-xs text-zinc-400 font-mono">
+            <div className="text-right flex items-center gap-3 text-xs text-theme-4 font-mono">
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString(
                   lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
@@ -282,7 +282,7 @@ export default async function BlogPostPage({
           </div>
 
           {showUpdated ? (
-            <p className="text-xs text-emerald-400/90 font-mono mb-4 flex items-center gap-1.5">
+            <p className="text-xs text-emerald-700 font-mono mb-4 flex items-center gap-1.5 font-semibold">
               <span>●</span>
               <span>{dict.blog.updatedOn.replace('{date}', updatedDateStr)}</span>
             </p>
@@ -292,7 +292,7 @@ export default async function BlogPostPage({
             {post.tags.map((t) => (
               <span
                 key={t}
-                className="text-xs font-mono font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 px-2.5 py-1 rounded-md"
+                className="text-xs font-mono font-medium bg-[#eee7df] text-secondary border border-[#dfd5cc] px-2.5 py-1 rounded-md"
               >
                 #{t}
               </span>
@@ -304,7 +304,7 @@ export default async function BlogPostPage({
             in the global stylesheet) to a local CSS module loaded only on
             /blog/[slug]. See blog-prose.module.css for the rule set. */}
         <div
-          className={`${styles.prose} max-w-none text-zinc-300`}
+          className={`${styles.prose} max-w-none`}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
