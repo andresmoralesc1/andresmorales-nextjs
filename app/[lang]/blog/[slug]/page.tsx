@@ -7,6 +7,9 @@ import { getPost, listPosts, postMtime, type BlogLocale, listAllPostSlugs, listS
 import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
 import { JsonLd, articleSchema, breadcrumbSchema } from '@/lib/json-ld';
+import { BlogReadingProgress } from '@/components/ui/blog-reading-progress';
+import { BlogCodeEnhancer } from '@/components/ui/blog-code-enhancer';
+import { BlogCtaBox } from '@/components/ui/blog-cta-box';
 import styles from './blog-prose.module.css';
 
 const CONTENT_DIR = join(process.cwd(), 'content', 'blog');
@@ -196,70 +199,102 @@ export default async function BlogPostPage({
 
   return (
     <>
+      <BlogReadingProgress />
+      <BlogCodeEnhancer />
       <JsonLd data={articleLd} />
       <JsonLd data={breadcrumbSchema(breadcrumbLdItems)} />
       <main className="container-page py-16 min-h-[60vh] max-w-3xl">
-      <p className="text-xs uppercase tracking-widest text-secondary font-bold mb-3">
-        <TrackLink
-          href={`/${lang}/blog`}
-          event="nav_link_clicked"
-          label="blog-back"
-          className="hover:underline"
-        >
-          {lang === 'es' ? '← Volver a notas' : lang === 'pt' ? '← Voltar pras notas' : '← Back to notes'}
-        </TrackLink>
-      </p>
+      <div className="flex items-center justify-between mb-6">
+        <p className="text-xs uppercase tracking-widest text-secondary font-bold">
+          <TrackLink
+            href={`/${lang}/blog`}
+            event="nav_link_clicked"
+            label="blog-back"
+            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-accent transition-colors"
+          >
+            <span>←</span>
+            <span>{lang === 'es' ? 'Volver a notas' : lang === 'pt' ? 'Voltar pras notas' : 'Back to notes'}</span>
+          </TrackLink>
+        </p>
+
+        {post.tags.includes('DevLog') || post.tags.includes('Build in Public') ? (
+          <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            DEVLOG // BUILD IN PUBLIC
+          </span>
+        ) : null}
+      </div>
 
       <article>
         {post.coverImage && (
-          <figure className="mb-8 -mx-4 md:mx-0">
+          <figure className="mb-10 -mx-4 md:mx-0 overflow-hidden rounded-2xl border border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={post.coverImage}
               alt={post.coverImageAlt ?? ''}
-              className="w-full rounded-lg aspect-[21/9] object-cover"
+              className="w-full aspect-[21/9] object-cover"
               loading="eager"
             />
             {post.coverImageCredit && (
-              <figcaption className="mt-2 text-xs text-theme-5/70">
+              <figcaption className="mt-2 text-xs text-theme-5/70 px-4 pb-2">
                 {post.coverImageCredit}
               </figcaption>
             )}
           </figure>
         )}
-        <Reveal className="mb-8">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-secondary mb-3 leading-tight">
+        <Reveal className="mb-10">
+          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-[1.15] tracking-tight">
             {post.title}
           </h1>
-          <p className="text-sm text-theme-5 mb-4">
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString(
-                lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
-                {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                },
-              )}
-            </time>
-            {' · '}
-            {post.readingTime}{' '}
-            {lang === 'es' ? 'min de lectura' : lang === 'pt' ? 'min de leitura' : 'min read'}
-            {' · '}
-            {post.author}
-          </p>
+
+          {/* Author & Metadata Card */}
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 mb-8 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-accent to-theme-1 p-[2px]">
+                <div className="w-full h-full rounded-full bg-zinc-900 flex items-center justify-center text-xs font-bold text-white">
+                  AM
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-zinc-200 leading-none">
+                  {post.author}
+                </p>
+                <p className="text-[11px] text-zinc-400 font-mono mt-0.5">
+                  AI & Full-Stack Systems Architect
+                </p>
+              </div>
+            </div>
+
+            <div className="text-right flex items-center gap-3 text-xs text-zinc-400 font-mono">
+              <time dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString(
+                  lang === 'es' ? 'es-CO' : lang === 'pt' ? 'pt-BR' : 'en-US',
+                  {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  },
+                )}
+              </time>
+              <span>•</span>
+              <span>{post.readingTime} min</span>
+            </div>
+          </div>
+
           {showUpdated ? (
-            <p className="text-xs text-theme-5/70 mt-1">
-              {dict.blog.updatedOn.replace('{date}', updatedDateStr)}
+            <p className="text-xs text-emerald-400/90 font-mono mb-4 flex items-center gap-1.5">
+              <span>●</span>
+              <span>{dict.blog.updatedOn.replace('{date}', updatedDateStr)}</span>
             </p>
           ) : null}
+
           <div className="flex flex-wrap gap-2">
             {post.tags.map((t) => (
               <span
                 key={t}
-                className="text-xs uppercase tracking-wide bg-theme-1/10 text-secondary px-2 py-1 rounded"
+                className="text-xs font-mono font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 px-2.5 py-1 rounded-md"
               >
-                {t}
+                #{t}
               </span>
             ))}
           </div>
@@ -269,9 +304,12 @@ export default async function BlogPostPage({
             in the global stylesheet) to a local CSS module loaded only on
             /blog/[slug]. See blog-prose.module.css for the rule set. */}
         <div
-          className={`${styles.prose} max-w-none text-secondary`}
+          className={`${styles.prose} max-w-none text-zinc-300`}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        {/* High-Converting CTA Box */}
+        <BlogCtaBox lang={lang as 'es' | 'en' | 'pt'} />
       </article>
 
       <footer className="mt-16 pt-8 border-t border-theme-9 flex flex-wrap items-center justify-between gap-4">
