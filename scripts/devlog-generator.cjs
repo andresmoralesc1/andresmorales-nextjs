@@ -591,8 +591,25 @@ async function run() {
       if (liRes.success) {
         linkedinResultText = '✅ Publicado automáticamente en tu perfil de LinkedIn.';
       } else {
-        linkedinResultText = `⚠️ Pendiente por token de API. [Compartir en 1 Clic](${shareLinkedInUrl})`;
+        linkedinResultText = `⚠️ Error al publicar. [Compartir en 1 Clic](${shareLinkedInUrl})`;
       }
+    }
+
+    // Publish to X via Headless Playwright
+    let xResultText = 'Omitido';
+    try {
+      const { postTweetWithPlaywright } = require('./post-to-x-headless.cjs');
+      const tweetText = `${content.x_thread || content.es_title}\n\n👉 ${postLiveUrl}\n\n#NextJS #BuildInPublic #AIAutomation`;
+      console.log('🐦 Publicando automáticamente en X vía Playwright...');
+      const xRes = await postTweetWithPlaywright(tweetText);
+      if (xRes && xRes.success) {
+        xResultText = '✅ Publicado automáticamente en tu perfil de X.';
+      } else {
+        xResultText = '⚠️ Sesión expirada o no disponible.';
+      }
+    } catch (e) {
+      console.warn('Advertencia publicando en X:', e.message);
+      xResultText = '⚠️ Error en automatización de X';
     }
 
     const tgPublishMsg = [
@@ -602,6 +619,7 @@ async function run() {
       `🔗 [Leer artículo en vivo](${postLiveUrl})`,
       `⚡ *Googlebot:* Notificado con HTTP 200`,
       `💼 *LinkedIn:* ${linkedinResultText}`,
+      `🐦 *X (Twitter):* ${xResultText}`,
     ].join('\n');
 
     await sendTelegram(tgPublishMsg);
