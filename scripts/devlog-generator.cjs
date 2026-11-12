@@ -415,44 +415,54 @@ async function publishToLinkedIn(postText, postUrl, imageUrl = null) {
     }
   }
 
-  // Option 2: Direct LinkedIn Posts REST API
+  // Option 2: Direct LinkedIn UGC Posts REST API (v2)
   if (LINKEDIN_ACCESS_TOKEN && LINKEDIN_PERSON_URN) {
     console.log('   📡 Publicando directamente vía LinkedIn Posts API...');
     try {
+      const finalCommentary = postText.replace('{{POST_URL}}', postUrl);
+
       const payload = {
         author: LINKEDIN_PERSON_URN,
-        commentary: postText.replace('{{POST_URL}}', postUrl),
-        visibility: 'PUBLIC',
-        distribution: {
-          feedDistribution: 'MAIN_FEED',
-          targetEntities: [],
-          thirdPartyDistributionChannels: [],
-        },
-        content: {
-          article: {
-            source: postUrl,
-            title: 'Engineering DevLog — Andrés Morales',
-            description: 'Engineering notes, architecture decisions, and daily build-in-public logs.',
+        lifecycleState: 'PUBLISHED',
+        specificContent: {
+          'com.linkedin.ugc.ShareContent': {
+            shareCommentary: {
+              text: finalCommentary,
+            },
+            shareMediaCategory: 'ARTICLE',
+            media: [
+              {
+                status: 'READY',
+                description: {
+                  text: 'Engineering notes, architecture decisions, and daily build-in-public logs.',
+                },
+                originalUrl: postUrl,
+                title: {
+                  text: 'Engineering DevLog — Andrés Morales',
+                },
+              },
+            ],
           },
         },
-        lifecycleState: 'PUBLISHED',
-        isReshareDisabledByAuthor: false,
+        visibility: {
+          'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
+        },
       };
 
-      const res = await fetch('https://api.linkedin.com/rest/posts', {
+      const res = await fetch('https://api.linkedin.com/v2/ugcPosts', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${LINKEDIN_ACCESS_TOKEN}`,
           'X-Restli-Protocol-Version': '2.0.0',
-          'LinkedIn-Version': '202401',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (res.ok || res.status === 201) {
-        console.log('   ✅ Publicado exitosamente en LinkedIn Profile.');
-        return { success: true, method: 'linkedin_api' };
+        const body = await res.json();
+        console.log('   ✅ Publicado exitosamente en LinkedIn Profile:', body.id);
+        return { success: true, method: 'linkedin_api', id: body.id };
       } else {
         const errBody = await res.text();
         console.warn(`   ⚠️ LinkedIn API error (${res.status}):`, errBody);
