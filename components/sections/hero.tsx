@@ -4,6 +4,7 @@ import { wpImage } from '@/lib/theme';
 import { LazyParticles } from '@/components/lazy-particles';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
+import { Calendar, Sparkles, ArrowUpRight } from 'lucide-react';
 
 type Props = {
   portrait?: string;
@@ -126,21 +127,26 @@ export async function Hero({
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-3 sm:gap-4">
+          {/* Action CTAs — sleek, elegant, refined typography and pill shape */}
+          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-3.5">
             <Link
               href={ctaHref}
               target="_blank"
               rel="noreferrer"
-              className="btn-theme text-base px-8 py-3.5 sm:py-4 shadow-md hover:shadow-lg transition-all text-center justify-center min-h-[48px]"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 min-h-[44px] rounded-full bg-theme-1 hover:bg-[#ff7a18] text-secondary font-secondary font-bold text-sm sm:text-base tracking-tight shadow-[0_4px_14px_rgba(249,110,3,0.3)] hover:shadow-[0_6px_20px_rgba(249,110,3,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
-              {dict.homeHero.cta}
+              <Calendar className="w-4 h-4 text-secondary/80 shrink-0" />
+              <span>{dict.homeHero.cta}</span>
+              <ArrowUpRight className="w-4 h-4 text-secondary/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
             </Link>
+
             <a
               href="#speed-audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 rounded-xl border border-secondary/20 bg-white hover:bg-white text-secondary text-base font-semibold transition-all shadow-xs min-h-[48px]"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white/80 hover:bg-white text-secondary font-secondary font-semibold text-sm sm:text-base border border-secondary/15 hover:border-theme-1 hover:text-accent shadow-xs hover:shadow-md backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
-              <span className="text-[#9a3412] font-bold">⚡</span>
+              <Sparkles className="w-4 h-4 text-theme-1 shrink-0" />
               <span>{dict.speedAudit?.badge || 'Auditoría 360°'}</span>
+              <span className="text-xs text-secondary/50 group-hover:text-theme-1 group-hover:translate-y-0.5 transition-all">↓</span>
             </a>
           </div>
         </div>
