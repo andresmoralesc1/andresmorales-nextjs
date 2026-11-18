@@ -576,7 +576,7 @@ export default async function PortfolioPage() {
           </div>
 
           {/* Live Impact Metric Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-3xl mx-auto pt-4 border-t border-theme-9/60">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-w-2xl mx-auto pt-4 border-t border-theme-9/60">
             <div className="p-2.5 rounded-xl bg-primary/70 border border-theme-9/50 text-center">
               <span className="block font-heading text-lg sm:text-xl font-bold text-secondary">
                 +500 hrs/m
@@ -599,14 +599,6 @@ export default async function PortfolioPage() {
               </span>
               <span className="text-[10px] text-text font-mono">
                 {lang === 'en' ? 'PageSpeed Score' : lang === 'pt' ? 'Pontuação PageSpeed' : 'Lighthouse PageSpeed'}
-              </span>
-            </div>
-            <div className="p-2.5 rounded-xl bg-primary/70 border border-theme-9/50 text-center">
-              <span className="block font-heading text-lg sm:text-xl font-bold text-secondary">
-                0% Fee
-              </span>
-              <span className="text-[10px] text-text font-mono">
-                {lang === 'en' ? 'Third-party commissions' : lang === 'pt' ? 'Zero taxas de terceiros' : '0% comisiones a terceros'}
               </span>
             </div>
           </div>

@@ -166,7 +166,7 @@ export async function Hero({
           </div>
 
           {/* Live Impact Metric Strip — Authority & Trust in 5 seconds */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-xl mx-auto md:mx-0 pt-6 mt-6 border-t border-secondary/10">
+          <div className="grid grid-cols-3 gap-2.5 max-w-lg mx-auto md:mx-0 pt-6 mt-6 border-t border-secondary/10">
             <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
               <span className="block font-heading text-base sm:text-lg font-bold text-secondary">
                 +500 hrs/m
@@ -189,14 +189,6 @@ export async function Hero({
               </span>
               <span className="text-[10px] text-text font-mono">
                 {locale === 'en' ? 'PageSpeed Score' : locale === 'pt' ? 'Pontuação PageSpeed' : 'Google PageSpeed'}
-              </span>
-            </div>
-            <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
-              <span className="block font-heading text-base sm:text-lg font-bold text-secondary">
-                0% Fee
-              </span>
-              <span className="text-[10px] text-text font-mono">
-                {locale === 'en' ? 'Third-party commission' : locale === 'pt' ? 'Zero taxas' : '0% comisiones extra'}
               </span>
             </div>
           </div>
