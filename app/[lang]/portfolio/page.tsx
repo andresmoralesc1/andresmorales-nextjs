@@ -16,6 +16,27 @@ import { JsonLd, breadcrumbSchema } from '@/lib/json-ld';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import type { Metadata } from 'next';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const safeLang = isLocale(lang) ? lang : 'en';
+  const dict = await getDictionary(safeLang);
+  return pageMetadata({
+    title: dict.metadata.portfolioTitle,
+    description: dict.metadata.portfolioDescription,
+    locale: safeLang,
+    path: '/portfolio',
+    type: 'website',
+  });
+}
+
+export function generateStaticParams() {
+  return LOCALES.map((lang) => ({ lang }));
+}
+
 type ProjectDefinition = {
   key: string;
   image: string;

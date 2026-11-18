@@ -61,9 +61,11 @@ export function PortfolioFaq({ lang, items, title, subtitle }: Props) {
                 className="bg-primary border border-theme-9 rounded-2xl overflow-hidden shadow-xs hover:border-theme-1/50 transition-all duration-200"
               >
                 <button
+                  id={`portfolio-faq-btn-${idx}`}
                   type="button"
                   onClick={() => toggle(idx)}
                   aria-expanded={isOpen}
+                  aria-controls={`portfolio-faq-answer-${idx}`}
                   className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1"
                 >
                   <span className="font-heading text-base sm:text-lg text-secondary font-bold">
@@ -79,7 +81,12 @@ export function PortfolioFaq({ lang, items, title, subtitle }: Props) {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-sm text-text leading-relaxed border-t border-theme-9/40 animate-in fade-in duration-200">
+                  <div
+                    id={`portfolio-faq-answer-${idx}`}
+                    role="region"
+                    aria-labelledby={`portfolio-faq-btn-${idx}`}
+                    className="px-5 sm:px-6 pb-6 pt-1 text-sm text-text leading-relaxed border-t border-theme-9/40 animate-in fade-in duration-200"
+                  >
                     <p>{item.answer}</p>
                   </div>
                 )}

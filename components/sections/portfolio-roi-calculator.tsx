@@ -92,6 +92,10 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 max="20"
                 step="1"
                 value={teamMembers}
+                aria-valuemin={1}
+                aria-valuemax={20}
+                aria-valuenow={teamMembers}
+                aria-valuetext={`${teamMembers} ${teamMembers === 1 ? 'persona' : 'personas'}`}
                 onChange={(e) => setTeamMembers(Number(e.target.value))}
                 className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />
@@ -126,6 +130,10 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 max="30"
                 step="1"
                 value={hoursPerWeek}
+                aria-valuemin={2}
+                aria-valuemax={30}
+                aria-valuenow={hoursPerWeek}
+                aria-valuetext={`${hoursPerWeek} horas semanales`}
                 onChange={(e) => setHoursPerWeek(Number(e.target.value))}
                 className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />
@@ -160,6 +168,10 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 max="60"
                 step="2"
                 value={hourlyRate}
+                aria-valuemin={10}
+                aria-valuemax={60}
+                aria-valuenow={hourlyRate}
+                aria-valuetext={`$${hourlyRate} dólares por hora`}
                 onChange={(e) => setHourlyRate(Number(e.target.value))}
                 className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />

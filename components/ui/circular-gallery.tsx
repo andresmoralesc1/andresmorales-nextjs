@@ -526,22 +526,27 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
           </div>
         )}
 
-        {/* Pagination Dots indicator */}
+        {/* Pagination Dots indicator with accessible touch targets */}
         {total > 1 && total <= 20 && (
-          <div className="relative z-30 mt-3 flex items-center gap-1.5 flex-wrap justify-center px-4">
+          <div className="relative z-30 mt-2 sm:mt-3 flex items-center gap-0.5 sm:gap-1 flex-wrap justify-center px-4">
             {items.map((_, dotIdx) => (
               <button
                 key={dotIdx}
                 type="button"
                 onClick={() => setActiveIndex(dotIdx)}
-                className={cn(
-                  'transition-all duration-300 rounded-full cursor-pointer',
-                  dotIdx === activeIndex
-                    ? 'w-5 h-1.5 bg-[#f96e03]'
-                    : 'w-1.5 h-1.5 bg-secondary/20 hover:bg-secondary/40'
-                )}
+                className="p-2 sm:p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-1 rounded-full"
                 aria-label={`Ir al proyecto ${dotIdx + 1}`}
-              />
+                aria-current={dotIdx === activeIndex ? 'true' : undefined}
+              >
+                <span
+                  className={cn(
+                    'transition-all duration-300 rounded-full block',
+                    dotIdx === activeIndex
+                      ? 'w-5 h-1.5 bg-[#f96e03]'
+                      : 'w-1.5 h-1.5 bg-secondary/25 hover:bg-secondary/50'
+                  )}
+                />
+              </button>
             ))}
           </div>
         )}
