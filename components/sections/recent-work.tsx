@@ -135,7 +135,7 @@ export async function RecentWork() {
                     : '4 Plataformas Estrella en Producción Real.'}
                 </h3>
               </div>
-              <p className="max-w-md text-xs sm:text-sm text-text font-medium bg-primary/60 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur border border-theme-9">
+              <p className="max-w-md text-xs sm:text-sm text-text font-medium bg-primary/80 sm:bg-primary/60 px-3 sm:px-4 py-2 sm:py-1.5 rounded-2xl sm:rounded-full backdrop-blur border border-theme-9 leading-relaxed">
                 {locale === 'en'
                   ? 'Interactive demos, custom CRM sandbox, and live multi-tenant market.'
                   : 'Demos en vivo, sandbox de CMS con datos simulados y marketplaces multi-tenant.'}

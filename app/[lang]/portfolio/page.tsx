@@ -468,16 +468,16 @@ export default async function PortfolioPage() {
           <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
             {p.heroEyebrow}
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary">
+          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary leading-tight">
             {dict.metadata.portfolioH1}
           </h1>
-          <p className="text-secondary text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-secondary text-base sm:text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
             {p.heroSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8">
             <a
               href={lang === 'en' ? '/brief-web' : `/${lang}/brief-web`}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-theme-1 hover:bg-theme-2 text-secondary font-secondary font-bold rounded-lg shadow-md hover:shadow-lg transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-6 py-3.5 bg-theme-1 hover:bg-theme-2 active:scale-98 text-secondary font-secondary font-bold rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               {p.heroCtaBrief}
               <span aria-hidden>→</span>
@@ -486,7 +486,7 @@ export default async function PortfolioPage() {
               href={CALENDAR_BOOKING_URL}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary font-secondary font-bold rounded-lg transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-6 py-3.5 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary active:scale-98 font-secondary font-bold rounded-xl transition-all"
             >
               {p.heroCta1}
             </a>
@@ -500,7 +500,7 @@ export default async function PortfolioPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
               <a
                 href="#automatizaciones"
-                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md active:scale-[0.98] transition-all flex flex-col justify-between"
               >
                 <div>
                   <span className="text-lg mb-1 block">⚡</span>
@@ -518,7 +518,7 @@ export default async function PortfolioPage() {
 
               <a
                 href="#saas"
-                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md active:scale-[0.98] transition-all flex flex-col justify-between"
               >
                 <div>
                   <span className="text-lg mb-1 block">🚀</span>
@@ -536,7 +536,7 @@ export default async function PortfolioPage() {
 
               <a
                 href="#ecommerce"
-                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md active:scale-[0.98] transition-all flex flex-col justify-between"
               >
                 <div>
                   <span className="text-lg mb-1 block">🛍️</span>
@@ -707,17 +707,17 @@ export default async function PortfolioPage() {
                         {desc}
                       </p>
 
-                      {/* Interactive Architecture Pipeline Wire */}
+                      {/* Interactive Architecture Pipeline Wire (Mobile Touch & Safe Spacing) */}
                       {AUTOMATION_PIPELINES[key] && (
-                        <div className="my-3 px-3 py-2 rounded-xl bg-theme-5/60 border border-theme-9/70 flex items-center justify-between text-[11px] font-mono gap-1.5 shadow-2xs">
-                          <div className="flex items-center gap-1.5 min-w-0">
+                        <div className="my-3 px-2.5 sm:px-3 py-2 rounded-xl bg-theme-5/60 border border-theme-9/70 flex items-center justify-between text-[10px] sm:text-[11px] font-mono gap-1 sm:gap-1.5 shadow-2xs overflow-x-auto no-scrollbar">
+                          <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
                             <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0" />
                             <span className="truncate text-secondary font-bold text-[10px] sm:text-[11px]">
                               {AUTOMATION_PIPELINES[key].from}
                             </span>
                           </div>
-                          <span className="text-theme-1 font-bold text-xs shrink-0 animate-pulse">
-                            ──▶
+                          <span className="text-theme-1 font-bold text-xs shrink-0 animate-pulse px-0.5">
+                            →
                           </span>
                           <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded bg-primary border border-theme-1/40 shrink-0">
                             <span className="w-1 h-1 rounded-full bg-accent animate-ping shrink-0" />
@@ -725,10 +725,10 @@ export default async function PortfolioPage() {
                               {AUTOMATION_PIPELINES[key].mid}
                             </span>
                           </div>
-                          <span className="text-theme-1 font-bold text-xs shrink-0 animate-pulse">
-                            ──▶
+                          <span className="text-theme-1 font-bold text-xs shrink-0 animate-pulse px-0.5">
+                            →
                           </span>
-                          <div className="flex items-center gap-1.5 min-w-0">
+                          <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
                             <span className="w-1.5 h-1.5 rounded-full bg-theme-1 shrink-0" />
                             <span className="truncate text-secondary font-bold text-[10px] sm:text-[11px]">
                               {AUTOMATION_PIPELINES[key].to}

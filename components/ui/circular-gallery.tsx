@@ -328,8 +328,8 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                     <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/90 border border-[#1aab29]/40" />
                   </div>
 
-                  {/* Browser URL Bar Capsule */}
-                  <div className="flex items-center gap-1.5 px-3 py-0.5 sm:py-1 rounded-full bg-white border border-theme-9 text-[10px] sm:text-[11px] font-mono text-secondary/75 shadow-xs max-w-[200px] sm:max-w-xs md:max-w-sm truncate">
+                  {/* Browser URL Bar Capsule (Fluid flex-shrink for narrow 360px phones) */}
+                  <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white border border-theme-9 text-[10px] sm:text-[11px] font-mono text-secondary/75 shadow-xs flex-1 min-w-0 max-w-[130px] sm:max-w-xs md:max-w-sm truncate">
                     <Lock className="w-2.5 h-2.5 text-amber-500 shrink-0" />
                     <span className="truncate">{domainDisplay}</span>
                   </div>
@@ -468,9 +468,9 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
           })}
         </div>
 
-        {/* Clean Floating Controls in Site Palette */}
+        {/* Clean Floating Controls in Site Palette (Mobile Ergonomic Touch Targets) */}
         {showControls && total > 1 && (
-          <div className="relative z-30 mt-6 sm:mt-8 flex items-center gap-3 bg-primary border border-theme-9 px-4 py-2 rounded-full shadow-sm">
+          <div className="relative z-30 mt-6 sm:mt-8 flex items-center gap-2 sm:gap-3 bg-primary border border-theme-9 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-sm">
             {/* Prev Button */}
             <button
               type="button"
@@ -478,11 +478,11 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                 e.stopPropagation();
                 goToPrev();
               }}
-              className="p-1.5 rounded-full hover:bg-theme-5 text-secondary hover:text-accent border border-transparent hover:border-theme-9 transition-all cursor-pointer"
+              className="p-2 sm:p-1.5 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full hover:bg-theme-5 active:bg-theme-1/20 text-secondary hover:text-accent border border-transparent hover:border-theme-9 transition-all cursor-pointer active:scale-90"
               aria-label={rotateLeftTitle}
               title={rotateLeftTitle}
             >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ChevronLeft className="w-5 h-5 sm:w-5 sm:h-5" />
             </button>
 
             {/* Counter */}
@@ -501,11 +501,11 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                 e.stopPropagation();
                 goToNext();
               }}
-              className="p-1.5 rounded-full hover:bg-theme-5 text-secondary hover:text-accent border border-transparent hover:border-theme-9 transition-all cursor-pointer"
+              className="p-2 sm:p-1.5 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full hover:bg-theme-5 active:bg-theme-1/20 text-secondary hover:text-accent border border-transparent hover:border-theme-9 transition-all cursor-pointer active:scale-90"
               aria-label={rotateRightTitle}
               title={rotateRightTitle}
             >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ChevronRight className="w-5 h-5 sm:w-5 sm:h-5" />
             </button>
 
             <div className="w-px h-4 bg-theme-9 mx-0.5" />
@@ -517,11 +517,11 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                 e.stopPropagation();
                 resetToFirst();
               }}
-              className="p-1.5 rounded-full hover:bg-theme-5 text-secondary/60 hover:text-accent transition-all cursor-pointer"
+              className="p-2 sm:p-1.5 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full hover:bg-theme-5 active:bg-theme-1/20 text-secondary/60 hover:text-accent transition-all cursor-pointer active:scale-90"
               aria-label={resetRotationTitle}
               title={resetRotationTitle}
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
             </button>
           </div>
         )}

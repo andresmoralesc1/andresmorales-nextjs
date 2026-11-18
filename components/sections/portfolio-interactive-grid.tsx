@@ -220,12 +220,12 @@ export function PortfolioInteractiveGrid({
       <div className="flex flex-col items-center gap-4 w-full mb-4">
         {/* Tier 1: View Mode Switcher + Instant Live Search */}
         <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
-          {/* Segmented Control 3D vs Grid */}
-          <div className="inline-flex items-center bg-primary border border-theme-9 p-1 rounded-2xl shadow-xs shrink-0">
+          {/* Segmented Control 3D vs Grid (Full width on mobile, inline on tablet/desktop) */}
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:inline-flex items-center bg-primary border border-theme-9 p-1 rounded-2xl shadow-xs shrink-0 gap-1 sm:gap-0">
             <button
               type="button"
               onClick={() => setViewMode('3d')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-secondary font-bold transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
+              className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 min-h-[44px] rounded-xl text-xs sm:text-sm font-secondary font-bold transition-all cursor-pointer active:scale-95 focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
                 viewMode === '3d'
                   ? 'bg-theme-1 text-secondary shadow-xs'
                   : 'text-text hover:text-secondary'
@@ -241,7 +241,7 @@ export function PortfolioInteractiveGrid({
             <button
               type="button"
               onClick={() => setViewMode('grid')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-secondary font-bold transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
+              className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 min-h-[44px] rounded-xl text-xs sm:text-sm font-secondary font-bold transition-all cursor-pointer active:scale-95 focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
                 viewMode === 'grid'
                   ? 'bg-theme-1 text-secondary shadow-xs'
                   : 'text-text hover:text-secondary'
@@ -253,7 +253,7 @@ export function PortfolioInteractiveGrid({
             </button>
           </div>
 
-          {/* Instant Search Bar with Accessible Label & Keyboard Hint */}
+          {/* Instant Search Bar with Accessible Label & iOS Safe text-base (prevents zoom) */}
           <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-text pointer-events-none" />
             <input
@@ -276,7 +276,7 @@ export function PortfolioInteractiveGrid({
                   ? 'Buscar stack, cliente...'
                   : 'Buscar tecnología, cliente...'
               }
-              className="w-full pl-9 pr-14 py-2 text-xs sm:text-sm bg-primary border border-theme-9 rounded-xl text-secondary placeholder:text-text/70 focus:outline-none focus:border-theme-1 focus:ring-2 focus:ring-theme-1/40 transition-all"
+              className="w-full pl-9 pr-14 py-2.5 sm:py-2 min-h-[44px] text-base sm:text-sm bg-primary border border-theme-9 rounded-xl text-secondary placeholder:text-text/70 focus:outline-none focus:border-theme-1 focus:ring-2 focus:ring-theme-1/40 transition-all"
             />
             <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
               {searchQuery ? (
@@ -299,7 +299,7 @@ export function PortfolioInteractiveGrid({
         </div>
 
         {/* Tier 2: Category Filter Pills (Optimized for Mobile Touch) */}
-        <div className="w-full flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-1 px-2">
+        <div className="w-full flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-1 px-2 touch-pan-x">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
@@ -307,7 +307,7 @@ export function PortfolioInteractiveGrid({
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-secondary font-bold whitespace-nowrap transition-all duration-200 cursor-pointer shrink-0 focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
+                className={`inline-flex items-center gap-2 px-4 py-2.5 sm:py-2 min-h-[42px] rounded-full text-xs sm:text-sm font-secondary font-bold whitespace-nowrap transition-all duration-200 cursor-pointer shrink-0 active:scale-95 focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:outline-none ${
                   isActive
                     ? 'bg-secondary text-primary shadow-sm scale-102 ring-1 ring-secondary'
                     : 'bg-primary text-secondary hover:text-secondary border border-theme-9 hover:border-secondary/40'

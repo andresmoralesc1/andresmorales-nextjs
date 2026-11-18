@@ -65,7 +65,7 @@ export function PortfolioRoiCalculator({ lang }: Props) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-primary rounded-3xl border border-theme-9 p-6 md:p-10 shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-primary rounded-3xl border border-theme-9 p-4 sm:p-6 md:p-10 shadow-xl">
           {/* Controls Column */}
           <div className="lg:col-span-7 space-y-6">
             {/* Slider 1: Team Members */}
@@ -93,7 +93,7 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 step="1"
                 value={teamMembers}
                 onChange={(e) => setTeamMembers(Number(e.target.value))}
-                className="w-full accent-theme-1 cursor-pointer h-2 bg-theme-5 rounded-lg"
+                className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />
               <div className="flex justify-between text-[10px] text-text font-mono mt-1">
                 <span>1</span>
@@ -127,7 +127,7 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 step="1"
                 value={hoursPerWeek}
                 onChange={(e) => setHoursPerWeek(Number(e.target.value))}
-                className="w-full accent-theme-1 cursor-pointer h-2 bg-theme-5 rounded-lg"
+                className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />
               <div className="flex justify-between text-[10px] text-text font-mono mt-1">
                 <span>2 hrs</span>
@@ -161,7 +161,7 @@ export function PortfolioRoiCalculator({ lang }: Props) {
                 step="2"
                 value={hourlyRate}
                 onChange={(e) => setHourlyRate(Number(e.target.value))}
-                className="w-full accent-theme-1 cursor-pointer h-2 bg-theme-5 rounded-lg"
+                className="w-full accent-theme-1 cursor-pointer h-3 sm:h-2 bg-theme-5 rounded-lg py-1"
               />
               <div className="flex justify-between text-[10px] text-text font-mono mt-1">
                 <span>$10 USD</span>
@@ -225,7 +225,7 @@ export function PortfolioRoiCalculator({ lang }: Props) {
               href={`${CALENDAR_BOOKING_URL}?notes=ROI-Estimated-Save-${calculation.yearlyDollarsSaved}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-theme-1 hover:bg-theme-2 text-secondary font-secondary font-bold text-xs sm:text-sm shadow-md transition-all group"
+              className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 min-h-[48px] rounded-xl bg-theme-1 hover:bg-theme-2 active:scale-98 text-secondary font-secondary font-bold text-xs sm:text-sm shadow-md transition-all group"
             >
               <span>
                 {lang === 'en'
