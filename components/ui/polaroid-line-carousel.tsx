@@ -44,6 +44,7 @@ export type PolaroidLineCarouselProps = {
   string?: string
   background?: string
   ink?: string
+  theme?: 'dark' | 'light'
   onChange?: (index: number) => void
   onSelect?: (slide: Slide, index: number) => void
   onOpenNotes?: (slide: Slide) => void
@@ -128,6 +129,18 @@ const PL_CSS = `
 .pl-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#f96e03;border:2px solid #ffffff;cursor:grab;box-shadow:0 0 14px rgba(249,110,3,0.8),0 2px 5px rgba(0,0,0,0.5);transition:transform .15s ease}
 .pl-range::-moz-range-thumb:active{cursor:grabbing;transform:scale(1.25)}
 .pl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* LIGHT THEME STYLES */
+.pl-root[data-theme='light'] .pl-print{background:#ffffff;box-shadow:0 4px 14px rgba(30,24,16,.08),0 20px 45px -14px rgba(30,24,16,.18);border:1px solid rgba(30,24,16,.08)}
+.pl-root[data-theme='light'] .pl-card[data-on='1'] .pl-print{box-shadow:0 8px 24px rgba(30,24,16,.12),0 30px 60px -15px rgba(249,110,3,.25),0 0 25px rgba(249,110,3,.15);border:1px solid rgba(249,110,3,.45)}
+.pl-root[data-theme='light'] .pl-tag{background:rgba(255,255,255,.94);color:#f96e03;border:1px solid rgba(249,110,3,.4);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pl-root[data-theme='light'] .pl-bar{background:linear-gradient(to top, rgba(248,245,244,0.98) 0%, rgba(248,245,244,0.85) 60%, transparent 100%)}
+.pl-root[data-theme='light'] .pl-title{color:#1E1810}
+.pl-root[data-theme='light'] .pl-btn{background:rgba(255,255,255,.92);border:1px solid rgba(30,24,16,.14);color:#1E1810;box-shadow:0 2px 8px rgba(30,24,16,.06)}
+.pl-root[data-theme='light'] .pl-btn:hover{background:#f96e03;color:#1E1810;border-color:#f96e03}
+.pl-root[data-theme='light'] .pl-scrubber{background:rgba(255,255,255,0.95);border:1px solid rgba(30,24,16,0.14);box-shadow:0 6px 24px rgba(30,24,16,0.12),inset 0 1px 0 rgba(255,255,255,1)}
+.pl-root[data-theme='light'] .pl-range{background:rgba(30,24,16,0.12)}
+.pl-root[data-theme='light'] .pl-range:hover{background:rgba(30,24,16,0.22)}
 `
 
 export default function PolaroidLineCarousel({
@@ -137,9 +150,10 @@ export default function PolaroidLineCarousel({
   sag = 42,
   swing = 1,
   autoplay = 0,
-  string = "#8a7056",
-  background = "#0c0a08",
-  ink = "#f5eee6",
+  string = "#a88a6d",
+  background = "transparent",
+  ink = "#1E1810",
+  theme = "light",
   onChange,
   onSelect,
   onOpenNotes,
@@ -318,6 +332,54 @@ export default function PolaroidLineCarousel({
     return () => window.clearInterval(t)
   }, [isPlaying, autoplay, n, goTo])
 
+  // Mouse Wheel & Trackpad scroll navigation along the rope
+  React.useEffect(() => {
+    const root = rootRef.current
+    if (!root || n === 0) return
+
+    let snapTimer: ReturnType<typeof setTimeout> | null = null
+
+    const handleWheel = (e: WheelEvent) => {
+      // Don't intercept if dragging or if interacting with interactive controls
+      if (drag.current) return
+      if ((e.target as HTMLElement).closest(".pl-bar-top, .pl-scrubber, button, a, input, textarea")) {
+        return
+      }
+
+      // Detect dominant delta: deltaX for trackpads/horizontal tilt, deltaY for standard mouse wheel
+      const rawDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      if (Math.abs(rawDelta) < 0.1) return
+
+      e.preventDefault()
+      if (isPlaying) setIsPlaying(false)
+      lastTouch.current = performance.now()
+
+      // Normalize delta based on deltaMode (0 = pixels, 1 = lines, 2 = pages)
+      let pixelDelta = rawDelta
+      if (e.deltaMode === 1) pixelDelta *= 28
+      else if (e.deltaMode === 2) pixelDelta *= 600
+
+      // Map ~100px wheel tick (standard mouse notch) to 1 card spacing,
+      // while providing smooth sub-pixel responsiveness for trackpads.
+      const scrollStep = (pixelDelta / 100) * spacing
+      const maxTarget = Math.max(0, (n - 1) * spacing)
+
+      sim.current.target = clamp(sim.current.target + scrollStep, 0, maxTarget)
+
+      if (snapTimer) clearTimeout(snapTimer)
+      snapTimer = setTimeout(() => {
+        const nearest = nearestAt(sim.current.target, spacing, n)
+        goTo(nearest)
+      }, 150)
+    }
+
+    root.addEventListener("wheel", handleWheel, { passive: false })
+    return () => {
+      root.removeEventListener("wheel", handleWheel)
+      if (snapTimer) clearTimeout(snapTimer)
+    }
+  }, [n, spacing, isPlaying, goTo])
+
   // Pointer & Drag handlers with inertia
   const onDown = (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest(".pl-bar")) return
@@ -426,11 +488,12 @@ export default function PolaroidLineCarousel({
         height,
         ["--pl-bg" as string]: background,
         ["--pl-ink" as string]: ink,
-        ["--pl-muted" as string]: "rgba(255, 255, 255, 0.65)",
-        ["--pl-line" as string]: "rgba(255, 255, 255, 0.15)",
+        ["--pl-muted" as string]: theme === "light" ? "#575250" : "rgba(255, 255, 255, 0.65)",
+        ["--pl-line" as string]: theme === "light" ? "rgba(30, 24, 16, 0.15)" : "rgba(255, 255, 255, 0.15)",
         ["--pl-cw" as string]: size.cw + "px",
         ...style,
       }}
+      data-theme={theme}
       data-drag={dragging ? "1" : "0"}
       role="region"
       aria-roledescription="carousel"

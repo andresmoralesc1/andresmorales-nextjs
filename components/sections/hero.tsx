@@ -30,7 +30,7 @@ export async function Hero({
       // and register as a CLS of 0.105 on mobile PageSpeed. The 700px floor
       // covers very short viewports (e.g. landscape phones) where 90dvh
       // would be too small to fit the portrait comfortably.
-      className="relative bg-background overflow-hidden min-h-[700px] md:min-h-[90vh] flex items-center"
+      className="relative bg-background text-secondary overflow-hidden min-h-[700px] md:min-h-[90vh] flex items-center"
       style={{ minHeight: 'min(90dvh, 900px)' }}
     >
       {/* Dynamic particles (no static background pattern) */}
@@ -47,7 +47,7 @@ export async function Hero({
           <h1 className="text-2xl md:text-4xl font-secondary font-medium text-secondary mb-2 leading-snug">
             {dict.homeHero.role1}
           </h1>
-          <p className="text-2xl md:text-4xl font-secondary text-secondary/70 mb-8 italic leading-snug">
+          <p className="text-2xl md:text-4xl font-secondary text-secondary mb-8 italic leading-snug">
             {dict.homeHero.role2}
           </p>
           <ul className="space-y-3 mb-10">
@@ -71,7 +71,7 @@ export async function Hero({
                 className="text-secondary hover:text-accent flex items-center gap-3 text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 rounded-sm tabular-nums whitespace-nowrap"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 shrink-0" aria-hidden="true">
-                  <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.34-.03-.5-.07-.14-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.34s-1.04 1.02-1.04 2.48 1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.07 4.49.71.3 1.26.49 1.69.31.52-.13.99-.1 1.39-.18 4.24-.93 4.69-1.42.45-.49.7-1.05.84-1.42.14-.37.14-.68.1-.83-.07-.15-.27-.2-.55-.37m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.18-3.49-8.42" />
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
                 </svg>
                 +57 316 148 2507
               </a>
@@ -118,14 +118,23 @@ export async function Hero({
               </a>
             </li>
           </ul>
-          <Link
-            href={ctaHref}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-theme text-base px-8 py-4"
-          >
-            {dict.homeHero.cta}
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              href={ctaHref}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-theme text-base px-8 py-4 shadow-md hover:shadow-lg transition-all"
+            >
+              {dict.homeHero.cta}
+            </Link>
+            <a
+              href="#speed-audit"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-secondary/20 bg-white hover:bg-white text-secondary text-base font-semibold transition-all shadow-xs"
+            >
+              <span className="text-[#9a3412] font-bold">⚡</span>
+              <span>{dict.speedAudit?.badge || 'Auditoría 360°'}</span>
+            </a>
+          </div>
         </div>
         <div className="relative flex justify-center">
           {/* Foto circular con borde naranja grueso — replica exacta del WP.

@@ -7,14 +7,11 @@ import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { JsonLd, serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/json-ld';
-import { getCurrentDictionary } from '@/lib/dictionary';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { headers } from 'next/headers';
-import { SERVICE_FAQS } from '@/data/service-faqs';
-
-
-
+import { getServiceFaqs } from '@/data/service-faqs';
 
 export async function generateMetadata({
   params,
@@ -28,7 +25,8 @@ export async function generateMetadata({
     title: dict.metadata.uiuxTitle,
     description: dict.metadata.uiuxDescription,
     locale: safeLang,
-    path: safeLang === 'en' ? '/services/ui-ux-design' : `/${safeLang}/services/ui-ux-design`,
+    path: '/services/ui-ux-design',
+    type: 'website',
   });
 }
 
@@ -36,14 +34,33 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-
-
-export default async function UiUxDesignPage() {
+export default async function UiUxDesignPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+}) {
   const h = await headers();
-  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
+  const headerLang = h.get('x-locale');
+  const resolvedParams = params ? await params : undefined;
+  const rawLang = resolvedParams?.lang || headerLang || (await getCurrentLocale());
+  const safeLang = isLocale(rawLang) ? rawLang : 'en';
+
   const dict = await getCurrentDictionary();
   const s = dict.servicesUiUx;
   const c = dict.common;
+  const faqs = getServiceFaqs('ui-ux-design', safeLang);
+
+  const homeLabel = c?.breadcrumbHome || (safeLang === 'es' ? 'Inicio' : safeLang === 'pt' ? 'Início' : 'Home');
+  const servicesLabel = dict.nav?.services || c?.breadcrumbServices || (safeLang === 'es' ? 'Servicios' : safeLang === 'pt' ? 'Serviços' : 'Services');
+  const currentBreadcrumb = s.breadcrumbCurrent || 'UI/UX Design';
+
+  const faqHeading = safeLang === 'es' ? 'Preguntas frecuentes' : safeLang === 'pt' ? 'Perguntas frequentes' : 'Frequently asked questions';
+  const faqIntro = safeLang === 'es'
+    ? 'Preguntas habituales sobre auditorías de usabilidad, rediseños completos, herramientas y proceso de entrega.'
+    : safeLang === 'pt'
+    ? 'Perguntas comuns sobre auditorias de UX, redesenho, pesquisa com usuários e handoff para desenvolvimento.'
+    : 'Common questions about audits, redesigns, research, and handoff.';
+
   const CAPABILITIES = [
     { title: s.cap1Title, desc: s.cap1Desc },
     { title: s.cap2Title, desc: s.cap2Desc },
@@ -72,22 +89,28 @@ export default async function UiUxDesignPage() {
     <>
       <JsonLd
         data={serviceSchema({
-          name: 'UI/UX Design',
-          description: 'UX research, interface design and conversion-focused UI — built on a decade in sales and product thinking. Research, design, test, ship.',
-          path: '/services/ui-ux-design',
+          name: dict.metadata.uiuxH1 || s.heroTitle,
+          description: dict.metadata.uiuxDescription,
+          path: getLocalizedPath('/services/ui-ux-design', safeLang),
           serviceType: 'User Interface & User Experience Design',
-          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES', 'BR'],
           priceRange: '$$',
         })}
       />
       <JsonLd
         data={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'Services', path: '/services' },
-          { name: 'UI/UX Design', path: '/services/ui-ux-design' },
+          { name: homeLabel, path: getLocalizedPath('/', safeLang) },
+          { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+          { name: currentBreadcrumb, path: getLocalizedPath('/services/ui-ux-design', safeLang) },
         ])}
       />
-      <JsonLd data={faqSchema(SERVICE_FAQS['ui-ux-design'], 'en')} />
+      <JsonLd
+        data={faqSchema(
+          faqs,
+          safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US'
+        )}
+      />
+
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-uiux" variant="soft" />
@@ -117,15 +140,13 @@ export default async function UiUxDesignPage() {
         </div>
       </section>
 
-      {/* Breadcrumb — visible trail under the hero. Pairs with the
-          breadcrumbSchema() JSON-LD above; the trail MUST agree or
-          Google will reject the rich-result breadcrumbs. */}
+      {/* Breadcrumb — visible trail under the hero */}
       <div className="container-page pt-4">
         <Breadcrumbs
-          lang={lang}
+          lang={safeLang}
           items={[
-            { name: c.breadcrumbServices, path: '/services' },
-            { name: s.breadcrumbCurrent, current: true },
+            { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+            { name: currentBreadcrumb, current: true },
           ]}
         />
       </div>
@@ -135,19 +156,19 @@ export default async function UiUxDesignPage() {
         <div className="container-page py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">47+</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">35+</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat1}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">+32%</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">+40%</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat2}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">6</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">4</div>
               <p className="text-secondary text-sm md:text-base">
                 {s.stat3}
               </p>
@@ -158,7 +179,7 @@ export default async function UiUxDesignPage() {
           <div className="bg-background rounded-2xl overflow-hidden border border-theme-9 grid md:grid-cols-2 items-center">
             <div className="aspect-[4/3] md:aspect-auto md:h-full bg-theme-9 relative">
               <Image
-                src="/sites/superllantas_co.png"
+                src="/sites/superllantas_home.png"
                 alt={s.caseImageAlt}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -167,7 +188,7 @@ export default async function UiUxDesignPage() {
             </div>
             <div className="p-8 md:p-10">
               <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
-                {c.featuredCaseBadge}
+                Featured case
               </p>
               <h3 className="font-heading text-2xl md:text-3xl mb-3 text-secondary">
                 {s.caseTitle}
@@ -176,7 +197,7 @@ export default async function UiUxDesignPage() {
                 {s.caseDesc}
               </p>
               <Link
-                href="/portfolio"
+                href={getLocalizedPath('/work/superllantas', safeLang)}
                 className="inline-flex items-center gap-1 text-sm font-secondary font-bold text-secondary uppercase tracking-wider hover:gap-2 hover:text-accent transition-all"
               >
                 {s.caseCta}
@@ -192,7 +213,7 @@ export default async function UiUxDesignPage() {
           <h2 className="font-heading text-3xl md:text-4xl mb-8">
             {s.capabilitiesTitle}
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {CAPABILITIES.map((cap) => (
               <div
                 key={cap.title}
@@ -220,16 +241,16 @@ export default async function UiUxDesignPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
-            {APPROACH.map((p) => (
-              <div key={p.n} className="relative">
+            {APPROACH.map((pItem) => (
+              <div key={pItem.n} className="relative">
                 <div className="text-accent font-heading text-4xl md:text-5xl mb-3 leading-none">
-                  {p.n}
+                  {pItem.n}
                 </div>
                 <h3 className="font-heading text-lg md:text-xl mb-2 text-secondary">
-                  {p.title}
+                  {pItem.title}
                 </h3>
                 <p className="text-text leading-relaxed text-sm md:text-base">
-                  {p.desc}
+                  {pItem.desc}
                 </p>
               </div>
             ))}
@@ -244,7 +265,7 @@ export default async function UiUxDesignPage() {
               {s.ctaCall}
             </a>
             <a
-              href={getLocalizedPath('/brief?type=web', lang)}
+              href={getLocalizedPath('/brief?type=ux', safeLang)}
               className="inline-flex items-center justify-center px-8 py-4 rounded-md font-secondary font-bold uppercase tracking-wide text-sm border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors"
             >
               {s.ctaBrief}
@@ -272,12 +293,12 @@ export default async function UiUxDesignPage() {
         </Reveal>
       </section>
 
-      {/* Previous + Next services */}
+      {/* Cross-service navigation */}
       <section className="section bg-background">
         <div className="container-page">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-6">
             <Link
-              href="/services/ai-automation"
+              href={getLocalizedPath('/services/ai-automation', safeLang)}
               className="group flex items-center gap-4 p-6 md:p-8 rounded-2xl bg-primary border border-theme-9 hover:border-theme-1 hover:shadow-xl transition-all"
             >
               <span aria-hidden className="text-3xl md:text-4xl text-accent group-hover:-translate-x-2 transition-transform">
@@ -293,8 +314,8 @@ export default async function UiUxDesignPage() {
               </div>
             </Link>
             <Link
-              href="/services/web-development"
-              className="group flex items-center justify-end gap-4 p-6 md:p-8 rounded-2xl bg-primary border border-theme-9 hover:border-theme-1 hover:shadow-xl transition-all text-right"
+              href={getLocalizedPath('/services/web-development', safeLang)}
+              className="group flex items-center justify-between p-6 md:p-8 rounded-2xl bg-primary border border-theme-9 hover:border-theme-1 hover:shadow-xl transition-all text-right"
             >
               <div>
                 <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-1">
@@ -312,24 +333,23 @@ export default async function UiUxDesignPage() {
         </div>
       </section>
 
-      {/* FAQ — mirrors FAQPage schema above. <details> keeps content in
-          HTML without JS so crawlers see the Q&A without expanding. */}
+      {/* Localized FAQ Section */}
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-3">
-            Frequently asked questions
+            {faqHeading}
           </h2>
           <p className="text-text leading-relaxed mb-8">
-            Common questions about audits, redesigns, research, and handoff.
+            {faqIntro}
           </p>
           <div className="space-y-3">
-            {SERVICE_FAQS['ui-ux-design'].map((faq, idx) => (
+            {faqs.map((faqItem, idx) => (
               <details
                 key={idx}
                 className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
               >
                 <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
-                  <span>{faq.question}</span>
+                  <span>{faqItem.question}</span>
                   <span
                     aria-hidden="true"
                     className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
@@ -338,7 +358,7 @@ export default async function UiUxDesignPage() {
                   </span>
                 </summary>
                 <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
-                  {faq.answer}
+                  {faqItem.answer}
                 </p>
               </details>
             ))}

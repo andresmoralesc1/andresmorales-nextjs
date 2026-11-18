@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { track } from '@/lib/analytics';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import BriefFileUpload, { type UploadedBriefFile } from '@/components/brief/BriefFileUpload';
 
 type BriefData = {
   // Step 1 — About you
@@ -27,6 +28,7 @@ type BriefData = {
   budget: 'under2k' | '2to5k' | '5to15k' | '15to50k' | 'over50k' | '';
   timeline: 'asap' | '1month' | '1to3months' | 'over3months' | 'flexible' | '';
   additionalNotes: string;
+  attachmentFiles: UploadedBriefFile[];
 };
 
 // "Other" used to be ✦ — a stray Unicode glyph that didn't match the rest
@@ -81,6 +83,7 @@ const INITIAL: BriefData = {
   budget: '',
   timeline: '',
   additionalNotes: '',
+  attachmentFiles: [],
 };
 
 const STORAGE_KEY = 'portfolio-brief-draft-v1';
@@ -341,15 +344,24 @@ export default function BriefWizard({
                     ? `Current step: ${label}`
                     : `Step ${i + 1}: ${label} (locked)`
               }
-              className={`transition-colors ${
+              className={`transition-colors rounded px-1.5 py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-1 flex items-center gap-1.5 ${
                 i === step
-                  ? 'text-secondary font-medium'
+                  ? 'text-secondary font-bold'
                   : i < step
-                    ? 'text-text hover:text-accent cursor-pointer'
-                    : 'text-text/50'
+                    ? 'text-theme-1 hover:text-theme-2 cursor-pointer font-medium'
+                    : 'text-text/40'
               }`}
             >
-              {label}
+              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
+                i === step
+                  ? 'bg-secondary text-primary'
+                  : i < step
+                    ? 'bg-theme-1/20 text-theme-1'
+                    : 'bg-theme-9 text-text/40'
+              }`}>
+                {i < step ? '✓' : i + 1}
+              </span>
+              <span>{label}</span>
             </button>
           ))}
         </div>
@@ -362,6 +374,14 @@ export default function BriefWizard({
       <form
         className="p-6 md:p-8"
         onSubmit={(e) => e.preventDefault()}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+            if (stepValid && !submitting) {
+              e.preventDefault();
+              handleNext();
+            }
+          }
+        }}
         data-webmcp-form-id="brief"
         data-webmcp-name="Project brief wizard"
         data-webmcp-description="5-step project brief: about-you → project type → problem → goal → logistics. Use to scope a paid engagement."
@@ -505,7 +525,7 @@ function RadioGroup<V extends string>(props: {
   optional?: boolean;
 }) {
   const { name, legend, required, value, onChange, options, layout = 'grid-3', optional } = props;
-  const gridClass = layout === 'grid-2' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 sm:grid-cols-3';
+  const gridClass = layout === 'grid-2' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
   return (
     <fieldset>
       <legend className="block text-sm font-medium text-secondary mb-1.5">
@@ -522,7 +542,7 @@ function RadioGroup<V extends string>(props: {
             <label
               key={opt.value}
               htmlFor={id}
-              className={`p-3.5 sm:p-4 min-h-[48px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-sm font-medium flex items-center justify-between gap-3 ${
+              className={`p-3.5 sm:p-4 min-h-[48px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-sm font-medium flex items-center justify-between gap-3 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-theme-1 has-[:focus-visible]:border-theme-1 ${
                 selected
                   ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.01]'
                   : 'border-theme-9 bg-primary text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary'
@@ -585,39 +605,41 @@ function Step1({
         onChange={() => {}}
       />
 
-      <Field label={dict.brief.step1NameLabel} required>
-        <input
-          type="text"
-          name="name"
-          autoComplete="name"
-          required
-          autoFocus
-          data-webmcp-field-name="name"
-          data-webmcp-field-type="string"
-          data-webmcp-field-required="true"
-          value={data.name}
-          onChange={(e) => update('name', e.target.value)}
-          placeholder={dict.brief.step1NamePlaceholder}
-          className="input"
-        />
-      </Field>
-      <Field label={dict.brief.step1EmailLabel} required error={!emailShape ? dict.brief.step1EmailError : null}>
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          required
-          data-webmcp-field-name="email"
-          data-webmcp-field-type="string"
-          data-webmcp-field-format="email"
-          data-webmcp-field-required="true"
-          value={data.email}
-          onChange={(e) => update('email', e.target.value)}
-          placeholder={dict.brief.step1EmailPlaceholder}
-          className="input"
-        />
-      </Field>
+      <div className="grid md:grid-cols-2 gap-5">
+        <Field label={dict.brief.step1NameLabel} required>
+          <input
+            type="text"
+            name="name"
+            autoComplete="name"
+            required
+            autoFocus
+            data-webmcp-field-name="name"
+            data-webmcp-field-type="string"
+            data-webmcp-field-required="true"
+            value={data.name}
+            onChange={(e) => update('name', e.target.value)}
+            placeholder={dict.brief.step1NamePlaceholder}
+            className="input"
+          />
+        </Field>
+        <Field label={dict.brief.step1EmailLabel} required error={!emailShape ? dict.brief.step1EmailError : null}>
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            inputMode="email"
+            required
+            data-webmcp-field-name="email"
+            data-webmcp-field-type="string"
+            data-webmcp-field-format="email"
+            data-webmcp-field-required="true"
+            value={data.email}
+            onChange={(e) => update('email', e.target.value)}
+            placeholder={dict.brief.step1EmailPlaceholder}
+            className="input"
+          />
+        </Field>
+      </div>
       <div className="grid md:grid-cols-2 gap-5">
         <Field label={dict.brief.step1CompanyLabel} optional>
           <input
@@ -737,7 +759,7 @@ function Step3({
               <label
                 key={tool}
                 htmlFor={id}
-                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm border cursor-pointer transition-all duration-200 inline-flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 min-h-[38px] rounded-full text-xs sm:text-sm border cursor-pointer transition-all duration-200 inline-flex items-center gap-1.5 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-theme-1 has-[:focus-visible]:border-theme-1 ${
                   selected
                     ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.02]'
                     : 'border-theme-9 text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary bg-primary'
@@ -877,6 +899,16 @@ function Step5({
         />
       </Field>
 
+      <BriefFileUpload
+        label={dict.brief.uploadLabel}
+        hint={dict.brief.uploadHint}
+        accept="image/*,.pdf,.svg,.doc,.docx,.xls,.xlsx,.zip"
+        multiple
+        maxFiles={5}
+        files={data.attachmentFiles || []}
+        onChange={(files) => update('attachmentFiles', files)}
+      />
+
       <Summary data={data} dict={dict} />
     </div>
   );
@@ -900,7 +932,7 @@ function Summary({ data, dict }: { data: BriefData; dict: Dictionary }) {
       <summary className="cursor-pointer text-sm font-medium text-text hover:text-accent">
         {dict.brief.step5SummaryToggle}
       </summary>
-      <dl className="mt-3 space-y-1.5 text-sm">
+      <dl className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
         <Row k={rows.name} v={data.name} />
         <Row k={rows.email} v={data.email} />
         {data.company && <Row k={rows.company} v={data.company} />}
@@ -913,6 +945,9 @@ function Summary({ data, dict }: { data: BriefData; dict: Dictionary }) {
         {data.successMetric && <Row k={rows.metric} v={data.successMetric} />}
         <Row k={rows.budget} v={budgetLabel} />
         <Row k={rows.timeline} v={timelineLabel} />
+        {data.attachmentFiles && data.attachmentFiles.length > 0 && (
+          <Row k={rows.attachmentFiles || 'Archivos adjuntos'} v={data.attachmentFiles.map((f) => f.name).join(', ')} />
+        )}
         {data.additionalNotes && <Row k={rows.notes} v={data.additionalNotes} />}
       </dl>
     </details>
@@ -921,8 +956,8 @@ function Summary({ data, dict }: { data: BriefData; dict: Dictionary }) {
 
 function Row({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex gap-2">
-      <dt className="font-medium text-text min-w-[100px]">{k}:</dt>
+    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+      <dt className="font-medium text-text text-xs uppercase tracking-wider shrink-0 min-w-[105px]">{k}:</dt>
       <dd className="text-secondary whitespace-pre-wrap break-words">{v}</dd>
     </div>
   );

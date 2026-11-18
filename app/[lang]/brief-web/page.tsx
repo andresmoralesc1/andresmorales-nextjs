@@ -102,11 +102,11 @@ export default async function BriefWebPage() {
           <p className="text-text text-lg mb-2">{dict.briefWeb.subtitle1}</p>
           <p className="text-secondary/70 text-sm mb-8">{dict.briefWeb.subtitle2}</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-6 pt-4 border-t border-theme-9">
             {trustStats.map(({ n, label }) => (
               <div key={label}>
-                <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">{n}</div>
-                <p className="text-secondary/70 text-xs md:text-sm mt-1">{label}</p>
+                <div className="font-heading text-xl sm:text-2xl md:text-3xl text-secondary font-bold">{n}</div>
+                <p className="text-secondary/70 text-[11px] sm:text-xs md:text-sm mt-1 leading-snug">{label}</p>
               </div>
             ))}
           </div>

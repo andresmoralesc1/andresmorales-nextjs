@@ -1,0 +1,45 @@
+🔍 [SEO Opportunity Monitor] Iniciando escaneo y auditoría en vivo...
+
+--- Resumen del Reporte ---
+📊 *Reporte de Oportunidades & Rendimiento SEO*
+🌐 *Dominio:* andresmorales.com.co
+📅 *Fecha:* 2026-11-16
+
+📈 *Datos en Vivo de Google Search Console:*
+• Total consultas analizadas: 51
+
+🎯 *Oportunidades Inmediatas (Striking Distance - Posición 4 a 20):*
+1. `andres morales`
+   • Pos: *9.6* | Impresiones: *60* | Clicks: *0*
+   • URL: `/`
+2. `marketing site template`
+   • Pos: *6.7* | Impresiones: *14* | Clicks: *0*
+   • URL: `/work/hubiagency`
+3. `kambelleh`
+   • Pos: *7.5* | Impresiones: *6* | Clicks: *0*
+   • URL: `/es/work/kambelleh`
+4. `kambelleh hostal`
+   • Pos: *9.8* | Impresiones: *4* | Clicks: *0*
+   • URL: `https://dash.andresmorales.com.co/`
+5. `temptum`
+   • Pos: *4.3* | Impresiones: *3* | Clicks: *1*
+   • URL: `https://temptum.andresmorales.com.co/inteligencia-politica`
+6. `ai automation consultant`
+   • Pos: *19.3* | Impresiones: *3* | Clicks: *0*
+   • URL: `/en/blog/hire-ai-automation-consultant`
+
+🏆 *Top Consultas con Clics Registrados:*
+1. `andres morales` — 1 clicks (100.0% CTR) | Pos: 11.0
+2. `temptum` — 1 clicks (33.3% CTR) | Pos: 4.3
+
+⚡ *Auditoría de Arquitectura & Rich Snippets:*
+• *Schema FAQPage:* Activo en `/portfolio` y `/services/ai-automation` (Rich Cards SERP).
+• *Schema TechArticle:* Activo en 4 casos de estudio B2B.
+• *Google Indexing API v3:* 17 URLs sincronizadas automáticamente con GitHub Push.
+• *IndexNow:* Activo para Bing & Yahoo.
+• *Hreflang:* Trilingüe completo (`es`, `en`, `pt`) en 244 rutas.
+---------------------------
+
+📡 Enviando reporte a Telegram...
+✅ Reporte enviado exitosamente a Telegram.
+🏁 [SEO Opportunity Monitor] Finalizado.

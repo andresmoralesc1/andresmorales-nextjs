@@ -8,26 +8,44 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Marketing-only site: no submission forms besides /brief want crawlers.
-        // /api/* is API routes that don't need indexing.
-        disallow: ['/api/', '/brief/thanks', '/unsubscribe'],
+        disallow: [
+          '/api/',
+          '/*/admin/',
+          '/admin/',
+          '/brief/thanks',
+          '/unsubscribe',
+          '/p/', // Enlaces privados de cotizaciones
+        ],
       },
-      // AI training crawlers — opt out of training while staying indexable
-      // for traditional search bots (Googlebot, Bingbot aren't listed;
-      // they're covered by the wildcard rule above and we want them indexing).
-      // Covers the major training-data scrapers as of 2026-09. Adjust when
-      // new ones appear (track via robots.txt user-agent logs in GSC or
-      // SE Ranking's audit).
+      // Permitir a los principales agentes y motores de IA (ChatGPT, Gemini, Claude, Perplexity, Meta, Apple)
       {
         userAgent: [
           'GPTBot',
+          'ChatGPT-User',
+          'OAI-SearchBot',
           'ClaudeBot',
+          'Claude-Web',
           'anthropic-ai',
-          'PerplexityBot',
           'Google-Extended',
-          'Bytespider',
-          'CCBot',
+          'PerplexityBot',
+          'Applebot-Extended',
+          'Meta-ExternalAgent',
+          'cohere-ai',
+          'MistralAI-Crawler',
         ],
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/*/admin/',
+          '/admin/',
+          '/brief/thanks',
+          '/unsubscribe',
+          '/p/',
+        ],
+      },
+      // Bloquear scrapers masivos de datos que no aportan tráfico ni citas de búsqueda
+      {
+        userAgent: ['Bytespider', 'CCBot'],
         disallow: '/',
       },
     ],

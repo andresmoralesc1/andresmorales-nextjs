@@ -122,24 +122,24 @@ export default async function BriefPage() {
           <p className="text-text text-lg mb-2">{dict.briefHub.subtitle}</p>
           <p className="text-secondary/70 text-sm mb-8">{dict.brief.subtitle2}</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 border-t border-theme-9">
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-6 pt-4 border-t border-theme-9">
             <div>
-              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">&lt;24h</div>
-              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+              <div className="font-heading text-xl sm:text-2xl md:text-3xl text-secondary font-bold">&lt;24h</div>
+              <p className="text-secondary/70 text-[11px] sm:text-xs md:text-sm mt-1 leading-snug">
                 {lang === 'en' ? 'Fixed-price quote & scoping' : lang === 'pt' ? 'Proposta com preço fechado' : 'Cotización a precio cerrado'}
               </p>
             </div>
             <div>
-              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">
+              <div className="font-heading text-xl sm:text-2xl md:text-3xl text-secondary font-bold">
                 {lang === 'en' ? '3 Paths' : lang === 'pt' ? '3 Caminhos' : '3 Caminos'}
               </div>
-              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+              <p className="text-secondary/70 text-[11px] sm:text-xs md:text-sm mt-1 leading-snug">
                 {lang === 'en' ? 'Web, Automation or Scoping Call' : lang === 'pt' ? 'Web, Automação ou Chamada 1 a 1' : 'Web, Automatización o Llamada 1 a 1'}
               </p>
             </div>
             <div>
-              <div className="font-heading text-2xl md:text-3xl text-secondary font-bold">100%</div>
-              <p className="text-secondary/70 text-xs md:text-sm mt-1">
+              <div className="font-heading text-xl sm:text-2xl md:text-3xl text-secondary font-bold">100%</div>
+              <p className="text-secondary/70 text-[11px] sm:text-xs md:text-sm mt-1 leading-snug">
                 {lang === 'en' ? 'Custom architecture, zero spam' : lang === 'pt' ? 'Código sob medida, 0 spam' : 'Código a medida, 0 spam'}
               </p>
             </div>

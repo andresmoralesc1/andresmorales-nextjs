@@ -339,7 +339,7 @@ const CSS =
   ".tsf-nav-item{position:relative;display:flex;align-items:center;gap:clamp(8px,1cqw,14px);width:100%;height:clamp(24px,2.4cqw,32px);padding:0 6px;font-size:clamp(10.5px,.95cqw,13px);letter-spacing:.01em;color:color-mix(in srgb,var(--tsf-ink) 88%,transparent);transition:color .25s,background-color .25s,padding .35s cubic-bezier(.2,.8,.2,1)}" +
   ".tsf-nav-item span:first-child{color:var(--tsf-muted);font-variant-numeric:tabular-nums;transition:color .25s}" +
   ".tsf-nav-item:hover{background:color-mix(in srgb,var(--tsf-ink) 4%,transparent);padding-left:12px}" +
-  ".tsf-nav-item:hover span:first-child,.tsf-nav-item[aria-current] span:first-child{color:var(--tsf-accent)}" +
+  ".tsf-nav-item:hover span:first-child,.tsf-nav-item[aria-current] span:first-child{color:var(--tsf-ink);font-weight:600}" +
   ".tsf-nav-item[aria-current]{color:var(--tsf-ink);padding-left:12px}" +
   ".tsf-nav-bar{position:absolute;left:-1px;top:0;width:2px;height:clamp(24px,2.4cqw,32px);background:var(--tsf-accent);transform:translateY(calc(var(--i) * (100% + 1px)));transition:transform .45s cubic-bezier(.7,0,.2,1);pointer-events:none}" +
   // hero
@@ -350,7 +350,7 @@ const CSS =
   ".tsf-type{min-width:0;overflow:hidden;text-overflow:clip}" +
   ".tsf-caret{display:inline-block;width:.55em;height:1.05em;margin-left:2px;vertical-align:-.18em;background:var(--tsf-accent);animation:tsf-blink 1s steps(1) infinite}" +
   ".tsf-dots{flex:1;min-width:24px;height:10px;opacity:.6;background-image:radial-gradient(circle,var(--dot,var(--tsf-ink)) .85px,transparent 1.25px);background-size:6px 5px;background-position:0 0;" +
-  "-webkit-mask-image:linear-gradient(90deg,#000 0,#000 35%,rgba(0,0,0,.25) 50%,#000 65%,#000 100%);mask-image:linear-gradient(90deg,#000 0,#000 35%,rgba(0,0,0,.25) 50%,#000 65%,#000 100%);-webkit-mask-size:200% 100%;mask-size:200% 100%;animation:tsf-march 3.6s linear infinite}" +
+  "-webkit-mask-image:linear-gradient(90deg,#000 0,#000 35%,rgba(0,0,0,.25) 50%,#000 65%,#000 100%);mask-image:linear-gradient(90deg,#000 0,#000 35%,rgba(0,0,0,.25) 50%,#000 65%,#000 100%)}" +
   ".tsf-h{margin:clamp(28px,4.6cqw,64px) 0 0;font-weight:300;font-size:clamp(30px,3.65cqw,56px);line-height:1.12;letter-spacing:-.035em;color:var(--tsf-ink)}" +
   ".tsf-h span{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}" +
   ".tsf-h span span{display:block;transform:translateY(0);transition:transform .9s cubic-bezier(.2,.8,.2,1)}" +
@@ -394,7 +394,7 @@ const CSS =
   ".tsf-stats{grid-column:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:clamp(18px,2.4cqw,32px) 0 clamp(18px,2.3cqw,30px) clamp(12px,2.3cqw,28px)}" +
   ".tsf-stat{display:flex;flex-direction:column;gap:4px;min-width:0}" +
   ".tsf-stat-v{display:flex;align-items:center;gap:10px;font-size:clamp(20px,2.2cqw,31px);line-height:1.1;letter-spacing:-.035em;font-variant-numeric:tabular-nums;white-space:nowrap}" +
-  ".tsf-stat-c{font-size:clamp(11.5px,1.12cqw,14.5px);color:color-mix(in srgb,var(--tsf-aink) 62%,transparent)}" +
+  ".tsf-stat-c{font-size:clamp(11.5px,1.12cqw,14.5px);color:color-mix(in srgb,var(--tsf-aink) 92%,transparent);font-weight:500}" +
   ".tsf-status{display:flex;flex-direction:column;gap:4px;border-radius:2px}" +
   ".tsf-pulse{position:relative;flex:none;width:7px;height:7px;background:var(--tsf-aink);transform:rotate(45deg)}" +
   ".tsf-pulse::after{content:'';position:absolute;inset:-3px;border:1px solid var(--tsf-aink);animation:tsf-ping 1.8s cubic-bezier(0,0,.2,1) infinite}" +
@@ -402,7 +402,7 @@ const CSS =
   ".tsf-status[aria-pressed='false'] .tsf-pulse::after{display:none}" +
   ".tsf-status:hover .tsf-stat-c{color:var(--tsf-aink)}" +
   ".tsf-status-hint{font-family:var(--tsf-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .25s}" +
-  ".tsf-status:hover .tsf-status-hint,.tsf-status:focus-visible .tsf-status-hint{opacity:.6}" +
+  ".tsf-status:hover .tsf-status-hint,.tsf-status:focus-visible .tsf-status-hint{opacity:.85}" +
   ".tsf-gutcell{grid-column:3;border-left:1px solid var(--oline);border-right:1px solid var(--oline)}" +
   ".tsf-blurb{grid-column:4;position:relative;margin:0;padding:clamp(18px,2.4cqw,32px) clamp(12px,2.3cqw,28px) clamp(18px,2.3cqw,30px);font-family:var(--tsf-mono);font-size:clamp(11px,1.06cqw,13.5px);line-height:1.48;text-align:justify;hyphens:none}" +
   ".tsf-word{grid-column:2/-1;position:relative;border-top:1px solid var(--oline);cursor:crosshair;touch-action:pan-y}" +
@@ -425,7 +425,6 @@ const CSS =
   ".tsf-top svg{width:14px;height:14px;max-width:none}" +
   ".tsf-top:hover{transform:rotate(-90deg) scale(1.25)}" +
   "@keyframes tsf-blink{50%{opacity:0}}" +
-  "@keyframes tsf-march{from{-webkit-mask-position:0 0;mask-position:0 0}to{-webkit-mask-position:-200% 0;mask-position:-200% 0}}" +
   "@keyframes tsf-ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}" +
   "@keyframes tsf-bump{0%{transform:translateY(0)}35%{transform:translateY(-3px)}100%{transform:translateY(0)}}" +
   // narrow: one column, index scrolls sideways, ticket stacks
@@ -621,13 +620,20 @@ function Orbit({ reduced, visible, pulse }: { reduced: boolean; visible: boolean
       }
     }
     s.paint = paint
-    const measure = () => {
-      s.w = svg.clientWidth || 1
-      s.h = svg.clientHeight || 1
+    const measure = (w?: number, h?: number) => {
+      s.w = w || svg.clientWidth || 1
+      s.h = h || svg.clientHeight || 1
       svg.setAttribute("viewBox", "0 0 " + s.w + " " + s.h)
       paint()
     }
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (entry) {
+        measure(entry.contentRect.width, entry.contentRect.height)
+      } else {
+        measure()
+      }
+    })
     ro.observe(svg)
     measure()
     if (reduced || !visible) return () => ro.disconnect()
@@ -744,7 +750,6 @@ function Wordmark({
 }) {
   const boxRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [height, setHeight] = React.useState<number | null>(null)
   const st = React.useRef({
     lens: 0,
     lensTarget: 0,
@@ -775,8 +780,8 @@ function Wordmark({
       ctx.letterSpacing = track.toFixed(2) + "px"
     }
 
-    const measure = () => {
-      const w = box.clientWidth
+    const measure = (wOverride?: number) => {
+      const w = wOverride || box.clientWidth
       if (!w) return
       setFont(100, -3)
       const m100 = ctx.measureText(shown)
@@ -817,7 +822,7 @@ function Wordmark({
       g.cell = Math.max(3.5, Math.min(9, w / 170))
       canvas.width = Math.round(w * g.dpr)
       canvas.height = Math.round(h * g.dpr)
-      setHeight((prev) => (prev !== null && Math.abs(prev - h) < 0.5 ? prev : h))
+      box.style.height = h + "px"
       draw()
     }
 
@@ -915,7 +920,14 @@ function Wordmark({
       if (!raf) raf = requestAnimationFrame(loop)
     }
 
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (entry) {
+        measure(entry.contentRect.width)
+      } else {
+        measure()
+      }
+    })
     ro.observe(box)
     measure()
     let alive = true
@@ -958,7 +970,7 @@ function Wordmark({
     <div
       ref={boxRef}
       className="tsf-word"
-      style={{ height: height === null ? undefined : height, aspectRatio: height === null ? "1000 / 240" : undefined }}
+      style={{ aspectRatio: "1000 / 240" }}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
       onClick={onClick}

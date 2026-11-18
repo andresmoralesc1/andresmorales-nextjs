@@ -57,6 +57,41 @@ export function serviceSchema(opts: {
 }
 
 /**
+ * Build an ItemList / Service catalog schema for the main /services hub page.
+ * Google uses this to understand the set of services offered by the provider.
+ */
+export function serviceCatalogSchema(opts: {
+  name: string;
+  description: string;
+  services: {
+    name: string;
+    description: string;
+    path: string;
+    serviceType: string;
+  }[];
+}): Record<string, unknown> {
+  const SITE = 'https://andresmorales.com.co';
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: opts.name,
+    description: opts.description,
+    itemListElement: opts.services.map((svc, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'Service',
+        name: svc.name,
+        description: svc.description,
+        serviceType: svc.serviceType,
+        url: `${SITE}${svc.path}`,
+        provider: { '@id': `${SITE}/#person` },
+      },
+    })),
+  };
+}
+
+/**
  * Build a BreadcrumbList schema. Google displays breadcrumbs in the SERP
  * for a page when the corresponding BreadcrumbList structured data is
  * present — this lets a deep URL like

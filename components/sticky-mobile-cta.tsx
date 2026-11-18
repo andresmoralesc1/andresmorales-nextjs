@@ -23,10 +23,16 @@ const HIDE_ON: RegExp[] = [
   /^\/(en|es|pt)\/blog\/?/,
   /^\/brief\/?$/, // on the brief page the CTA is already inline
   /^\/(en|es|pt)\/brief\/?$/,
+  /^\/brief-web\/?$/,
+  /^\/(en|es|pt)\/brief-web\/?$/,
   /^\/brief\/thanks/,
   /^\/(en|es|pt)\/brief\/thanks/,
   /^\/contact\/?/, // on contact the CTA is the form
   /^\/(en|es|pt)\/contact\/?/,
+  /^\/demo\/?/,
+  /^\/(en|es|pt)\/demo\/?/,
+  /^\/admin\/?/,
+  /^\/(en|es|pt)\/admin\/?/,
 ];
 
 /**

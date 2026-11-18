@@ -4,6 +4,19 @@ import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { LOCALES, isLocale } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
+import { Inter, Archivo_Black } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+const archivoBlack = Archivo_Black({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '400',
+  variable: '--font-archivo-black',
+});
 
 export async function generateMetadata({
   params,
@@ -35,7 +48,7 @@ export default async function PlaygroundPage() {
   const m = dict.playground.mascot;
 
   return (
-    <>
+    <div className={`${inter.variable} ${archivoBlack.variable}`}>
       <MascotPortfolioHero
         height="100svh"
         index={m.index}
@@ -64,6 +77,6 @@ export default async function PlaygroundPage() {
         accent="#f96e03"
       />
       <span className="sr-only">locale: {locale}</span>
-    </>
+    </div>
   );
 }

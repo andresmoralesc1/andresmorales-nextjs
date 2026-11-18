@@ -3,13 +3,14 @@ import Image from 'next/image';
 import { wpImage } from '@/lib/theme';
 import { Cta } from '@/components/sections/cta';
 import { ParticlesBackground } from '@/components/particles-background';
-import { getCurrentDictionary } from '@/lib/dictionary';
-import { LOCALES, isLocale, getDictionary } from '@/lib/i18n';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
+import { LOCALES, isLocale, getDictionary, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import { Reveal } from '@/components/reveal';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import type { Metadata } from 'next';
-import { JsonLd, faqSchema } from '@/lib/json-ld';
-import { SERVICE_FAQS } from '@/data/service-faqs';
+import { JsonLd, breadcrumbSchema, serviceCatalogSchema, faqSchema } from '@/lib/json-ld';
+import { getServiceFaqs } from '@/data/service-faqs';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 
 export async function generateMetadata({
@@ -22,9 +23,10 @@ export async function generateMetadata({
   const dict = await getDictionary(safeLang);
   return pageMetadata({
     title: dict.metadata.servicesTitle,
-    description: dict.services.metaDescription,
+    description: dict.metadata.servicesDescription || dict.services.metaDescription,
     locale: safeLang,
-    path: safeLang === 'en' ? '/services' : `/${safeLang}/services`,
+    path: '/services',
+    type: 'website',
   });
 }
 
@@ -32,14 +34,87 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-export default async function ServicesPage() {
+export default async function ServicesPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+}) {
+  const resolvedParams = params ? await params : undefined;
+  const currentLang = resolvedParams?.lang || (await getCurrentLocale());
+  const safeLang = isLocale(currentLang) ? currentLang : 'en';
   const dict = await getCurrentDictionary();
   const s = dict.servicesHub;
   const p = dict.pricing;
+  const c = dict.common;
+  const faqs = getServiceFaqs('services', safeLang);
+
+  const homeLabel = c?.breadcrumbHome || (safeLang === 'es' ? 'Inicio' : safeLang === 'pt' ? 'Início' : 'Home');
+  const servicesLabel = dict.nav?.services || c?.breadcrumbServices || (safeLang === 'es' ? 'Servicios' : safeLang === 'pt' ? 'Serviços' : 'Services');
+  const faqHeading = safeLang === 'es' ? 'Preguntas frecuentes' : safeLang === 'pt' ? 'Perguntas frequentes' : 'Frequently asked questions';
+  const faqIntro = safeLang === 'es'
+    ? 'Respuestas claras sobre qué servicio necesitas, estructura de precios, propiedad del código fuente y soporte post-entrega.'
+    : safeLang === 'pt'
+    ? 'Respostas diretas sobre qual serviço escolher, estrutura de preços, propriedade do código e suporte pós-entrega.'
+    : 'Common questions about which service fits, pricing, geography, source code, and what happens after the engagement.';
+
+  const tracks = [
+    {
+      href: '/services/ai-automation',
+      eyebrow: s.track1Eyebrow,
+      title: s.track1Title,
+      summary: s.track1Summary,
+      metric: s.track1Metric,
+      serviceType: 'AI Automation Consulting',
+      caps: [s.track1Cap1, s.track1Cap2, s.track1Cap3, s.track1Cap4, s.track1Cap5],
+    },
+    {
+      href: '/services/ui-ux-design',
+      eyebrow: s.track2Eyebrow,
+      title: s.track2Title,
+      summary: s.track2Summary,
+      metric: s.track2Metric,
+      serviceType: 'UI/UX Design Consulting',
+      caps: [s.track2Cap1, s.track2Cap2, s.track2Cap3, s.track2Cap4, s.track2Cap5],
+    },
+    {
+      href: '/services/web-development',
+      eyebrow: s.track3Eyebrow,
+      title: s.track3Title,
+      summary: s.track3Summary,
+      metric: s.track3Metric,
+      serviceType: 'Web Development',
+      caps: [s.track3Cap1, s.track3Cap2, s.track3Cap3, s.track3Cap4, s.track3Cap5],
+    },
+  ];
 
   return (
     <>
-      <JsonLd data={faqSchema(SERVICE_FAQS.services, 'en')} />
+      {/* SEO Structured Data */}
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: homeLabel, path: getLocalizedPath('/', safeLang) },
+          { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+        ])}
+      />
+      <JsonLd
+        data={serviceCatalogSchema({
+          name: dict.metadata.servicesTitle,
+          description: dict.metadata.servicesDescription,
+          services: tracks.map((t) => ({
+            name: t.title,
+            description: t.summary,
+            path: getLocalizedPath(t.href, safeLang),
+            serviceType: t.serviceType,
+          })),
+        })}
+      />
+      <JsonLd
+        data={faqSchema(
+          faqs,
+          safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US'
+        )}
+      />
+
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-services" variant="soft" />
@@ -48,7 +123,7 @@ export default async function ServicesPage() {
             <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
               {s.heroEyebrow}
             </p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary leading-[1.05] tracking-tight">
               {s.heroTitle}
             </h1>
             <p className="text-secondary text-lg md:text-xl max-w-xl">{s.heroSubtitle}</p>
@@ -66,6 +141,16 @@ export default async function ServicesPage() {
         </div>
       </section>
 
+      {/* Visible Breadcrumbs */}
+      <div className="container-page pt-4">
+        <Breadcrumbs
+          lang={safeLang}
+          items={[
+            { name: servicesLabel, current: true },
+          ]}
+        />
+      </div>
+
       {/* Three Tracks */}
       <section className="section bg-background">
         <Reveal stagger className="container-page">
@@ -78,14 +163,10 @@ export default async function ServicesPage() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-5 md:gap-6">
-            {[
-              { href: '/services/ai-automation', eyebrow: s.track1Eyebrow, title: s.track1Title, summary: s.track1Summary, metric: s.track1Metric, caps: [s.track1Cap1, s.track1Cap2, s.track1Cap3, s.track1Cap4, s.track1Cap5] },
-              { href: '/services/ui-ux-design',  eyebrow: s.track2Eyebrow, title: s.track2Title, summary: s.track2Summary, metric: s.track2Metric, caps: [s.track2Cap1, s.track2Cap2, s.track2Cap3, s.track2Cap4, s.track2Cap5] },
-              { href: '/services/web-development', eyebrow: s.track3Eyebrow, title: s.track3Title, summary: s.track3Summary, metric: s.track3Metric, caps: [s.track3Cap1, s.track3Cap2, s.track3Cap3, s.track3Cap4, s.track3Cap5] },
-            ].map((t) => (
+            {tracks.map((t) => (
               <Link
                 key={t.title}
-                href={t.href}
+                href={getLocalizedPath(t.href, safeLang)}
                 className="group block bg-primary rounded-2xl overflow-hidden border border-theme-9 hover:border-theme-1 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="p-7 md:p-8">
@@ -98,10 +179,10 @@ export default async function ServicesPage() {
                   </h3>
                   <p className="text-secondary leading-relaxed mb-5 text-sm md:text-base">{t.summary}</p>
                   <ul className="space-y-2 mb-6">
-                    {t.caps.map((c) => (
-                      <li key={c} className="flex items-start gap-2 text-sm text-secondary">
+                    {t.caps.map((cItem) => (
+                      <li key={cItem} className="flex items-start gap-2 text-sm text-secondary">
                         <span aria-hidden className="text-accent mt-0.5 font-secondary font-bold">✓</span>
-                        <span>{c}</span>
+                        <span>{cItem}</span>
                       </li>
                     ))}
                   </ul>
@@ -114,8 +195,8 @@ export default async function ServicesPage() {
                     </span>
                   </div>
                 </div>
-</Link>
-          ))}
+              </Link>
+            ))}
           </div>
         </Reveal>
       </section>
@@ -136,11 +217,11 @@ export default async function ServicesPage() {
               { n: '01', title: s.process1Title, desc: s.process1Desc },
               { n: '02', title: s.process2Title, desc: s.process2Desc },
               { n: '03', title: s.process3Title, desc: s.process3Desc },
-            ].map((p, i, arr) => (
-              <div key={p.n} className="relative">
-                <div className="text-accent font-heading text-5xl md:text-6xl mb-3 leading-none">{p.n}</div>
-                <h3 className="font-heading text-xl md:text-2xl mb-2">{p.title}</h3>
-                <p className="text-text leading-relaxed text-sm md:text-base">{p.desc}</p>
+            ].map((prItem, i, arr) => (
+              <div key={prItem.n} className="relative">
+                <div className="text-accent font-heading text-5xl md:text-6xl mb-3 leading-none">{prItem.n}</div>
+                <h3 className="font-heading text-xl md:text-2xl mb-2">{prItem.title}</h3>
+                <p className="text-text leading-relaxed text-sm md:text-base">{prItem.desc}</p>
                 {i < arr.length - 1 && (
                   <div aria-hidden className="hidden md:block absolute top-8 -right-4 w-8 text-theme-9">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -154,11 +235,7 @@ export default async function ServicesPage() {
         </Reveal>
       </section>
 
-      {/* Pricing transparency — three tiers per service + retainer note.
-          Sits between Process and Why me so the visitor sees cost
-          before differentiation. Ranges, not exact prices (per the
-          site-wide rule: no public price quotes — every project is a
-          fixed quote after a 30-min scoping call). */}
+      {/* Pricing transparency */}
       <section className="section bg-primary">
         <Reveal className="container-page max-w-5xl">
           <div className="text-center mb-12">
@@ -171,13 +248,10 @@ export default async function ServicesPage() {
             <p className="text-secondary/80 max-w-2xl mx-auto">{p.subtitle}</p>
           </div>
 
-          {/* Methodology note — single paragraph in a muted box, so it
-              doesn't compete with the tier cards. */}
           <p className="text-xs text-text max-w-2xl mx-auto text-center mb-10 leading-relaxed">
             <strong className="text-secondary/80">{p.methodology}:</strong> {p.methodologyBody}
           </p>
 
-          {/* Three service blocks (AI, UX, Web), each with 3 tier cards */}
           <div className="space-y-12">
             {[
               { title: p.aiTitle, accent: true,
@@ -204,15 +278,15 @@ export default async function ServicesPage() {
                   {svc.title}
                 </h3>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {svc.tiers.map((t) => (
-                    <div key={t.name} className="rounded-2xl border border-theme-9 bg-primary p-5 md:p-6 flex flex-col">
+                  {svc.tiers.map((tTier) => (
+                    <div key={tTier.name} className="rounded-2xl border border-theme-9 bg-primary p-5 md:p-6 flex flex-col">
                       <div className="text-xs uppercase tracking-widest text-text font-secondary font-bold mb-2">
-                        {t.name}
+                        {tTier.name}
                       </div>
                       <div className="font-heading text-xl md:text-2xl text-secondary mb-3">
-                        {t.range}
+                        {tTier.range}
                       </div>
-                      <p className="text-sm text-text leading-relaxed flex-1">{t.body}</p>
+                      <p className="text-sm text-text leading-relaxed flex-1">{tTier.body}</p>
                     </div>
                   ))}
                 </div>
@@ -271,23 +345,23 @@ export default async function ServicesPage() {
         </Reveal>
       </section>
 
-      {/* FAQ — mirrors FAQPage schema above. */}
+      {/* Localized FAQ Section */}
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-3">
-            Frequently asked questions
+            {faqHeading}
           </h2>
           <p className="text-text leading-relaxed mb-8">
-            Common questions about which service fits, pricing, geography, source code, and what happens after the engagement.
+            {faqIntro}
           </p>
           <div className="space-y-3">
-            {SERVICE_FAQS.services.map((faq, idx) => (
+            {faqs.map((faqItem, idx) => (
               <details
                 key={idx}
                 className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
               >
                 <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
-                  <span>{faq.question}</span>
+                  <span>{faqItem.question}</span>
                   <span
                     aria-hidden="true"
                     className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
@@ -296,7 +370,7 @@ export default async function ServicesPage() {
                   </span>
                 </summary>
                 <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
-                  {faq.answer}
+                  {faqItem.answer}
                 </p>
               </details>
             ))}

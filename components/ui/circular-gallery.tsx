@@ -216,7 +216,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
         role="region"
         aria-label="3D Portfolio Spotlight Showcase"
         className={cn(
-          'relative w-full flex flex-col items-center justify-center select-none overflow-hidden',
+          'relative w-full flex flex-col items-center justify-center select-none overflow-hidden touch-pan-y',
           interactiveDrag ? 'cursor-grab active:cursor-grabbing' : '',
           className
         )}

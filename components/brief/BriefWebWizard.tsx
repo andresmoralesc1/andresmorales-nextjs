@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { track } from '@/lib/analytics';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import BriefFileUpload, { type UploadedBriefFile } from '@/components/brief/BriefFileUpload';
 
 export type BriefWebMode = 'express' | 'detailed';
 
@@ -27,6 +28,11 @@ export type BriefWebData = {
   goalOther: string;
   references: string;
   referencesNotes: string;
+
+  // Uploaded files
+  logoFiles: UploadedBriefFile[];
+  referenceFiles: UploadedBriefFile[];
+  additionalFiles: UploadedBriefFile[];
 
   // Detailed: Brand & Identity
   brandSummary: string;
@@ -96,6 +102,9 @@ const INITIAL: BriefWebData = {
   goalOther: '',
   references: '',
   referencesNotes: '',
+  logoFiles: [],
+  referenceFiles: [],
+  additionalFiles: [],
   brandSummary: '',
   brandValues: '',
   logoStatus: '',
@@ -608,15 +617,24 @@ export default function BriefWebWizard({
                     ? `Current step: ${label}`
                     : `Step ${i + 1}: ${label}`
               }
-              className={`transition-colors ${
+              className={`transition-colors rounded px-1.5 py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-1 flex items-center gap-1.5 ${
                 i === step
-                  ? 'text-secondary font-medium'
+                  ? 'text-secondary font-bold'
                   : i < step
-                    ? 'text-text hover:text-accent cursor-pointer'
-                    : 'text-text/50'
+                    ? 'text-theme-1 hover:text-theme-2 cursor-pointer font-medium'
+                    : 'text-text/40'
               }`}
             >
-              {label}
+              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
+                i === step
+                  ? 'bg-secondary text-primary'
+                  : i < step
+                    ? 'bg-theme-1/20 text-theme-1'
+                    : 'bg-theme-9 text-text/40'
+              }`}>
+                {i < step ? '✓' : i + 1}
+              </span>
+              <span>{label}</span>
             </button>
           ))}
         </div>
@@ -626,6 +644,14 @@ export default function BriefWebWizard({
       <form
         className="p-6 md:p-8"
         onSubmit={(e) => e.preventDefault()}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+            if (stepValid && !submitting) {
+              e.preventDefault();
+              handleNext();
+            }
+          }
+        }}
         data-webmcp-form-id="brief-web"
         data-webmcp-name="Web project brief wizard"
       >
@@ -785,33 +811,35 @@ function StepContact({
         onChange={() => {}}
       />
 
-      <Field label={dict.briefWeb.fieldName} required>
-        <input
-          type="text"
-          name="name"
-          autoComplete="name"
-          required
-          autoFocus
-          value={data.name}
-          onChange={(e) => update('name', e.target.value)}
-          placeholder={dict.briefWeb.fieldNamePlaceholder}
-          className="input"
-        />
-      </Field>
+      <div className="grid md:grid-cols-2 gap-5">
+        <Field label={dict.briefWeb.fieldName} required>
+          <input
+            type="text"
+            name="name"
+            autoComplete="name"
+            required
+            autoFocus
+            value={data.name}
+            onChange={(e) => update('name', e.target.value)}
+            placeholder={dict.briefWeb.fieldNamePlaceholder}
+            className="input"
+          />
+        </Field>
 
-      <Field label={dict.briefWeb.fieldEmail} required error={!emailShape ? dict.briefWeb.fieldEmailError : null}>
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          required
-          value={data.email}
-          onChange={(e) => update('email', e.target.value)}
-          placeholder={dict.briefWeb.fieldEmailPlaceholder}
-          className="input"
-        />
-      </Field>
+        <Field label={dict.briefWeb.fieldEmail} required error={!emailShape ? dict.briefWeb.fieldEmailError : null}>
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            inputMode="email"
+            required
+            value={data.email}
+            onChange={(e) => update('email', e.target.value)}
+            placeholder={dict.briefWeb.fieldEmailPlaceholder}
+            className="input"
+          />
+        </Field>
+      </div>
 
       <div className="grid md:grid-cols-2 gap-5">
         <Field label={dict.briefWeb.fieldCompany} optional>
@@ -968,6 +996,16 @@ function StepWebBasics({
           className="input resize-y"
         />
       </Field>
+
+      <BriefFileUpload
+        label={dict.briefWeb.uploadReferencesLabel}
+        hint={dict.briefWeb.uploadReferencesHint}
+        accept="image/*,.pdf,.svg"
+        multiple
+        maxFiles={5}
+        files={data.referenceFiles || []}
+        onChange={(files) => update('referenceFiles', files)}
+      />
     </div>
   );
 }
@@ -1002,6 +1040,18 @@ function StepVisualIdentity({
         layout="grid-2"
       />
 
+      {data.logoStatus && data.logoStatus !== 'need_design' && (
+        <BriefFileUpload
+          label={dict.briefWeb.uploadLogoLabel}
+          hint={dict.briefWeb.uploadLogoHint}
+          accept="image/*,.ai,.eps,.pdf,.svg"
+          multiple
+          maxFiles={3}
+          files={data.logoFiles || []}
+          onChange={(files) => update('logoFiles', files)}
+        />
+      )}
+
       <Field label={dict.briefWeb.fieldColors} optional>
         <input
           type="text"
@@ -1026,7 +1076,7 @@ function StepVisualIdentity({
                 key={vibe}
                 aria-pressed={selected}
                 onClick={() => toggleVibe(vibe)}
-                className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all duration-200 inline-flex items-center gap-1.5 ${
+                className={`px-4 py-2 min-h-[38px] rounded-full text-xs sm:text-sm border transition-all duration-200 inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-1 focus-visible:ring-offset-2 ${
                   selected
                     ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold ring-1 ring-theme-1/30 shadow-sm scale-[1.02]'
                     : 'border-theme-9 text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary bg-primary'
@@ -1063,6 +1113,16 @@ function StepVisualIdentity({
           className="input"
         />
       </Field>
+
+      <BriefFileUpload
+        label={dict.briefWeb.uploadReferencesLabel}
+        hint={dict.briefWeb.uploadReferencesHint}
+        accept="image/*,.pdf,.svg,.doc,.docx"
+        multiple
+        maxFiles={5}
+        files={data.referenceFiles || []}
+        onChange={(files) => update('referenceFiles', files)}
+      />
     </div>
   );
 }
@@ -1130,7 +1190,7 @@ function StepStructure({
             return (
               <label
                 key={page}
-                className={`p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 ${
+                className={`p-3.5 min-h-[44px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-theme-1 has-[:focus-visible]:border-theme-1 ${
                   selected
                     ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.01]'
                     : 'border-theme-9 bg-primary text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary'
@@ -1170,7 +1230,7 @@ function StepStructure({
             return (
               <label
                 key={feature}
-                className={`p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 ${
+                className={`p-3.5 min-h-[44px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-theme-1 has-[:focus-visible]:border-theme-1 ${
                   selected
                     ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.01]'
                     : 'border-theme-9 bg-primary text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary'
@@ -1333,6 +1393,16 @@ function StepLogistics({
         />
       </Field>
 
+      <BriefFileUpload
+        label={dict.briefWeb.uploadAdditionalLabel}
+        hint={dict.briefWeb.uploadAdditionalHint}
+        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar"
+        multiple
+        maxFiles={5}
+        files={data.additionalFiles || []}
+        onChange={(files) => update('additionalFiles', files)}
+      />
+
       <SummaryWeb data={data} dict={dict} mode={mode} />
     </div>
   );
@@ -1385,6 +1455,15 @@ function SummaryWeb({
         )}
         <Row k={dict.briefWeb.summaryBudget} v={budgetLabel} />
         <Row k={dict.briefWeb.summaryTimeline} v={timelineLabel} />
+        {data.logoFiles && data.logoFiles.length > 0 && (
+          <Row k={dict.briefWeb.summaryUploadedLogo} v={data.logoFiles.map((f) => f.name).join(', ')} />
+        )}
+        {data.referenceFiles && data.referenceFiles.length > 0 && (
+          <Row k={dict.briefWeb.summaryUploadedReferences} v={data.referenceFiles.map((f) => f.name).join(', ')} />
+        )}
+        {data.additionalFiles && data.additionalFiles.length > 0 && (
+          <Row k={dict.briefWeb.summaryUploadedAdditional} v={data.additionalFiles.map((f) => f.name).join(', ')} />
+        )}
         {data.notes && <Row k={dict.briefWeb.fieldNotes} v={data.notes} />}
       </dl>
     </details>
@@ -1463,7 +1542,7 @@ function RadioGroup<V extends string>(props: {
             <label
               key={opt.value}
               htmlFor={id}
-              className={`p-3.5 sm:p-4 min-h-[48px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-sm font-medium flex items-center justify-between gap-3 ${
+              className={`p-3.5 sm:p-4 min-h-[48px] rounded-xl border-2 cursor-pointer transition-all duration-200 text-sm font-medium flex items-center justify-between gap-3 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-theme-1 has-[:focus-visible]:border-theme-1 ${
                 selected
                   ? 'border-theme-1 bg-theme-1/10 text-secondary font-bold shadow-sm ring-1 ring-theme-1/30 scale-[1.01]'
                   : 'border-theme-9 bg-primary text-text hover:border-theme-1/40 hover:bg-theme-5/50 hover:text-secondary'

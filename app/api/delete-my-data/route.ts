@@ -3,6 +3,7 @@ import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 import { sendMail } from '@/lib/email';
+import { buildBrandedEmailHtml } from '@/lib/email-template';
 
 // Data-deletion request endpoint.
 //
@@ -37,27 +38,29 @@ function escapeHtml(s: string): string {
 
 function renderHtml(p: Payload, dict: Dictionary): string {
   const t = dict.legal.deleteMyData;
-  const safeEmail = escapeHtml(p.email);
-  const safeScope = escapeHtml(p.scope || 'all');
-  const safeReason = escapeHtml(p.reason || '(no reason given)');
-  return `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${escapeHtml(t.h1)}</h1>
-      </div>
-      <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        <tr><td style="padding:8px 12px;font-weight:bold;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">Email</td><td style="padding:8px 12px;border:1px solid #eeeeee;"><a href="mailto:${safeEmail}" style="color:#f96e03;">${safeEmail}</a></td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">Scope</td><td style="padding:8px 12px;border:1px solid #eeeeee;">${safeScope}</td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">Reason</td><td style="padding:8px 12px;border:1px solid #eeeeee;white-space:pre-wrap;">${safeReason}</td></tr>
-      </table>
-      <p style="margin-top:24px;font-size:13px;color:#575250;">
-        Verify by replying to ${safeEmail} from the same address. Do NOT delete until identity check is complete.
+  const safeEmail = p.email;
+  const safeScope = p.scope || 'all';
+  const safeReason = p.reason || '(sin motivo indicado)';
+
+  return buildBrandedEmailHtml({
+    badge: '🛡️ SOLICITUD LEGAL / PRIVACIDAD',
+    title: t.h1,
+    subtitle: `Remitente: ${safeEmail} · Alcance: ${safeScope}`,
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;">
+        Se ha recibido una solicitud formal de eliminación de datos personales (GDPR / Ley 1581):
       </p>
-      <p style="margin-top:24px;font-size:11px;color:#888;">
-        Sent via self-hosted Mailcow (mail.cleida.com.co). Not stored on any third-party SaaS.
-      </p>
-    </div>
-  `;
+    `,
+    tableRows: [
+      { label: 'Correo Solicitante', value: safeEmail },
+      { label: 'Alcance Solicitado', value: safeScope },
+      { label: 'Motivo / Comentarios', value: safeReason },
+    ],
+    ctaText: 'Verificar y Responder',
+    ctaUrl: `mailto:${safeEmail}`,
+    replyToEmail: safeEmail,
+    footerNote: 'Verificar respondiendo a este remitente antes de proceder con el borrado físico.',
+  });
 }
 
 function renderText(p: Payload): string {

@@ -139,17 +139,53 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
               </div>
             </div>
 
+            {/* WhatsApp Quick Alternative Banner */}
+            <div className="rounded-2xl bg-gradient-to-r from-emerald-950/40 via-primary to-emerald-950/20 border border-emerald-500/30 p-4 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                  <span className="text-xl">💬</span>
+                </div>
+                <div>
+                  <h4 className="text-xs sm:text-sm font-bold text-secondary">
+                    {lang === 'es' ? '¿Prefieres responder por WhatsApp?' : lang === 'pt' ? 'Prefere responder pelo WhatsApp?' : 'Prefer chatting on WhatsApp?'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-secondary/70">
+                    {lang === 'es'
+                      ? 'Si prefieres contármelo por chat o notas de voz, escríbeme y estructuramos tu proyecto juntos.'
+                      : lang === 'pt'
+                      ? 'Se preferir contar por chat ou áudio direto, me escreva e estruturamos seu projeto juntos.'
+                      : 'If you prefer direct messaging or voice notes, chat with me directly and we will structure it together.'}
+                  </p>
+                </div>
+              </div>
+              <a
+                href={`https://wa.me/573161482507?text=${encodeURIComponent(
+                  lang === 'es'
+                    ? `Hola Andrés, prefiero contarte sobre mi proyecto web/automatización directamente por WhatsApp.`
+                    : lang === 'pt'
+                    ? `Olá Andrés, prefiro falar sobre meu projeto web/automação diretamente pelo WhatsApp.`
+                    : `Hi Andrés, I prefer telling you about my web/automation project directly via WhatsApp.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-sm cursor-pointer hover:scale-[1.02]"
+              >
+                <span>{lang === 'es' ? 'Escribir por WhatsApp' : lang === 'pt' ? 'Escrever no WhatsApp' : 'Open WhatsApp'}</span>
+                <span>→</span>
+              </a>
+            </div>
+
             {/* Active Wizard Component */}
             {activePath === 'web' && (
-              <BriefWebWizard dict={dict} lang={lang} onBackToHub={() => handleSelectPath(null)} />
+              <BriefWebWizard dict={dict} lang={lang} />
             )}
 
             {activePath === 'automation' && (
-              <BriefWizard dict={dict} lang={lang} onBackToHub={() => handleSelectPath(null)} />
+              <BriefWizard dict={dict} lang={lang} />
             )}
 
             {activePath === 'consulting' && (
-              <div className="rounded-2xl bg-primary border border-theme-9 shadow-sm p-6 sm:p-8 md:p-10 max-w-3xl mx-auto">
+              <div className="rounded-2xl bg-primary border border-theme-9 shadow-sm p-5 sm:p-8 md:p-10 max-w-3xl mx-auto">
                 <div className="text-center max-w-xl mx-auto mb-8">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wide bg-theme-1/15 text-secondary border border-theme-1/30 mb-4">
                     <span className="w-2 h-2 rounded-full bg-theme-1 animate-pulse" />
@@ -211,7 +247,7 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="rounded-2xl bg-primary border border-theme-9 shadow-sm p-6 sm:p-8 md:p-10"
+            className="rounded-2xl bg-primary border border-theme-9 shadow-sm p-4 sm:p-8 md:p-10"
           >
             {/* Explainer Header */}
             <div className="text-center max-w-2xl mx-auto mb-8 md:mb-12">
@@ -230,7 +266,7 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => handleSelectPath('web')}
-                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
+                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-5 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
               >
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-5">
@@ -282,7 +318,7 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => handleSelectPath('automation')}
-                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
+                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-5 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
               >
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-5">
@@ -334,7 +370,7 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => handleSelectPath('consulting')}
-                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
+                className="group cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-theme-9 hover:border-theme-1 bg-background hover:bg-theme-5/60 p-5 sm:p-7 transition-all duration-300 hover:shadow-[0_12px_32px_rgba(249,110,3,0.12)] relative"
               >
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-5">
@@ -368,16 +404,17 @@ export default function BriefHub({ dict, lang, initialType = null }: BriefHubPro
                   </ul>
                 </div>
 
-                <a
-                  href={CALENDAR_BOOKING_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-full py-3 px-5 rounded-xl border-2 border-secondary text-secondary font-bold hover:bg-secondary hover:text-primary transition-all duration-200 text-center inline-flex items-center justify-center gap-2 text-sm group-hover:shadow-md"
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectPath('consulting');
+                  }}
+                  className="w-full py-3 px-5 rounded-xl bg-theme-1 text-secondary font-bold hover:bg-theme-2 transition-all duration-200 text-center inline-flex items-center justify-center gap-2 shadow-sm text-sm group-hover:shadow-md"
                 >
                   <span>{h.consultingCardCta}</span>
                   <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-                </a>
+                </button>
               </motion.div>
             </div>
           </motion.div>

@@ -10,17 +10,9 @@ const nextConfig = {
   // root from `bun.lock` in the parent dir and may mis-trace assets like
   // /public/uploads/* into the wrong output bundle path.
   outputFileTracingRoot: __dirname,
-  experimental: {
-    // Inline imported CSS as <style> tags inside the HTML <head> instead
-    // of a render-blocking <link rel="stylesheet">. App Router, prod only.
-    // Resolves the "render-blocking CSS" Lighthouse warning — the browser
-    // can start painting without waiting for the CSS file to download.
-    // Tradeoff: HTML size goes up by the inlined CSS size (~50KB here),
-    // but the LCP/FCP improvement is worth it because CSS is now part of
-    // the same HTTP/2 stream as the HTML and doesn't compete with the
-    // image/font fetches on the critical path.
-    inlineCss: true,
-  },
+  // experimental: {
+  //   inlineCss: true,
+  // },
   // Don't send `X-Powered-By: Next.js` header. Caddy also strips it via
   // `header_down -X-Powered-By` on the portafolio block, but defense in
   // depth: turn it off at the app layer too so a future Caddy change
@@ -32,6 +24,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'i0.wp.com' },
       { protocol: 'https', hostname: 'i1.wp.com' },
       { protocol: 'https', hostname: 'i2.wp.com' },
+      { protocol: 'https', hostname: 'iad.microlink.io' },
+      { protocol: 'https', hostname: 'api.microlink.io' },
     ],
     // Cap the variants Next.js generates for srcset. The previous defaults
     // emitted 17 widths (16, 32, 48, ..., 3840) for every image — the

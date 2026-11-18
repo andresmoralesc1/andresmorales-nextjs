@@ -3,12 +3,16 @@ import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 import { sendMail } from '@/lib/email';
+import { createLead } from '@/lib/crm-store';
+import { syncLeadToBusiness } from '@/lib/clients-companies-store';
+import { sendTelegramNotification } from '@/lib/telegram';
+import { buildBrandedEmailHtml, escapeHtml } from '@/lib/email-template';
 
 // Brief has a max of 5 submissions / hour / IP (see checkRateLimit below).
 // Body size guard: 10 KB is plenty for a full brief (name + email + role
 // + company + problem + goal + tools + success metric + notes) which
 // measures ~1.5-3 KB in practice.
-const MAX_BODY_BYTES = 10 * 1024;
+const MAX_BODY_BYTES = 40 * 1024;
 
 // Self-hosted Mailcow SMTP — see lib/email.ts for the transport config.
 // Recipient + sender fall back to the Mailcow mailbox. BRIEF_*_EMAIL
@@ -53,6 +57,7 @@ type BriefPayload = {
   budget: 'under2k' | '2to5k' | '5to15k' | '15to50k' | 'over50k';
   timeline: 'asap' | '1month' | '1to3months' | 'over3months' | 'flexible';
   additionalNotes?: string;
+  attachmentFiles?: Array<{ name: string; url: string; size: number; type: string }>;
   // Locale submitted with the brief. Optional — used to pick the right
   // dictionary for the email templates (notification + auto-reply).
   lang?: string;
@@ -80,50 +85,51 @@ function timelineLabel(p: BriefPayload, dict: Dictionary): string {
   return dict.brief.step5Timeline[p.timeline];
 }
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function renderFilesHtmlList(files?: Array<{ name: string; url: string; size: number; type: string }>): string | undefined {
+  if (!files || files.length === 0) return undefined;
+  return files
+    .map(
+      (f) =>
+        `<div style="margin-bottom:6px;"><a href="https://andresmorales.com.co${escapeHtml(f.url)}" target="_blank" style="color:#f96e03;font-weight:600;text-decoration:underline;">${escapeHtml(f.name)}</a> <span style="color:#786F68;font-size:11px;">(${Math.round(f.size / 1024)} KB)</span></div>`
+    )
+    .join('');
 }
 
 function renderEmailHtml(p: BriefPayload, dict: Dictionary): string {
-  const row = (label: string, value: string | string[] | undefined) => {
-    const v = Array.isArray(value) ? value.join(', ') : value || '—';
-    return `<tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(v)}</td></tr>`;
-  };
   const projectTypeOther = p.projectTypeOther ? `${dict.brief.email.fieldOther}${p.projectTypeOther}` : '';
   const subtitle = dict.brief.email.subtitle
     .replace('{name}', p.name)
     .replace('{email}', p.email);
-  const replyTo = dict.brief.email.replyTo.replace('{email}', p.email);
 
-  return `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${escapeHtml(dict.brief.email.title)}</h1>
-        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">${escapeHtml(subtitle)}</p>
-      </div>
-      <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        ${row(dict.brief.email.fieldCompany, p.company)}
-        ${row(dict.brief.email.fieldRole, p.role)}
-        ${row(dict.brief.email.fieldProjectType, projectTypeLabel(p, dict) + projectTypeOther)}
-        ${row(dict.brief.email.fieldProblem, p.problem)}
-        ${row(dict.brief.email.fieldTools, [...(p.tools || []), p.toolsOther].filter(Boolean) as string[])}
-        ${row(dict.brief.email.fieldFrequency, frequencyLabel(p, dict))}
-        ${row(dict.brief.email.fieldGoal, p.goal)}
-        ${row(dict.brief.email.fieldSuccess, p.successMetric)}
-        ${row(dict.brief.email.fieldBudget, budgetLabel(p, dict))}
-        ${row(dict.brief.email.fieldTimeline, timelineLabel(p, dict))}
-        ${row(dict.brief.email.fieldNotes, p.additionalNotes)}
-      </table>
-      <p style="margin-top:24px;font-size:13px;color:#575250;">
-        ${escapeHtml(replyTo)} <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
+  return buildBrandedEmailHtml({
+    badge: '🚀 BRIEF DE PROYECTO & AUTOMATIZACIÓN',
+    title: dict.brief.email.title,
+    subtitle: `${subtitle} · ${p.company || 'Empresa Independiente'}`,
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;">
+        Se ha recibido un nuevo brief completo de requerimientos técnicos y alcance:
       </p>
-    </div>
-  `;
+    `,
+    tableRows: [
+      { label: dict.brief.email.fieldCompany, value: p.company },
+      { label: dict.brief.email.fieldRole, value: p.role },
+      { label: dict.brief.email.fieldProjectType, value: projectTypeLabel(p, dict) + projectTypeOther },
+      { label: dict.brief.email.fieldProblem, value: p.problem },
+      { label: dict.brief.email.fieldTools, value: [...(p.tools || []), p.toolsOther].filter(Boolean).join(', ') },
+      { label: dict.brief.email.fieldFrequency, value: frequencyLabel(p, dict) },
+      { label: dict.brief.email.fieldGoal, value: p.goal },
+      { label: dict.brief.email.fieldSuccess, value: p.successMetric },
+      { label: dict.brief.email.fieldBudget, value: budgetLabel(p, dict) },
+      { label: dict.brief.email.fieldTimeline, value: timelineLabel(p, dict) },
+      { label: dict.brief.email.fieldAttachments || 'Archivos adjuntos', value: renderFilesHtmlList(p.attachmentFiles), isHtml: true },
+      { label: dict.brief.email.fieldNotes, value: p.additionalNotes },
+    ],
+    ctaText: 'Abrir Dashboard CRM',
+    ctaUrl: 'https://andresmorales.com.co/es/admin/crm',
+    secondaryCtaText: 'Responder al Prospecto',
+    secondaryCtaUrl: `mailto:${p.email}`,
+    replyToEmail: p.email,
+  });
 }
 
 function renderEmailText(p: BriefPayload, dict: Dictionary): string {
@@ -158,10 +164,26 @@ function renderEmailText(p: BriefPayload, dict: Dictionary): string {
     sep(dict.brief.email.fieldBudget),
     `${budgetLabel(p, dict)} · ${timelineLabel(p, dict)}`,
     ``,
+    p.attachmentFiles && p.attachmentFiles.length
+      ? `${sep(dict.brief.email.fieldAttachments || 'ARCHIVOS ADJUNTOS')}\n${p.attachmentFiles.map((f) => `${f.name} (https://andresmorales.com.co${f.url})`).join('\n')}\n`
+      : '',
     sep(dict.brief.email.fieldNotes),
     p.additionalNotes || '—',
   ];
   return lines.join('\n');
+}
+
+function parseUploadedFiles(val: unknown): Array<{ name: string; url: string; size: number; type: string }> {
+  if (!Array.isArray(val)) return [];
+  return val
+    .filter((f) => f && typeof f === 'object' && typeof (f as any).url === 'string' && (f as any).url.startsWith('/uploads/briefs/'))
+    .slice(0, 10)
+    .map((f: any) => ({
+      name: String(f.name || 'archivo').slice(0, 120),
+      url: String(f.url).slice(0, 300),
+      size: typeof f.size === 'number' ? f.size : 0,
+      type: String(f.type || '').slice(0, 80),
+    }));
 }
 
 function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok: false; error: string } {
@@ -222,6 +244,7 @@ function validatePayload(body: unknown): { ok: true; data: BriefPayload } | { ok
       budget,
       timeline,
       additionalNotes: b.additionalNotes ? String(b.additionalNotes).slice(0, 2000) : '',
+      attachmentFiles: parseUploadedFiles(b.attachmentFiles),
       lang,
     },
   };
@@ -314,6 +337,61 @@ export async function POST(req: NextRequest) {
   }
   const data = result.data;
 
+  const filesSummaryList = data.attachmentFiles?.map((f) => `Adjunto: ${f.name} (https://andresmorales.com.co${f.url})`) || [];
+  const filesMessagePart = filesSummaryList.length > 0 ? `\n📎 Adjuntos:\n${filesSummaryList.join('\n')}` : '';
+
+  // Auto-log brief into local CRM and sync with Clientes & Empresas
+  try {
+    const lead = createLead({
+      name: data.name,
+      email: data.email,
+      company: data.company || '',
+      service: `Brief: ${data.projectType}`,
+      budget: data.budget,
+      message: `Problema: ${data.problem}\nObjetivo: ${data.goal}${filesMessagePart}`,
+      source: 'brief',
+      status: 'brief_received',
+      briefData: data as any,
+    });
+
+    syncLeadToBusiness({
+      id: lead?.id,
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      service: `Brief: ${data.projectType}`,
+      budget: data.budget,
+      status: 'en_progreso',
+      message: `Problema: ${data.problem}\nObjetivo: ${data.goal}${filesMessagePart}`,
+    });
+
+    const tgFileItems = data.attachmentFiles?.map((f) => `• <a href="https://andresmorales.com.co${f.url}">${escapeHtml(f.name)}</a>`) || [];
+    const tgFilesText = tgFileItems.length > 0 ? `\n📎 <b>Archivos adjuntos (${tgFileItems.length}):</b>\n${tgFileItems.join('\n')}\n` : '';
+
+    // Instant alert to Andres via Telegram Bot
+    sendTelegramNotification(
+      `🚀 <b>¡Nuevo Brief de Proyecto Recibido!</b>\n\n` +
+        `👤 <b>Cliente:</b> ${data.name}\n` +
+        `🏢 <b>Empresa:</b> ${data.company || '—'} (${data.role || '—'})\n` +
+        `🎯 <b>Tipo:</b> ${data.projectType}\n` +
+        `💰 <b>Presupuesto:</b> ${data.budget}\n` +
+        `⏱️ <b>Plazo:</b> ${data.timeline}\n\n` +
+        `📝 <b>Objetivo:</b> ${data.goal.slice(0, 240)}...\n` +
+        tgFilesText + `\n` +
+        `👉 <a href="https://andresmorales.com.co/es/admin/crm">Ver en Dashboard CRM</a>`,
+      {
+        buttons: [
+          [
+            { text: '📊 Abrir CRM', url: 'https://andresmorales.com.co/es/admin/crm' },
+            { text: '✉️ Responder por Correo', url: `mailto:${data.email}` },
+          ],
+        ],
+      }
+    ).catch(() => {});
+  } catch (crmErr) {
+    console.warn('[brief] Could not auto-log to CRM:', crmErr);
+  }
+
   // Bump AFTER validation passes — failed validation doesn't count
   // against the limit (so a human user fixing typos isn't punished).
   bumpRateLimit(RATE_LIMIT_ROUTE, ip);
@@ -379,22 +457,27 @@ async function sendAutoReply(p: BriefPayload, dict: Dictionary, lang: string): P
     ? 'https://andresmorales.com.co/brief'
     : `https://andresmorales.com.co/${lang}/brief`;
 
-  const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${greeting}</h1>
-      </div>
-      <div style="padding:24px 32px;color:#575250;line-height:1.6;">
-        <p>${escapeHtml(dict.brief.emailAutoReply.body1)}</p>
-        <p>${escapeHtml(dict.brief.emailAutoReply.body2)}</p>
-        <p style="margin-top:32px;">${escapeHtml(dict.brief.emailAutoReply.signature)}</p>
-        <p style="font-size:13px;color:#999;margin-top:24px;">
-          ${escapeHtml(dict.brief.emailAutoReply.footer)}
-          <a href="${briefUrl}" style="color:#f96e03;">${escapeHtml(briefUrl)}</a>.
-        </p>
-      </div>
-    </div>
-  `;
+  const html = buildBrandedEmailHtml({
+    badge: 'CONFIRMACIÓN OFICIAL',
+    title: greeting,
+    subtitle: 'Andrés Morales · Automatización con IA & Desarrollo Web',
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;line-height:1.7;">
+        ${escapeHtml(dict.brief.emailAutoReply.body1)}
+      </p>
+      <p style="margin:0 0 16px 0;font-size:14.5px;color:#4A423D;line-height:1.7;">
+        ${escapeHtml(dict.brief.emailAutoReply.body2)}
+      </p>
+      <p style="margin:24px 0 0 0;font-size:14px;color:#1E1810;font-weight:600;">
+        ${escapeHtml(dict.brief.emailAutoReply.signature)}
+      </p>
+    `,
+    ctaText: 'Agendar Llamada de 30 min (Google Calendar)',
+    ctaUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    secondaryCtaText: '💬 Contactar por WhatsApp',
+    secondaryCtaUrl: 'https://wa.me/573161482507',
+    footerNote: `${dict.brief.emailAutoReply.footer} <a href="${briefUrl}" style="color:#f96e03;">${escapeHtml(briefUrl)}</a>.`,
+  });
   const text = `${dict.brief.emailAutoReply.greeting.replace('{firstName}', firstName)}
 
 ${dict.brief.emailAutoReply.body1}
@@ -475,6 +558,9 @@ async function sendToClickUp(p: BriefPayload, dict: Dictionary): Promise<void> {
     p.successMetric ? `**${dict.brief.email.fieldSuccess}:** ${user(p.successMetric)}` : '',
     ``,
     p.additionalNotes ? `**${dict.brief.email.fieldNotes}**\n${user(p.additionalNotes)}\n` : '',
+    p.attachmentFiles && p.attachmentFiles.length
+      ? `**${dict.brief.email.fieldAttachments || 'Archivos Adjuntos'}**\n${p.attachmentFiles.map((f) => `- [${f.name}](https://andresmorales.com.co${f.url})`).join('\n')}\n`
+      : '',
     `---`,
     `_Submitted via andresmorales.com.co brief wizard._`,
   ]

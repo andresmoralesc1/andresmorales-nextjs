@@ -3,6 +3,9 @@ import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 import { sendMail } from '@/lib/email';
+import { createLead } from '@/lib/crm-store';
+import { syncLeadToBusiness } from '@/lib/clients-companies-store';
+import { buildBrandedEmailHtml, escapeHtml } from '@/lib/email-template';
 
 // ── Anti-spam: in-memory rate limit per IP ───────────────────────────────
 // 5 contact messages / hour / IP. Generous than /api/brief because the
@@ -30,35 +33,29 @@ type ContactPayload = {
   lang?: string;
 };
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 function renderEmailHtml(p: ContactPayload, dict: Dictionary): string {
   const n = dict.contact.emailNotification;
   const subtitle = n.subtitle.replace('{name}', p.name).replace('{email}', p.email);
-  const replyTo = n.replyTo.replace('{email}', p.email);
-  return `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${escapeHtml(n.title)}</h1>
-        <p style="margin:8px 0 0 0;opacity:0.9;font-size:14px;">${escapeHtml(subtitle)}</p>
-      </div>
-      <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:160px;vertical-align:top;">${escapeHtml(n.fieldName)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(p.name)}</td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">${escapeHtml(n.fieldEmail)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;"><a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a></td></tr>
-        <tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;vertical-align:top;">${escapeHtml(n.fieldMessage)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;white-space:pre-wrap;">${escapeHtml(p.message)}</td></tr>
-      </table>
-      <p style="margin-top:24px;font-size:13px;color:#575250;">
-        ${escapeHtml(replyTo)} <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
+  return buildBrandedEmailHtml({
+    badge: '✉️ MENSAJE DE CONTACTO',
+    title: n.title,
+    subtitle,
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;">
+        Se ha recibido una nueva solicitud a través del formulario de contacto web:
       </p>
-    </div>
-  `;
+    `,
+    tableRows: [
+      { label: n.fieldName, value: p.name },
+      { label: n.fieldEmail, value: p.email },
+      { label: n.fieldMessage, value: p.message },
+    ],
+    ctaText: 'Abrir Dashboard CRM',
+    ctaUrl: 'https://andresmorales.com.co/es/admin/crm',
+    secondaryCtaText: 'Responder al Remitente',
+    secondaryCtaUrl: `mailto:${p.email}`,
+    replyToEmail: p.email,
+  });
 }
 
 function renderEmailText(p: ContactPayload, dict: Dictionary): string {
@@ -130,27 +127,34 @@ async function sendNotification(data: ContactPayload, dict: Dictionary): Promise
 async function sendAutoReply(p: ContactPayload, dict: Dictionary, lang: string): Promise<void> {
   const ar = dict.contact.emailAutoReply;
   const firstName = p.name.split(' ')[0] || p.name;
-  const greeting = ar.greeting.replace('{firstName}', escapeHtml(firstName));
+  const greeting = ar.greeting.replace('{firstName}', firstName);
   const subject = ar.subject.replace('{firstName}', firstName);
   const linkUrl = lang === 'en'
     ? 'https://andresmorales.com.co/contact'
     : `https://andresmorales.com.co/${lang}/contact`;
 
-  const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${greeting}</h1>
-      </div>
-      <div style="padding:24px 32px;color:#575250;line-height:1.6;">
-        <p>${escapeHtml(ar.body1)}</p>
-        <p>${escapeHtml(ar.body2)}</p>
-        <p style="margin-top:32px;">${escapeHtml(ar.signature)}</p>
-        <p style="font-size:13px;color:#999;margin-top:24px;">
-          ${escapeHtml(ar.footer)} <a href="${linkUrl}" style="color:#f96e03;">${escapeHtml(ar.linkText)}</a>.
-        </p>
-      </div>
-    </div>
-  `;
+  const html = buildBrandedEmailHtml({
+    badge: 'CONFIRMACIÓN OFICIAL',
+    title: greeting,
+    subtitle: 'Andrés Morales · Automatización con IA & Desarrollo Web',
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;line-height:1.7;">
+        ${escapeHtml(ar.body1)}
+      </p>
+      <p style="margin:0 0 16px 0;font-size:14.5px;color:#4A423D;line-height:1.7;">
+        ${escapeHtml(ar.body2)}
+      </p>
+      <p style="margin:24px 0 0 0;font-size:14px;color:#1E1810;font-weight:600;">
+        ${escapeHtml(ar.signature)}
+      </p>
+    `,
+    ctaText: 'Agendar Llamada de 30 min',
+    ctaUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    secondaryCtaText: '💬 WhatsApp Directo',
+    secondaryCtaUrl: 'https://wa.me/573161482507',
+    footerNote: `${ar.footer} <a href="${linkUrl}" style="color:#f96e03;">${escapeHtml(ar.linkText)}</a>.`,
+  });
+
   const text = `${ar.greeting.replace('{firstName}', firstName)}
 
 ${ar.body1}
@@ -218,6 +222,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'error' in result ? result.error : 'Invalid payload' }, { status: 400 });
   }
   const data = result.data;
+
+  // Auto-log lead into local CRM and sync with Clientes & Empresas
+  try {
+    const lead = createLead({
+      name: data.name,
+      email: data.email,
+      message: data.message,
+      source: 'contact',
+      service: 'Consulta de Contacto',
+      status: 'new',
+    });
+    syncLeadToBusiness({
+      id: lead?.id,
+      name: data.name,
+      email: data.email,
+      message: data.message,
+      service: 'Consulta de Contacto',
+      status: 'new',
+    });
+  } catch (crmErr) {
+    console.warn('[contact] Could not auto-log to CRM:', crmErr);
+  }
 
   // Bump AFTER honeypot + timing + validation all pass — failed spam
   // checks don't count against the limit (a torrent of honeypot triggers

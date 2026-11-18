@@ -9,14 +9,13 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
-  LayoutGrid,
   Search,
   Maximize2,
-  Columns,
   Grid,
   Shuffle,
   MessageSquare,
   Share2,
+  Settings,
 } from "lucide-react"
 import {
   ALL_BOCETOS_CARDS,
@@ -26,6 +25,7 @@ import {
 } from "@/lib/artworks-data"
 import PolaroidLineCarousel, { type Slide } from "@/components/ui/polaroid-line-carousel"
 import ArtNotesModal from "@/components/ui/art-notes-modal"
+import { LazyParticles } from "@/components/lazy-particles"
 import type { ArtNote } from "@/lib/art-notes"
 import type { ReactionType, ReactionsMap, ArtworkReactions } from "@/lib/art-reactions"
 
@@ -41,11 +41,127 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr
 }
 
+export interface GallerySettingsProps {
+  title?: string
+  subtitle?: string
+  tagline?: string
+  description?: string
+  artist?: string
+  instagram?: string
+}
+
+const I18N_DICT = {
+  es: {
+    loading: "Cargando",
+    stringMode: "Cuerda",
+    gridMode: "Muro",
+    shuffle: "Aleatorio",
+    notes: "Notas",
+    portfolio: "Portafolio",
+    exit: "Salir",
+    admin: "Admin",
+    inquire: "Encargar Obra",
+    inquireShort: "Cotizar",
+    all: "Todas",
+    favorites: "Favoritos",
+    searchPlaceholder: "Buscar por número, título o descripción (ej. 108, shibari, asana, loto)...",
+    noResults: "No se encontraron bocetos con esa búsqueda.",
+    clearSearch: "Limpiar búsqueda",
+    heartLabel: "Conmovedor",
+    sparklesLabel: "Brillante",
+    leafLabel: "Orgánico",
+    fireLabel: "Fuerza",
+    close: "Cerrar",
+    download: "Descargar HD",
+    share: "Compartir",
+    copylink: "Enlace copiado al portapapeles",
+    framedWall: "En Pared",
+    seeFramed: "Ver en Pared",
+    realScale: "Escala Real 1:1",
+    frameFormat: "Formato 30 × 40 cm",
+    frameLabel: "Marco:",
+    darkWood: "Madera Ébano",
+    naturalWood: "Nogal / Roble",
+  },
+  en: {
+    loading: "Loading",
+    stringMode: "Hanging Line",
+    gridMode: "Wall",
+    shuffle: "Shuffle",
+    notes: "Notes",
+    portfolio: "Portfolio",
+    exit: "Exit",
+    admin: "Admin",
+    inquire: "Commission Artwork",
+    inquireShort: "Inquire",
+    all: "All",
+    favorites: "Favorites",
+    searchPlaceholder: "Search by number, title or medium (e.g. 108, shibari, asana, lotus)...",
+    noResults: "No sketches found matching that search.",
+    clearSearch: "Clear search",
+    heartLabel: "Moving",
+    sparklesLabel: "Brilliant",
+    leafLabel: "Organic",
+    fireLabel: "Power",
+    close: "Close",
+    download: "Download HD",
+    share: "Share",
+    copylink: "Link copied to clipboard",
+    framedWall: "On Wall",
+    seeFramed: "View on Wall",
+    realScale: "Real Scale 1:1",
+    frameFormat: "30 × 40 cm Format",
+    frameLabel: "Frame:",
+    darkWood: "Ebony Wood",
+    naturalWood: "Walnut / Oak",
+  },
+  pt: {
+    loading: "Carregando",
+    stringMode: "Corda",
+    gridMode: "Mural",
+    shuffle: "Aleatório",
+    notes: "Notas",
+    portfolio: "Portfólio",
+    exit: "Sair",
+    admin: "Admin",
+    inquire: "Encomendar Obra",
+    inquireShort: "Cotar",
+    all: "Todas",
+    favorites: "Favoritos",
+    searchPlaceholder: "Buscar por número, título ou descrição (ex. 108, shibari, asana, lótus)...",
+    noResults: "Nenhum esboço encontrado para essa busca.",
+    clearSearch: "Limpar busca",
+    heartLabel: "Comovente",
+    sparklesLabel: "Brilhante",
+    leafLabel: "Orgânico",
+    fireLabel: "Força",
+    close: "Fechar",
+    download: "Baixar HD",
+    share: "Compartilhar",
+    copylink: "Link copiado para a área de transferência",
+    framedWall: "Na Parede",
+    seeFramed: "Ver na Parede",
+    realScale: "Escala Real 1:1",
+    frameFormat: "Formato 30 × 40 cm",
+    frameLabel: "Moldura:",
+    darkWood: "Madeira Ébano",
+    naturalWood: "Nogueira / Carvalho",
+  },
+}
+
 export default function PolaroidArtGallery({
   initialCards,
+  initialSettings,
+  lang = "es",
 }: {
   initialCards?: ArtworkCard[]
+  initialSettings?: GallerySettingsProps
+  lang?: string
 }) {
+  const dict = I18N_DICT[lang as keyof typeof I18N_DICT] || I18N_DICT.es
+
+  const galleryTitle = initialSettings?.title || "Bocetos de Piel"
+  const gallerySubtitle = initialSettings?.subtitle || "Andrés Morales • Taller de Arte"
   const baseCards = useMemo(() => {
     return initialCards && initialCards.length > 0 ? initialCards : ALL_BOCETOS_CARDS
   }, [initialCards])
@@ -101,10 +217,16 @@ export default function PolaroidArtGallery({
       .then((data) => {
         if (data.success && Array.isArray(data.notes)) {
           setNotes(data.notes)
-          if (data.counts) setNotesCounts(data.counts)
+          const counts: Record<string, number> = {}
+          data.notes.forEach((n: ArtNote) => {
+            if (n.artworkId) {
+              counts[n.artworkId] = (counts[n.artworkId] || 0) + 1
+            }
+          })
+          setNotesCounts(counts)
         }
       })
-      .catch((err) => console.warn("[art-gallery] Could not fetch notes:", err))
+      .catch(() => {})
 
     // Fetch reactions from server
     fetch("/api/art-reactions")
@@ -114,114 +236,25 @@ export default function PolaroidArtGallery({
           setReactions(data.reactions)
         }
       })
-      .catch((err) => console.warn("[art-gallery] Could not fetch reactions:", err))
+      .catch(() => {})
   }, [initialCards])
 
-  // Synchronize URL with active exhibition card (?obra=56)
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    const url = new URL(window.location.href)
-    if (selectedCard) {
-      url.searchParams.set("obra", selectedCard.id)
-      window.history.replaceState({ obra: selectedCard.id }, "", url.toString())
-    } else {
-      if (url.searchParams.has("obra") || url.searchParams.has("boceto") || url.searchParams.has("id")) {
-        url.searchParams.delete("obra")
-        url.searchParams.delete("boceto")
-        url.searchParams.delete("id")
-        window.history.replaceState({}, "", url.pathname + (url.search ? url.search : ""))
-      }
-    }
-  }, [selectedCard])
-
-  // Handle browser back / forward navigation
-  useEffect(() => {
-    const onPopState = () => {
-      const params = new URLSearchParams(window.location.search)
-      const obraParam = params.get("obra") || params.get("boceto") || params.get("id")
-      if (obraParam) {
-        const found = cards.find(
-          (c) => c.id === obraParam || parseInt(c.id, 10) === parseInt(obraParam, 10)
-        )
-        if (found) setSelectedCard(found)
-      } else {
-        setSelectedCard(null)
-      }
-    }
-    window.addEventListener("popstate", onPopState)
-    return () => window.removeEventListener("popstate", onPopState)
-  }, [cards])
-
-  // Share handler: Mobile native sheet or clipboard copy with toast
-  const handleShareArtwork = useCallback(async (card: ArtworkCard | Slide) => {
-    const id = card.id || "1"
-    const shareUrl = `${window.location.origin}${window.location.pathname}?obra=${id}`
-    const title = `${card.title || 'Boceto #' + id} · Andrés Morales`
-    const text = `Mira esta obra "${card.title || 'Boceto'}" de la serie Bocetos de Piel de Andrés Morales.`
-
-    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
-      try {
-        await navigator.share({ title, text, url: shareUrl })
-        return
-      } catch {}
-    }
-
-    try {
-      await navigator.clipboard.writeText(shareUrl)
-      setToastMessage(`¡Enlace copiado! Obra #${id} 🔗`)
-    } catch {
-      setToastMessage(`Enlace directo: ${shareUrl}`)
-    }
-    setTimeout(() => setToastMessage(null), 3200)
+  const showToast = useCallback((msg: string) => {
+    setToastMessage(msg)
+    setTimeout(() => {
+      setToastMessage(null)
+    }, 3200)
   }, [])
 
-  // Reaction handler: Optimistic live count + server persistence
-  const handleAddReaction = useCallback(async (artworkId: string, type: ReactionType) => {
-    setReactions((prev) => {
-      const current = prev[artworkId] || { heart: 0, sparkles: 0, leaf: 0, fire: 0 }
-      return {
-        ...prev,
-        [artworkId]: {
-          ...current,
-          [type]: (current[type] || 0) + 1,
-        },
-      }
-    })
-
-    try {
-      await fetch("/api/art-reactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ artworkId, reaction: type }),
-      })
-    } catch (err) {
-      console.warn("[art-gallery] Failed to persist reaction:", err)
-    }
-  }, [])
-
-  const handleOpenNotes = useCallback((card?: ArtworkCard | null) => {
-    setNotesModalCard(card || null)
-    setIsNotesModalOpen(true)
-  }, [])
-
-  const handleNoteAdded = useCallback((newNote: ArtNote) => {
-    setNotes((prev) => [newNote, ...prev])
-    setNotesCounts((prev) => ({
-      ...prev,
-      [newNote.artworkId]: (prev[newNote.artworkId] || 0) + 1,
-    }))
-  }, [])
-
-  const reshuffleCards = useCallback(() => {
-    setCards((prev) => shuffleArray(prev))
-    setShuffleKey((k) => k + 1)
-  }, [])
-
+  // Toggle favorite
   const toggleFavorite = useCallback((id: string) => {
     setFavorites((prev) => {
       const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
       try {
         localStorage.setItem("amart_favorites", JSON.stringify(Array.from(next)))
       } catch {}
@@ -229,63 +262,131 @@ export default function PolaroidArtGallery({
     })
   }, [])
 
-  const collectionCounts = useMemo(() => {
-    const counts: Record<CollectionKey, number> = {
-      all: cards.length,
-      yoga: 0,
-      shibari: 0,
-      "anatomia-botanica": 0,
-      pregnant: 0,
-      "figura-humana": 0,
-      favorites: favorites.size,
+  // Add Emoji reaction
+  const handleAddReaction = useCallback(
+    async (artworkId: string, type: ReactionType) => {
+      setReactions((prev) => {
+        const current = prev[artworkId] || { heart: 0, sparkles: 0, leaf: 0, fire: 0 }
+        return {
+          ...prev,
+          [artworkId]: {
+            ...current,
+            [type]: (current[type] || 0) + 1,
+          },
+        }
+      })
+
+      try {
+        await fetch("/api/art-reactions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ artworkId, type }),
+        })
+      } catch {}
+    },
+    []
+  )
+
+  // Handle open notes modal
+  const handleOpenNotes = useCallback((card: ArtworkCard | null) => {
+    setNotesModalCard(card)
+    setIsNotesModalOpen(true)
+  }, [])
+
+  // Handle new note created
+  const handleNoteAdded = useCallback((newNote: ArtNote) => {
+    setNotes((prev) => [newNote, ...prev])
+    if (newNote.artworkId) {
+      setNotesCounts((prev) => ({
+        ...prev,
+        [newNote.artworkId!]: (prev[newNote.artworkId!] || 0) + 1,
+      }))
     }
-    cards.forEach((c) => {
-      if (counts[c.collection] !== undefined) {
-        counts[c.collection]++
+  }, [])
+
+  // Share artwork link
+  const handleShareArtwork = useCallback(
+    async (card: ArtworkCard) => {
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://amart.andresmorales.com.co"
+      const shareUrl = `${origin}?obra=${card.id}`
+      const shareTitle = `${card.title} • ${galleryTitle}`
+      const shareText = `Mira este dibujo original de Andrés Morales (#${card.id} - ${card.title})`
+
+      if (typeof navigator !== "undefined" && navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl,
+          })
+          return
+        } catch {}
       }
+
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        try {
+          await navigator.clipboard.writeText(shareUrl)
+          showToast(dict.copylink)
+        } catch {
+          showToast(shareUrl)
+        }
+      }
+    },
+    [galleryTitle, showToast, dict.copylink]
+  )
+
+  // Filter cards by collection and search query
+  const filteredCards = useMemo(() => {
+    return cards.filter((card) => {
+      if (activeCollection === "favorites") {
+        if (!favorites.has(card.id)) return false
+      } else if (activeCollection !== "all" && card.collection !== activeCollection) {
+        return false
+      }
+
+      if (search.trim()) {
+        const q = search.toLowerCase()
+        const matchTitle = card.title.toLowerCase().includes(q)
+        const matchDesc = card.description?.toLowerCase().includes(q)
+        const matchId = card.id === q.replace("#", "").trim()
+        const matchCollection = card.collectionLabel?.toLowerCase().includes(q)
+        return matchTitle || matchDesc || matchId || matchCollection
+      }
+
+      return true
+    })
+  }, [cards, activeCollection, search, favorites])
+
+  // Count items per collection for badge indicators
+  const collectionCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: cards.length }
+    cards.forEach((c) => {
+      counts[c.collection] = (counts[c.collection] || 0) + 1
     })
     return counts
-  }, [cards, favorites])
+  }, [cards])
 
-  // Filter cards by collection
-  const filteredCards = useMemo(() => {
-    let list = cards
-    if (activeCollection === "favorites") {
-      const favs = cards.filter((c) => favorites.has(c.id))
-      list = favs.length > 0 ? favs : cards
-    } else if (activeCollection !== "all") {
-      list = cards.filter((c) => c.collection === activeCollection)
-    }
+  // Re-shuffle cards
+  const reshuffleCards = useCallback(() => {
+    setCards((prev) => shuffleArray(prev))
+    setShuffleKey((k) => k + 1)
+  }, [])
 
-    if (!search.trim()) return list
-    const q = search.toLowerCase()
-    return list.filter(
-      (c) =>
-        c.title.toLowerCase().includes(q) ||
-        c.id.includes(q) ||
-        c.collectionLabel.toLowerCase().includes(q) ||
-        (c.description && c.description.toLowerCase().includes(q)) ||
-        (c.technique && c.technique.toLowerCase().includes(q)) ||
-        (c.alt && c.alt.toLowerCase().includes(q))
-    )
-  }, [cards, activeCollection, favorites, search])
-
-  // Convert cards to Polaroid slides
+  // Build slides for PolaroidLineCarousel
   const slides: Slide[] = useMemo(() => {
-    return filteredCards.map((c) => ({
-      id: c.id,
-      image: c.imageUrl,
-      downloadUrl: c.downloadUrl,
-      title: c.title,
-      caption: c.description || c.technique || `Serie ${c.collectionLabel}`,
-      technique: c.technique,
-      collection: c.collection,
-      collectionLabel: c.collectionLabel,
-      alt: c.alt,
+    return filteredCards.map((card) => ({
+      id: card.id,
+      image: card.imageUrl,
+      downloadUrl: card.downloadUrl,
+      title: card.title,
+      caption: card.description || `${card.title} • #${card.id}`,
+      technique: card.technique,
+      collection: card.collection,
+      collectionLabel: card.collectionLabel,
+      alt: card.alt,
     }))
   }, [filteredCards])
 
-  // Navigation inside modal
   const goToNextCard = useCallback(() => {
     if (!selectedCard) return
     const currentIndex = filteredCards.findIndex((c) => c.id === selectedCard.id)
@@ -303,7 +404,7 @@ export default function PolaroidArtGallery({
   }, [filteredCards, selectedCard])
 
   const collectionList: Array<{ id: CollectionKey; label: string }> = [
-    { id: "all", label: `Todas (${collectionCounts.all})` },
+    { id: "all", label: `${dict.all} (${collectionCounts.all})` },
     { id: "yoga", label: `Yoga (${collectionCounts.yoga})` },
     { id: "shibari", label: `Shibari (${collectionCounts.shibari})` },
     { id: "anatomia-botanica", label: `Anatomía Botánica (${collectionCounts["anatomia-botanica"]})` },
@@ -311,75 +412,78 @@ export default function PolaroidArtGallery({
     { id: "figura-humana", label: `Figura Humana (${collectionCounts["figura-humana"]})` },
   ]
 
-  if (!mounted) {
-    return (
-      <div className="w-full h-[100dvh] max-h-[100dvh] bg-[#0c0a08] flex items-center justify-center text-white">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-9 h-9 border-2 border-[#f96e03] border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs uppercase font-mono tracking-widest text-[#f96e03]/90">
-            Cargando Bocetos de Piel...
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="w-full h-[100dvh] max-h-[100dvh] relative overflow-hidden bg-[#0c0a08] flex flex-col select-none text-white font-sans overscroll-none">
-      {/* Background Studio Ambient */}
+    <div className="w-full h-[100dvh] max-h-[100dvh] relative overflow-hidden bg-[#F8F5F4] flex flex-col select-none text-[#1E1810] font-sans overscroll-none">
+      {/* Background Studio Ambient — Warm gallery cream matching andresmorales.com.co */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 30%, #1a1510 0%, #0c0a08 65%, #050403 100%)",
+            "radial-gradient(ellipse at 50% 25%, #FFFFFF 0%, #FAF7F5 55%, #F0ECE8 100%)",
         }}
       />
 
+      {/* Dynamic Orange Particles from andresmorales.com.co Hero */}
+      <LazyParticles id="amart-hero-particles" variant="cream" />
+
       {/* Top Header & Navigation */}
-      <header className="relative z-30 px-3 sm:px-6 pt-3 sm:pt-4 pb-2 bg-gradient-to-b from-[#0c0a08] via-[#0c0a08]/90 to-transparent shrink-0">
-        <div className="flex items-center justify-between gap-3">
+      <header className="relative z-30 px-3 sm:px-6 pt-3 sm:pt-4 pb-2 bg-gradient-to-b from-[#F8F5F4] via-[#F8F5F4]/90 to-transparent shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
           {/* Brand & Collection Title */}
-          <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="w-2 h-2 rounded-full bg-[#f96e03] shadow-[0_0_8px_#f96e03] animate-pulse" />
-              <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-semibold">
-                Andrés Morales • Taller de Arte
-              </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="w-2 h-2 rounded-full bg-[#f96e03] shadow-[0_0_8px_#f96e03] animate-pulse" />
+                <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-bold">
+                  {gallerySubtitle}
+                </p>
+              </div>
+              <h1 className="text-lg sm:text-2xl font-serif font-bold text-[#1E1810] tracking-tight leading-tight">
+                {galleryTitle}
+              </h1>
             </div>
-            <h1 className="text-lg sm:text-2xl font-serif font-bold text-white tracking-tight leading-tight">
-              Bocetos de Piel
-            </h1>
+
+            {/* Mobile-only visible Admin button */}
+            <a
+              href="https://andresmorales.com.co/es/admin/art"
+              aria-label="Panel de Administración"
+              title="Panel de Administración: Subir fotos y editar galería"
+              className="sm:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold bg-[#1E1810] text-white hover:bg-[#f96e03] hover:text-[#1E1810] shadow-sm active:scale-95 transition-all shrink-0 cursor-pointer"
+            >
+              <Settings className="w-3.5 h-3.5 text-[#f96e03]" />
+              <span>Admin</span>
+            </a>
           </div>
 
           {/* View Switcher & Quick Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
             {/* View Mode Switcher */}
-            <div className="flex items-center p-0.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md">
+            <div className="flex items-center p-0.5 rounded-full bg-white/90 border border-stone-200/90 shadow-sm backdrop-blur-md">
               <button
                 type="button"
                 onClick={() => setViewMode("string")}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all cursor-pointer ${
                   viewMode === "string"
-                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
-                    : "text-white/70 hover:text-white"
+                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-sm"
+                    : "text-[#575250] hover:text-[#1E1810]"
                 }`}
                 title="Modo Cuerda de Taller (Experiencia física)"
               >
                 <span>🧵</span>
-                <span className="hidden sm:inline">Cuerda</span>
+                <span className="hidden sm:inline">{dict.stringMode}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all cursor-pointer ${
                   viewMode === "grid"
-                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-md"
-                    : "text-white/70 hover:text-white"
+                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-sm"
+                    : "text-[#575250] hover:text-[#1E1810]"
                 }`}
                 title="Modo Cuadrícula / Muro (Exploración rápida)"
               >
                 <Grid className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Muro ({filteredCards.length})</span>
+                <span className="hidden sm:inline">{dict.gridMode} ({filteredCards.length})</span>
               </button>
             </div>
 
@@ -387,22 +491,22 @@ export default function PolaroidArtGallery({
             <button
               type="button"
               onClick={reshuffleCards}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/90 hover:bg-white text-[#1E1810] border border-stone-200/90 backdrop-blur-md transition-all cursor-pointer shadow-sm hover:scale-105"
               title="Barajar aleatoriamente la colección"
             >
               <Shuffle className="w-3.5 h-3.5 text-[#f96e03]" />
-              <span className="hidden sm:inline">Aleatorio</span>
+              <span className="hidden sm:inline">{dict.shuffle}</span>
             </button>
 
             {/* Guestbook / Notes Button */}
             <button
               type="button"
               onClick={() => handleOpenNotes(null)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/90 hover:bg-white text-[#1E1810] border border-stone-200/90 backdrop-blur-md transition-all cursor-pointer shadow-sm hover:scale-105"
               title="Libro de Visitas: ver y dejar notas"
             >
               <MessageSquare className="w-3.5 h-3.5 text-[#f96e03]" />
-              <span className="hidden sm:inline">Notas</span>
+              <span className="hidden sm:inline">{dict.notes}</span>
               {notes.length > 0 && (
                 <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[9px] font-bold rounded-full font-mono">
                   {notes.length}
@@ -415,12 +519,23 @@ export default function PolaroidArtGallery({
               href="https://andresmorales.com.co"
               aria-label="Volver al portafolio principal de Andrés Morales"
               title="Volver al portafolio"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/10 hover:bg-white/20 text-white/85 hover:text-white border border-white/15 backdrop-blur-md transition-all shrink-0 cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/90 hover:bg-white text-[#1E1810] border border-stone-200/90 backdrop-blur-md transition-all shrink-0 cursor-pointer shadow-sm"
             >
               <X className="w-3.5 h-3.5 text-[#f96e03] sm:hidden" />
-              <span className="hidden sm:inline">Portafolio</span>
-              <span className="sm:hidden font-medium">Salir</span>
+              <span className="hidden sm:inline">{dict.portfolio}</span>
+              <span className="sm:hidden font-medium">{dict.exit}</span>
               <ExternalLink className="w-3 h-3 hidden sm:inline" />
+            </a>
+
+            {/* Admin Management Button (desktop) */}
+            <a
+              href="https://andresmorales.com.co/es/admin/art"
+              aria-label="Panel de Administración (Subir obras y editar textos)"
+              title="Panel de Administración: Subir fotos, editar títulos y gestionar obras"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold bg-[#1E1810] hover:bg-[#f96e03] text-white hover:text-[#1E1810] border border-[#1E1810] backdrop-blur-md transition-all shrink-0 cursor-pointer shadow-sm hover:scale-105"
+            >
+              <Settings className="w-3.5 h-3.5 text-[#f96e03]" />
+              <span>{dict.admin}</span>
             </a>
 
             {/* Inquire CTA */}
@@ -428,11 +543,11 @@ export default function PolaroidArtGallery({
               href="https://wa.me/573161482507?text=Hola%20Andr%C3%A9s,%20vi%20tu%20galer%C3%ADa%20Bocetos%20de%20Piel%20en%20amart%20y%20me%20gustar%C3%ADa%20cotizar%20una%20obra"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_4px_16px_rgba(249,110,3,0.35)] transition-all shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all shrink-0 cursor-pointer hover:scale-105"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Encargar Obra</span>
-              <span className="sm:hidden">Cotizar</span>
+              <span className="hidden sm:inline">{dict.inquire}</span>
+              <span className="sm:hidden">{dict.inquireShort}</span>
             </a>
           </div>
         </div>
@@ -447,8 +562,8 @@ export default function PolaroidArtGallery({
                 onClick={() => setActiveCollection(col.id)}
                 className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
-                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                    : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
+                    ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_2px_10px_rgba(249,110,3,0.35)] border border-[#f96e03]"
+                    : "bg-white/90 hover:bg-white text-[#575250] hover:text-[#1E1810] border border-stone-200/90 shadow-sm"
                 }`}
               >
                 {col.label}
@@ -460,12 +575,12 @@ export default function PolaroidArtGallery({
               onClick={() => setActiveCollection("favorites")}
               className={`px-3 py-1 rounded-full text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeCollection === "favorites"
-                  ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_0_12px_rgba(249,110,3,0.45)]"
-                  : "bg-white/10 hover:bg-white/15 text-white/80 border border-white/10"
+                  ? "bg-[#f96e03] text-[#1E1810] font-bold shadow-[0_2px_10px_rgba(249,110,3,0.35)]"
+                  : "bg-white/90 hover:bg-white text-[#575250] border border-stone-200/90 shadow-sm"
               }`}
             >
               <Heart className="w-3 h-3 fill-current text-[#f96e03]" />
-              <span>Favoritos ({favorites.size})</span>
+              <span>{dict.favorites} ({favorites.size})</span>
             </button>
           )}
         </div>
@@ -473,7 +588,16 @@ export default function PolaroidArtGallery({
 
       {/* Main Content Area */}
       <main className="relative flex-1 min-h-0 w-full overflow-hidden z-10 flex flex-col">
-        {viewMode === "string" ? (
+        {!mounted ? (
+          <div className="w-full h-full flex items-center justify-center text-[#1E1810]">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-9 h-9 border-2 border-[#f96e03] border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs uppercase font-mono tracking-widest text-[#f96e03] font-bold">
+                {dict.loading} {galleryTitle}...
+              </p>
+            </div>
+          </div>
+        ) : viewMode === "string" ? (
           /* ======================================================== */
           /* MODE A: POLAROID SAGGING STRING CAROUSEL (PHYSICS)       */
           /* ======================================================== */
@@ -485,9 +609,10 @@ export default function PolaroidArtGallery({
               cardWidth={400}
               sag={44}
               swing={1.05}
-              string="#9e856e"
+              string="#b89670"
               background="transparent"
-              ink="#f5eee6"
+              ink="#1E1810"
+              theme="light"
               onSelect={(slide) => {
                 const found = cards.find((c) => c.id === slide.id)
                 if (found) setSelectedCard(found)
@@ -496,7 +621,10 @@ export default function PolaroidArtGallery({
                 const found = cards.find((c) => c.id === slide.id)
                 handleOpenNotes(found || null)
               }}
-              onShare={handleShareArtwork}
+              onShare={(slide) => {
+                const found = cards.find((c) => c.id === slide.id)
+                if (found) handleShareArtwork(found)
+              }}
               notesCounts={notesCounts}
             />
           </div>
@@ -504,22 +632,22 @@ export default function PolaroidArtGallery({
           /* ======================================================== */
           /* MODE B: WALL / GRID VIEW (RAPID SCAN & SEARCH)           */
           /* ======================================================== */
-          <div className="flex-1 w-full overflow-y-auto px-4 sm:px-8 py-4 scrollbar-thin scrollbar-thumb-white/20">
+          <div className="flex-1 w-full overflow-y-auto px-4 sm:px-8 py-4 scrollbar-thin scrollbar-thumb-stone-300">
             {/* Search Input Bar */}
             <div className="max-w-xl mx-auto mb-6 relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar por número, título o descripción (ej. 108, shibari, asana, loto)..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#f96e03] focus:ring-1 focus:ring-[#f96e03]/40 transition-colors shadow-inner"
+                placeholder={dict.searchPlaceholder}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-stone-200 text-[#1E1810] text-xs sm:text-sm placeholder:text-stone-400 focus:outline-none focus:border-[#f96e03] focus:ring-1 focus:ring-[#f96e03]/40 transition-colors shadow-sm"
               />
               {search && (
                 <button
                   type="button"
                   onClick={() => setSearch("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/40 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-[#1E1810]"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -532,31 +660,31 @@ export default function PolaroidArtGallery({
                 <button
                   key={card.id}
                   onClick={() => setSelectedCard(card)}
-                  className="group relative rounded-xl overflow-hidden bg-[#14110e] border border-white/10 hover:border-[#f96e03] transition-all duration-300 text-left cursor-pointer shadow-lg hover:shadow-[0_12px_28px_rgba(249,110,3,0.25)] hover:-translate-y-1"
+                  className="group relative rounded-2xl overflow-hidden bg-white border border-stone-200/90 hover:border-[#f96e03] transition-all duration-300 text-left cursor-pointer shadow-sm hover:shadow-[0_12px_28px_rgba(249,110,3,0.18)] hover:-translate-y-1"
                 >
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-black/60">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-stone-100">
                     <img
                       src={card.imageUrl}
                       alt={card.alt}
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-black/80 backdrop-blur-sm border border-white/15 text-[9px] font-mono text-[#f96e03] font-bold">
+                    <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md bg-white/95 backdrop-blur-sm border border-stone-200 text-[9px] font-mono text-[#f96e03] font-bold shadow-sm">
                       {card.collectionLabel}
                     </div>
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Maximize2 className="w-6 h-6 text-[#f96e03]" />
+                    <div className="absolute inset-0 bg-[#1E1810]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Maximize2 className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className="p-2.5 bg-[#181410]">
-                    <p className="text-xs font-medium text-white truncate group-hover:text-[#f96e03] transition-colors">
+                  <div className="p-2.5 bg-white">
+                    <p className="text-xs font-semibold text-[#1E1810] truncate group-hover:text-[#f96e03] transition-colors">
                       <span className="text-[#f96e03] font-mono mr-1.5 font-bold">
                         #{card.id}
                       </span>
                       {card.title}
                     </p>
                     {card.description && (
-                      <p className="text-[10px] text-white/50 line-clamp-1 mt-0.5 font-sans leading-tight">
+                      <p className="text-[10px] text-[#575250] line-clamp-1 mt-0.5 font-sans leading-tight">
                         {card.description}
                       </p>
                     )}
@@ -566,14 +694,14 @@ export default function PolaroidArtGallery({
             </div>
 
             {filteredCards.length === 0 && (
-              <div className="text-center py-16 text-white/40">
-                <p className="text-sm">No se encontraron bocetos con esa búsqueda.</p>
+              <div className="text-center py-16 text-stone-400">
+                <p className="text-sm">{dict.noResults}</p>
                 <button
                   type="button"
                   onClick={() => setSearch("")}
-                  className="mt-2 text-xs font-mono text-[#f96e03] hover:underline cursor-pointer"
+                  className="mt-2 text-xs font-mono text-[#f96e03] hover:underline cursor-pointer font-bold"
                 >
-                  Limpiar búsqueda
+                  {dict.clearSearch}
                 </button>
               </div>
             )}
@@ -587,6 +715,9 @@ export default function PolaroidArtGallery({
       {selectedCard && (
         <StaticExhibitionModal
           selectedCard={selectedCard}
+          galleryTitle={galleryTitle}
+          gallerySubtitle={gallerySubtitle}
+          dict={dict}
           isFav={favorites.has(selectedCard.id)}
           onClose={() => setSelectedCard(null)}
           onToggleFav={() => toggleFavorite(selectedCard.id)}
@@ -614,9 +745,20 @@ export default function PolaroidArtGallery({
         onNoteAdded={handleNoteAdded}
       />
 
+      {/* Discreet Persistent Admin Floating Shortcut */}
+      <a
+        href="https://andresmorales.com.co/es/admin/art"
+        aria-label="Panel Admin Arte"
+        title="Acceso directo al panel de administración"
+        className="fixed bottom-4 right-4 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 hover:bg-[#f96e03] text-[#1E1810] border border-stone-300 shadow-[0_4px_20px_rgba(30,24,16,0.15)] backdrop-blur-md transition-all text-xs font-mono font-bold hover:scale-105 cursor-pointer"
+      >
+        <Settings className="w-3.5 h-3.5 text-[#f96e03]" />
+        <span>Admin</span>
+      </a>
+
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-[#1E1810] text-[#f96e03] border border-[#f96e03]/60 shadow-[0_8px_30px_rgba(0,0,0,0.9)] backdrop-blur-md text-xs sm:text-sm font-mono font-bold flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 duration-200 pointer-events-none">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-[#1E1810] text-[#f96e03] border border-[#f96e03]/60 shadow-[0_8px_30px_rgba(0,0,0,0.3)] backdrop-blur-md text-xs sm:text-sm font-mono font-bold flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 duration-200 pointer-events-none">
           <span>✨</span>
           <span>{toastMessage}</span>
         </div>
@@ -626,48 +768,58 @@ export default function PolaroidArtGallery({
 }
 
 /* =========================
-   Static Fullscreen Lightbox
+   Static Fullscreen Lightbox (Light Museum Matting)
    ========================= */
 
 function StaticExhibitionModal({
   selectedCard,
+  galleryTitle,
+  gallerySubtitle,
+  dict,
   isFav,
   onClose,
   onToggleFav,
   onNext,
   onPrev,
   onOpenNotes,
-  notesCount = 0,
+  notesCount,
   onShare,
   reactions,
   onReact,
 }: {
   selectedCard: ArtworkCard
+  galleryTitle: string
+  gallerySubtitle: string
+  dict: typeof I18N_DICT.es
   isFav: boolean
   onClose: () => void
   onToggleFav: () => void
   onNext: () => void
   onPrev: () => void
   onOpenNotes: () => void
-  notesCount?: number
+  notesCount: number
   onShare: (card: ArtworkCard) => void
   reactions: ArtworkReactions
   onReact: (type: ReactionType) => void
 }) {
   const [isFramed, setIsFramed] = useState(false)
-  const [frameStyle, setFrameStyle] = useState<"dark" | "oak">("dark")
+  const [frameStyle, setFrameStyle] = useState<"dark" | "wood">("dark")
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+      else if (e.key === "ArrowRight") onNext()
+      else if (e.key === "ArrowLeft") onPrev()
+      else if (e.key.toLowerCase() === "f") setIsFramed((f) => !f)
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [onClose, onNext, onPrev])
+
+  // Mobile swipe gestures
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-      if (e.key === "ArrowRight") onNext()
-      if (e.key === "ArrowLeft") onPrev()
-    }
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [onClose, onNext, onPrev])
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX
@@ -684,7 +836,6 @@ function StaticExhibitionModal({
       if (deltaX > 0) onPrev()
       else onNext()
     } else if (deltaY > 70 && Math.abs(deltaY) > Math.abs(deltaX) * 1.5) {
-      // Intuitive swipe down to close on mobile
       onClose()
     }
   }
@@ -707,31 +858,30 @@ function StaticExhibitionModal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col transition-colors duration-300 select-none text-white font-sans ${
+      className={`fixed inset-0 z-50 flex flex-col transition-colors duration-300 select-none text-[#1E1810] font-sans ${
         isFramed
-          ? "bg-[#100d0a]/98 backdrop-blur-2xl"
-          : "bg-black/95 backdrop-blur-2xl"
+          ? "bg-[#FAF7F5]/98 backdrop-blur-2xl"
+          : "bg-[#F8F5F4]/98 backdrop-blur-2xl"
       }`}
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
     >
       {/* Top Bar */}
-      <header className="h-14 sm:h-16 px-2.5 sm:px-6 flex items-center justify-between gap-1.5 sm:gap-3 border-b border-white/10 bg-black/70 backdrop-blur-md z-30 shrink-0 select-none">
+      <header className="h-14 sm:h-16 px-2.5 sm:px-6 flex items-center justify-between gap-1.5 sm:gap-3 border-b border-stone-200/90 bg-white/90 backdrop-blur-md z-30 shrink-0 select-none">
         {/* Left: Artwork Series & Number Badge */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink min-w-0">
           <span className="text-[10px] sm:text-[11px] uppercase font-mono tracking-widest text-[#f96e03] px-2 sm:px-2.5 py-0.5 rounded-full bg-[#f96e03]/10 border border-[#f96e03]/30 font-bold truncate max-w-[105px] xs:max-w-[145px] sm:max-w-none shrink-0">
             Serie {selectedCard.collectionLabel}
           </span>
-          <span className="text-white/60 font-mono text-xs font-semibold shrink-0">
+          <span className="text-[#575250] font-mono text-xs font-bold shrink-0">
             #{selectedCard.id}
-            <span className="text-white/40 font-normal hidden sm:inline"> de 149</span>
+            <span className="text-stone-400 font-normal hidden sm:inline"> de 149</span>
           </span>
         </div>
 
         {/* Right: Actions List + Pinned Close Button */}
         <div className="flex items-center gap-1 sm:gap-2 shrink min-w-0 justify-end">
-          {/* Action buttons (scrollable horizontally if screen is very narrow) */}
           <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-0.5 min-w-0 shrink">
             {/* Wall Simulator Frame Toggle */}
             <button
@@ -740,13 +890,13 @@ function StaticExhibitionModal({
               aria-label={isFramed ? "Ver dibujo sin marco" : "Ver simulador en pared"}
               className={`p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer border shrink-0 ${
                 isFramed
-                  ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-[0_0_12px_rgba(249,110,3,0.5)]"
-                  : "text-white/85 hover:text-white bg-white/10 hover:bg-white/20 border-white/20"
+                  ? "bg-[#f96e03] text-[#1E1810] border-[#f96e03] font-bold shadow-sm"
+                  : "text-[#575250] hover:text-[#1E1810] bg-white border-stone-200"
               }`}
               title="Simular enmarcado de galería en escala real (30×40 cm)"
             >
               <span className="text-sm">🖼️</span>
-              <span className="hidden md:inline">{isFramed ? "En Pared" : "Ver en Pared"}</span>
+              <span className="hidden md:inline">{isFramed ? dict.framedWall : dict.seeFramed}</span>
             </button>
 
             {/* Share Button */}
@@ -754,11 +904,11 @@ function StaticExhibitionModal({
               type="button"
               onClick={() => onShare(selectedCard)}
               aria-label="Compartir enlace directo"
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-              title="Copiar enlace o compartir en redes"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-[#575250] hover:text-[#1E1810] bg-white hover:bg-stone-50 border border-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+              title="Copiar enlace o compartir"
             >
-              <Share2 className="h-4 w-4" />
-              <span className="hidden md:inline">Compartir</span>
+              <Share2 className="h-4 w-4 text-[#f96e03]" />
+              <span className="hidden md:inline">{dict.share}</span>
             </button>
 
             {/* Favorite */}
@@ -766,7 +916,7 @@ function StaticExhibitionModal({
               type="button"
               onClick={onToggleFav}
               aria-label="Guardar en favoritos"
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-[#575250] hover:text-[#1E1810] bg-white hover:bg-stone-50 border border-stone-200 transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
               title="Guardar en favoritos"
             >
               <Heart
@@ -782,7 +932,7 @@ function StaticExhibitionModal({
               type="button"
               onClick={handleDownload}
               aria-label="Descargar original"
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-[#575250] hover:text-[#1E1810] bg-white hover:bg-stone-50 border border-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
               title="Descargar HD"
             >
               <Download className="h-4 w-4 text-[#f96e03]" strokeWidth={2.2} />
@@ -794,11 +944,11 @@ function StaticExhibitionModal({
               type="button"
               onClick={onOpenNotes}
               aria-label="Ver y dejar notas"
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-white/90 hover:text-white bg-white/10 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/20 transition-all flex items-center gap-1.5 cursor-pointer group shrink-0"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs font-mono text-[#575250] hover:text-[#1E1810] bg-white hover:bg-stone-50 border border-stone-200 transition-all flex items-center gap-1.5 cursor-pointer group shrink-0"
               title="Libro de notas de visitantes"
             >
-              <MessageSquare className="h-4 w-4 text-[#f96e03] group-hover:text-[#1E1810]" />
-              <span className="hidden lg:inline">Notas</span>
+              <MessageSquare className="h-4 w-4 text-[#f96e03]" />
+              <span className="hidden lg:inline">{dict.notes}</span>
               {notesCount > 0 && (
                 <span className="px-1.5 py-0.2 bg-[#f96e03] text-[#1E1810] text-[10px] font-bold rounded-full font-mono">
                   {notesCount}
@@ -817,28 +967,27 @@ function StaticExhibitionModal({
               className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f96e03] hover:bg-[#ff5100] text-[#1E1810] shadow-[0_2px_12px_rgba(249,110,3,0.35)] transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer shrink-0"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Consultar Obra</span>
-              <span className="sm:hidden">Cotizar</span>
+              <span className="hidden sm:inline">{dict.inquire}</span>
+              <span className="sm:hidden">{dict.inquireShort}</span>
             </a>
           </div>
 
-          {/* Visual Divider */}
-          <div className="w-[1px] h-6 bg-white/20 shrink-0 mx-0.5" />
+          <div className="w-[1px] h-6 bg-stone-200 shrink-0 mx-0.5" />
 
-          {/* Close Button — ALWAYS VISIBLE, SHRINK-0, PINNED TO RIGHT */}
+          {/* Close Button */}
           <button
             type="button"
             onClick={onClose}
             aria-label="Cerrar (Esc)"
             title="Cerrar (Esc)"
-            className="p-1.5 sm:p-2 rounded-full text-white bg-white/15 hover:bg-[#f96e03] hover:text-[#1E1810] border border-white/25 hover:border-[#f96e03] transition-all cursor-pointer shrink-0 shadow-md active:scale-95"
+            className="p-1.5 sm:p-2 rounded-full text-[#1E1810] bg-stone-100 hover:bg-[#f96e03] border border-stone-300 hover:border-[#f96e03] transition-all cursor-pointer shrink-0 shadow-sm active:scale-95"
           >
             <X className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </div>
       </header>
 
-      {/* Main Fullscreen Stage: Pure Artwork or Framed Wall Simulator */}
+      {/* Main Fullscreen Stage */}
       <main
         className="flex-1 flex items-center justify-center relative p-2 sm:p-6 md:p-8 overflow-hidden touch-pan-y"
         onClick={handleBackdropClick}
@@ -847,7 +996,7 @@ function StaticExhibitionModal({
       >
         {/* Overhead Museum Gallery Spotlight when Framed */}
         {isFramed && (
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90vw] max-w-[700px] h-[380px] bg-[radial-gradient(ellipse_at_top,_rgba(255,235,200,0.14)_0%,_transparent_72%)] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90vw] max-w-[700px] h-[380px] bg-[radial-gradient(ellipse_at_top,_rgba(249,110,3,0.08)_0%,_transparent_72%)] pointer-events-none" />
         )}
 
         {/* Navigation Arrows */}
@@ -857,7 +1006,7 @@ function StaticExhibitionModal({
             onPrev()
           }}
           aria-label="Obra anterior (Flecha Izquierda)"
-          className="absolute left-1.5 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
+          className="absolute left-1.5 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-white/90 hover:bg-[#f96e03] text-[#1E1810] border border-stone-300 transition-all z-20 cursor-pointer shadow-xl backdrop-blur-md"
         >
           <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
         </button>
@@ -868,7 +1017,7 @@ function StaticExhibitionModal({
             onNext()
           }}
           aria-label="Siguiente obra (Flecha Derecha)"
-          className="absolute right-1.5 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-black/60 hover:bg-[#f96e03] text-white/80 hover:text-[#1E1810] border border-white/15 transition-all z-20 cursor-pointer shadow-2xl backdrop-blur-md"
+          className="absolute right-1.5 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-4 rounded-full bg-white/90 hover:bg-[#f96e03] text-[#1E1810] border border-stone-300 transition-all z-20 cursor-pointer shadow-xl backdrop-blur-md"
         >
           <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
         </button>
@@ -886,55 +1035,54 @@ function StaticExhibitionModal({
             <div
               className={`relative p-3 sm:p-5 rounded-[4px] transition-colors duration-200 ${
                 frameStyle === "dark"
-                  ? "bg-[#181512] border-2 border-[#2c2620] shadow-[0_35px_80px_rgba(0,0,0,0.95),_0_10px_25px_rgba(0,0,0,0.8),_inset_0_1px_2px_rgba(255,255,255,0.18)]"
-                  : "bg-[#7c4f2e] border-2 border-[#54331b] shadow-[0_35px_80px_rgba(0,0,0,0.95),_0_10px_25px_rgba(0,0,0,0.8),_inset_0_1px_2px_rgba(255,255,255,0.25)]"
+                  ? "bg-[#181512] border-2 border-[#2c2620] shadow-[0_25px_60px_rgba(0,0,0,0.35),_0_10px_20px_rgba(0,0,0,0.2)]"
+                  : "bg-[#7c4f2e] border-2 border-[#54331b] shadow-[0_25px_60px_rgba(0,0,0,0.35),_0_10px_20px_rgba(0,0,0,0.2)]"
               }`}
             >
               {/* Archival Museum Matboard (Paspartú) */}
-              <div className="p-3.5 sm:p-6 md:p-8 bg-[#f5f2eb] rounded-[2px] shadow-[inset_0_2px_6px_rgba(0,0,0,0.35),_0_0_1px_rgba(0,0,0,0.4)] flex items-center justify-center relative">
-                {/* Subtle glass reflection sheen */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none" />
+              <div className="p-3.5 sm:p-6 md:p-8 bg-[#f5f2eb] rounded-[2px] shadow-[inset_0_2px_6px_rgba(0,0,0,0.25)] flex items-center justify-center relative">
                 <img
                   key={selectedCard.id}
                   src={selectedCard.downloadUrl || selectedCard.imageUrl}
                   alt={selectedCard.alt}
                   loading="eager"
                   draggable={false}
-                  className="max-h-[calc(100dvh-275px)] sm:max-h-[calc(100dvh-295px)] max-w-[76vw] sm:max-w-[62vw] w-auto h-auto object-contain shadow-[0_4px_12px_rgba(0,0,0,0.32)] select-none"
+                  className="max-h-[calc(100dvh-275px)] sm:max-h-[calc(100dvh-295px)] max-w-[76vw] sm:max-w-[62vw] w-auto h-auto object-contain shadow-[0_4px_12px_rgba(0,0,0,0.18)] select-none"
                 />
               </div>
             </div>
 
             {/* Museum Wall Cartela Plaque */}
-            <div className="mt-2.5 px-3.5 py-1.5 rounded-md bg-black/75 border border-white/10 text-center backdrop-blur-md shadow-xl flex flex-col items-center max-w-sm">
+            <div className="mt-2.5 px-3.5 py-1.5 rounded-xl bg-white/95 border border-stone-200 text-center backdrop-blur-md shadow-lg flex flex-col items-center max-w-sm">
               <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f96e03] font-bold">
-                <span>Escala Real 1:1</span>
+                <span>{dict.realScale}</span>
                 <span>•</span>
-                <span>Formato 30 × 40 cm</span>
+                <span>{dict.frameFormat}</span>
               </div>
-              <div className="flex items-center gap-2 mt-1 pt-1 border-t border-white/10 text-[10px] font-mono text-white/50">
-                <span>Marco:</span>
+              <div className="flex items-center gap-2 mt-1 pt-1 border-t border-stone-200 text-[10px] font-mono text-[#575250]">
+                <span>{dict.frameLabel}</span>
                 <button
                   type="button"
                   onClick={() => setFrameStyle("dark")}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-all ${
+                  className={`px-2 py-0.5 rounded cursor-pointer font-bold ${
                     frameStyle === "dark"
-                      ? "bg-[#f96e03] text-[#1E1810] font-bold"
-                      : "bg-white/10 text-white/70 hover:text-white"
+                      ? "bg-[#1E1810] text-white"
+                      : "text-stone-500 hover:text-[#1E1810]"
                   }`}
                 >
-                  Negro Galería
+                  {dict.darkWood}
                 </button>
+                <span>|</span>
                 <button
                   type="button"
-                  onClick={() => setFrameStyle("oak")}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-all ${
-                    frameStyle === "oak"
-                      ? "bg-[#f96e03] text-[#1E1810] font-bold"
-                      : "bg-white/10 text-white/70 hover:text-white"
+                  onClick={() => setFrameStyle("wood")}
+                  className={`px-2 py-0.5 rounded cursor-pointer font-bold ${
+                    frameStyle === "wood"
+                      ? "bg-[#7c4f2e] text-white"
+                      : "text-stone-500 hover:text-[#1E1810]"
                   }`}
                 >
-                  Roble Natural
+                  {dict.naturalWood}
                 </button>
               </div>
             </div>
@@ -953,7 +1101,7 @@ function StaticExhibitionModal({
               alt={selectedCard.alt}
               loading="eager"
               draggable={false}
-              className="max-h-[calc(100dvh-185px)] sm:max-h-[calc(100dvh-200px)] max-w-[94vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-white/10 select-none"
+              className="max-h-[calc(100dvh-185px)] sm:max-h-[calc(100dvh-200px)] max-w-[94vw] sm:max-w-[85vw] w-auto h-auto object-contain rounded-xl shadow-[0_20px_50px_rgba(30,24,16,0.18)] border border-stone-200 select-none bg-white p-2"
             />
           </div>
         )}
@@ -961,11 +1109,11 @@ function StaticExhibitionModal({
 
       {/* Bottom Curatorial Caption & Reactions Bar */}
       <footer
-        className="px-4 py-2 sm:py-3 border-t border-white/10 bg-black/80 backdrop-blur-md z-30 shrink-0 text-center pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
+        className="px-4 py-2 sm:py-3 border-t border-stone-200 bg-white/95 backdrop-blur-md z-30 shrink-0 text-center pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="max-w-2xl mx-auto flex flex-col items-center justify-center">
-          <h2 className="text-white text-base sm:text-lg font-serif font-medium tracking-tight">
+          <h2 className="text-[#1E1810] text-base sm:text-lg font-serif font-bold tracking-tight">
             <span className="text-[#f96e03] font-mono mr-2 text-sm sm:text-base font-bold">
               #{selectedCard.id}
             </span>
@@ -975,10 +1123,10 @@ function StaticExhibitionModal({
           {/* Interactive Emoji Reactions */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 my-1.5">
             {[
-              { type: "heart" as const, emoji: "❤️", label: "Conmovedor" },
-              { type: "sparkles" as const, emoji: "✨", label: "Brillante" },
-              { type: "leaf" as const, emoji: "🌿", label: "Orgánico" },
-              { type: "fire" as const, emoji: "🔥", label: "Fuerza" },
+              { type: "heart" as const, emoji: "❤️", label: dict.heartLabel },
+              { type: "sparkles" as const, emoji: "✨", label: dict.sparklesLabel },
+              { type: "leaf" as const, emoji: "🌿", label: dict.leafLabel },
+              { type: "fire" as const, emoji: "🔥", label: dict.fireLabel },
             ].map((item) => {
               const count = reactions[item.type] || 0
               return (
@@ -986,13 +1134,13 @@ function StaticExhibitionModal({
                   key={item.type}
                   type="button"
                   onClick={() => onReact(item.type)}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-xs font-mono border border-white/15 cursor-pointer hover:border-[#f96e03]/60 group"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 transition-all text-xs font-mono border border-stone-200 cursor-pointer hover:border-[#f96e03] group shadow-sm"
                   title={item.label}
                 >
                   <span className="text-sm transition-transform group-hover:scale-125 duration-150">
                     {item.emoji}
                   </span>
-                  <span className="text-[11px] font-bold text-white/90 font-mono">
+                  <span className="text-[11px] font-bold text-[#1E1810] font-mono">
                     {count}
                   </span>
                 </button>
@@ -1001,15 +1149,15 @@ function StaticExhibitionModal({
           </div>
 
           {selectedCard.description && (
-            <p className="text-white/75 text-xs sm:text-sm font-sans leading-relaxed max-w-xl mx-auto hidden sm:block">
+            <p className="text-[#575250] text-xs sm:text-sm font-sans leading-relaxed max-w-xl mx-auto hidden sm:block">
               {selectedCard.description}
             </p>
           )}
 
-          <div className="flex items-center justify-center gap-2 mt-0.5 text-[10px] sm:text-[11px] font-mono text-white/45">
+          <div className="flex items-center justify-center gap-2 mt-0.5 text-[10px] sm:text-[11px] font-mono text-stone-400">
             {selectedCard.technique && <span>{selectedCard.technique}</span>}
             <span>•</span>
-            <span>Andrés Morales • Bocetos de Piel</span>
+            <span>{gallerySubtitle} • {galleryTitle}</span>
           </div>
         </div>
       </footer>

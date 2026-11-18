@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import './404-error-page.css';
 
 // Inline SVG noise texture as a data URL — small (~600 bytes) and
 // zero network round-trip. feTurbulence is unreliable when the host

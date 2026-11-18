@@ -2,6 +2,7 @@ import { Header } from '@/components/header';
 import { SiteFooter } from '@/components/site-footer';
 import { StickyMobileCTA } from '@/components/sticky-mobile-cta';
 import { CookieBanner } from '@/components/cookie-banner';
+import { RexChatLoader } from '@/components/ui/rex-chat-loader.client';
 import { getCurrentDictionary } from '@/lib/dictionary';
 import { headers } from 'next/headers';
 import { getLocalizedPath } from '@/lib/i18n';
@@ -33,6 +34,38 @@ export default async function LangLayout({
     );
   }
 
+  // Admin portal has its own unified sidebar, mobile drawer, and standalone header.
+  // Rendering the marketing header / footer here breaks scroll containers and clutters the workspace.
+  const isAdmin = pathname.startsWith('/admin') || pathname.includes('/admin');
+  if (isAdmin) {
+    return (
+      <main id="main" aria-label="Admin content" className="h-[100dvh] w-full overflow-hidden bg-[#F8F5F4]">
+        {children}
+      </main>
+    );
+  }
+
+  // Private proposals have their own dedicated client view
+  const isProposal = pathname.includes('/p/');
+  if (isProposal) {
+    return (
+      <main id="main" aria-label="Propuesta de proyecto" className="min-h-screen w-full bg-[#F8F5F4]">
+        {children}
+      </main>
+    );
+  }
+
+  // Formal technical audit reports use the brand executive palette
+  const isAudit = pathname.includes('/audit');
+  if (isAudit) {
+    return (
+      <main id="main" aria-label="Reporte técnico de auditoría" className="min-h-screen w-full bg-[#F8F5F4] text-[#1E1810] selection:bg-[#f96e03] selection:text-white">
+        {children}
+        <RexChatLoader locale={locale as 'en' | 'es' | 'pt'} />
+      </main>
+    );
+  }
+
   // Resolve dictionary server-side and pass only the cookie-banner strings
   // to the client component — `getCurrentDictionary` uses next/headers
   // and cannot be imported from a 'use client' module.
@@ -47,6 +80,7 @@ export default async function LangLayout({
       </main>
       <SiteFooter />
       <StickyMobileCTA />
+      <RexChatLoader locale={locale as 'en' | 'es' | 'pt'} />
       <CookieBanner
         t={bannerDict}
         privacyHref={getLocalizedPath('/privacy', locale as 'en' | 'es' | 'pt')}

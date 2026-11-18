@@ -74,11 +74,21 @@ export function pageMetadata(opts: {
   const ogFullTitle = title.includes(SITE_NAME)
     ? title
     : `${title} — ${SITE_NAME}`;
-  const imageUrl = ogImage ?? ogImageUrl(locale, path);
+
+  // Strip any existing locale prefix to normalize the base path.
+  // This prevents malformed hreflang URLs like /es/es/services when
+  // callers pass an already-prefixed path.
+  const basePath = path.replace(/^\/(en|es|pt)(?=\/|$)/, '') || '/';
+  const imageUrl = ogImage ?? ogImageUrl(locale, basePath);
 
   // Locale tag for OG (Spanish: es_CO, Portuguese: pt_BR, English: en_US).
   const ogLocale =
     locale === 'es' ? 'es_CO' : locale === 'pt' ? 'pt_BR' : 'en_US';
+
+  const canonicalUrl =
+    locale === DEFAULT_LOCALE
+      ? `https://andresmorales.com.co${normalizePath(basePath)}`
+      : `https://andresmorales.com.co/${locale}${normalizePath(basePath)}`;
 
   return {
     title,
@@ -93,7 +103,7 @@ export function pageMetadata(opts: {
     openGraph: {
       title: ogFullTitle,
       description,
-      url: `https://andresmorales.com.co${normalizePath(path)}`,
+      url: canonicalUrl,
       siteName: SITE_NAME,
       locale: ogLocale,
       type,
@@ -113,25 +123,21 @@ export function pageMetadata(opts: {
       images: [imageUrl],
     },
     alternates: {
-      canonical: `https://andresmorales.com.co${normalizePath(path)}`,
+      canonical: canonicalUrl,
       // Hreflang per-locale: each locale gets its own canonical URL using
-      // the same `path`. EN has no prefix (`/services`), ES/PT add the
+      // the normalized `basePath`. EN has no prefix (`/services`), ES/PT add the
       // locale (`/es/services`, `/pt/services`). `x-default` points at the
-      // English version for users whose locale doesn't match any of these
-      // — this is the SEO best practice for multi-region multi-language
-      // sites. Computed dynamically per call so the same helper works for
-      // `/`, `/services`, `/blog/<slug>`, and every other route without
-      // hardcoding.
+      // English version for users whose locale doesn't match any of these.
       languages: {
         ...Object.fromEntries(
           LOCALES.map((loc) => [
             HREFLANG_TAG[loc],
             loc === DEFAULT_LOCALE
-              ? normalizePathWithRoot(path)
-              : `/${loc}${normalizePathWithRoot(path) === '/' ? '' : normalizePathWithRoot(path)}`,
+              ? normalizePathWithRoot(basePath)
+              : `/${loc}${normalizePathWithRoot(basePath) === '/' ? '' : normalizePathWithRoot(basePath)}`,
           ])
         ),
-        'x-default': normalizePathWithRoot(path),
+        'x-default': normalizePathWithRoot(basePath),
       },
     },
   };

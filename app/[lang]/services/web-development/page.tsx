@@ -12,10 +12,7 @@ import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { headers } from 'next/headers';
-import { SERVICE_FAQS } from '@/data/service-faqs';
-
-
-
+import { getServiceFaqs } from '@/data/service-faqs';
 
 export async function generateMetadata({
   params,
@@ -29,7 +26,8 @@ export async function generateMetadata({
     title: dict.metadata.webdevTitle,
     description: dict.metadata.webdevDescription,
     locale: safeLang,
-    path: safeLang === 'en' ? '/services/web-development' : `/${safeLang}/services/web-development`,
+    path: '/services/web-development',
+    type: 'website',
   });
 }
 
@@ -37,64 +35,9 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
 }
 
-const CAPABILITIES = [
-  {
-    title: 'Next.js & React',
-    desc: 'Server-rendered React with the App Router, React Server Components, route handlers and edge functions. Production-grade performance, not just demos.',
-  },
-  {
-    title: 'Landing Pages',
-    desc: 'High-converting marketing pages with fast first paint, sharp copy, and CTAs wired to your CRM, email tool, or analytics stack.',
-  },
-  {
-    title: 'Dashboards & Web Apps',
-    desc: 'Authenticated admin tools and dashboards with role-based access, tables, charts, and CSV/PDF exports. Built to scale beyond the first 100 users.',
-  },
-  {
-    title: 'AI-Powered Features',
-    desc: 'Chat interfaces, agents, and tool-calling flows wired to OpenAI, Claude, or open-source models via streaming APIs.',
-  },
-  {
-    title: 'Headless CMS Integration',
-    desc: 'Decoupled WordPress + Next.js, Sanity, Strapi, or Notion as your back office. Editors keep working; the front end stays fast.',
-  },
-  {
-    title: 'Performance & SEO',
-    desc: 'Core Web Vitals in the green, structured data, sitemap, robots.txt and hreflang — the work that makes the site findable and fast on real networks.',
-  },
-];
-
-const APPROACH = [
-  {
-    n: '01',
-    title: 'Product, not brochure',
-    desc: 'I treat websites like products, not brochures. Performance, accessibility and SEO are baked in from the first commit — bolted on later is expensive.',
-  },
-  {
-    n: '02',
-    title: 'Type-safe end-to-end',
-    desc: 'Type-safe end to end: TypeScript on the front end, validated payloads on every API route. Fewer runtime surprises, faster refactors.',
-  },
-  {
-    n: '03',
-    title: 'Small reversible PRs',
-    desc: 'Ship in small, reversible PRs. Staging URLs on every push, analytics on every page, and rollback strategy before there’s a problem.',
-  },
-  {
-    n: '04',
-    title: 'Data model first',
-    desc: 'I design the data model first. Forms, API routes and types stay in sync, which means features move fast and bugs stay rare.',
-  },
-  {
-    n: '05',
-    title: 'Read before rewrite',
-    desc: 'When there’s existing code, I read it before I touch it. Refactors earn their place; rewrites don’t happen on a hunch.',
-  },
-];
-
 const STACK = [
-  'Next.js 14 (App Router, Server Components, Route Handlers)',
-  'React 18+',
+  'Next.js 14/15 (App Router, Server Components, Route Handlers)',
+  'React 18 / 19',
   'TypeScript',
   'Tailwind CSS',
   'PostgreSQL + Prisma / Drizzle',
@@ -103,52 +46,95 @@ const STACK = [
   'Vercel / Docker / self-hosted VPS',
 ];
 
-export default async function WebDevelopmentPage() {
+export default async function WebDevelopmentPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+}) {
   const h = await headers();
-  const lang = (h.get('x-locale') as 'en' | 'es' | 'pt') || 'en';
+  const headerLang = h.get('x-locale');
+  const resolvedParams = params ? await params : undefined;
+  const rawLang = resolvedParams?.lang || headerLang || (await getCurrentLocale());
+  const safeLang = isLocale(rawLang) ? rawLang : 'en';
+
   const dict = await getCurrentDictionary();
-  const locale = await getCurrentLocale();
+  const s = dict.servicesWeb;
   const c = dict.common;
+  const faqs = getServiceFaqs('web-development', safeLang);
+
+  const homeLabel = c?.breadcrumbHome || (safeLang === 'es' ? 'Inicio' : safeLang === 'pt' ? 'Início' : 'Home');
+  const servicesLabel = dict.nav?.services || c?.breadcrumbServices || (safeLang === 'es' ? 'Servicios' : safeLang === 'pt' ? 'Serviços' : 'Services');
+  const currentBreadcrumb = dict.metadata.webdevBreadcrumb || s?.breadcrumbCurrent || 'Web Development';
+
+  const faqHeading = safeLang === 'es' ? 'Preguntas frecuentes' : safeLang === 'pt' ? 'Perguntas frequentes' : 'Frequently asked questions';
+  const faqIntro = safeLang === 'es'
+    ? 'Preguntas habituales sobre tiempos de entrega, stack tecnológico, SEO, optimización de velocidad y cotizaciones.'
+    : safeLang === 'pt'
+    ? 'Perguntas frequentes sobre prazos de entrega, stack técnico, SEO, performance e orçamentos.'
+    : 'Common questions about timelines, stacks, SEO, performance, and e-commerce pricing.';
+
+  const capabilities = [
+    { title: s.cap1Title, desc: s.cap1Desc },
+    { title: s.cap2Title, desc: s.cap2Desc },
+    { title: s.cap3Title, desc: s.cap3Desc },
+    { title: s.cap4Title, desc: s.cap4Desc },
+    { title: s.cap5Title, desc: s.cap5Desc },
+    { title: s.cap6Title, desc: s.cap6Desc },
+  ];
+
+  const approach = [
+    { n: '01', title: s.approach1Title, desc: s.approach1Desc },
+    { n: '02', title: s.approach2Title, desc: s.approach2Desc },
+    { n: '03', title: s.approach3Title, desc: s.approach3Desc },
+    { n: '04', title: s.approach4Title, desc: s.approach4Desc },
+    { n: '05', title: s.approach5Title, desc: s.approach5Desc },
+  ];
+
   return (
     <>
       <JsonLd
         data={serviceSchema({
-          name: 'Web Development',
-          description: 'Next.js + React websites built for speed, SEO and conversions. From marketing landing pages to dashboards and SaaS front-ends.',
-          path: '/services/web-development',
+          name: dict.metadata.webdevH1 || s.heroTitle,
+          description: dict.metadata.webdevDescription,
+          path: getLocalizedPath('/services/web-development', safeLang),
           serviceType: 'Web Development',
-          areaServed: ['CO', 'US', 'MX', 'AR', 'ES'],
+          areaServed: ['CO', 'US', 'MX', 'AR', 'ES', 'BR'],
           priceRange: '$$$',
         })}
       />
       <JsonLd
         data={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'Services', path: '/services' },
-          { name: 'Web Development', path: '/services/web-development' },
+          { name: homeLabel, path: getLocalizedPath('/', safeLang) },
+          { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+          { name: currentBreadcrumb, path: getLocalizedPath('/services/web-development', safeLang) },
         ])}
       />
-      <JsonLd data={faqSchema(SERVICE_FAQS['web-development'], 'en')} />
+      <JsonLd
+        data={faqSchema(
+          faqs,
+          safeLang === 'es' ? 'es-CO' : safeLang === 'pt' ? 'pt-BR' : 'en-US'
+        )}
+      />
+
       {/* Hero */}
       <section className="section bg-background relative overflow-hidden">
         <ParticlesBackground id="hero-particles-webdev" variant="soft" />
         <div className="container-page grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div>
             <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
-              Track 03 · Web Development
+              {s.heroEyebrow}
             </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl mb-4 text-secondary leading-[1.05] tracking-tight">
-              {dict.metadata.webdevH1}
+              {dict.metadata.webdevH1 || s.heroTitle}
             </h1>
             <p className="text-secondary text-lg md:text-xl max-w-xl">
-              Fast, accessible, type-safe web apps — from landing pages to
-              AI-powered SaaS front-ends. Production-grade from day one.
+              {s.heroSubtitle}
             </p>
           </div>
           <div className="aspect-[16/10] relative rounded-2xl overflow-hidden bg-theme-9 ring-1 ring-theme-9/30 shadow-2xl">
             <Image
               src={wpImage('/wp-content/uploads/2026/07/gps_andresmorales_com_co.png')}
-              alt="BarrioTech (gps.andresmorales.com.co): landing page for the GPS street sellers platform I built and operate"
+              alt={s.heroImageAlt}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               quality={80}
@@ -159,15 +145,13 @@ export default async function WebDevelopmentPage() {
         </div>
       </section>
 
-      {/* Breadcrumb — visible trail under the hero. Pairs with the
-          breadcrumbSchema() JSON-LD above; the trail MUST agree or
-          Google will reject the rich-result breadcrumbs. */}
+      {/* Breadcrumb — visible trail under the hero */}
       <div className="container-page pt-4">
         <Breadcrumbs
-          lang={lang}
+          lang={safeLang}
           items={[
-            { name: c.breadcrumbServices, path: '/services' },
-            { name: dict.metadata.webdevBreadcrumb, current: true },
+            { name: servicesLabel, path: getLocalizedPath('/services', safeLang) },
+            { name: currentBreadcrumb, current: true },
           ]}
         />
       </div>
@@ -177,21 +161,21 @@ export default async function WebDevelopmentPage() {
         <div className="container-page py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">9+</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">{s.stat1Num}</div>
               <p className="text-secondary text-sm md:text-base">
-                production sites shipped for clients across LATAM and the US
+                {s.stat1}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">95+</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">{s.stat2Num}</div>
               <p className="text-secondary text-sm md:text-base">
-                average Lighthouse performance score across shipped projects
+                {s.stat2}
               </p>
             </div>
             <div>
-              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">&lt;200ms</div>
+              <div className="font-heading text-4xl md:text-5xl text-accent leading-none mb-2">{s.stat3Num}</div>
               <p className="text-secondary text-sm md:text-base">
-                TTFB on Next.js apps deployed on edge runtimes
+                {s.stat3}
               </p>
             </div>
           </div>
@@ -209,21 +193,19 @@ export default async function WebDevelopmentPage() {
             </div>
             <div className="p-8 md:p-10">
               <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
-                Featured case
+                {s.caseEyebrow}
               </p>
               <h3 className="font-heading text-2xl md:text-3xl mb-3 text-secondary">
-                BarrioTech · live in production
+                {s.caseTitle}
               </h3>
               <p className="text-secondary leading-relaxed mb-5">
-                A live GPS platform for street sellers in Cali — geolocation,
-                product catalog, and admin dashboard, built end to end with
-                Next.js, PostgreSQL and Prisma.
+                {s.caseDesc}
               </p>
               <Link
-                href="/portfolio"
+                href={getLocalizedPath('/portfolio', safeLang)}
                 className="inline-flex items-center gap-1 text-sm font-secondary font-bold text-secondary uppercase tracking-wider hover:gap-2 hover:text-accent transition-all"
               >
-                See the full case study →
+                {s.caseCta}
               </Link>
             </div>
           </div>
@@ -234,18 +216,18 @@ export default async function WebDevelopmentPage() {
       <section className="section bg-theme-5">
         <Reveal stagger className="container-page">
           <h2 className="font-heading text-3xl md:text-4xl mb-8">
-            What I build
+            {s.capabilitiesTitle}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {CAPABILITIES.map((s) => (
+            {capabilities.map((cap) => (
               <div
-                key={s.title}
+                key={cap.title}
                 className="p-8 rounded-xl bg-primary border border-theme-9"
               >
                 <h3 className="font-heading text-xl mb-3 text-secondary">
-                  {s.title}
+                  {cap.title}
                 </h3>
-                <p className="text-text leading-relaxed">{s.desc}</p>
+                <p className="text-text leading-relaxed">{cap.desc}</p>
               </div>
             ))}
           </div>
@@ -257,24 +239,23 @@ export default async function WebDevelopmentPage() {
         <Reveal className="container-page">
           <div className="max-w-3xl mb-12">
             <h2 className="font-heading text-3xl md:text-4xl mb-3">
-              How I work
+              {s.approachTitle}
             </h2>
             <p className="text-text leading-relaxed">
-              Five steps, every project. The same rhythm whether the
-              deliverable is a landing page or a full SaaS front-end.
+              {s.approachSubtitle}
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
-            {APPROACH.map((p) => (
-              <div key={p.n} className="relative">
+            {approach.map((pItem) => (
+              <div key={pItem.n} className="relative">
                 <div className="text-accent font-heading text-4xl md:text-5xl mb-3 leading-none">
-                  {p.n}
+                  {pItem.n}
                 </div>
                 <h3 className="font-heading text-lg md:text-xl mb-2 text-secondary">
-                  {p.title}
+                  {pItem.title}
                 </h3>
                 <p className="text-text leading-relaxed text-sm md:text-base">
-                  {p.desc}
+                  {pItem.desc}
                 </p>
               </div>
             ))}
@@ -286,13 +267,13 @@ export default async function WebDevelopmentPage() {
               rel="noreferrer"
               className="btn-theme text-base px-8 py-4"
             >
-              Book a free scoping call →
+              {s.ctaCall}
             </a>
             <a
-              href={getLocalizedPath('/brief?type=web', locale)}
+              href={getLocalizedPath('/brief?type=web', safeLang)}
               className="inline-flex items-center justify-center px-8 py-4 rounded-md font-secondary font-bold uppercase tracking-wide text-sm border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors"
             >
-              Or send a brief
+              {s.ctaBrief}
             </a>
           </div>
         </Reveal>
@@ -302,7 +283,7 @@ export default async function WebDevelopmentPage() {
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-6">
-            My stack
+            {s.stackTitle}
           </h2>
           <ul className="grid sm:grid-cols-2 gap-3 text-text">
             {STACK.map((t) => (
@@ -317,11 +298,11 @@ export default async function WebDevelopmentPage() {
         </Reveal>
       </section>
 
-      {/* Previous service */}
+      {/* Previous service navigation */}
       <section className="section bg-background">
         <div className="container-page">
           <Link
-            href="/services/ui-ux-design"
+            href={getLocalizedPath('/services/ui-ux-design', safeLang)}
             className="group flex items-center gap-4 p-6 md:p-8 rounded-2xl bg-primary border border-theme-9 hover:border-theme-1 hover:shadow-xl transition-all w-full md:w-1/2"
           >
             <span aria-hidden className="text-3xl md:text-4xl text-accent group-hover:-translate-x-2 transition-transform">
@@ -329,33 +310,33 @@ export default async function WebDevelopmentPage() {
             </span>
             <div>
               <p className="text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-1">
-                Previous service
+                {s.prevEyebrow}
               </p>
               <h3 className="font-heading text-lg md:text-xl text-secondary group-hover:text-accent transition-colors">
-                UI/UX Design
+                {s.prevTitle}
               </h3>
             </div>
           </Link>
         </div>
       </section>
 
-      {/* FAQ — mirrors FAQPage schema above. */}
+      {/* Localized FAQ Section */}
       <section className="section bg-theme-5">
         <Reveal className="container-page max-w-3xl">
           <h2 className="font-heading text-3xl md:text-4xl mb-3">
-            Frequently asked questions
+            {faqHeading}
           </h2>
           <p className="text-text leading-relaxed mb-8">
-            Common questions about timelines, stacks, SEO, performance, and e-commerce pricing.
+            {faqIntro}
           </p>
           <div className="space-y-3">
-            {SERVICE_FAQS['web-development'].map((faq, idx) => (
+            {faqs.map((faqItem, idx) => (
               <details
                 key={idx}
                 className="group p-5 rounded-xl bg-primary border border-theme-9 open:border-accent/40 transition-colors"
               >
                 <summary className="cursor-pointer list-none flex items-start justify-between gap-4 font-secondary font-bold text-secondary">
-                  <span>{faq.question}</span>
+                  <span>{faqItem.question}</span>
                   <span
                     aria-hidden="true"
                     className="text-accent text-xl leading-none transition-transform group-open:rotate-45 shrink-0"
@@ -364,7 +345,7 @@ export default async function WebDevelopmentPage() {
                   </span>
                 </summary>
                 <p className="mt-3 text-secondary/80 text-sm leading-relaxed">
-                  {faq.answer}
+                  {faqItem.answer}
                 </p>
               </details>
             ))}

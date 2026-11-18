@@ -55,11 +55,11 @@ const LABEL_TO_ROUTE: Record<string, string> = {
   'ai-powered web': '/services/web-development',
   'web con ia': '/services/web-development',
   'web com ia': '/services/web-development',
-  production: '/work',
-  producción: '/work',
-  produccion: '/work',
-  produção: '/work',
-  producao: '/work',
+  production: '/portfolio',
+  producción: '/portfolio',
+  produccion: '/portfolio',
+  produção: '/portfolio',
+  producao: '/portfolio',
 
   // Flagship proposals & live demos
   sneakers: '/sneakers',
@@ -99,6 +99,9 @@ const LABEL_TO_ROUTE: Record<string, string> = {
   guias: '/guide/ai-automation-latam-2026',
   compare: '/vs/make-vs-n8n',
   comparar: '/vs/make-vs-n8n',
+  admin: '/admin',
+  'panel admin': '/admin',
+  dashboard: '/admin',
   // FAQ has no dedicated page — render as plain text (no href) by
   // being absent from the map; linkWithHref falls through.
 };
@@ -157,6 +160,7 @@ export async function SiteFooter() {
         { label: t.legal[0] },
         { label: t.legal[1], href: getLocalizedPath('/terms', locale) },
         { label: t.legal[2], href: getLocalizedPath('/privacy', locale) },
+        { label: 'Admin', href: getLocalizedPath('/admin', locale) },
       ]}
       background="#F8F5F4"
       ink="#1E1810"

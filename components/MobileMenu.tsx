@@ -38,6 +38,17 @@ export function MobileMenu({
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
+  // Lock body scroll when mobile menu drawer is open
+  useEffect(() => {
+    if (open) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [open]);
+
   // Close on outside click.
   // Race-condition fix: the mousedown listener closes the drawer when
   // the user taps anywhere outside it, INCLUDING the trigger button.

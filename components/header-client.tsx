@@ -68,6 +68,16 @@ export function HeaderClient({
   const m = dict.nav.moreSections;
   const mm = dict.nav.moreMenu;
   const moreItems = [
+    {
+      href: getLocalizedPath('/audit', locale),
+      title: locale === 'en' ? '360° Audit' : locale === 'pt' ? 'Auditoria 360°' : 'Auditoría 360°',
+      description:
+        locale === 'en'
+          ? 'Speed, mobile UX/UI, and AI automation blueprint'
+          : locale === 'pt'
+          ? 'Velocidade, UX/UI mobile e plano de automação com IA'
+          : 'Velocidad, diseño UX/UI y propuesta de automatización con IA',
+    },
     { href: getLocalizedPath('/process', locale), title: m.process, description: mm.processDesc },
     { href: getLocalizedPath('/guide/ai-automation-latam-2026', locale), title: m.guides, description: mm.guidesDesc },
     { href: getLocalizedPath('/blog', locale), title: m.blog, description: mm.blogDesc },

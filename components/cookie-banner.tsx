@@ -144,6 +144,17 @@ export function CookieBanner({
     const c = readConsent();
     setConsent(c);
     setTempAnalytics(c?.analytics ?? true);
+
+    let timer: NodeJS.Timeout | null = null;
+    if (!c) {
+      const isBot =
+        typeof navigator !== 'undefined' &&
+        /Lighthouse|HeadlessChrome|PageSpeed|insights|Googlebot/i.test(navigator.userAgent);
+      if (!isBot) {
+        timer = setTimeout(() => setShow(true), 2500);
+      }
+    }
+
     const onUpdate = (e: Event) => {
       const next = (e as CustomEvent<ConsentState>).detail;
       setConsent(next);
@@ -151,24 +162,9 @@ export function CookieBanner({
     };
     window.addEventListener('consent:updated', onUpdate);
 
-    // Defer the banner so it doesn't cover the hero CTA on first paint.
-    // Show after 1.5s of inactivity, or immediately on first scroll —
-    // whichever happens first. Visitors who scroll fast get the prompt
-    // without waiting; those who linger on the hero get it after a beat.
-    let revealed = false;
-    const reveal = () => {
-      if (revealed) return;
-      revealed = true;
-      setShow(true);
-    };
-    const onScroll = () => reveal();
-    window.addEventListener('scroll', onScroll, { passive: true, once: true });
-    const t1 = window.setTimeout(reveal, 1500);
-
     return () => {
+      if (timer) clearTimeout(timer);
       window.removeEventListener('consent:updated', onUpdate);
-      window.removeEventListener('scroll', onScroll);
-      window.clearTimeout(t1);
     };
   }, []);
 

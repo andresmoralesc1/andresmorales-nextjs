@@ -3,8 +3,13 @@ import { checkRateLimit, bumpRateLimit, clientIp } from '@/lib/rate-limit';
 import { enforceBodySize } from '@/lib/api-guard';
 import { getDictionary, isLocale, DEFAULT_LOCALE, type Dictionary } from '@/lib/i18n';
 import { sendMail } from '@/lib/email';
+import { createLead, addLeadNote } from '@/lib/crm-store';
+import { syncLeadToBusiness } from '@/lib/clients-companies-store';
+import { sendTelegramNotification } from '@/lib/telegram';
+import { sendWhatsAppMessage } from '@/lib/evolution';
+import { buildBrandedEmailHtml, escapeHtml } from '@/lib/email-template';
 
-const MAX_BODY_BYTES = 15 * 1024;
+const MAX_BODY_BYTES = 40 * 1024;
 const TO_EMAIL = process.env.BRIEF_TO_EMAIL || process.env.MAILCOW_USER || 'info@andresmorales.com.co';
 const MAIL_CONFIGURED = Boolean(process.env.MAILCOW_PASSWORD);
 
@@ -30,6 +35,11 @@ type BriefWebPayload = {
   references?: string;
   referencesNotes?: string;
 
+  // Uploaded files
+  logoFiles?: Array<{ name: string; url: string; size: number; type: string }>;
+  referenceFiles?: Array<{ name: string; url: string; size: number; type: string }>;
+  additionalFiles?: Array<{ name: string; url: string; size: number; type: string }>;
+
   brandSummary?: string;
   brandValues?: string;
   logoStatus?: 'vector' | 'image' | 'need_design' | 'partial';
@@ -51,22 +61,17 @@ type BriefWebPayload = {
   lang?: string;
 };
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function renderFilesHtmlList(files?: Array<{ name: string; url: string; size: number; type: string }>): string | undefined {
+  if (!files || files.length === 0) return undefined;
+  return files
+    .map(
+      (f) =>
+        `<div style="margin-bottom:6px;"><a href="https://andresmorales.com.co${escapeHtml(f.url)}" target="_blank" style="color:#f96e03;font-weight:600;text-decoration:underline;">${escapeHtml(f.name)}</a> <span style="color:#786F68;font-size:11px;">(${Math.round(f.size / 1024)} KB)</span></div>`
+    )
+    .join('');
 }
 
 function renderEmailHtml(p: BriefWebPayload, dict: Dictionary): string {
-  const row = (label: string, value: string | string[] | undefined) => {
-    if (!value || (Array.isArray(value) && value.length === 0)) return '';
-    const v = Array.isArray(value) ? value.join(', ') : value;
-    return `<tr><td style="padding:8px 12px;font-weight:bold;color:#1E1810;background:#F8F5F4;border:1px solid #eeeeee;width:180px;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:8px 12px;color:#575250;border:1px solid #eeeeee;">${escapeHtml(v)}</td></tr>`;
-  };
-
   const webTypeLabel = p.webType === 'other' ? `Otro (${p.webTypeOther || ''})` : (dict.briefWeb.webTypes[p.webType] || p.webType);
   const goalLabel = p.goal === 'other' ? `Otro (${p.goalOther || ''})` : (dict.briefWeb.goals[p.goal] || p.goal);
   const budgetLabel = dict.briefWeb.budgets[p.budget] || p.budget;
@@ -76,47 +81,55 @@ function renderEmailHtml(p: BriefWebPayload, dict: Dictionary): string {
   const mediaLabel = p.mediaStatus ? (dict.briefWeb.mediaOptions[p.mediaStatus] || p.mediaStatus) : undefined;
   const domainLabel = p.domainHosting ? (dict.briefWeb.domainHostingOptions[p.domainHosting] || p.domainHosting) : undefined;
 
-  const modeBadge = p.mode === 'express' ? '⚡ EXPRESS (3-5 min)' : '🔍 DETALLADO (15-20 min)';
+  const modeBadge = p.mode === 'express' ? '⚡ BRIEF WEB EXPRESS' : '🔍 BRIEF WEB DETALLADO';
+  const cleanPhone = p.phone ? p.phone.replace(/\D/g, '') : '';
+  const fullPhone = cleanPhone.startsWith('57') ? cleanPhone : `57${cleanPhone}`;
 
-  return `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <span style="display:inline-block;background:rgba(0,0,0,0.2);padding:4px 8px;border-radius:4px;font-size:12px;font-weight:bold;margin-bottom:8px;">${modeBadge}</span>
-        <h1 style="margin:0;font-size:22px;">${escapeHtml(dict.briefWeb.email.title)}</h1>
-        <p style="margin:8px 0 0 0;opacity:0.95;font-size:14px;">De: <strong>${escapeHtml(p.name)}</strong> (${escapeHtml(p.email)})</p>
-      </div>
-      <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:16px;">
-        ${row(dict.briefWeb.email.fieldMode, modeBadge)}
-        ${row(dict.briefWeb.email.fieldCompany, p.company)}
-        ${row(dict.briefWeb.email.fieldRole, p.role)}
-        ${row(dict.briefWeb.email.fieldPhone, p.phone)}
-        ${row(dict.briefWeb.email.fieldCurrentSite, p.currentSite)}
-        ${row(dict.briefWeb.email.fieldWebType, webTypeLabel)}
-        ${row(dict.briefWeb.email.fieldGoal, goalLabel)}
-        ${row(dict.briefWeb.email.fieldReferences, p.references)}
-        ${row(dict.briefWeb.email.fieldReferencesNotes, p.referencesNotes)}
-        ${row(dict.briefWeb.email.fieldBrandSummary, p.brandSummary)}
-        ${row(dict.briefWeb.email.fieldBrandValues, p.brandValues)}
-        ${row(dict.briefWeb.email.fieldLogo, logoLabel)}
-        ${row(dict.briefWeb.email.fieldColors, p.colors)}
-        ${row(dict.briefWeb.email.fieldVibes, p.vibes)}
-        ${row(dict.briefWeb.email.fieldAudience, p.audience)}
-        ${row(dict.briefWeb.email.fieldMainCta, p.mainCta)}
-        ${row(dict.briefWeb.email.fieldPages, p.pagesNeeded)}
-        ${row(dict.briefWeb.email.fieldFeatures, p.featuresNeeded)}
-        ${row(dict.briefWeb.email.fieldContentOrigin, contentLabel)}
-        ${row(dict.briefWeb.email.fieldMedia, mediaLabel)}
-        ${row(dict.briefWeb.email.fieldLanguages, p.languages)}
-        ${row(dict.briefWeb.email.fieldDomainHosting, domainLabel)}
-        ${row(dict.briefWeb.email.fieldBudget, budgetLabel)}
-        ${row(dict.briefWeb.email.fieldTimeline, timelineLabel)}
-        ${row(dict.briefWeb.email.fieldNotes, p.notes)}
-      </table>
-      <p style="margin-top:24px;font-size:13px;color:#575250;">
-        ${escapeHtml(dict.briefWeb.email.replyTo.replace('{email}', p.email))} <a href="mailto:${escapeHtml(p.email)}" style="color:#f96e03;">${escapeHtml(p.email)}</a>
+  return buildBrandedEmailHtml({
+    badge: modeBadge,
+    title: dict.briefWeb.email.title,
+    subtitle: `Remitente: ${p.name} (${p.email}) · ${p.company || 'Proyecto Independiente'}`,
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;">
+        Se ha recibido un nuevo brief de proyecto web completado en la plataforma:
       </p>
-    </div>
-  `;
+    `,
+    tableRows: [
+      { label: dict.briefWeb.email.fieldMode, value: modeBadge },
+      { label: dict.briefWeb.email.fieldCompany, value: p.company },
+      { label: dict.briefWeb.email.fieldRole, value: p.role },
+      { label: dict.briefWeb.email.fieldPhone, value: p.phone },
+      { label: dict.briefWeb.email.fieldCurrentSite, value: p.currentSite },
+      { label: dict.briefWeb.email.fieldWebType, value: webTypeLabel },
+      { label: dict.briefWeb.email.fieldGoal, value: goalLabel },
+      { label: dict.briefWeb.email.fieldReferences, value: p.references },
+      { label: dict.briefWeb.email.fieldReferencesNotes, value: p.referencesNotes },
+      { label: dict.briefWeb.email.fieldBrandSummary, value: p.brandSummary },
+      { label: dict.briefWeb.email.fieldBrandValues, value: p.brandValues },
+      { label: dict.briefWeb.email.fieldLogo, value: logoLabel },
+      { label: dict.briefWeb.email.fieldLogoFiles || 'Archivos de logotipo', value: renderFilesHtmlList(p.logoFiles), isHtml: true },
+      { label: dict.briefWeb.email.fieldReferenceFiles || 'Archivos de referencia', value: renderFilesHtmlList(p.referenceFiles), isHtml: true },
+      { label: dict.briefWeb.email.fieldColors, value: p.colors },
+      { label: dict.briefWeb.email.fieldVibes, value: p.vibes?.join(', ') },
+      { label: dict.briefWeb.email.fieldAudience, value: p.audience },
+      { label: dict.briefWeb.email.fieldMainCta, value: p.mainCta },
+      { label: dict.briefWeb.email.fieldPages, value: p.pagesNeeded?.join(', ') },
+      { label: dict.briefWeb.email.fieldFeatures, value: p.featuresNeeded?.join(', ') },
+      { label: dict.briefWeb.email.fieldContentOrigin, value: contentLabel },
+      { label: dict.briefWeb.email.fieldMedia, value: mediaLabel },
+      { label: dict.briefWeb.email.fieldLanguages, value: p.languages },
+      { label: dict.briefWeb.email.fieldDomainHosting, value: domainLabel },
+      { label: dict.briefWeb.email.fieldBudget, value: budgetLabel },
+      { label: dict.briefWeb.email.fieldTimeline, value: timelineLabel },
+      { label: dict.briefWeb.email.fieldAdditionalFiles || 'Documentos adjuntos', value: renderFilesHtmlList(p.additionalFiles), isHtml: true },
+      { label: dict.briefWeb.email.fieldNotes, value: p.notes },
+    ],
+    ctaText: 'Ver en Dashboard CRM',
+    ctaUrl: 'https://andresmorales.com.co/es/admin/crm',
+    secondaryCtaText: cleanPhone ? '💬 WhatsApp al Prospecto' : '✉️ Responder por Correo',
+    secondaryCtaUrl: cleanPhone ? `https://wa.me/${fullPhone}` : `mailto:${p.email}`,
+    replyToEmail: p.email,
+  });
 }
 
 function renderEmailText(p: BriefWebPayload, dict: Dictionary): string {
@@ -140,6 +153,9 @@ function renderEmailText(p: BriefWebPayload, dict: Dictionary): string {
     `Objetivo: ${goalLabel}`,
     p.references ? `Referencias: ${p.references}` : '',
     p.referencesNotes ? `Notas referencias: ${p.referencesNotes}` : '',
+    p.logoFiles && p.logoFiles.length ? `Archivos Logo: ${p.logoFiles.map((f) => `${f.name} (https://andresmorales.com.co${f.url})`).join(', ')}` : '',
+    p.referenceFiles && p.referenceFiles.length ? `Archivos Referencias: ${p.referenceFiles.map((f) => `${f.name} (https://andresmorales.com.co${f.url})`).join(', ')}` : '',
+    p.additionalFiles && p.additionalFiles.length ? `Documentos Adjuntos: ${p.additionalFiles.map((f) => `${f.name} (https://andresmorales.com.co${f.url})`).join(', ')}` : '',
     ``,
     p.brandSummary ? `Resumen marca: ${p.brandSummary}` : '',
     p.brandValues ? `Valores marca: ${p.brandValues}` : '',
@@ -158,6 +174,19 @@ function renderEmailText(p: BriefWebPayload, dict: Dictionary): string {
   ].filter(Boolean);
 
   return lines.join('\n');
+}
+
+function parseUploadedFiles(val: unknown): Array<{ name: string; url: string; size: number; type: string }> {
+  if (!Array.isArray(val)) return [];
+  return val
+    .filter((f) => f && typeof f === 'object' && typeof (f as any).url === 'string' && (f as any).url.startsWith('/uploads/briefs/'))
+    .slice(0, 10)
+    .map((f: any) => ({
+      name: String(f.name || 'archivo').slice(0, 120),
+      url: String(f.url).slice(0, 300),
+      size: typeof f.size === 'number' ? f.size : 0,
+      type: String(f.type || '').slice(0, 80),
+    }));
 }
 
 function validatePayload(body: unknown): { ok: true; data: BriefWebPayload } | { ok: false; error: string } {
@@ -211,6 +240,9 @@ function validatePayload(body: unknown): { ok: true; data: BriefWebPayload } | {
       goalOther: b.goalOther ? String(b.goalOther).slice(0, 300) : '',
       references: b.references ? String(b.references).slice(0, 2000) : '',
       referencesNotes: b.referencesNotes ? String(b.referencesNotes).slice(0, 1000) : '',
+      logoFiles: parseUploadedFiles(b.logoFiles),
+      referenceFiles: parseUploadedFiles(b.referenceFiles),
+      additionalFiles: parseUploadedFiles(b.additionalFiles),
       brandSummary: b.brandSummary ? String(b.brandSummary).slice(0, 2000) : '',
       brandValues: b.brandValues ? String(b.brandValues).slice(0, 1000) : '',
       logoStatus: b.logoStatus ? (String(b.logoStatus) as BriefWebPayload['logoStatus']) : undefined,
@@ -256,22 +288,27 @@ async function sendAutoReply(p: BriefWebPayload, dict: Dictionary, lang: string)
     ? 'https://andresmorales.com.co/brief-web'
     : `https://andresmorales.com.co/${lang}/brief-web`;
 
-  const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;">
-      <div style="background:#f96e03;padding:24px 32px;color:#fff;">
-        <h1 style="margin:0;font-size:22px;">${greeting}</h1>
-      </div>
-      <div style="padding:24px 32px;color:#575250;line-height:1.6;">
-        <p>${escapeHtml(dict.briefWeb.emailAutoReply.body1)}</p>
-        <p>${escapeHtml(dict.briefWeb.emailAutoReply.body2)}</p>
-        <p style="margin-top:32px;">${escapeHtml(dict.briefWeb.emailAutoReply.signature)}</p>
-        <p style="font-size:13px;color:#999;margin-top:24px;">
-          ${escapeHtml(dict.briefWeb.emailAutoReply.footer)}
-          <a href="${briefUrl}" style="color:#f96e03;">${escapeHtml(briefUrl)}</a>.
-        </p>
-      </div>
-    </div>
-  `;
+  const html = buildBrandedEmailHtml({
+    badge: 'CONFIRMACIÓN OFICIAL',
+    title: greeting,
+    subtitle: 'Andrés Morales · Automatización con IA & Desarrollo Web',
+    contentHtml: `
+      <p style="margin:0 0 16px 0;font-size:15px;color:#2B2520;line-height:1.7;">
+        ${escapeHtml(dict.briefWeb.emailAutoReply.body1)}
+      </p>
+      <p style="margin:0 0 16px 0;font-size:14.5px;color:#4A423D;line-height:1.7;">
+        ${escapeHtml(dict.briefWeb.emailAutoReply.body2)}
+      </p>
+      <p style="margin:24px 0 0 0;font-size:14px;color:#1E1810;font-weight:600;">
+        ${escapeHtml(dict.briefWeb.emailAutoReply.signature)}
+      </p>
+    `,
+    ctaText: 'Agendar Llamada de 30 min (Google Calendar)',
+    ctaUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    secondaryCtaText: '💬 Contactar por WhatsApp',
+    secondaryCtaUrl: 'https://wa.me/573161482507',
+    footerNote: `${dict.briefWeb.emailAutoReply.footer} <a href="${briefUrl}" style="color:#f96e03;">${escapeHtml(briefUrl)}</a>.`,
+  });
   const text = `${dict.briefWeb.emailAutoReply.greeting.replace('{firstName}', firstName)}
 
 ${dict.briefWeb.emailAutoReply.body1}
@@ -324,6 +361,9 @@ async function sendToClickUp(p: BriefWebPayload, dict: Dictionary): Promise<void
     p.audience ? `**Audiencia:**\n${user(p.audience)}` : '',
     p.pagesNeeded && p.pagesNeeded.length ? `**Páginas:**\n- ${p.pagesNeeded.map(user).join('\n- ')}` : '',
     p.featuresNeeded && p.featuresNeeded.length ? `**Features:**\n- ${p.featuresNeeded.map(user).join('\n- ')}` : '',
+    p.logoFiles && p.logoFiles.length ? `**Archivos Logo:**\n${p.logoFiles.map((f) => `- [${f.name}](https://andresmorales.com.co${f.url})`).join('\n')}` : '',
+    p.referenceFiles && p.referenceFiles.length ? `**Archivos Referencia:**\n${p.referenceFiles.map((f) => `- [${f.name}](https://andresmorales.com.co${f.url})`).join('\n')}` : '',
+    p.additionalFiles && p.additionalFiles.length ? `**Documentos Adjuntos:**\n${p.additionalFiles.map((f) => `- [${f.name}](https://andresmorales.com.co${f.url})`).join('\n')}` : '',
     p.notes ? `**Notas adicionales:**\n${user(p.notes)}` : '',
     `---`,
     `_Enviado desde andresmorales.com.co/brief-web_`,
@@ -388,6 +428,97 @@ export async function POST(req: NextRequest) {
   }
 
   const data = result.data;
+
+  const filesSummaryList = [
+    ...(data.logoFiles?.map((f) => `Logo: ${f.name} (https://andresmorales.com.co${f.url})`) || []),
+    ...(data.referenceFiles?.map((f) => `Ref: ${f.name} (https://andresmorales.com.co${f.url})`) || []),
+    ...(data.additionalFiles?.map((f) => `Doc: ${f.name} (https://andresmorales.com.co${f.url})`) || []),
+  ];
+  const filesMessagePart = filesSummaryList.length > 0 ? `\n📎 Adjuntos:\n${filesSummaryList.join('\n')}` : '';
+
+  // Auto-log brief-web into local CRM and sync with Clientes & Empresas
+  try {
+    const newLead = createLead({
+      name: data.name,
+      email: data.email,
+      phone: data.phone || '',
+      company: data.company || '',
+      service: `Desarrollo Web (${data.webType} - ${data.mode})`,
+      message: `Objetivo: ${data.goal}\nReferencias: ${data.references || '—'}${filesMessagePart}`,
+      source: 'brief-web',
+      status: 'brief_received',
+      briefData: data as any,
+    });
+
+    syncLeadToBusiness({
+      id: newLead?.id,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      company: data.company,
+      service: `Desarrollo Web (${data.webType} - ${data.mode})`,
+      status: 'en_progreso',
+      message: `Objetivo: ${data.goal}\nReferencias: ${data.references || '—'}${filesMessagePart}`,
+    });
+
+    const cleanPhone = data.phone ? data.phone.replace(/\D/g, '') : '';
+
+    // Auto-WhatsApp confirmation to lead if valid phone provided (>= 10 digits)
+    if (cleanPhone && cleanPhone.length >= 10) {
+      const firstName = data.name.split(' ')[0] || data.name;
+      const projectLabel = data.company || (data.webType === 'other' ? 'tu nuevo sitio web' : `tu proyecto de ${data.webType}`);
+      const waText = `¡Hola ${firstName}! 👋 Soy el asistente de Andrés Morales.\n\nYa recibimos tu brief para *${projectLabel}*. Andrés lo está analizando para evaluar los requerimientos técnicos y estructurar tu propuesta.\n\nSi deseas coordinar de una vez la llamada de diagnóstico de 30 min para evaluar el alcance, puedes elegir tu horario aquí:\n👉 https://calendar.app.google/QvUUb5xu4927P95a8`;
+
+      sendWhatsAppMessage({ number: cleanPhone, text: waText })
+        .then((waRes) => {
+          if (waRes.ok && newLead?.id) {
+            addLeadNote(
+              newLead.id,
+              `🤖 Agente IA (Auto-WhatsApp): Confirmación automática enviada con enlace de Google Calendar a ${cleanPhone}.`
+            );
+          }
+        })
+        .catch((err) => console.warn('[brief-web] Auto-WhatsApp send failed:', err));
+    }
+
+    const tgFileItems = [
+      ...(data.logoFiles?.map((f) => `• <b>Logo:</b> <a href="https://andresmorales.com.co${f.url}">${escapeHtml(f.name)}</a>`) || []),
+      ...(data.referenceFiles?.map((f) => `• <b>Ref:</b> <a href="https://andresmorales.com.co${f.url}">${escapeHtml(f.name)}</a>`) || []),
+      ...(data.additionalFiles?.map((f) => `• <b>Doc:</b> <a href="https://andresmorales.com.co${f.url}">${escapeHtml(f.name)}</a>`) || []),
+    ];
+    const tgFilesText = tgFileItems.length > 0 ? `\n📎 <b>Archivos adjuntos (${tgFileItems.length}):</b>\n${tgFileItems.join('\n')}\n` : '';
+
+    // Instant alert to Andres via Telegram Bot
+    sendTelegramNotification(
+      `⚡ <b>¡Nuevo Brief Web (${data.mode.toUpperCase()}) Recibido!</b>\n\n` +
+        `👤 <b>Cliente:</b> ${data.name}\n` +
+        `🏢 <b>Empresa:</b> ${data.company || '—'} (${data.role || '—'})\n` +
+        `📱 <b>Tel/WA:</b> ${data.phone || 'No indicado'}\n` +
+        `🌐 <b>Tipo de Web:</b> ${data.webType} (${data.mode})\n` +
+        `💰 <b>Presupuesto:</b> ${data.budget}\n` +
+        `⏱️ <b>Plazo:</b> ${data.timeline}\n\n` +
+        `🎯 <b>Objetivo:</b> ${data.goal}\n` +
+        tgFilesText + `\n` +
+        `👉 <a href="https://andresmorales.com.co/es/admin/crm">Ver en Dashboard CRM</a>`,
+      {
+        buttons: [
+          [
+            { text: '📊 Abrir CRM', url: 'https://andresmorales.com.co/es/admin/crm' },
+            ...(cleanPhone
+              ? [
+                  {
+                    text: '💬 WhatsApp',
+                    url: `https://wa.me/${cleanPhone.startsWith('57') ? cleanPhone : '57' + cleanPhone}`,
+                  },
+                ]
+              : [{ text: '✉️ Email', url: `mailto:${data.email}` }]),
+          ],
+        ],
+      }
+    ).catch(() => {});
+  } catch (crmErr) {
+    console.warn('[brief-web] Could not auto-log to CRM:', crmErr);
+  }
   bumpRateLimit(RATE_LIMIT_ROUTE, ip);
 
   if (!MAIL_CONFIGURED) {

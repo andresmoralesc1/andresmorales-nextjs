@@ -104,8 +104,8 @@ export function ParticlesBackground({
         opacityMax = 0.7;
         sizeMin = 3;
         sizeMax = 6;
-        particleCount = 90;
-        enableHover = true;
+        particleCount = 45;
+        enableHover = false;
         break;
       case "dark":
       default:
@@ -118,12 +118,15 @@ export function ParticlesBackground({
         break;
     }
 
-    ensureParticlesLib().then(() => {
-      if (!mounted) return;
-      const target = document.getElementById(id);
-      if (!target) return;
+    let timerId: any = null;
 
-      (window as any).particlesJS(id, {
+    const init = () => {
+      ensureParticlesLib().then(() => {
+        if (!mounted) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        (window as any).particlesJS(id, {
         particles: {
           number: {
             value: particleCount,
@@ -193,11 +196,23 @@ export function ParticlesBackground({
         retina_detect: true,
       });
     });
+  };
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      timerId = (window as any).requestIdleCallback(init, { timeout: 3500 });
+    } else {
+      timerId = setTimeout(init, 2500);
+    }
 
     return () => {
       mounted = false;
+      if (typeof window !== "undefined" && "cancelIdleCallback" in window && typeof timerId === "number") {
+        (window as any).cancelIdleCallback(timerId);
+      } else if (timerId) {
+        clearTimeout(timerId);
+      }
     };
-  }, [id, variant]);
+  }, [id, variant, shouldRun]);
 
   return (
     <div

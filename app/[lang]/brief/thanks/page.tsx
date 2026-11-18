@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/reveal';
-import { getCurrentDictionary } from '@/lib/dictionary';
-import { LOCALES } from '@/lib/i18n';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
+import { LOCALES, getLocalizedPath } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
 
@@ -18,7 +18,7 @@ export function generateStaticParams() {
 }
 
 export default async function BriefThanksPage() {
-  const dict = await getCurrentDictionary();
+  const [dict, lang] = await Promise.all([getCurrentDictionary(), getCurrentLocale()]);
   return (
     <section className="section bg-primary">
       <Reveal as="div" className="container-page max-w-2xl text-center">
@@ -54,10 +54,10 @@ export default async function BriefThanksPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/portfolio" className="btn-theme">
+          <Link href={getLocalizedPath('/portfolio', lang)} className="btn-theme">
             {dict.briefThanks.ctaWork}
           </Link>
-          <Link href="/" className="btn-outline">
+          <Link href={getLocalizedPath('/', lang)} className="btn-outline">
             {dict.briefThanks.ctaHome}
           </Link>
         </div>

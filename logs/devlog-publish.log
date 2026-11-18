@@ -1,0 +1,1347 @@
+🚀 [DevLog Engine] Iniciando ciclo (MODO PUBLICACIÓN MATUTINA)...
+📦 Actividad detectada: 4 commits hoy, 5 conversaciones analizadas.
+📸 [Playwright] Capturando vistas de interfaz y componentes actualizados...
+   ✅ Desktop screenshot guardado: devlog-2026-11-11-portfolio-desktop.png
+   ✅ Mobile screenshot guardado: devlog-2026-11-11-portfolio-mobile.png
+🧠 [AI Writer] Analizando actividad del día y redactando DevLog técnico...
+✅ Post en español guardado en: /home/telchar/andresmorales-nextjs/content/blog/devlog-2026-11-11.es.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 80ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 25.7s
+  Running TypeScript ...
+  Finished TypeScript in 40.0s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/248) ...
+  Generating static pages using 5 workers (62/248) 
+  Generating static pages using 5 workers (124/248) 
+  Generating static pages using 5 workers (186/248) 
+✓ Generating static pages using 5 workers (248/248) in 4.3s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/anti-ghosting
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-11
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 24 commits en 2 repositorios, 3 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-12-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-12-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-12.es.md
+   • EN: devlog-2026-11-12.en.md
+   • PT: devlog-2026-11-12.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 52ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 16.6s
+  Running TypeScript ...
+  Finished TypeScript in 28.6s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/258) ...
+  Generating static pages using 5 workers (64/258) 
+  Generating static pages using 5 workers (128/258) 
+  Generating static pages using 5 workers (193/258) 
+✓ Generating static pages using 5 workers (258/258) in 3.2s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/anti-ghosting
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-12
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+❌ Error en Playwright X Bot: elementHandle.click: Timeout 30000ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-testid="mask" class="css-g5y9jx r-1p0dtai r-1d2f490 r-1xcajam r-zchlnj r-ipm5af r-1ffj0ar"></div> from <div class="css-g5y9jx r-aqfbo4 r-zchlnj r-1d2f490 r-1xcajam r-1p0dtai r-12vffkv">…</div> subtree intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-testid="mask" class="css-g5y9jx r-1p0dtai r-1d2f490 r-1xcajam r-zchlnj r-ipm5af r-1ffj0ar"></div> from <div class="css-g5y9jx r-aqfbo4 r-zchlnj r-1d2f490 r-1xcajam r-1p0dtai r-12vffkv">…</div> subtree intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    49 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-testid="mask" class="css-g5y9jx r-1p0dtai r-1d2f490 r-1xcajam r-zchlnj r-ipm5af r-1ffj0ar"></div> from <div class="css-g5y9jx r-aqfbo4 r-zchlnj r-1d2f490 r-1xcajam r-1p0dtai r-12vffkv">…</div> subtree intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 11 commits en 1 repositorios, 3 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-13-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-13-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-13.es.md
+   • EN: devlog-2026-11-13.en.md
+   • PT: devlog-2026-11-13.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 53ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 18.1s
+  Running TypeScript ...
+  Finished TypeScript in 26.1s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/263) ...
+  Generating static pages using 5 workers (65/263) 
+  Generating static pages using 5 workers (131/263) 
+  Generating static pages using 5 workers (197/263) 
+✓ Generating static pages using 5 workers (263/263) in 2.3s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-13
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+🚀 Clickeando botón "Post"...
+❌ Error en Playwright X Bot: elementHandle.click: Timeout 30000ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    57 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 0 commits en 0 repositorios, 3 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-14-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-14-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-14.es.md
+   • EN: devlog-2026-11-14.en.md
+   • PT: devlog-2026-11-14.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 53ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.0s
+  Running TypeScript ...
+  Finished TypeScript in 24.4s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/269) ...
+  Generating static pages using 5 workers (67/269) 
+  Generating static pages using 5 workers (134/269) 
+  Generating static pages using 5 workers (201/269) 
+✓ Generating static pages using 5 workers (269/269) in 2.6s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-14
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+🚀 Clickeando botón "Post"...
+❌ Error en Playwright X Bot: elementHandle.click: Timeout 30000ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    56 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+ℹ️ No se detectó actividad de código ni conversaciones hoy. Finalizando sin crear borradores.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 0 commits en 0 repositorios, 1 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-16-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-16-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-16.es.md
+   • EN: devlog-2026-11-16.en.md
+   • PT: devlog-2026-11-16.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 66ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 14.0s
+  Running TypeScript ...
+  Finished TypeScript in 24.8s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/275) ...
+  Generating static pages using 5 workers (68/275) 
+  Generating static pages using 5 workers (137/275) 
+  Generating static pages using 5 workers (206/275) 
+✓ Generating static pages using 5 workers (275/275) in 2.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+npm notice
+npm notice New minor version of npm available! 11.6.1 -> 11.21.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.2
+npm notice To update run: npm install -g npm@11.21.2
+npm notice
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-16
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+🚀 Clickeando botón "Post"...
+❌ Error en Playwright X Bot: elementHandle.click: Timeout 30000ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    55 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 0 commits en 0 repositorios, 2 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-17-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-17-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-17.es.md
+   • EN: devlog-2026-11-17.en.md
+   • PT: devlog-2026-11-17.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 63ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.6s
+  Running TypeScript ...
+  Finished TypeScript in 25.0s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/281) ...
+  Generating static pages using 5 workers (70/281) 
+  Generating static pages using 5 workers (140/281) 
+  Generating static pages using 5 workers (210/281) 
+✓ Generating static pages using 5 workers (281/281) in 2.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-17
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+🚀 Clickeando botón "Post"...
+❌ Error en Playwright X Bot: elementHandle.click: Timeout 30000ms exceeded.
+Call log:
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    55 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+🏁 DevLog publicado exitosamente en producción.
+🚀 [DevLog Engine Enterprise] Ciclo iniciado (MODO PUBLICACIÓN)...
+📦 Actividad detectada: 0 commits en 0 repositorios, 4 conversaciones.
+📸 [Playwright] Capturando vistas de componentes quirúrgicos y responsive...
+   ✅ Desktop viewport capturado: devlog-2026-11-18-desktop.png
+   ✅ Componente quirúrgico capturado: ROI Calculator
+   ✅ Mobile viewport capturado: devlog-2026-11-18-mobile.png
+🧠 [AI Writer] Generando artículos trilingües (ES, EN, PT) y copy para LinkedIn...
+✅ Artículos trilingües guardados:
+   • ES: devlog-2026-11-18.es.md
+   • EN: devlog-2026-11-18.en.md
+   • PT: devlog-2026-11-18.pt.md
+🔨 Compilando Next.js para producción...
+
+> andresmorales-nextjs@0.1.0 prebuild
+> node scripts/strip-legacy-polyfills.mjs
+
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-module.js
+[strip-legacy-polyfills] Emptied node_modules/next/dist/build/polyfills/polyfill-nomodule.js
+
+> andresmorales-nextjs@0.1.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 57ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 14.5s
+  Running TypeScript ...
+  Finished TypeScript in 27.0s ...
+  Collecting page data using 5 workers ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 5 workers (0/293) ...
+  Generating static pages using 5 workers (73/293) 
+  Generating static pages using 5 workers (146/293) 
+  Generating static pages using 5 workers (219/293) 
+✓ Generating static pages using 5 workers (293/293) in 1124ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/admin
+├ ƒ /[lang]/admin/analytics
+├ ƒ /[lang]/admin/art
+├ ƒ /[lang]/admin/automations
+├ ƒ /[lang]/admin/chat
+├ ƒ /[lang]/admin/clients
+├ ƒ /[lang]/admin/companies
+├ ƒ /[lang]/admin/crm
+├ ƒ /[lang]/admin/login
+├ ƒ /[lang]/admin/prospecting
+├ ƒ /[lang]/admin/services
+├ ƒ /[lang]/art
+├ ƒ /[lang]/audit
+├ ƒ /[lang]/audit/[slug]
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/edit
+├ ƒ /[lang]/brief
+├ ƒ /[lang]/brief-web
+├ ƒ /[lang]/brief/thanks
+├ ƒ /[lang]/contact
+├ ƒ /[lang]/cookies
+├ ƒ /[lang]/cumple-2025
+├ ƒ /[lang]/delete-my-data
+├ ƒ /[lang]/demo/cms
+├ ƒ /[lang]/drafts
+├ ƒ /[lang]/guide/[slug]
+├ ƒ /[lang]/invest-in-people-inspire-the-future
+├ ƒ /[lang]/joyerias
+├ ƒ /[lang]/p/[token]
+├ ƒ /[lang]/playground
+├ ƒ /[lang]/portfolio
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/process
+├ ƒ /[lang]/refund
+├ ƒ /[lang]/services
+├ ƒ /[lang]/services/ai-automation
+├ ƒ /[lang]/services/ui-ux-design
+├ ƒ /[lang]/services/web-development
+├ ƒ /[lang]/sneakers
+├ ƒ /[lang]/terms
+├ ƒ /[lang]/unsubscribe
+├ ƒ /[lang]/vs/ai-consultant-vs-agency
+├ ƒ /[lang]/vs/make-vs-n8n
+├ ƒ /[lang]/vs/vercel-vs-aws-amplify
+├ ƒ /[lang]/work/[slug]
+├ ƒ /amart/admin
+├ ƒ /amart/login
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/art
+├ ƒ /api/admin/art/artwork
+├ ƒ /api/admin/art/upload
+├ ƒ /api/admin/chat
+├ ƒ /api/admin/chat/messages
+├ ƒ /api/admin/clients
+├ ƒ /api/admin/companies
+├ ƒ /api/admin/crm
+├ ƒ /api/admin/crm/agent/test
+├ ƒ /api/admin/crm/email
+├ ƒ /api/admin/crm/email/draft
+├ ƒ /api/admin/crm/inbox
+├ ƒ /api/admin/crm/note
+├ ƒ /api/admin/crm/promote
+├ ƒ /api/admin/crm/proposals
+├ ƒ /api/admin/crm/proposals/send
+├ ƒ /api/admin/crm/telegram
+├ ƒ /api/admin/crm/trigger
+├ ƒ /api/admin/crm/whatsapp
+├ ƒ /api/admin/crm/whatsapp/webhook
+├ ƒ /api/admin/login
+├ ƒ /api/admin/logout
+├ ƒ /api/admin/prospecting
+├ ƒ /api/admin/prospecting/audit
+├ ƒ /api/admin/prospecting/import
+├ ƒ /api/admin/prospecting/scout
+├ ƒ /api/amart/login
+├ ƒ /api/amart/logout
+├ ƒ /api/art-notes
+├ ƒ /api/art-reactions
+├ ƒ /api/audit/[slug]/pdf
+├ ƒ /api/audit/request
+├ ƒ /api/auth/linkedin/callback
+├ ƒ /api/brief
+├ ƒ /api/brief-web
+├ ƒ /api/brief/upload
+├ ƒ /api/calendar
+├ ƒ /api/chat
+├ ƒ /api/contact
+├ ƒ /api/delete-my-data
+├ ƒ /api/drafts/[lang]/[slug]
+├ ƒ /api/drafts/[lang]/[slug]/preview
+├ ƒ /api/og
+├ ƒ /api/posts/[lang]/[slug]
+├ ƒ /api/proposals/[token]
+├ ƒ /api/screenshot
+├ ƒ /api/webhooks/devlog-action
+├ ƒ /api/webhooks/evolution
+├ ƒ /api/webhooks/seo-ping
+├ ƒ /feed.xml
+├ ○ /manifest.webmanifest
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ƒ /uploads/[...path]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+🔄 Reiniciando servicio de producción...
+⚡ Notificando a Google Indexing API v3...
+🚀 [SEO Indexing Automation] Starting search engine broadcast...
+🌐 Target Domain: andresmorales.com.co
+
+📡 Step 1: Submitting URLs to IndexNow (Bing / Search Engine Alliance)...
+   ℹ️ IndexNow response: HTTP 422 (key verification pending public deployment)
+
+📡 Step 2: Checking Google Indexing API v3 (Service Account)...
+   ✅ Google Service Account detected: google-search@skilful-sphere-478916-n2.iam.gserviceaccount.com
+   ⚡ Broadcasting 1 URL(s) to Google Indexing API...
+   • [HTTP 200] https://andresmorales.com.co/es/blog/devlog-2026-11-18
+   🎉 All priority URLs submitted to Google Indexing API successfully.
+
+🏁 [SEO Indexing Automation] Completed.
+🐦 Publicando automáticamente en X vía Playwright...
+🤖 [X Playwright Bot] Iniciando Chromium headless...
+🌐 Navegando a x.com/compose/post...
+✍️ Localizando área de redacción de tweet...
+⚠️ No se encontró el editor de tweet.
+🏁 DevLog publicado exitosamente en producción.

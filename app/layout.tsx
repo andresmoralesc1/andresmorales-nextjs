@@ -1,30 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Inter, Archivo_Black } from 'next/font/google';
 import { headers } from 'next/headers';
 import { LOCALE_HTML_LANG, type Locale } from '@/lib/i18n';
 import { WebMcpRegistrar } from '@/components/WebMcpRegistrar';
 import { ConsentScripts } from '@/components/cookie-banner';
 import './globals.css';
-
-// Fonts for MascotPortfolioHero (Oct 2026 addition).
-// Inter — body / sans fallback. Archivo Black — display headline.
-// Both loaded via next/font so the woff2 sits behind a stable hash, no
-// layout shift, swap fallback. CSS vars are referenced by the
-// component's SANS_STACK / DISPLAY_STACK. Existing site typography
-// (system-ui / Georgia) is unchanged — these vars are opt-in only
-// where `.mph-root` consumes them.
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
-const archivoBlack = Archivo_Black({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: '400',
-  variable: '--font-archivo-black',
-});
 
 export const metadata: Metadata = {
   // Title parent — each page uses `title: 'Home'` and the layout converts it to
@@ -83,11 +63,11 @@ export const metadata: Metadata = {
   // do NOT auto-discover /apple-touch-icon.png like they do for /favicon.ico.
   icons: {
     icon: [
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png?v=20261019', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png?v=20261019', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico?v=20261019' },
     ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+    apple: [{ url: '/apple-touch-icon.png?v=20261019', sizes: '180x180' }],
   },
   // Default OG image points to the dynamic generator. The endpoint
   // renders the same card per (lang, path) tuple, so when a page sets
@@ -139,6 +119,7 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -276,10 +257,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html
-      lang={htmlLang}
-      className={`${inter.variable} ${archivoBlack.variable}`}
-    >
+    <html lang={htmlLang}>
       <head>
         {/* Raw OG/Twitter meta. Next's typed metadata API can't emit
             `property="og:profile"` without changing `type` to 'profile',

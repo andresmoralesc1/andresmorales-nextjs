@@ -40,14 +40,6 @@ const FEATURED_PROJECTS: ProjectDefinition[] = [
     tags: ['Next.js', 'PostgreSQL', 'Leaflet', 'Wompi'],
   },
   {
-    key: 'proj2',
-    image: '/sites/juanbecerra_co.png',
-    href: 'https://www.juanbecerra.co/',
-    caseStudySlug: 'juan-becerra',
-    category: 'ecommerce',
-    tags: ['Next.js', 'Shopify Storefront', 'TypeScript'],
-  },
-  {
     key: 'proj3',
     image: '/sites/dash_andresmorales_com_co_login.png',
     href: 'https://dash.andresmorales.com.co/login',
@@ -58,6 +50,30 @@ const FEATURED_PROJECTS: ProjectDefinition[] = [
       email: 'admin@kambelleh.com',
       password: 'Kambelleh2026!',
     },
+  },
+  {
+    key: 'projCms',
+    image: '/sites/cms_demo_preview.png',
+    href: '/demo/cms',
+    caseStudySlug: 'cms-andres-morales',
+    category: 'saas',
+    tags: ['Next.js 16', 'TypeScript', 'n8n', 'Mailcow', 'CRM Sandbox'],
+  },
+  {
+    key: 'proj10',
+    image: '/sites/gato_home.png',
+    href: 'https://gatocolectivo.com/',
+    caseStudySlug: 'gato-colectivo',
+    category: 'saas',
+    tags: ['Next.js', 'Marketplace', 'Wompi', 'Leaflet', 'Multi-tenant'],
+  },
+  {
+    key: 'proj2',
+    image: '/sites/juanbecerra_co.png',
+    href: 'https://www.juanbecerra.co/',
+    caseStudySlug: 'juan-becerra',
+    category: 'ecommerce',
+    tags: ['Next.js', 'Shopify Storefront', 'TypeScript'],
   },
   {
     key: 'proj4',
@@ -110,14 +126,6 @@ const FEATURED_PROJECTS: ProjectDefinition[] = [
 ];
 
 const MORE_PROJECTS: ProjectDefinition[] = [
-  {
-    key: 'proj10',
-    image: '/sites/gato_home.png',
-    href: 'https://gatocolectivo.com/',
-    caseStudySlug: 'gato-colectivo',
-    category: 'saas',
-    tags: ['Next.js', 'Marketplace', 'Wompi', 'Leaflet'],
-  },
   {
     key: 'proj11',
     image: '/sites/mecca_home.png',

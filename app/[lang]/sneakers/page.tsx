@@ -32,10 +32,9 @@ export function generateStaticParams() {
 export default async function SneakerProposalPage({
   params,
 }: {
-  params?: Promise<{ lang: string }>;
-} = {}) {
-  const resolvedParams = params ? await params : null;
-  const urlLang = resolvedParams?.lang;
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang: urlLang } = await params;
   const currentLocale = await getCurrentLocale();
   const lang = urlLang && isLocale(urlLang) ? urlLang : currentLocale;
   const dict = await getDictionary(lang);

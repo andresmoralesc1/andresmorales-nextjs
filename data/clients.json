@@ -1,0 +1,67 @@
+[
+  {
+    "id": "cli_juan_esteban_ruiz",
+    "name": "Juan Esteban Ruiz Rojas",
+    "email": "juanruiz@grupoayd.co",
+    "phone": "",
+    "role": "Director de Operaciones",
+    "companyId": "comp_alvarado_during",
+    "companyName": "Alvarado & During S.A.S",
+    "status": "activo",
+    "service": "Automatización con IA (Chatbot Obra WhatsApp + Sheets)",
+    "totalValue": "",
+    "notes": "Cliente estratégico. Revisa avances semanalmente vía WhatsApp.",
+    "leadId": "lead_brief_juan_esteban_ruiz_20261023",
+    "avatarBg": "bg-purple-600",
+    "tags": [
+      "WhatsApp Agent",
+      "Google Sheets",
+      "Construcción"
+    ],
+    "createdAt": "2026-10-26T04:17:51.745Z",
+    "updatedAt": "2026-10-26T04:17:51.745Z"
+  },
+  {
+    "id": "cli_fredy_cruz",
+    "name": "Fredy Cruz",
+    "email": "yamitcruz@gmail.com",
+    "phone": "",
+    "role": "Gerente General",
+    "companyId": "comp_warriors_colombia",
+    "companyName": "Warriors Colombia SAS",
+    "status": "en_progreso",
+    "service": "Integración con IA (Atención 24/7)",
+    "totalValue": "",
+    "notes": "Propuesta enviada. Pendiente visto bueno de junta directiva.",
+    "leadId": "lead_brief_fredy_cruz_20261020",
+    "avatarBg": "bg-emerald-600",
+    "tags": [
+      "IA",
+      "Servicio 24/7"
+    ],
+    "createdAt": "2026-10-26T04:17:51.745Z",
+    "updatedAt": "2026-10-26T04:17:51.745Z"
+  },
+  {
+    "id": "cli_ingrid_heredia",
+    "name": "Ingrid Heredia",
+    "email": "herediaingrid936@gmail.com",
+    "phone": "+57 316 407 3336",
+    "role": "Coordinadora de Mercadeo & Ventas",
+    "companyId": "comp_impresos_americana",
+    "companyName": "Impresos Americana",
+    "status": "activo",
+    "service": "Desarrollo Web Express (Landing Page)",
+    "totalValue": "",
+    "notes": "En fase de desarrollo y entrega de catálogo digital.",
+    "leadId": "lead_brief_ingrid_heredia_20261020",
+    "avatarBg": "bg-blue-600",
+    "tags": [
+      "Landing Page",
+      "Diseño Web",
+      "SEO"
+    ],
+    "createdAt": "2026-10-26T04:17:51.745Z",
+    "updatedAt": "2026-10-26T04:17:51.745Z"
+  }
+]
