@@ -308,6 +308,7 @@ const SERVICE_CATEGORIES = [
       wpImage('/wp-content/uploads/2025/06/Captura-de-pantalla-2025-06-12-112222.png'),
       wpImage('/wp-content/uploads/2025/06/Captura-de-pantalla-2025-06-12-122124.png'),
       wpImage('/wp-content/uploads/2025/06/Captura-de-pantalla-2025-06-12-122107.png'),
+      wpImage('/wp-content/uploads/2025/06/Captura-de-pantalla-2024-10-28-144057.png'),
     ],
   },
   {
@@ -516,7 +517,7 @@ export default async function PortfolioPage() {
               </a>
 
               <a
-                href="#proyectos"
+                href="#saas"
                 className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
@@ -534,7 +535,7 @@ export default async function PortfolioPage() {
               </a>
 
               <a
-                href="#proyectos"
+                href="#ecommerce"
                 className="group p-3.5 rounded-xl bg-primary border border-theme-9 hover:border-theme-1 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
@@ -769,7 +770,7 @@ export default async function PortfolioPage() {
       <PortfolioRoiCalculator lang={lang} />
 
       {/* Performance — PageSpeed Insights scoreboard with 4 100/100 gauges */}
-      <section className="section bg-background">
+      <section className="section bg-theme-5/70 border-t border-theme-9/50">
         <Reveal className="container-page text-center">
           <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">
             {p.perfEyebrow}
@@ -839,7 +840,7 @@ export default async function PortfolioPage() {
       </section>
 
       {/* AI Creative in Action — videos migrated from the legacy WP portfolio */}
-      <section className="section bg-theme-5">
+      <section className="section bg-background border-t border-theme-9/50">
         <Reveal stagger className="container-page">
           <div className="text-center mb-12 max-w-3xl mx-auto">
             <p className="text-xs uppercase tracking-widest text-secondary mb-2 font-secondary font-bold">

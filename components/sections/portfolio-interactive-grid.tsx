@@ -68,7 +68,7 @@ type Props = {
   };
 };
 
-const POPULAR_TECH_TAGS = ['Next.js', 'Shopify', 'Three.js', 'PostgreSQL', 'Tailwind'] as const;
+const POPULAR_TECH_TAGS = ['Next.js', 'Shopify', 'TypeScript', 'n8n', 'Three.js', 'PostgreSQL'] as const;
 
 export function PortfolioInteractiveGrid({
   projects,
@@ -107,6 +107,19 @@ export function PortfolioInteractiveGrid({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Listen to hash changes (#saas, #ecommerce, #ai, #automation) from intent selectors or links
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'saas' || hash === 'ecommerce' || hash === 'ai' || hash === 'automation') {
+        setSelectedCategory(hash);
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
   }, []);
 
   // Count items per category
@@ -204,7 +217,7 @@ export function PortfolioInteractiveGrid({
   return (
     <div className="space-y-6">
       {/* Unified Centered Control Hub with Search & Stacks */}
-      <div className="flex flex-col items-center gap-4 max-w-4xl mx-auto mb-4">
+      <div className="flex flex-col items-center gap-4 w-full mb-4">
         {/* Tier 1: View Mode Switcher + Instant Live Search */}
         <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
           {/* Segmented Control 3D vs Grid */}
@@ -480,34 +493,32 @@ export function PortfolioInteractiveGrid({
                   </span>
                 </Link>
 
-                {/* Card Content */}
+                {/* Card Content with Uniform Desktop Spacing */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
                     {/* Category subtitle */}
-                    <div className="flex items-center justify-between gap-2 flex-wrap mb-2">
-                      <span className="text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold">
+                    <div className="flex items-center justify-between gap-2 mb-2 min-h-[1.25rem]">
+                      <span className="text-[10px] uppercase tracking-widest text-secondary font-secondary font-bold truncate">
                         {proj.subtitle}
                       </span>
                     </div>
 
                     {/* Tech chips */}
-                    {proj.tags && proj.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-3">
-                        {proj.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] font-mono px-2 py-0.5 rounded bg-theme-5 text-secondary/80 border border-theme-9"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <div className="flex flex-wrap gap-1.5 mb-3 min-h-[1.75rem] overflow-hidden">
+                      {proj.tags && proj.tags.length > 0 && proj.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-theme-5 text-secondary/80 border border-theme-9"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
 
-                    <h3 className="font-heading text-xl md:text-2xl mb-2 text-secondary group-hover:text-theme-1 transition-colors">
-                      <Link href={cardHref}>{proj.title}</Link>
+                    <h3 className="font-heading text-xl md:text-2xl mb-2 text-secondary group-hover:text-theme-1 transition-colors line-clamp-2 min-h-[3.5rem] flex items-center">
+                      <Link href={cardHref} className="hover:underline">{proj.title}</Link>
                     </h3>
-                    <p className="text-sm text-text leading-relaxed mb-4">
+                    <p className="text-sm text-text leading-relaxed mb-4 line-clamp-3 min-h-[4rem]">
                       {proj.desc}
                     </p>
 

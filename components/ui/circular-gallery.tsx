@@ -330,7 +330,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
 
                   {/* Browser URL Bar Capsule */}
                   <div className="flex items-center gap-1.5 px-3 py-0.5 sm:py-1 rounded-full bg-white border border-theme-9 text-[10px] sm:text-[11px] font-mono text-secondary/75 shadow-xs max-w-[200px] sm:max-w-xs md:max-w-sm truncate">
-                    <Lock className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
+                    <Lock className="w-2.5 h-2.5 text-amber-500 shrink-0" />
                     <span className="truncate">{domainDisplay}</span>
                   </div>
 
