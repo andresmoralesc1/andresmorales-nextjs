@@ -186,7 +186,7 @@ export function CookieBanner({
         role="dialog"
         aria-modal="false"
         aria-labelledby="cookie-banner-title"
-        className="fixed bottom-0 right-0 z-50 p-3 md:p-5 max-w-full"
+        className="fixed bottom-16 sm:bottom-0 right-0 z-[70] p-3 md:p-5 max-w-full"
       >
         <div className="ml-auto max-w-md rounded-lg border border-theme-9 bg-background shadow-lg p-4 md:p-6">
           <h2 id="cookie-banner-title" className="font-heading text-lg md:text-xl font-bold text-secondary mb-2">

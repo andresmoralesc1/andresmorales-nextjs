@@ -590,7 +590,7 @@ export function RexChatWidget({ locale = 'es' }: RexChatWidgetProps) {
                 placeholder={t.inputPlaceholder}
                 disabled={isLoading}
                 maxLength={500}
-                className="flex-1 bg-white border border-[#1E1810]/15 focus:border-[#f96e03] focus:ring-2 focus:ring-[#f96e03]/20 rounded-xl px-3.5 py-2.5 text-xs text-[#1E1810] placeholder-[#575250]/60 focus:outline-none transition-colors shadow-2xs"
+                className="flex-1 bg-white border border-[#1E1810]/15 focus:border-[#f96e03] focus:ring-2 focus:ring-[#f96e03]/20 rounded-xl px-3.5 py-2.5 text-base sm:text-xs min-h-[44px] text-[#1E1810] placeholder-[#575250]/60 focus:outline-none transition-colors shadow-2xs"
               />
               {/* ORANGE SEND BUTTON */}
               <button

@@ -148,9 +148,36 @@ export function MobileMenu({
           ref={drawerRef}
           id={drawerId}
           aria-label={dict.nav.toggleMenu}
-          className="md:hidden border-t border-theme-9 bg-background absolute left-0 right-0 top-full shadow-xl max-h-[calc(100vh-3.5rem)] overflow-y-auto"
+          className="md:hidden border-t border-theme-9 bg-background absolute left-0 right-0 top-full shadow-2xl max-h-[calc(100dvh-4rem)] overflow-y-auto"
         >
-          <div className="container-page py-4 flex flex-col">
+          <div className="container-page py-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] flex flex-col">
+            {/* Quick Star Demos banner for fast mobile access */}
+            <div className="mb-3 p-2.5 rounded-2xl bg-amber-400/10 border border-amber-400/25 flex flex-col gap-1.5">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-500 font-bold px-1">
+                ⚡ {locale === 'en' ? 'Flagship Demos' : 'Demos & Herramientas'}
+              </span>
+              <div className="grid grid-cols-2 gap-1.5">
+                <TrackLink
+                  href={getLocalizedPath('/demo/cms', locale)}
+                  event="nav_link_clicked"
+                  label="mobile-nav-demo-cms"
+                  onClick={() => setOpen(false)}
+                  className="px-2.5 py-2 rounded-xl bg-white/80 border border-amber-400/20 text-xs font-bold text-secondary text-center hover:bg-amber-400 hover:text-slate-950 transition-colors shadow-2xs"
+                >
+                  CMS Sandbox ⚡
+                </TrackLink>
+                <TrackLink
+                  href={getLocalizedPath('/audit', locale)}
+                  event="nav_link_clicked"
+                  label="mobile-nav-audit"
+                  onClick={() => setOpen(false)}
+                  className="px-2.5 py-2 rounded-xl bg-white/80 border border-amber-400/20 text-xs font-bold text-secondary text-center hover:bg-amber-400 hover:text-slate-950 transition-colors shadow-2xs"
+                >
+                  Auditoría 360° 🔍
+                </TrackLink>
+              </div>
+            </div>
+
             {MENU.map((m) => (
               <TrackLink
                 key={m.href}
@@ -167,7 +194,7 @@ export function MobileMenu({
               href={getLocalizedPath('/brief', locale)}
               label="mobile-cta"
               onClick={() => setOpen(false)}
-              className="btn btn-theme mt-4 w-full"
+              className="btn btn-theme mt-4 w-full min-h-[48px] text-center justify-center"
             >
               {dict.nav.startProject}
               <span aria-hidden="true">→</span>

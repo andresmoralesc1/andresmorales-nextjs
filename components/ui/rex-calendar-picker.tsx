@@ -249,7 +249,7 @@ export function RexCalendarPicker({
             placeholder="Tu nombre completo"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-2.5 py-1.5 text-xs text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
+            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-3 py-2 text-base sm:text-xs min-h-[44px] text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
           />
 
           <input
@@ -258,7 +258,7 @@ export function RexCalendarPicker({
             placeholder="Tu correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-2.5 py-1.5 text-xs text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
+            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-3 py-2 text-base sm:text-xs min-h-[44px] text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
           />
 
           <input
@@ -266,7 +266,7 @@ export function RexCalendarPicker({
             placeholder="WhatsApp (opcional)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-2.5 py-1.5 text-xs text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
+            className="w-full bg-[#F8F5F4] border border-[#1E1810]/15 rounded-lg px-3 py-2 text-base sm:text-xs min-h-[44px] text-[#1E1810] placeholder-[#575250]/60 focus:border-[#f96e03] focus:outline-none"
           />
 
           {errorMsg && <p className="text-[10px] text-rose-600 font-medium">{errorMsg}</p>}

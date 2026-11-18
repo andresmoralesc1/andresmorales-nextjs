@@ -260,7 +260,7 @@ export function CmsDemoView({ locale = 'es' }: { locale?: string }) {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Filtrar por nombre, empresa o servicio..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-base sm:text-xs min-h-[40px] text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
                   />
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-400">
@@ -657,12 +657,12 @@ export function CmsDemoView({ locale = 'es' }: { locale?: string }) {
                       value={newNoteText}
                       onChange={(e) => setNewNoteText(e.target.value)}
                       placeholder="Agregar nota de seguimiento..."
-                      className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                      className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-base sm:text-xs min-h-[44px] text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
                       onKeyDown={(e) => e.key === 'Enter' && handleAddNote()}
                     />
                     <button
                       onClick={handleAddNote}
-                      className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs"
+                      className="px-4 py-2 min-h-[44px] rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs"
                     >
                       Guardar
                     </button>

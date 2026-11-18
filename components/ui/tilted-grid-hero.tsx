@@ -260,6 +260,7 @@ export function TiltedGridHero({
                 width: u(aspectRatio),
                 height: u(1),
                 transformStyle: "preserve-3d",
+                willChange: "transform",
                 // Tile t starts t tiles along the loop.
                 animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
               }}
