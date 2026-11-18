@@ -163,7 +163,7 @@ export function CmsDemoView({ locale = 'es' }: { locale?: string }) {
                 <h1 className="text-base sm:text-lg font-bold text-white tracking-tight">
                   Andrés Morales <span className="text-amber-400">CMS & Engine</span>
                 </h1>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20">
                   Live Sandbox
                 </span>
               </div>

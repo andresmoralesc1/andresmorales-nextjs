@@ -48,8 +48,8 @@ export function PortfolioFloatingDock({ lang, labels }: Props) {
       {/* Live Badge */}
       <div className="flex items-center gap-2 text-xs font-mono pr-2 border-r border-white/20">
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-theme-1" />
         </span>
         <span className="text-primary/90 text-[11px] whitespace-nowrap">
           {labels.status}
@@ -80,7 +80,7 @@ export function PortfolioFloatingDock({ lang, labels }: Props) {
       <button
         type="button"
         onClick={() => window.dispatchEvent(new Event('open-dev-terminal'))}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 hover:bg-black/60 text-emerald-400 font-mono text-xs border border-emerald-500/30 transition-all cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 hover:bg-black/60 text-amber-400 font-mono text-xs border border-amber-400/30 transition-all cursor-pointer"
         title="Open Developer Terminal (~)"
       >
         <Terminal className="w-3.5 h-3.5" />

@@ -60,7 +60,7 @@ export function SpeedAuditTeaser({ locale = 'es', t }: Props) {
 
               <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-stone-700 font-medium">
                 <span className="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-xl border border-stone-200/60 shadow-xs">
-                  <Gauge className="w-4 h-4 text-emerald-600" />
+                  <Gauge className="w-4 h-4 text-[#f96e03]" />
                   {t.badge4G}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-xl border border-stone-200/60 shadow-xs">

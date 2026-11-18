@@ -771,7 +771,7 @@ export default function BriefWebWizard({
       </div>
 
       {submitted && (
-        <div className="px-6 py-4 bg-green-50 text-green-700 text-sm text-center">
+        <div className="px-6 py-4 bg-theme-1/15 border border-theme-1/30 text-secondary text-sm font-secondary font-bold text-center rounded-xl">
           {dict.briefWeb.wizardRedirecting}
         </div>
       )}

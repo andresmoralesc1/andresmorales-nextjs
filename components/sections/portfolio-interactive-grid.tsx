@@ -467,8 +467,8 @@ export function PortfolioInteractiveGrid({
                   >
                     {!isArchived && (
                       <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600" />
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
                       </span>
                     )}
                     <span>{isArchived ? labels.badgeArchived : labels.badgeLive}</span>

@@ -405,7 +405,7 @@ export function AuditLandingClient({ locale, t }: Props) {
         {/* Glossy 360 Pillars below Form */}
         <div className="grid sm:grid-cols-3 gap-6 mt-12 text-center sm:text-left">
           <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/80 shadow-sm space-y-2.5">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
               <Gauge className="w-5 h-5" />
             </div>
             <h3 className="font-bold text-base text-[#1E1810]">{t.pillar1Title}</h3>

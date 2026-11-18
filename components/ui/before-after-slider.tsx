@@ -56,7 +56,7 @@ export function BeforeAfterSlider({
         className="object-cover"
         sizes="(max-width: 768px) 100vw, 50vw"
       />
-      <div className="absolute top-3 right-3 z-10 text-[10px] uppercase font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-600/90 text-white backdrop-blur-xs shadow-md">
+      <div className="absolute top-3 right-3 z-10 text-[10px] uppercase font-mono font-bold px-2.5 py-1 rounded-full bg-theme-1 text-secondary shadow-md">
         {afterTag} • {afterLabel}
       </div>
 

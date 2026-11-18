@@ -98,7 +98,7 @@ export function DeveloperTerminalModal() {
       case 'security':
         output = (
           <div className="space-y-1 text-xs">
-            <p className="text-emerald-400 font-bold">Linux VPS Security & Hardening Matrix:</p>
+            <p className="text-amber-400 font-bold">Linux VPS Security & Hardening Matrix:</p>
             <p>• <span className="text-white font-bold">Firewall (UFW):</span> Active (Ingress 22/80/443/mail only; strict drop on non-standard ports)</p>
             <p>• <span className="text-white font-bold">Intrusion Prevention:</span> Fail2ban active with automated jail escalation on brute-force</p>
             <p>• <span className="text-white font-bold">Edge TLS:</span> Automated Let&apos;s Encrypt wildcard renewal + strict modern TLS 1.3 ciphers</p>
@@ -125,7 +125,7 @@ export function DeveloperTerminalModal() {
       case 'projects':
         output = (
           <div className="space-y-1 text-xs">
-            <p className="text-emerald-400 font-bold">17 Verified Client Systems:</p>
+            <p className="text-amber-400 font-bold">17 Verified Client Systems:</p>
             <p>• <span className="text-white font-bold">Impresos Americana</span> — 3D B2B Quotation Engine (-38% scrap)</p>
             <p>• <span className="text-white font-bold">EmbryoGlass</span> — Liquid Glassmorphism IVF clinical suite</p>
             <p>• <span className="text-white font-bold">Qué Nivel, Maribel!</span> — Cultural ticketing & attendee CRM</p>
@@ -171,7 +171,7 @@ export function DeveloperTerminalModal() {
       case 'contact':
         output = (
           <div className="space-y-1 text-xs">
-            <p className="text-emerald-400 font-bold">Direct Channels:</p>
+            <p className="text-amber-400 font-bold">Direct Channels:</p>
             <p>• Calendar: <a href={CALENDAR_BOOKING_URL} target="_blank" rel="noreferrer" className="text-theme-1 underline">calendar.app.google</a></p>
             <p>• Email: <span className="text-white">{CONTACT_EMAIL}</span></p>
             <p>• Telegram: <span className="text-accent">@andresmorales</span></p>
@@ -293,7 +293,7 @@ export function DeveloperTerminalModal() {
           {history.map((entry, idx) => (
             <div key={idx} className="space-y-1">
               <div className="flex items-center gap-2 text-zinc-400">
-                <span className="text-emerald-400 font-bold">➜</span>
+                <span className="text-amber-400 font-bold">➜</span>
                 <span className="text-accent font-semibold">~</span>
                 <span className="text-white">{entry.command}</span>
               </div>
@@ -307,7 +307,7 @@ export function DeveloperTerminalModal() {
 
         {/* Prompt Input Row */}
         <div className="p-3 bg-[#181716] border-t border-zinc-800 flex items-center gap-2">
-          <span className="text-emerald-400 font-bold text-xs">➜</span>
+          <span className="text-amber-400 font-bold text-xs">➜</span>
           <span className="text-accent text-xs font-semibold">~</span>
           <input
             ref={inputRef}

@@ -66,7 +66,7 @@ export default async function AboutPage({
         <LazyParticles id="about-particles-canvas" variant="soft" />
         <div className="container-page max-w-4xl text-center pt-12 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary border border-theme-9 text-xs uppercase tracking-widest text-secondary font-secondary font-bold mb-4">
-            <span className="w-2 h-2 rounded-full bg-green-500" />
+            <span className="w-2 h-2 rounded-full bg-theme-1 animate-pulse" />
             {a.heroBadge}
           </div>
           <p className="text-xs uppercase tracking-widest text-text mb-3 font-secondary font-bold">

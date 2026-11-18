@@ -955,10 +955,10 @@ export default function AuditClient({ prospect, lang, aiProposal }: Props) {
               <a
                 href={pdfDownloadUrl}
                 download={`Ultra_Auditoria_${prospect.name.replace(/[^a-zA-Z0-9_-]/g, '_')}_AndresMorales.pdf`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-600/30 bg-emerald-50 hover:bg-emerald-100 text-xs font-semibold text-emerald-900 transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#f96e03]/30 bg-[#f96e03]/10 hover:bg-[#f96e03]/20 text-xs font-semibold text-[#1E1810] transition-colors shadow-xs"
                 title="Descargar Dictamen Ejecutivo en PDF con capturas reales"
               >
-                <Download className="w-3.5 h-3.5 text-emerald-700" />
+                <Download className="w-3.5 h-3.5 text-[#9a3412]" />
                 <span className="hidden sm:inline">Descargar PDF</span>
                 <span className="sm:hidden">PDF</span>
               </a>
@@ -1826,7 +1826,7 @@ export default function AuditClient({ prospect, lang, aiProposal }: Props) {
                   <a
                     href={pdfDownloadUrl}
                     download={`Ultra_Auditoria_${prospect.name.replace(/[^a-zA-Z0-9_-]/g, '_')}_AndresMorales.pdf`}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-5 rounded-xl transition-all shadow-sm text-xs font-mono"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#f96e03] hover:bg-[#e05f00] text-white font-bold py-3 px-5 rounded-xl transition-all shadow-sm text-xs font-mono"
                   >
                     <Download className="w-4 h-4 text-white" />
                     <span>Descargar Dictamen PDF</span>
@@ -1878,7 +1878,7 @@ export default function AuditClient({ prospect, lang, aiProposal }: Props) {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-[11px] font-bold px-3 py-2 rounded-lg shadow-sm"
+            className="inline-flex items-center gap-1 bg-[#1E1810] hover:bg-[#332b21] text-white font-mono text-[11px] font-bold px-3 py-2 rounded-lg shadow-sm"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             <span>WhatsApp</span>

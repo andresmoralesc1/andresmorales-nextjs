@@ -201,10 +201,10 @@ export function PortfolioRoiCalculator({ lang }: Props) {
 
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-primary/80 inline-flex items-center gap-1.5">
-                    <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                    <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
                     {lang === 'en' ? 'Annual time recovered' : lang === 'pt' ? 'Tempo anual recuperado' : 'Tiempo anual recuperado'}
                   </span>
-                  <span className="font-mono font-bold text-emerald-300">
+                  <span className="font-mono font-bold text-amber-300">
                     +{calculation.yearlyHoursSaved} hrs/año
                   </span>
                 </div>

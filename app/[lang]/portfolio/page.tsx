@@ -572,7 +572,7 @@ export default async function PortfolioPage() {
               </span>
             </div>
             <div className="p-2.5 rounded-xl bg-primary/70 border border-theme-9/50 text-center">
-              <span className="block font-heading text-lg sm:text-xl font-bold text-emerald-600">
+              <span className="block font-heading text-lg sm:text-xl font-bold text-accent">
                 100 / 100
               </span>
               <span className="text-[10px] text-text font-mono">
@@ -728,7 +728,7 @@ export default async function PortfolioPage() {
                             ──▶
                           </span>
                           <div className="flex items-center gap-1.5 min-w-0">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-theme-1 shrink-0" />
                             <span className="truncate text-secondary font-bold text-[10px] sm:text-[11px]">
                               {AUTOMATION_PIPELINES[key].to}
                             </span>
@@ -809,8 +809,8 @@ export default async function PortfolioPage() {
                 key={metric.label}
                 className="bg-primary rounded-2xl border border-theme-9 p-5 shadow-sm text-center flex flex-col items-center hover:border-theme-1 hover:shadow-md transition-all duration-300"
               >
-                <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full border-4 border-emerald-500/30 bg-emerald-50/60 mb-3 shadow-inner">
-                  <span className="font-heading text-2xl md:text-3xl font-bold text-emerald-600">
+                <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full border-4 border-theme-1/40 bg-theme-1/10 mb-3 shadow-inner">
+                  <span className="font-heading text-2xl md:text-3xl font-bold text-accent">
                     {metric.score}
                   </span>
                 </div>
