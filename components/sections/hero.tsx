@@ -127,26 +127,26 @@ export async function Hero({
             </div>
           </div>
 
-          {/* Action CTAs — sleek, elegant, refined typography and pill shape */}
-          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-3.5">
+          {/* Action CTAs — ultra-sleek, minimalist, compact typography */}
+          <div className="flex flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-3 flex-wrap">
             <Link
               href={ctaHref}
               target="_blank"
               rel="noreferrer"
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 min-h-[44px] rounded-full bg-theme-1 hover:bg-[#ff7a18] text-secondary font-secondary font-bold text-sm sm:text-base tracking-tight shadow-[0_4px_14px_rgba(249,110,3,0.3)] hover:shadow-[0_6px_20px_rgba(249,110,3,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              className="group inline-flex items-center justify-center gap-1.5 px-4.5 py-2.5 sm:px-5 sm:py-2.5 min-h-[40px] rounded-full bg-theme-1 hover:bg-[#ff7a18] text-secondary font-secondary font-bold text-xs sm:text-sm tracking-tight shadow-[0_3px_12px_rgba(249,110,3,0.25)] hover:shadow-[0_5px_16px_rgba(249,110,3,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
-              <Calendar className="w-4 h-4 text-secondary/80 shrink-0" />
+              <Calendar className="w-3.5 h-3.5 text-secondary/80 shrink-0" />
               <span>{dict.homeHero.cta}</span>
-              <ArrowUpRight className="w-4 h-4 text-secondary/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-secondary/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
             </Link>
 
             <a
               href="#speed-audit"
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] rounded-full bg-white/80 hover:bg-white text-secondary font-secondary font-semibold text-sm sm:text-base border border-secondary/15 hover:border-theme-1 hover:text-accent shadow-xs hover:shadow-md backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-4.5 sm:py-2.5 min-h-[40px] rounded-full bg-white/80 hover:bg-white text-secondary font-secondary font-semibold text-xs sm:text-sm border border-secondary/15 hover:border-theme-1 hover:text-accent shadow-2xs hover:shadow-sm backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-theme-1 shrink-0" />
-              <span>{dict.speedAudit?.badge || 'Auditoría 360°'}</span>
-              <span className="text-xs text-secondary/50 group-hover:text-theme-1 group-hover:translate-y-0.5 transition-all">↓</span>
+              <Sparkles className="w-3.5 h-3.5 text-theme-1 shrink-0" />
+              <span>{dict.homeHero.auditCta || 'Auditoría'}</span>
+              <span className="text-[10px] text-secondary/50 group-hover:text-theme-1 group-hover:translate-x-0.5 transition-all">↓</span>
             </a>
           </div>
         </div>
