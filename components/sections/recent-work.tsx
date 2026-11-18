@@ -2,10 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { getLocalizedPath } from '@/lib/i18n';
-import { TiltedGridHero } from '@/components/ui/tilted-grid-hero';
 import { ExternalLink, Sparkles, ArrowRight, Zap, ShieldCheck } from 'lucide-react';
 
-// RecentWork — Flagship 4 Projects Showcase with 3D Tilted Grid Cylinder.
+// RecentWork — Flagship 4 Projects Showcase.
 // Features Barriotech, Kambelleh PMS, Andrés Morales CMS Sandbox, and El Gato Colectivo.
 
 type FlagshipProject = {
@@ -53,33 +52,6 @@ const FLAGSHIP_PROJECTS: FlagshipProject[] = [
   },
 ];
 
-const STREAMING_CYLINDER_IMAGES = [
-  {
-    src: '/sites/gps_andresmorales_com_co.png',
-    alt: 'Barriotech — Plataforma GPS para vendedores informales',
-  },
-  {
-    src: '/sites/dash_andresmorales_com_co_login.png',
-    alt: 'Kambelleh PMS — Sistema de reservas hoteleras en vivo',
-  },
-  {
-    src: '/sites/cms_demo_preview.png',
-    alt: 'Andrés Morales CMS & CRM — Sandbox interactivo de prospección',
-  },
-  {
-    src: '/sites/gato_home.png',
-    alt: 'El Gato Colectivo — Marketplace distribuido multi-tienda',
-  },
-  {
-    src: '/sites/gps_andresmorales_com_co.png',
-    alt: 'Barriotech — Leaflet Maps & Telemetría IoT',
-  },
-  {
-    src: '/sites/cms_demo_preview.png',
-    alt: 'Andrés Morales Engine — Pipeline Kanban con alertas Telegram',
-  },
-];
-
 export async function RecentWork() {
   const [dict, locale] = await Promise.all([
     getCurrentDictionary(),
@@ -112,36 +84,6 @@ export async function RecentWork() {
           <p className="text-text text-base md:text-lg leading-relaxed">
             {r.subtitle}
           </p>
-        </div>
-
-        {/* 3D Tilted Grid Hero Curved Stream */}
-        <div className="mb-12 sm:mb-14 rounded-3xl border border-theme-9 bg-primary/40 backdrop-blur-md shadow-2xl overflow-hidden">
-          <TiltedGridHero
-            images={STREAMING_CYLINDER_IMAGES}
-            className="h-[320px] sm:h-[420px] md:h-[480px] w-full"
-            speed={4.5}
-            curve={75}
-            fade={14}
-            tileHeight={30}
-          >
-            <div className="relative z-10 flex h-full flex-col items-center justify-between py-6 sm:py-10 px-4 sm:px-6 text-center pointer-events-none">
-              <div className="max-w-xl">
-                <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-mono text-secondary font-bold bg-theme-1/80 px-2.5 sm:px-3 py-1 rounded-full shadow-sm backdrop-blur">
-                  {locale === 'en' ? 'Interactive 3D Cylinder' : 'Carrete Cilíndrico 3D'}
-                </span>
-                <h3 className="font-heading text-xl sm:text-3xl md:text-4xl text-secondary mt-2 sm:mt-3 font-black tracking-tight drop-shadow-md">
-                  {locale === 'en'
-                    ? '4 Flagship Platforms. Zero Fluff.'
-                    : '4 Plataformas Estrella en Producción Real.'}
-                </h3>
-              </div>
-              <p className="max-w-md text-xs sm:text-sm text-text font-medium bg-primary/80 sm:bg-primary/60 px-3 sm:px-4 py-2 sm:py-1.5 rounded-2xl sm:rounded-full backdrop-blur border border-theme-9 leading-relaxed">
-                {locale === 'en'
-                  ? 'Interactive demos, custom CRM sandbox, and live multi-tenant market.'
-                  : 'Demos en vivo, sandbox de CMS con datos simulados y marketplaces multi-tenant.'}
-              </p>
-            </div>
-          </TiltedGridHero>
         </div>
 
         {/* 4 Flagship Cards Grid */}
