@@ -495,21 +495,22 @@ export default async function PortfolioPage() {
           <p className="text-secondary text-base sm:text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
             {p.heroSubtitle}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
             <a
               href={lang === 'en' ? '/brief-web' : `/${lang}/brief-web`}
-              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-6 py-3.5 bg-theme-1 hover:bg-theme-2 active:scale-98 text-secondary font-secondary font-bold rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[42px] gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-theme-1 hover:bg-[#ff7a18] text-secondary font-secondary font-bold text-xs sm:text-sm rounded-full shadow-[0_3px_12px_rgba(249,110,3,0.25)] hover:shadow-[0_5px_16px_rgba(249,110,3,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
-              {p.heroCtaBrief}
+              <span>{p.heroCtaBrief}</span>
               <span aria-hidden>→</span>
             </a>
             <a
               href={CALENDAR_BOOKING_URL}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-6 py-3.5 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary active:scale-98 font-secondary font-bold rounded-xl transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[42px] gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-white/80 hover:bg-white text-secondary font-secondary font-semibold text-xs sm:text-sm rounded-full border border-secondary/15 hover:border-theme-1 hover:text-accent shadow-2xs hover:shadow-sm backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
-              {p.heroCta1}
+              <span>{p.heroCta1}</span>
+              <span aria-hidden>↗</span>
             </a>
           </div>
 
