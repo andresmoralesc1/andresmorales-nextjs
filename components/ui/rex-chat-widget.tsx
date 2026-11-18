@@ -312,12 +312,12 @@ export function RexChatWidget({ locale = 'es' }: RexChatWidgetProps) {
 
   return (
     <div className="fixed z-50 pointer-events-auto">
-      {/* ── Floating Speech Bubble (Desktop/Tablet Greeting) ── */}
+      {/* ── Floating Speech Bubble (Desktop/Tablet Greeting only to prevent mobile clutter) ── */}
       {showBubble && !isOpen && (
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-44 sm:bottom-36 right-4 sm:right-6 max-w-[280px] sm:max-w-xs bg-white border border-[#1E1810]/12 shadow-[0_15px_35px_-5px_rgba(30,24,16,0.15)] ring-1 ring-[#1E1810]/5 text-[#1E1810] rounded-2xl p-3.5 animate-in fade-in slide-in-from-bottom-2 duration-300 z-50"
+          className="hidden sm:block fixed bottom-36 right-6 max-w-xs bg-white border border-[#1E1810]/12 shadow-[0_15px_35px_-5px_rgba(30,24,16,0.15)] ring-1 ring-[#1E1810]/5 text-[#1E1810] rounded-2xl p-3.5 animate-in fade-in slide-in-from-bottom-2 duration-300 z-50"
         >
           <div className="flex items-start justify-between gap-2.5">
             <div className="flex-1 text-xs leading-relaxed text-[#1E1810]">
