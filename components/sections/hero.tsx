@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { wpImage } from '@/lib/theme';
 import { LazyParticles } from '@/components/lazy-particles';
-import { getCurrentDictionary } from '@/lib/dictionary';
+import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { Calendar, Sparkles, ArrowUpRight } from 'lucide-react';
 
@@ -19,7 +19,10 @@ export async function Hero({
   portrait = wpImage('/wp-content/uploads/2023/04/19.png'),
   ctaHref = CALENDAR_BOOKING_URL,
 }: Props) {
-  const dict = await getCurrentDictionary();
+  const [dict, locale] = await Promise.all([
+    getCurrentDictionary(),
+    getCurrentLocale(),
+  ]);
   return (
     <section
       id="hero-particles"
@@ -49,9 +52,21 @@ export async function Hero({
 
         {/* Text and Actions (order-2 md:order-1) */}
         <div className="order-2 md:order-1 text-center md:text-left">
-          <p className="text-xs uppercase tracking-widest text-secondary mb-2 sm:mb-3 font-secondary font-bold">
-            {dict.homeHero.greeting}
-          </p>
+          {/* Live Availability Status Pill */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-secondary/10 text-[11px] font-mono text-secondary mb-3 shadow-2xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-theme-1 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-theme-1" />
+            </span>
+            <span className="font-semibold">
+              {locale === 'en'
+                ? 'Available for projects · Q1 2026'
+                : locale === 'pt'
+                ? 'Disponível para projetos · Q1 2026'
+                : 'Disponible para proyectos · Q1 2026'}
+            </span>
+          </div>
+
           <p className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-3 sm:mb-5 text-secondary leading-[1.05] tracking-tight">
             {dict.homeHero.name}
           </p>
@@ -63,7 +78,7 @@ export async function Hero({
           </p>
 
           {/* Quick Contact & Socials with >= 44px tap targets */}
-          <div className="flex flex-col gap-3 mb-8">
+          <div className="flex flex-col gap-3 mb-6">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3">
               <a
                 href="mailto:info@andresmorales.com.co"
@@ -148,6 +163,42 @@ export async function Hero({
               <span>{dict.homeHero.auditCta || 'Auditoría'}</span>
               <span className="text-[10px] text-secondary/50 group-hover:text-theme-1 group-hover:translate-x-0.5 transition-all">↓</span>
             </a>
+          </div>
+
+          {/* Live Impact Metric Strip — Authority & Trust in 5 seconds */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-xl mx-auto md:mx-0 pt-6 mt-6 border-t border-secondary/10">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
+              <span className="block font-heading text-base sm:text-lg font-bold text-secondary">
+                +500 hrs/m
+              </span>
+              <span className="text-[10px] text-text font-mono">
+                {locale === 'en' ? 'Saved in manual tasks' : locale === 'pt' ? 'Economizadas / mês' : 'Ahorro en tareas'}
+              </span>
+            </div>
+            <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
+              <span className="block font-heading text-base sm:text-lg font-bold text-secondary">
+                17 Apps
+              </span>
+              <span className="text-[10px] text-text font-mono">
+                {locale === 'en' ? 'Live in production' : locale === 'pt' ? 'Em produção ativa' : 'En producción real'}
+              </span>
+            </div>
+            <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
+              <span className="block font-heading text-base sm:text-lg font-bold text-accent">
+                100 / 100
+              </span>
+              <span className="text-[10px] text-text font-mono">
+                {locale === 'en' ? 'PageSpeed Score' : locale === 'pt' ? 'Pontuação PageSpeed' : 'Google PageSpeed'}
+              </span>
+            </div>
+            <div className="p-2 sm:p-2.5 rounded-xl bg-white/70 border border-secondary/10 text-center">
+              <span className="block font-heading text-base sm:text-lg font-bold text-secondary">
+                0% Fee
+              </span>
+              <span className="text-[10px] text-text font-mono">
+                {locale === 'en' ? 'Third-party commission' : locale === 'pt' ? 'Zero taxas' : '0% comisiones extra'}
+              </span>
+            </div>
           </div>
         </div>
       </div>

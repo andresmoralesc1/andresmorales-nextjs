@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { getLocalizedPath } from '@/lib/i18n';
 import { CALENDAR_BOOKING_URL } from '@/lib/constants';
 import { SocialRow } from '@/components/social';
-import { TrackCta, TrackLink } from '@/components/track';
+import { TrackLink } from '@/components/track';
 import { Reveal } from '@/components/reveal';
+import { Calendar, ArrowUpRight, FileText } from 'lucide-react';
 
 // "Let's talk" section of the home page — server component.
 // Reads dictionary via `x-locale` header set by middleware. Renders a
@@ -19,41 +21,64 @@ export async function HomeContact() {
       <Reveal className="container-page max-w-5xl mx-auto">
         <div className="rounded-3xl bg-primary border border-theme-9 shadow-xl shadow-secondary/5 overflow-hidden">
           <div className="grid md:grid-cols-2">
-            {/* Left: copy + primary CTA */}
-            <div className="p-8 md:p-10 lg:p-12">
-              <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
-                {dict.homeContact.eyebrow}
-              </p>
-              <h2 className="font-heading text-3xl md:text-4xl mb-4 text-secondary">
-                {dict.homeContact.title}
-              </h2>
-              <p className="text-text text-base md:text-lg leading-relaxed mb-6">
-                {dict.homeContact.subtitle}
-              </p>
-
-              <TrackCta
-                href={getLocalizedPath('/contact', locale)}
-                label="home-contact-cta"
-                className="btn-theme text-base px-7 py-3.5 w-full sm:w-auto justify-center"
-              >
-                {dict.homeContact.cta}
-                <span aria-hidden="true">→</span>
-              </TrackCta>
-
-              {/* Secondary escape hatch — calendar link as a subtle ghost button */}
-              <div className="mt-4 pt-4 border-t border-theme-9">
-                <p className="text-xs uppercase tracking-widest text-secondary/70 font-secondary font-bold mb-2">
-                  {dict.homeContact.altBookingLabel ?? 'Or prefer a call?'}
+            {/* Left: copy + high-conversion Cal.com booking */}
+            <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-secondary mb-3 font-secondary font-bold">
+                  {dict.homeContact.eyebrow}
                 </p>
-                <TrackLink
-                  href={CALENDAR_BOOKING_URL}
-                  event="cta_clicked"
-                  label="home-calendar"
-                  className="inline-flex items-center gap-1.5 text-secondary hover:text-accent font-semibold text-sm"
-                >
-                  {dict.homeContact.altBookingCta}
-                  <span aria-hidden="true">↗</span>
-                </TrackLink>
+                <h2 className="font-heading text-3xl md:text-4xl mb-4 text-secondary leading-tight">
+                  {dict.homeContact.title}
+                </h2>
+                <p className="text-text text-base md:text-lg leading-relaxed mb-6">
+                  {dict.homeContact.subtitle}
+                </p>
+
+                {/* Direct High-Intent Actions */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4">
+                  <a
+                    href={CALENDAR_BOOKING_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-theme-1 hover:bg-[#ff7a18] text-secondary font-secondary font-bold text-sm tracking-tight shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer min-h-[44px]"
+                  >
+                    <Calendar className="w-4 h-4 text-secondary/80 shrink-0" />
+                    <span>
+                      {locale === 'en'
+                        ? 'Book a 30-min call'
+                        : locale === 'pt'
+                        ? 'Agendar chamada de 30 min'
+                        : 'Agendar videollamada de 30 min'}
+                    </span>
+                    <ArrowUpRight className="w-4 h-4 text-secondary/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                  </a>
+
+                  <Link
+                    href={getLocalizedPath('/brief', locale)}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-theme-5 hover:bg-white text-secondary font-secondary font-semibold text-xs border border-theme-9 hover:border-theme-1 transition-all min-h-[42px]"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-secondary/70" />
+                    <span>
+                      {locale === 'en'
+                        ? 'Or send a brief'
+                        : locale === 'pt'
+                        ? 'Ou envie um briefing'
+                        : 'O enviar un brief'}
+                    </span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Trust statement */}
+              <div className="pt-4 border-t border-theme-9/60 text-xs font-mono text-text">
+                <span className="text-accent font-bold">⚡ </span>
+                <span>
+                  {locale === 'en'
+                    ? '30 min · Technical scoping directly with Andrés · No sales pressure'
+                    : locale === 'pt'
+                    ? '30 min · Diagnóstico técnico direto com o Andrés · Sem vendas forçadas'
+                    : '30 min · Diagnóstico técnico directo con Andrés · Sin presión de venta'}
+                </span>
               </div>
             </div>
 

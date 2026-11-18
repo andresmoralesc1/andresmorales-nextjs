@@ -40,11 +40,11 @@ export default async function HomePage() {
     <>
       <Hero />
       <SpeedAuditTeaser locale={locale} t={dict.speedAudit} />
-      <About />
+      <RecentWork />
       <ServicesIcons />
+      <About />
       <Skills />
       <Experience />
-      <RecentWork />
       <HomeContact />
     </>
   );
