@@ -2,7 +2,6 @@ import { Hero } from '@/components/sections/hero';
 import { SpeedAuditTeaser } from '@/components/sections/speed-audit-teaser';
 import { About } from '@/components/sections/about';
 import { ServicesIcons } from '@/components/sections/services-icons';
-import { Skills } from '@/components/sections/skills';
 import { Experience } from '@/components/sections/experience';
 import { RecentWork } from '@/components/sections/recent-work';
 import { HomeContact } from '@/components/sections/home-contact';
@@ -43,7 +42,6 @@ export default async function HomePage() {
       <RecentWork />
       <ServicesIcons />
       <About />
-      <Skills />
       <Experience />
       <HomeContact />
     </>

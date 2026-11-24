@@ -3,7 +3,8 @@ import { wpImage } from '@/lib/theme';
 import { LazyParticles } from '@/components/lazy-particles';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
-import { ShieldCheck, Zap, TrendingUp, CheckCircle2, Mail, Phone, LockKeyhole, Server, KeyRound } from 'lucide-react';
+import { ShieldCheck, Zap, TrendingUp, CheckCircle2, Mail, Phone, LockKeyhole, Server, KeyRound, Cpu } from 'lucide-react';
+import { SkillsBars } from '@/components/sections/skills.client';
 import { SocialIcon } from '@/components/social-icon';
 
 // "About me" — server component.
@@ -235,6 +236,47 @@ export async function About({
                     ? 'Demos funcionais a cada 7 dias. Progresso testável diretamente com dados reais da sua operação.'
                     : 'Demos en vivo cada 7 días. Avance que puedes tocar, probar y validar directamente con datos reales.'}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Skills Stack — Where our time has gone (Integrated directly into About Us) */}
+        <div id="stack-skills" className="mt-8 pt-8 border-t border-theme-9/80">
+          <div className="bg-primary/95 rounded-2xl p-6 sm:p-8 border border-theme-9 shadow-xs">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-theme-1/10 border border-theme-1/25 text-[11px] font-mono text-accent mb-2.5">
+                  <Cpu className="w-3.5 h-3.5" />
+                  <span>{dict.homeSkills.eyebrow}</span>
+                </div>
+                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-secondary mb-3">
+                  {dict.homeSkills.title}
+                </h3>
+                <p className="text-text text-sm sm:text-base leading-relaxed mb-6 font-sans">
+                  {dict.homeSkills.subtitle}
+                </p>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-theme-5 border border-theme-9/80 text-xs font-mono text-text">
+                  <span className="w-2.5 h-2.5 rounded-full bg-theme-1 animate-pulse" />
+                  <span>{dict.homeSkills.liveBadge}</span>
+                </div>
+              </div>
+
+              <div>
+                <SkillsBars
+                  dict={{
+                    n8n: dict.homeSkills.n8n,
+                    aiAgents: dict.homeSkills.aiAgents,
+                    llmApis: dict.homeSkills.llmApis,
+                    make: dict.homeSkills.make,
+                    nextReact: dict.homeSkills.nextReact,
+                    typescript: dict.homeSkills.typescript,
+                    vercelCloudflare: dict.homeSkills.vercelCloudflare,
+                    postgresPrisma: dict.homeSkills.postgresPrisma,
+                    python: dict.homeSkills.python,
+                    dockerInfra: dict.homeSkills.dockerInfra,
+                  }}
+                />
               </div>
             </div>
           </div>

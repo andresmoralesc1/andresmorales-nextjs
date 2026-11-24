@@ -455,10 +455,10 @@
     "webDesc": "Apps web y dashboards de producción que se entregan con IA integrada — no pegada después. Next.js + TypeScript + tus datos, desplegado en Vercel o tu propia infra."
   },
   "homeSkills": {
-    "eyebrow": "Habilidades",
-    "title": "Dónde he invertido mi tiempo",
-    "subtitle": "Stack AI-first — las herramientas que uso día a día para entregar automatizaciones, agentes y web de producción.",
-    "liveBadge": "Datos en vivo — actualizados esta semana",
+    "eyebrow": "Especialización Técnica & Stack",
+    "title": "Distribución y Enfoque de Nuestro Stack",
+    "subtitle": "Stack de ingeniería AI-first — las tecnologías e infraestructura que desplegamos a diario para construir automatizaciones operativas, agentes autónomos y plataformas cloud de alta disponibilidad.",
+    "liveBadge": "Infraestructura activa en producción — actualizada esta semana",
     "n8n": "n8n",
     "aiAgents": "Agentes de IA",
     "llmApis": "OpenAI / Anthropic",

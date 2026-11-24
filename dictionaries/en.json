@@ -443,10 +443,10 @@
     "webDesc": "Production-grade web apps and dashboards that ship with AI baked in — not bolted on. Next.js + TypeScript + your data, deployed on Vercel or your own infra."
   },
   "homeSkills": {
-    "eyebrow": "Skills",
-    "title": "Where my time has gone",
-    "subtitle": "AI-first stack — the tools I use day to day to ship automations, agents, and production web.",
-    "liveBadge": "Live data — last updated this week",
+    "eyebrow": "Technical Specialization & Stack",
+    "title": "Our Production Stack Allocation",
+    "subtitle": "Enterprise AI-first stack — the technologies and infrastructure we deploy daily to build mission-critical automations, autonomous agents, and resilient cloud systems.",
+    "liveBadge": "Live production infrastructure — updated this week",
     "n8n": "n8n",
     "aiAgents": "AI Agents",
     "llmApis": "OpenAI / Anthropic",
