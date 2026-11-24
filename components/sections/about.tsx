@@ -3,7 +3,7 @@ import { wpImage } from '@/lib/theme';
 import { LazyParticles } from '@/components/lazy-particles';
 import { getCurrentDictionary, getCurrentLocale } from '@/lib/dictionary';
 import { Reveal } from '@/components/reveal';
-import { ShieldCheck, Zap, TrendingUp, CheckCircle2, Mail, Phone } from 'lucide-react';
+import { ShieldCheck, Zap, TrendingUp, CheckCircle2, Mail, Phone, LockKeyhole, Server, KeyRound } from 'lucide-react';
 import { SocialIcon } from '@/components/social-icon';
 
 // "About me" — server component.
@@ -235,6 +235,108 @@ export async function About({
                     ? 'Demos funcionais a cada 7 dias. Progresso testável diretamente com dados reais da sua operação.'
                     : 'Demos en vivo cada 7 días. Avance que puedes tocar, probar y validar directamente con datos reales.'}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Enterprise Security, Privacy & IP Ownership Guarantee Block (B2B Trust Anchor) */}
+        <div className="mt-8 pt-8 border-t border-theme-9/80">
+          <div className="bg-primary/95 rounded-2xl p-6 sm:p-8 border border-theme-9 shadow-xs">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-theme-1/10 border border-theme-1/25 text-[11px] font-mono text-accent mb-2">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>
+                    {locale === 'en'
+                      ? 'Enterprise Data Protection Protocol'
+                      : locale === 'pt'
+                      ? 'Protocolo de Proteção de Dados Empresariais'
+                      : 'Protocolo de Seguridad y Protección de Datos'}
+                  </span>
+                </div>
+                <h4 className="font-heading text-lg sm:text-xl font-bold text-secondary">
+                  {locale === 'en'
+                    ? 'Security, Zero Public Model Training & 100% IP Ownership'
+                    : locale === 'pt'
+                    ? 'Segurança, Zero Treinamento de Modelos & Propriedade Total'
+                    : 'Seguridad Blindada, Cero Entrenamiento de Modelos y Propiedad Total'}
+                </h4>
+              </div>
+              <p className="text-xs text-text max-w-md font-sans">
+                {locale === 'en'
+                  ? 'Your processes and data are your primary commercial moat. We engineer every pipeline under zero-trust enterprise standards.'
+                  : locale === 'pt'
+                  ? 'Seus dados e processos operacionais são seus maiores ativos. Construímos sob rigorosos padrões corporativos de confidencialidade.'
+                  : 'Tus datos operativos son tu mayor activo comercial. Diseñamos cada sistema bajo estándares corporativos de estricta confidencialidad.'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl bg-theme-5 border border-theme-9/80 flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-theme-1/15 border border-theme-1/30 text-accent shrink-0">
+                  <LockKeyhole className="w-4 h-4" />
+                </div>
+                <div>
+                  <h5 className="font-heading text-xs font-bold text-secondary mb-1">
+                    {locale === 'en'
+                      ? 'Isolated Infrastructure & Encryption'
+                      : locale === 'pt'
+                      ? 'Infraestrutura Isolada e Criptografia'
+                      : 'Infraestructura Aislada y Cifrado'}
+                  </h5>
+                  <p className="text-[11px] text-text leading-relaxed">
+                    {locale === 'en'
+                      ? 'Self-hosted or dedicated cloud instances. Master keys encrypted at rest and in transit. Zero shared multi-tenant database risks.'
+                      : locale === 'pt'
+                      ? 'Instâncias dedicadas ou self-hosted. Credenciais criptografadas de ponta a ponta sem riscos de bancos compartilhados.'
+                      : 'Servidores dedicados y credenciales cifradas en tránsito y reposo. Cero riesgos de bases de datos compartidas.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-theme-5 border border-theme-9/80 flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-theme-1/15 border border-theme-1/30 text-accent shrink-0">
+                  <Server className="w-4 h-4" />
+                </div>
+                <div>
+                  <h5 className="font-heading text-xs font-bold text-secondary mb-1">
+                    {locale === 'en'
+                      ? 'Zero Public AI Model Training'
+                      : locale === 'pt'
+                      ? 'Zero Treinamento de Modelos Públicos'
+                      : 'Cero Entrenamiento con tus Datos'}
+                  </h5>
+                  <p className="text-[11px] text-text leading-relaxed">
+                    {locale === 'en'
+                      ? 'Strict enterprise API routing. Your proprietary records, client conversations and workflows are never used to train public LLMs.'
+                      : locale === 'pt'
+                      ? 'Conexões corporativas que garantem que suas conversas e registros nunca sejam usados para treinar IAs públicas.'
+                      : 'Contratos empresariales de API. Tus conversaciones y flujos jamás se usan para reentrenar modelos públicos de terceros.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-theme-5 border border-theme-9/80 flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-theme-1/15 border border-theme-1/30 text-accent shrink-0">
+                  <KeyRound className="w-4 h-4" />
+                </div>
+                <div>
+                  <h5 className="font-heading text-xs font-bold text-secondary mb-1">
+                    {locale === 'en'
+                      ? '100% Client Ownership (No Lock-in)'
+                      : locale === 'pt'
+                      ? '100% Propriedade do Cliente'
+                      : '100% Propiedad del Cliente (Cero Lock-in)'}
+                  </h5>
+                  <p className="text-[11px] text-text leading-relaxed">
+                    {locale === 'en'
+                      ? 'All code, workflows, Docker configs and documentation live inside your repositories. Complete autonomy without vendor dependency.'
+                      : locale === 'pt'
+                      ? 'Todo o código, automações em n8n e documentação técnica são seus. Total autonomia e independência tecnológica.'
+                      : 'Todo el código vive en tu GitHub, tus servidores y JSONs portables. Cero retención forzosa: independencia total para tu equipo.'}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

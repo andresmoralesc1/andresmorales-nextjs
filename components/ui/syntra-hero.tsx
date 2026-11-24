@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import type { CSSProperties, MouseEvent, PointerEvent as ReactPointerEvent, ReactElement, ReactNode, SVGProps } from 'react'
 import { AnimatePresence, LazyMotion, animate, domAnimation, m, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react'
 import type { MotionValue } from 'motion/react'
-import { ArrowRight, Cable, ChartNoAxesColumnIncreasing, FilePen, Menu, MousePointer2, Play, ShieldCheck, Star, Users, Workflow, X } from 'lucide-react'
+import { ArrowRight, Cable, Calendar, ChartNoAxesColumnIncreasing, FilePen, Mail, Menu, MousePointer2, Play, ShieldCheck, Sparkles, Star, Users, Workflow, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // Block stylesheet (was components/motionuikit/sections/syntra/index.css). Inlined because a published component is a single file.
@@ -938,6 +938,127 @@ const SyntraDepthBackdrop = (props: SVGProps<SVGSVGElement>) => {
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
+export type HeroLocaleData = {
+  locale: string
+  name: string
+  role1: string
+  role2: string
+  cta: string
+  auditCta: string
+  availableText: string
+  email: string
+  whatsapp: string
+  calendarUrl: string
+  levelsText: string
+  closeText: string
+  hintHover: string
+  hintTap: string
+  activeBadge: string
+  coreBadge: string
+  stages: Array<{
+    title: string
+    apps: string[]
+  }>
+  metrics: Array<{
+    value: string
+    label: string
+  }>
+}
+
+const DEFAULT_HERO_DATA: Record<string, HeroLocaleData> = {
+  es: {
+    locale: 'es',
+    name: 'Andrés Morales',
+    role1: 'Ayudo a equipos a escalar, sin que se les dispare el costo.',
+    role2: 'Consultor de automatización con IA',
+    cta: 'Hablemos',
+    auditCta: 'Auditoría',
+    availableText: 'Disponible para proyectos · Q1 2026',
+    email: 'info@andresmorales.com.co',
+    whatsapp: 'https://wa.me/573161482507',
+    calendarUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    levelsText: 'Niveles:',
+    closeText: 'Cerrar',
+    hintHover: 'Pasa el cursor o selecciona un nivel',
+    hintTap: 'Toca para seleccionar un nivel',
+    activeBadge: 'Activo',
+    coreBadge: 'Core IA',
+    stages: [
+      { title: 'E-commerce & Tiendas', apps: ['Shopify', 'Next.js', 'Google'] },
+      { title: 'Desarrollo Web & Edge', apps: ['Next.js', 'GitHub', 'Google'] },
+      { title: 'Inteligencia Artificial', apps: ['Claude', 'OpenAI', 'Gemini'] },
+      { title: 'Automatización & Flujos', apps: ['n8n', 'Zapier', 'WhatsApp'] },
+      { title: 'Datos & Resultados', apps: ['Excel', 'Google', 'Shopify'] }
+    ],
+    metrics: [
+      { value: '+500 hrs/m', label: 'Ahorro en tareas manuales' },
+      { value: '17 Apps', label: 'En producción real' },
+      { value: '100 / 100', label: 'Google PageSpeed' }
+    ]
+  },
+  en: {
+    locale: 'en',
+    name: 'Andrés Morales',
+    role1: 'I help teams scale without the chaos.',
+    role2: 'AI automation consultant',
+    cta: "Let's talk",
+    auditCta: 'Audit',
+    availableText: 'Available for projects · Q1 2026',
+    email: 'info@andresmorales.com.co',
+    whatsapp: 'https://wa.me/573161482507',
+    calendarUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    levelsText: 'Levels:',
+    closeText: 'Close',
+    hintHover: 'Hover or select an architectural level',
+    hintTap: 'Tap to select an architectural level',
+    activeBadge: 'Active',
+    coreBadge: 'AI Core',
+    stages: [
+      { title: 'E-commerce & Stores', apps: ['Shopify', 'Next.js', 'Google'] },
+      { title: 'Web Development & Edge', apps: ['Next.js', 'GitHub', 'Google'] },
+      { title: 'Artificial Intelligence', apps: ['Claude', 'OpenAI', 'Gemini'] },
+      { title: 'Automation & Workflows', apps: ['n8n', 'Zapier', 'WhatsApp'] },
+      { title: 'Data & Outcomes', apps: ['Excel', 'Google', 'Shopify'] }
+    ],
+    metrics: [
+      { value: '+500 hrs/m', label: 'Saved in manual tasks' },
+      { value: '17 Apps', label: 'Live in production' },
+      { value: '100 / 100', label: 'Google PageSpeed' }
+    ]
+  },
+  pt: {
+    locale: 'pt',
+    name: 'Andrés Morales',
+    role1: 'Ajudando empresas a escalar com menos esforço.',
+    role2: 'Consultor de automação com IA',
+    cta: 'Conversar',
+    auditCta: 'Auditoria',
+    availableText: 'Disponível para projetos · Q1 2026',
+    email: 'info@andresmorales.com.co',
+    whatsapp: 'https://wa.me/573161482507',
+    calendarUrl: 'https://calendar.app.google/QvUUb5xu4927P95a8',
+    levelsText: 'Níveis:',
+    closeText: 'Fechar',
+    hintHover: 'Passe o cursor ou selecione um nível',
+    hintTap: 'Toque para selecionar um nível',
+    activeBadge: 'Ativo',
+    coreBadge: 'Core IA',
+    stages: [
+      { title: 'E-commerce & Lojas', apps: ['Shopify', 'Next.js', 'Google'] },
+      { title: 'Desenvolvimento Web & Edge', apps: ['Next.js', 'GitHub', 'Google'] },
+      { title: 'Inteligência Artificial', apps: ['Claude', 'OpenAI', 'Gemini'] },
+      { title: 'Automação & Fluxos', apps: ['n8n', 'Zapier', 'WhatsApp'] },
+      { title: 'Dados & Resultados', apps: ['Excel', 'Google', 'Shopify'] }
+    ],
+    metrics: [
+      { value: '+500 hrs/m', label: 'Economizadas em tarefas' },
+      { value: '17 Apps', label: 'Em produção ativa' },
+      { value: '100 / 100', label: 'Google PageSpeed' }
+    ]
+  }
+}
+
+
 const COPY = {
   eyebrow: 'The intelligent workflow platform',
   headline: ['Build, automate', 'and scale your', 'workflows with'],
@@ -1055,8 +1176,8 @@ const EXPLODE = {
  * overhangs the visual, which only the left side has room for, so it holds the longest title.
  */
 const STAGE_CARDS = {
-  left: { edge: -2, width: 31 },
-  right: { edge: 0, width: 29 },
+  left: { edge: -3, width: 33 },
+  right: { edge: -1, width: 31 },
 
   /**
    * Cards only show while the stack is open. They start this many px toward the core and ease
@@ -2040,16 +2161,27 @@ const STAGE_ICONS = {
  * Clean, legible stage card: Step number + Title + ONLY tool icons with hover tooltips.
  * Eliminates text clutter so cards remain crisp, spacious, and easily readable.
  */
-const StageCardBody = ({ index, selected = false }: { index: number; selected?: boolean }) => {
+const StageCardBody = ({
+  index,
+  selected = false,
+  heroData
+}: {
+  index: number
+  selected?: boolean
+  heroData?: HeroLocaleData
+}) => {
   // Vars
   const stage = STAGES[index]
   const main = isMain(stage)
+  const currentTitle = heroData?.stages[index]?.title || stage.title
+  const activeLabel = heroData?.activeBadge || 'Activo'
+  const coreLabel = heroData?.coreBadge || 'Core IA'
 
   return (
-    <div className='flex flex-col gap-2 text-left'>
+    <div className='flex flex-col gap-1.5 text-left'>
       {/* Title & Stage Number */}
-      <div className='flex items-center justify-between gap-2.5'>
-        <div className='flex items-center gap-2 min-w-0'>
+      <div className='flex items-center justify-between gap-1.5'>
+        <div className='flex items-center gap-1.5 min-w-0'>
           <span
             className={cn(
               'flex size-5 shrink-0 items-center justify-center rounded-full text-[0.72em] font-bold tabular-nums transition-colors',
@@ -2060,25 +2192,25 @@ const StageCardBody = ({ index, selected = false }: { index: number; selected?: 
           >
             {String(index + 1).padStart(2, '0')}
           </span>
-          <p className='text-stone-900 text-[0.96em] leading-tight font-semibold tracking-[-0.015em] truncate'>
-            {stage.title}
+          <p className='text-stone-900 text-[0.92em] leading-snug font-semibold tracking-[-0.01em] whitespace-normal line-clamp-1'>
+            {currentTitle}
           </p>
         </div>
 
         {selected ? (
-          <span className='shrink-0 rounded-full bg-[#FF7A2F]/15 px-2 py-0.5 text-[0.66em] font-semibold text-[#FF7A2F] uppercase tracking-wider flex items-center gap-1'>
+          <span className='shrink-0 rounded-full bg-[#FF7A2F]/15 px-1.5 py-0.5 text-[0.62em] font-semibold text-[#FF7A2F] uppercase tracking-wider flex items-center gap-1'>
             <span className='size-1.5 rounded-full bg-[#FF7A2F] animate-pulse' />
-            Activo
+            {activeLabel}
           </span>
         ) : main ? (
-          <span className='text-[#FF7A2F] shrink-0 text-[0.68em] font-bold tracking-[0.08em] uppercase'>
-            Core IA
+          <span className='text-[#FF7A2F] shrink-0 text-[0.65em] font-bold tracking-[0.06em] uppercase'>
+            {coreLabel}
           </span>
         ) : null}
       </div>
 
       {/* ONLY Tool Icons: Clean, elegant, spacious, zero text crowding */}
-      <div className='flex items-center gap-2 pl-7 pt-0.5'>
+      <div className='flex items-center gap-2 pl-6 pt-0.5'>
         {stage.apps.map(app => {
           const Logo = APP_LOGOS[app]
           if (!Logo) return null
@@ -2087,9 +2219,9 @@ const StageCardBody = ({ index, selected = false }: { index: number; selected?: 
             <div
               key={app}
               title={app}
-              className='group/tool relative flex size-7.5 shrink-0 items-center justify-center rounded-lg border border-stone-200/90 bg-white/95 p-1 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:scale-110 hover:border-[#FF7A2F]/60 hover:shadow-md'
+              className='group/tool relative flex size-7 shrink-0 items-center justify-center rounded-lg border border-stone-200/90 bg-white/95 p-1 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:scale-110 hover:border-[#FF7A2F]/60 hover:shadow-md'
             >
-              <Logo className='size-5' />
+              <Logo className='size-4.5' />
               {/* Tooltip on hover */}
               <span className='pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-stone-900 px-1.5 py-0.5 text-[10px] font-medium text-white opacity-0 shadow-sm transition-opacity group-hover/tool:opacity-100 z-50'>
                 {app}
@@ -2116,12 +2248,13 @@ type StageCardProps = {
   open: boolean
   lit: boolean
   selected: boolean
+  heroData?: HeroLocaleData
   onHover: (index: number | null) => void
   onSelect: (index: number) => void
 }
 
 // One stage card beside its plate. Hidden at rest; it fades in and eases outward as the stack opens.
-const StageCard = ({ index, progress, open, lit, selected, onHover, onSelect }: StageCardProps) => {
+const StageCard = ({ index, progress, open, lit, selected, heroData, onHover, onSelect }: StageCardProps) => {
   // Hooks
   const opacity = useTransform(progress, [0.35, 0.9], [0, 1])
 
@@ -2167,7 +2300,7 @@ const StageCard = ({ index, progress, open, lit, selected, onHover, onSelect }: 
               : ''
         )}
       >
-        <StageCardBody index={index} selected={selected} />
+        <StageCardBody index={index} selected={selected} heroData={heroData} />
       </m.div>
     </li>
   )
@@ -2178,6 +2311,7 @@ type StageCardsProps = {
   open: boolean
   hovered: number | null
   selectedLevel: number | null
+  heroData?: HeroLocaleData
   onHover: (index: number | null) => void
   onSelect: (index: number) => void
 }
@@ -2186,7 +2320,7 @@ type StageCardsProps = {
  * The five stages as floating cards beside their plates, from tablet up. Font size follows the
  * visual's width (cqw), so the cards keep their place against the plates at every size.
  */
-const StageCards = ({ progress, open, hovered, selectedLevel, onHover, onSelect }: StageCardsProps) => {
+const StageCards = ({ progress, open, hovered, selectedLevel, heroData, onHover, onSelect }: StageCardsProps) => {
   return (
     <ul
       aria-label='Niveles de la arquitectura'
@@ -2201,6 +2335,7 @@ const StageCards = ({ progress, open, hovered, selectedLevel, onHover, onSelect 
           open={open}
           lit={hovered === i}
           selected={selectedLevel === i}
+          heroData={heroData}
           onHover={onHover}
           onSelect={onSelect}
         />
@@ -2357,10 +2492,12 @@ const StageConnectors = ({ progress, active, hovered }: StageConnectorsProps) =>
 const StageList = ({
   reduce,
   selectedLevel,
+  heroData,
   onSelect
 }: {
   reduce: boolean
   selectedLevel: number | null
+  heroData?: HeroLocaleData
   onSelect: (index: number) => void
 }) => {
   return (
@@ -2382,7 +2519,7 @@ const StageList = ({
               : 'hover:border-stone-300'
           )}
         >
-          <StageCardBody index={i} selected={selectedLevel === i} />
+          <StageCardBody index={i} selected={selectedLevel === i} heroData={heroData} />
         </li>
       ))}
     </m.ul>
@@ -2441,7 +2578,7 @@ const Tilted = ({ rotateX, rotateY, children }: TiltedProps) => {
   )
 }
 
-const CoreVisual = () => {
+const CoreVisual = ({ heroData }: { heroData?: HeroLocaleData }) => {
   // States
   const [open, setOpen] = useState(false)
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null)
@@ -2618,6 +2755,7 @@ const CoreVisual = () => {
                 open={isExploded}
                 hovered={hovered}
                 selectedLevel={selectedLevel}
+                heroData={heroData}
                 onHover={handleCardHover}
                 onSelect={handleSelectLevel}
               />
@@ -2631,8 +2769,8 @@ const CoreVisual = () => {
             className='text-(color:--color-n3-grey) pointer-events-none absolute top-[84%] left-1/2 m-0 flex -translate-x-1/2 items-center gap-1.5 text-[12.5px] whitespace-nowrap'
           >
             <MousePointer2 className='text-(color:--color-n3-accent) size-3.5' strokeWidth={1.8} />
-            <span className='[@media(hover:none)]:hidden'>Pasa el cursor o selecciona un nivel</span>
-            <span className='hidden [@media(hover:none)]:inline'>Toca para seleccionar un nivel</span>
+            <span className='[@media(hover:none)]:hidden'>{heroData?.hintHover || 'Pasa el cursor o selecciona un nivel'}</span>
+            <span className='hidden [@media(hover:none)]:inline'>{heroData?.hintTap || 'Toca para seleccionar un nivel'}</span>
           </m.p>
 
           <button
@@ -2650,10 +2788,11 @@ const CoreVisual = () => {
         {/* Interactive Level Selector Controller: allows instant direct selection of levels */}
         <div className='relative z-30 mx-auto mt-4 mb-2 flex max-w-2xl flex-wrap items-center justify-center gap-1.5 px-3'>
           <span className='mr-1 hidden text-[11px] font-semibold uppercase tracking-wider text-stone-400 sm:inline'>
-            Niveles:
+            {heroData?.levelsText || 'Niveles:'}
           </span>
           {STAGES.map((s, idx) => {
             const isSel = selectedLevel === idx
+            const title = heroData?.stages[idx]?.title || s.title
             return (
               <button
                 key={s.title}
@@ -2674,7 +2813,7 @@ const CoreVisual = () => {
                 >
                   {idx + 1}
                 </span>
-                <span>{s.title}</span>
+                <span>{title}</span>
               </button>
             )
           })}
@@ -2685,12 +2824,12 @@ const CoreVisual = () => {
               className='inline-flex cursor-pointer items-center gap-1 rounded-full bg-stone-100 px-2.5 py-1.5 text-xs font-medium text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800'
             >
               <X className='size-3.5' />
-              <span>Cerrar</span>
+              <span>{heroData?.closeText || 'Cerrar'}</span>
             </button>
           )}
         </div>
 
-        <StageList reduce={reduce} selectedLevel={selectedLevel} onSelect={handleSelectLevel} />
+        <StageList reduce={reduce} selectedLevel={selectedLevel} heroData={heroData} onSelect={handleSelectLevel} />
       </>
     </LazyMotion>
   )
@@ -2725,75 +2864,95 @@ const ICONS = { users: Users, star: Star, shield: ShieldCheck }
  */
 const rise = (delay: number) => ({ style: { animationDelay: `${delay}s` } })
 
-const HeroCopy = () => {
+const HeroCopy = ({ heroData }: { heroData?: HeroLocaleData }) => {
+  const d = heroData || DEFAULT_HERO_DATA.es
+
   return (
     <div className='flex flex-col justify-center'>
-      <p
-        {...rise(0.1)}
-        className='n3-rise text-(color:--color-n3-grey) flex items-center gap-3 text-[12px] font-medium tracking-[0.22em] uppercase'
-      >
-        <span aria-hidden className='n3-dot bg-(color:--color-n3-accent) size-2 rounded-full' />
-        {COPY.eyebrow}
+      {/* Live Availability Status Pill */}
+      <div {...rise(0.1)} className='n3-rise mb-3 flex items-center'>
+        <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-stone-200/90 text-[11px] font-mono text-stone-700 shadow-2xs backdrop-blur-sm'>
+          <span className='relative flex h-2 w-2'>
+            <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A2F] opacity-75' />
+            <span className='relative inline-flex rounded-full h-2 w-2 bg-[#FF7A2F]' />
+          </span>
+          <span className='font-semibold'>{d.availableText}</span>
+        </div>
+      </div>
+
+      {/* Brand Author Name & Subtitle */}
+      <p {...rise(0.14)} className='n3-rise font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight'>
+        {d.name}
       </p>
 
-      <h1 id='n3-title' {...rise(0.18)} className='n3-rise n3-h1 text-(color:--color-n3-ink) mt-7 font-normal'>
-        {COPY.headline.map((line, i) => (
-          <span key={line} className='block'>
-            {line}
-            {i === COPY.headline.length - 1 && <span className='text-(color:--color-n3-accent)'> {COPY.accentWord}</span>}
-          </span>
-        ))}
+      {/* Main Value Proposition H1 */}
+      <h1 id='n3-title' {...rise(0.2)} className='n3-rise text-xl sm:text-2xl lg:text-3xl font-medium text-stone-800 mt-2 sm:mt-3 leading-snug tracking-tight max-w-[34rem]'>
+        {d.role1}
       </h1>
 
-      <p {...rise(0.3)} className='n3-rise text-(color:--color-n3-grey) mt-7 max-w-[30rem] text-[17px] leading-[1.6] lg:text-[19px]'>
-        {COPY.body}
+      {/* Specialty Role italicized */}
+      <p {...rise(0.26)} className='n3-rise text-base sm:text-lg lg:text-xl text-[#FF7A2F] font-semibold italic mt-1.5'>
+        {d.role2}
       </p>
 
-      <div {...rise(0.4)} className='n3-rise mt-9 flex flex-wrap items-center gap-3'>
+      {/* Quick Direct Contacts */}
+      <div {...rise(0.32)} className='n3-rise mt-4 sm:mt-5 flex flex-wrap items-center gap-2'>
         <a
-          href='#start'
-          className='n3-flip bg-(color:--color-n3-accent) focus-visible:outline-(color:--color-n3-ink) inline-flex h-13 items-center rounded-full px-7 text-[16px] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 sm:h-14'
+          href={`mailto:${d.email}`}
+          className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/80 border border-stone-200/90 hover:bg-white text-stone-700 hover:text-[#FF7A2F] text-xs font-medium transition-all shadow-2xs hover:shadow-sm'
         >
-          <FlipLabel className='gap-2.5'>
-            {COPY.primaryCta}
-            <ArrowRight className='size-4' strokeWidth={1.8} aria-hidden />
-          </FlipLabel>
+          <Mail className='w-3.5 h-3.5 text-stone-500' />
+          <span>{d.email}</span>
         </a>
         <a
-          href='#how-it-works'
-          className='n3-flip border-(color:--color-n3-line) text-(color:--color-n3-ink) focus-visible:outline-(color:--color-n3-accent) inline-flex h-13 items-center rounded-full border bg-white/50 px-6 text-[16px] focus-visible:outline-2 focus-visible:outline-offset-2 sm:h-14'
+          href={d.whatsapp}
+          target='_blank'
+          rel='noreferrer'
+          className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/80 border border-stone-200/90 hover:bg-white text-stone-700 hover:text-[#25D366] text-xs font-medium transition-all shadow-2xs hover:shadow-sm'
         >
-          <FlipLabel className='gap-3'>
-            <span className='border-(color:--color-n3-ink) grid size-5 place-items-center rounded-full border'>
-              <Play className='size-2.5 fill-current' strokeWidth={0} aria-hidden />
-            </span>
-            {COPY.secondaryCta}
-          </FlipLabel>
+          <svg viewBox='0 0 24 24' fill='currentColor' className='w-3.5 h-3.5 text-[#25D366] shrink-0' aria-hidden='true'>
+            <path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.886-9.888 9.886m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z' />
+          </svg>
+          <span>WhatsApp</span>
         </a>
       </div>
 
-      <dl {...rise(0.58)} className='n3-rise mt-12 grid grid-cols-3 sm:flex sm:items-stretch lg:mt-20'>
-        {METRICS.map(({ value, label, icon }, i) => {
-          const Icon = ICONS[icon]
+      {/* Main CTAs: Restored from previous hero and fully integrated with 3D aesthetic */}
+      <div {...rise(0.4)} className='n3-rise mt-6 sm:mt-7 flex flex-wrap items-center gap-3'>
+        <a
+          href={d.calendarUrl}
+          target='_blank'
+          rel='noreferrer'
+          className='group inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[46px] rounded-full bg-[#FF7A2F] hover:bg-[#ff6912] text-white font-medium text-sm sm:text-[15px] shadow-[0_4px_16px_rgba(255,122,47,0.35)] hover:shadow-[0_6px_20px_rgba(255,122,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer'
+        >
+          <Calendar className='w-4 h-4 text-white/90 shrink-0' />
+          <span>{d.cta}</span>
+          <ArrowRight className='w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform shrink-0' />
+        </a>
 
-          return (
-            <div
-              key={label}
-              className={cn(
-                'flex flex-col items-start gap-2 pr-3 sm:flex-row sm:items-center sm:gap-3 sm:pr-8',
-                i > 0 && 'border-(color:--color-n3-line) border-l pl-4 sm:pl-8'
-              )}
-            >
-              {/* 32px, centred on the two 20px lines beside it. */}
-              <Icon className='text-(color:--color-n3-ink) size-8 shrink-0' strokeWidth={1.25} aria-hidden />
-              <div>
-                <dd className='text-(color:--color-n3-ink) text-[14px] leading-5 font-medium'>{value}</dd>
-                <dt className='text-(color:--color-n3-grey) text-[13px] leading-5'>{label}</dt>
-              </div>
-            </div>
-          )
-        })}
-      </dl>
+        <a
+          href='#speed-audit'
+          className='group inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[46px] rounded-full bg-white/90 hover:bg-white text-stone-800 font-medium text-sm sm:text-[15px] border border-stone-200/90 hover:border-[#FF7A2F]/50 shadow-2xs hover:shadow-sm backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer'
+        >
+          <Sparkles className='w-4 h-4 text-[#FF7A2F] shrink-0' />
+          <span>{d.auditCta}</span>
+          <span className='text-xs text-stone-400 group-hover:text-[#FF7A2F] group-hover:translate-y-0.5 transition-all'>↓</span>
+        </a>
+      </div>
+
+      {/* Live Authority Metrics Strip */}
+      <div {...rise(0.55)} className='n3-rise mt-8 sm:mt-10 pt-6 border-t border-stone-200/70 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg'>
+        {d.metrics.map(({ value, label }, i) => (
+          <div key={label} className='p-2 sm:p-2.5 rounded-xl bg-white/70 border border-stone-200/80 text-center shadow-2xs'>
+            <span className='block text-base sm:text-lg font-bold text-stone-900 font-heading'>
+              {value}
+            </span>
+            <span className='text-[10px] sm:text-[11px] text-stone-500 font-mono leading-tight block mt-0.5'>
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -2903,13 +3062,13 @@ const HeroFloor = () => {
 }
 
 // ───── components/motionuikit/sections/syntra/hero.tsx ─────
-const Hero = () => {
+const Hero = ({ heroData }: { heroData?: HeroLocaleData }) => {
   return (
     <section id='top' aria-labelledby='n3-title' className='n3-hero relative isolate overflow-x-clip'>
       <HeroFloor />
       <div className='n3-frame mx-auto grid max-w-360 items-center gap-6 pt-6 pb-12 lg:min-h-[inherit] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12 lg:py-10 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:gap-20'>
-        <HeroCopy />
-        <CoreVisual />
+        <HeroCopy heroData={heroData} />
+        <CoreVisual heroData={heroData} />
       </div>
     </section>
   )
@@ -3081,12 +3240,12 @@ const motionVars = {
   '--n3-float-seconds': `${MOTION.floatSeconds}s`
 } as CSSProperties
 
-const CoreHeroBase = ({ withNavbar = true }: { withNavbar?: boolean }) => {
+const CoreHeroBase = ({ withNavbar = true, heroData }: { withNavbar?: boolean; heroData?: HeroLocaleData }) => {
   return (
     <>
       <div style={motionVars} className='n3-root n3-bg font-(family-name:--font-n3-sans) text-(color:--color-n3-ink) w-full antialiased'>
         {withNavbar && <Navbar />}
-        <Hero />
+        <Hero heroData={heroData} />
       </div>
     </>
   )
@@ -3094,12 +3253,13 @@ const CoreHeroBase = ({ withNavbar = true }: { withNavbar?: boolean }) => {
 
 type CoreHeroProps = {
   withNavbar?: boolean;
+  heroData?: HeroLocaleData;
 }
 
-const CoreHero = ({ withNavbar = true }: CoreHeroProps) => (
+const CoreHero = ({ withNavbar = true, heroData }: CoreHeroProps) => (
   <>
     <style>{BLOCK_CSS}</style>
-    <CoreHeroBase withNavbar={withNavbar} />
+    <CoreHeroBase withNavbar={withNavbar} heroData={heroData} />
   </>
 )
 
